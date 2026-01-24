@@ -1,0 +1,16 @@
+# Entorno Virtual
+venv/
+env/
+__pycache__/
+*.pyc
+
+# Base de datos y variables de entorno
+.env
+*.db
+
+# Archivos de configuración de Cursor/VSCode
+.vscode/
+
+# Archivos temporales de sistema
+Thumbs.db
+.DS_Store
