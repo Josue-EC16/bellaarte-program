@@ -1,4 +1,4 @@
-# BELLAARTE Boutique -  Sistema de Gestión 
+# BELLAARTE Boutique - Sistema de Gestión
 
 ### GUÍA DE INICIO RÁPIDO.
 
@@ -22,13 +22,27 @@ streamlit run app.py
 
 - Ejecutas streamlit run app.py.
 
-- ¡Empiezas a digitalizar BELLAARTE!
+- ¡Empiezas!
 
---- A CONSIDERAR PARA EL BACKUP ---
+### PARA CREAR LA BASE DE DATOS
+
+Resumen del flujo de trabajo ideal
+
+- Modificas o creas una clase en models.py
+
+- Aseguras que esté importada en database.py
+
+- Ejecutas:
+
+python database.py
+
+- ¡Listo! Tu base de datos se actualiza (si la tabla es nueva).
+
+### A CONSIDERAR PARA EL BACKUP
 
 2. Consideraciones de Ingeniería para el Mantenimiento
-A. El PATH de PostgreSQL
-Para que este script funcione, Windows debe saber dónde está el ejecutable pg_dump.
+   A. El PATH de PostgreSQL
+   Para que este script funcione, Windows debe saber dónde está el ejecutable pg_dump.
 
 Como usas Laragon, la ruta suele ser: C:\laragon\bin\postgresql\postgresql-14.5\bin.
 
@@ -49,4 +63,4 @@ Local: Los backups se quedan en tu carpeta /backups.
 Nube: Una técnica común es sincronizar esa carpeta con Google Drive o Dropbox. Así, si la laptop de la boutique falla físicamente, los datos de BellaArteBoutique están a salvo en la nube.
 
 3. Seguridad del Repositorio
-Recuerda que tu archivo .gitignore debe incluir la carpeta backups/. Nunca subas tus respaldos con datos reales de clientes a GitHub, incluso si el repositorio es privado. Es una regla de oro de ciberseguridad.
+   Recuerda que tu archivo .gitignore debe incluir la carpeta backups/. Nunca subas tus respaldos con datos reales de clientes a GitHub, incluso si el repositorio es privado. Es una regla de oro de ciberseguridad.
