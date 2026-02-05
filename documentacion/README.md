@@ -64,3 +64,11 @@ Nube: Una técnica común es sincronizar esa carpeta con Google Drive o Dropbox.
 
 3. Seguridad del Repositorio
    Recuerda que tu archivo .gitignore debe incluir la carpeta backups/. Nunca subas tus respaldos con datos reales de clientes a GitHub, incluso si el repositorio es privado. Es una regla de oro de ciberseguridad.
+
+# TRUCO PARA LOS SCRIPTS
+
+La forma correcta de ejecutarlos desde la raíz es:
+
+python -m scripts.seed_data
+
+- El parámetro -m le dice a Python: "Ejecuta esto como un módulo, respetando la jerarquía de carpetas del proyecto".

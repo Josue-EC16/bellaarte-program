@@ -1,6 +1,6 @@
 # reconstruir_todo.py
-from database import engine, Base
-import models  # <--- Esto registra las clases en la Base
+from core.database import engine, Base
+import models.models  # <--- Esto registra las clases en la Base
 from sqlalchemy import inspect
 
 def construir():

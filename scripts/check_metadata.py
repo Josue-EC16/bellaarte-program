@@ -1,6 +1,6 @@
-from database import Base
+from core.database import Base
 # IMPORTANTE: Debemos importar los modelos para que se "registren"
-import models 
+import models.models 
 
 print("--- 🔍 INSPECCIÓN DE METADATOS ---")
 tablas_detectadas = Base.metadata.tables.keys()

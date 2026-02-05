@@ -1,4 +1,4 @@
-from database import engine
+from core.database import engine
 from sqlalchemy import text
 
 def verificar_conexion():

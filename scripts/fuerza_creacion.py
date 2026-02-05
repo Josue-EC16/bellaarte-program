@@ -1,5 +1,5 @@
-from database import engine, Base
-import models # Esto es vital para que Base las reconozca
+from core.database import engine, Base
+import models.models # Esto es vital para que Base las reconozca
 
 print("--- 🔨 FORZANDO CREACIÓN ---")
 try:

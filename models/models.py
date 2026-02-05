@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Text
 from sqlalchemy.orm import relationship, validates
 from sqlalchemy.sql import func
-from database import Base  # Importamos la base declarativa que configuraremos en database.py
+from core.database import Base  # Importamos la base declarativa que configuraremos en database.py
 
 class Rol(Base):
     __tablename__ = "rol"

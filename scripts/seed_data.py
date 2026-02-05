@@ -1,5 +1,5 @@
-from database import SessionLocal
-from models import Rol, User # Importamos tus clases actualizadas
+from core.database import SessionLocal
+from models.models import Rol, User # Importamos tus clases actualizadas
 from passlib.context import CryptContext
 
 # Configuración del "hasheador"
