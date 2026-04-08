@@ -1,70 +1,75 @@
-Esta es una Arquitectura Modular Orientada a Servicios, una estructura profesional que evoluciona el patrón MVC (Modelo-Vista-Controlador) para adaptarlo a las necesidades de Python y Streamlit.
+# 🏛️ ESPECIFICACIÓN DE ARQUITECTURA DE SOFTWARE: bellaarte-program
 
-A continuación, presento el desglose técnico para tu documentación:
+**Versión:** 1.0 (Abril 2026)  
+**Autor:** Marcelo Josue Escobar Chipana [cite: 2]  
+**Proyecto:** Sistema de Gestión Integral para BellaArte Boutique [cite: 1]
 
-🏛️ Descripción General de la Arquitectura.
+---
 
-El objetivo de esta estructura es la Separación de Responsabilidades. Cada carpeta actúa como una "capa" independiente, lo que permite que, si cambias algo en la base de datos, no tengas que reescribir toda la interfaz visual.
+## 1. VISIÓN GENERAL
 
-📂 Desglose de Carpetas y Documentos.
+El sistema está diseñado para digitalizar y optimizar el flujo de trabajo de alta costura personalizada[cite: 1]. Su objetivo primordial es transitar de un modelo de gestión basado en Excel y registros manuales hacia una plataforma centralizada que integra **Ciencia de Datos** para la toma de decisiones estratégicas[cite: 3, 4].
 
-1. core/ (El Cerebro)
-   Contiene la lógica central y la infraestructura de la aplicación.
-   Es el "corazón" técnico del sistema. Contiene las configuraciones globales y conexiones base.
+## 2. PATRÓN ARQUITECTÓNICO: CLIENTE-SERVIDOR DESACOPLADO
 
-core/database.py: Configura la conexión a PostgreSQL. Es el puente entre tu código Python y la base de datos.
-core/config.py: (Opcional, pero recomendado) Maneja variables de entorno y configuración global.
-core/security.py: (Futuro) Manejará el cifrado de contraseñas y la autenticación.
+Se ha implementado una arquitectura de **desacoplamiento total**, separando la interfaz de usuario de la lógica de negocio[cite: 1].
 
-2. models/ (La Memoria)
-   Define la estructura de los datos. Cada archivo .py aquí es una tabla de la base de datos.
-   Define la estructura de los datos (El Modelo). Es el plano de construcción de tus tablas en PostgreSQL.
+- **Frontend (Single Page Application - SPA):** Construido con **React 19** y **Vite 6** para garantizar una experiencia de usuario fluida y reactiva en la boutique[cite: 1, 2].
+- **Backend (RESTful API):** Construido con **FastAPI** y **Python 3.14**, aprovechando la programación asíncrona para manejar procesos concurrentes de taller y ventas[cite: 1, 2].
+- **Comunicación:** Intercambio de datos mediante **JSON Web Tokens (JWT)** para asegurar sesiones persistentes y seguras entre ambas capas[cite: 1].
 
-models/models.py: Define las tablas Rol y User.
-models/clientes.py: (Futuro) Definirá la tabla de clientes.
-models/productos.py: (Futuro) Definirá la tabla de productos.
+---
 
-3. pages/ (La Cara)
-   Contiene la interfaz de usuario. Como usamos Streamlit, aquí están los archivos de las páginas.
-   Contiene la "Lógica de Negocio" (El Controlador). Aquí es donde se decide qué hacer con los datos antes de guardarlos.
+## 3. STACK TECNOLÓGICO Y JUSTIFICACIÓN
 
-4. assets/ (Los Recursos)
-   Contiene los recursos estáticos de la aplicación.
-   Almacena recursos estáticos que no cambian y son de acceso público para la aplicación.
+| Capa             | Tecnología        | Justificación de Ingeniería                                                                                         |
+| :--------------- | :---------------- | :------------------------------------------------------------------------------------------------------------------ |
+| **Interfaz**     | React 19 + Vite 6 | Alto rendimiento y facilidad para crear componentes complejos como la ficha de medidas.     |
+| **Cerebro**      | FastAPI (Python)  | Nativo para integrar modelos de **Machine Learning** y validación estricta con Pydantic. |
+| **Persistencia** | PostgreSQL 17     | Manejo robusto de relaciones complejas entre clientas, pedidos y las 5 fases de pruebas.    |
+| **ORM**          | SQLAlchemy 2.0    | Abstracción de base de datos con tipado fuerte, facilitando la mantenibilidad a largo plazo.   |
+| **Seguridad**    | Casbin + Bcrypt   | Implementación de **RBAC** para separar funciones de Boutique, Taller y Administración.     |
 
-assets/images/: (Futuro) Imágenes de los productos.
-assets/docs/: (Futuro) Archivos que el usuario final necesite descargar, como guías de usuario o plantillas de documentos.
+---
 
-5. services/ (Las Manos)
-   Contiene la lógica de negocio. Son las funciones que manipulan los datos.
-   Contiene la "Lógica de Negocio" (El Controlador). Aquí es donde se decide qué hacer con los datos antes de guardarlos.
+## 4. MODELO DE DATOS (PERSISTENCIA)
 
-services/auth_service.py: (Futuro) Lógica para iniciar sesión, cerrar sesión y verificar permisos.
-services/inventario_service.py: (Futuro) Funciones para agregar/quitar productos.
+La base de datos se organiza en bloques lógicos para garantizar la integridad referencial y facilitar la auditoría:
 
-6. app.py (La Cara)
-   Contiene la interfaz de usuario. Como usamos Streamlit, aquí están los archivos de las páginas.
+- **Seguridad:** Gestión de roles y cuentas.
+- **Comercial:** Registro de clientas, pedidos personalizados y seguimiento de las **4 pruebas obligatorias**.
+- **Inventario Dual:** Separación entre productos terminados (Boutique) e insumos (Taller - Telas, Guipures, Pedrería).
+- **Finanzas:** Centralización de ingresos y egresos para cálculo de rentabilidad real.
 
-app/login.py: La pantalla de inicio de sesión.
-app/dashboard.py: El panel principal.
-app/inventario.py: La vista de productos.
-app/clientes.py: La vista de clientes.
+---
 
-7. scripts/ (Las Herramientas)
-   Scripts auxiliares para tareas de mantenimiento.
-   Herramientas de soporte y mantenimiento para el desarrollador.
+## 5. CAPACIDADES ANALÍTICAS (MÓDULOS DE IA/ML)
 
-scripts/seed_data.py: Script para poblar la base de datos con datos iniciales.
-scripts/backup_manager.py: (Futuro) Script para respaldar la base de datos.
+A diferencia de un CRUD tradicional, esta arquitectura soporta tres pilares de inteligencia de negocios[cite: 4]:
 
-8. .env y .gitignore (La Seguridad)
-   .env: Archivo secreto que contiene las contraseñas y credenciales de la base de datos. NO debe subirse a GitHub.
-   .gitignore: Lista de archivos y carpetas que Git debe ignorar (como .env, backups/, **pycache**/).
+1.  **Índice de Complejidad Comercial:** Modelo predictivo que estima el precio sugerido y tiempo de confección basándose en las características del diseño (telas, pedrería, corte)[cite: 4].
+2.  **Predicción de Saturación de Agenda:** Algoritmo analítico que evalúa la capacidad máxima del taller frente a la demanda de pruebas programadas[cite: 4].
+3.  **Automatización por Eventos:** Motor de reglas que dispara acciones (notificaciones, alertas de stock mínimo) basadas en cambios de estado del sistema[cite: 4].
 
-9. requirements.txt (Las Dependencias)
-   Contiene la lista de todas las librerías externas que necesita el proyecto para funcionar.
+---
 
-10. ui/ (La Interfaz)
-    Contiene la interfaz de usuario. Como usamos Streamlit, aquí están los archivos de las páginas.
-    Contiene la "Lógica de Negocio" (El Controlador). Aquí es donde se decide qué hacer con los datos antes de guardarlos.
-    Define la estética y componentes visuales reutilizables.
+## 6. SEGURIDAD Y CONTROL DE ACCESO
+
+El sistema implementa una arquitectura **Zero-Trust** y auditoría completa[cite: 1]:
+
+- **Auditoría (Logs):** Cada acción sobre registros críticos (pedidos, pagos, stock) se registra en una bitácora detallada indicando quién, cuándo y qué cambió[cite: 3].
+- **RBAC:** El personal de taller solo visualiza fichas técnicas, mientras que el personal de ventas gestiona cobros y medidas[cite: 1, 3].
+- **Normalización:** Todas las entradas críticas se procesan en **MAYÚSCULAS** para evitar inconsistencias en las búsquedas[cite: 1, 3].
+
+---
+
+## 7. ESTRATEGIA DE DESPLIEGUE Y ESCALABILIDAD
+
+Diseñado para una vida útil mínima de 6 años, el sistema permite[cite: 1]:
+
+- **Contenerización:** Estructura modular lista para ser desplegada mediante **Docker**, asegurando portabilidad absoluta entre entornos de desarrollo y producción[cite: 1, 2].
+- **Despliegue Independiente:** Posibilidad de alojar el frontend en servicios como Vercel y el backend en servidores dedicados para optimizar costos[cite: 1].
+
+**Nota de Mantenimiento:** La base de datos se evoluciona únicamente mediante migraciones Alembic. 
+Cualquier cambio en `backend/app/models/` debe acompañarse de su migración correspondiente y aplicarse con `alembic upgrade head`.
+----------------

@@ -1,16 +1,42 @@
-# Entorno Virtual
-venv/
-env/
-__pycache__/
-*.pyc
+# =========================
+# Seguridad / secretos
+# =========================
+**/.env
+**/.env.*
+!**/.env.example
 
-# Base de datos y variables de entorno
-.env
-*.db
+# Credenciales / llaves / certificados
+**/*.pem
+**/*.key
+**/*.crt
+**/*.pfx
+**/*.p12
+**/id_rsa*
+**/id_ed25519*
+**/credentials*.json
+**/*service-account*.json
 
-# Archivos de configuración de Cursor/VSCode
-.vscode/
+# Dumps / backups de base de datos
+**/*.sql
+**/*.dump
+**/*.backup
+**/*.bak
+**/*.sqlite*
+**/*.pgpass
 
-# Archivos temporales de sistema
-Thumbs.db
-.DS_Store
+# Node (por seguridad, evita subir node_modules en cualquier carpeta)
+**/node_modules/
+**/dist/
+**/.vite/
+
+# Python caches / cobertura
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Temporales comunes
+*.tmp
+*.swp
+*.swo

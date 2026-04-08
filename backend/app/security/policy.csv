@@ -1,0 +1,30 @@
+p, ADMIN, dashboard:view, use
+p, ADMIN, auth:me, use
+p, ADMIN, auth:change_password, use
+p, ADMIN, auth:logout, use
+p, ADMIN, users:list, use
+p, ADMIN, users:create, use
+p, ADMIN, users:update_status, use
+p, ADMIN, roles:list, use
+p, INV_TALLER, dashboard:view, use
+p, INV_TALLER, auth:me, use
+p, INV_TALLER, auth:change_password, use
+p, INV_TALLER, auth:logout, use
+p, INV_BOUTIQUE, dashboard:view, use
+p, INV_BOUTIQUE, auth:me, use
+p, INV_BOUTIQUE, auth:change_password, use
+p, INV_BOUTIQUE, auth:logout, use
+p, CAJA, dashboard:view, use
+p, CAJA, auth:me, use
+p, CAJA, auth:change_password, use
+p, CAJA, auth:logout, use
+p, MODISTA, dashboard:view, use
+p, MODISTA, auth:me, use
+p, MODISTA, auth:change_password, use
+p, MODISTA, auth:logout, use
+g, ADMIN, ADMIN
+g, INV_TALLER, INV_TALLER
+g, INV_BOUTIQUE, INV_BOUTIQUE
+g, CAJA, CAJA
+g, MODISTA, MODISTA
+

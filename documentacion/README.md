@@ -1,74 +1,77 @@
 # BELLAARTE Boutique - Sistema de Gestión
 
-### GUÍA DE INICIO RÁPIDO.
+Este sistema ha evolucionado de un monolito en Streamlit a una Arquitectura Desacoplada profesional, separando el Frontend (React) del Backend (FastAPI) para garantizar escalabilidad y seguridad.
 
-- ACTIVAR EL ENTORNO VIRTUAL, ABRE LA TERMINAL EN LA CARPETA DEL PROYECTO Y EJECUTA:
+### 🏛️ ESTRUCTURA DEL PROYECTO
 
+/backend: API construida con FastAPI 0.115.6 y Python 3.14.2.
+
+/frontend: Interfaz de usuario con React 19.0.0 y Vite 6.0.
+
+/documentacion: Detalles técnicos y manuales del sistema.
+
+### 🛠️ REQUISITOS PREVIOS (Versiones Dic-2025)
+
+Para que el sistema funcione correctamente en Bolivia, asegúrate de tener:
+
+- Node.js: v22.12.0 (Gestionado con fnm).
+
+- pnpm: v10.33.0 (Gestor de paquetes del frontend).
+
+- Python: v3.14.2 (Con entorno virtual activado).
+
+- Laragon: v6.0 con PostgreSQL 17.
+
+### 🚀 GUÍA DE INICIO RÁPIDO
+
+1. Preparar la Base de Datos (Laragon)
+   Enciende Laragon y presiona "Start All".
+
+Asegúrate de que PostgreSQL esté corriendo en el puerto 5432.
+
+2. Levantar el Backend (El Cerebro)
+   Abre una terminal en la raíz y ejecuta:
+
+PowerShell
+cd backend
 .\venv\Scripts\activate
-
-- INSTALAR DEPENDENCIAS (solo la primera vez):
-
 pip install -r requirements.txt
+uvicorn main:app --reload
+La API estará disponible en: http://localhost:8000.
 
-- EJECUTAR LA APLICACIÓN:
+3. Levantar el Frontend (La Cara)
+   Abre una segunda terminal (sin venv de Python) y ejecuta:
 
-streamlit run app.py
+PowerShell
+cd frontend
+pnpm install
+pnpm run dev
+El sistema será visible en: http://localhost:5173.
 
-### ¿Cómo trabajarás de ahora en adelante?
+### 🔧 MANTENIMIENTO E INGENIERÍA
 
-- Enciendes Laragon (Botón "Start All").
+Sincronización de Base de Datos (flujo oficial)
+Cada vez que agregues o modifiques modelos ORM en `backend/app/models/`, la evolución de la base de datos se realiza con Alembic:
+PowerShell
+cd backend
+.\venv\Scripts\activate
+python -m alembic -c alembic.ini upgrade head
+Seeds (roles/admin/políticas):
+PowerShell
+python scripts/seed_security.py
 
-- Activas tu venv en la terminal de Cursor.
+- Automatización: Configura el Programador de Tareas para ejecutar backup_manager.py cada noche a las 11:00 PM.
 
-- Ejecutas streamlit run app.py.
+Ejecución de Scripts Globales
+Para ejecutar herramientas de soporte desde la raíz del backend, usa siempre el parámetro -m para respetar los módulos:
 
-- ¡Empiezas!
-
-### PARA CREAR LA BASE DE DATOS
-
-Resumen del flujo de trabajo ideal
-
-- Modificas o creas una clase en models.py
-
-- Aseguras que esté importada en database.py
-
-- Ejecutas:
-
-python database.py
-
-- ¡Listo! Tu base de datos se actualiza (si la tabla es nueva).
-
-### A CONSIDERAR PARA EL BACKUP
-
-2. Consideraciones de Ingeniería para el Mantenimiento
-   A. El PATH de PostgreSQL
-   Para que este script funcione, Windows debe saber dónde está el ejecutable pg_dump.
-
-Como usas Laragon, la ruta suele ser: C:\laragon\bin\postgresql\postgresql-14.5\bin.
-
-Debes agregar esa ruta a las Variables de Entorno de tu sistema (en la sección Path).
-
-B. Automatización Total (Nivel Producción)
-Una vez que el sistema esté en la laptop de la boutique, no querrás correr este script a mano. Como ingeniero, puedes usar el Programador de Tareas de Windows:
-
-Crea una tarea básica que se ejecute cada noche a las 11:00 PM.
-
-La acción será: python C:\laragon\www\bellaarte-program\backup_manager.py.
-
-¡Listo! Tendrás un respaldo diario sin mover un dedo.
-
-C. Estrategia de Almacenamiento
-Local: Los backups se quedan en tu carpeta /backups.
-
-Nube: Una técnica común es sincronizar esa carpeta con Google Drive o Dropbox. Así, si la laptop de la boutique falla físicamente, los datos de BellaArteBoutique están a salvo en la nube.
-
-3. Seguridad del Repositorio
-   Recuerda que tu archivo .gitignore debe incluir la carpeta backups/. Nunca subas tus respaldos con datos reales de clientes a GitHub, incluso si el repositorio es privado. Es una regla de oro de ciberseguridad.
-
-# TRUCO PARA LOS SCRIPTS
-
-La forma correcta de ejecutarlos desde la raíz es:
-
+PowerShell
 python -m scripts.seed_data
+🔒 SEGURIDAD Y REGLAS DE ORO
+Variables de Entorno: Nunca subas el archivo .env a GitHub. Contiene las credenciales de la base de datos.
 
-- El parámetro -m le dice a Python: "Ejecuta esto como un módulo, respetando la jerarquía de carpetas del proyecto".
+- GitIgnore: Verifica que existan archivos .gitignore tanto en la raíz como en /frontend para evitar subir carpetas pesadas como node_modules o venv.
+
+- Hashing: Las contraseñas de los empleados (Modistas, Cajeros) siempre se procesan con Bcrypt 4.2.0 antes de entrar a la base de datos.
+
+### Desarrollado por: Marcelo Josue Escobar Chipana - Ingeniería de Sistemas

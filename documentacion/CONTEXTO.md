@@ -4,28 +4,37 @@ El sistema, denominado técnicamente bellaarte-program, nace de la necesidad de 
 
 ### 🛠️ EL STACK TECNOLÓGICO (Herramientas).
 
-Para este desarrollo, estamos utilizando un conjunto de herramientas de nivel profesional:
+Para esta fase de producción, el sistema ha evolucionado hacia un stack desacoplado de alto rendimiento:
 
-- Python: El lenguaje de programación principal, elegido por su versatilidad y potencia en la gestión de datos.
+- Frontend (React 19 & Vite 6): Utilizamos la versión más reciente de React (diciembre 2025) para construir una interfaz de usuario dinámica, rápida y segura. Vite actúa como el motor de desarrollo de última generación.
 
-- SQLAlchemy: Actúa como nuestro ORM (Object Relational Mapper). Es el "traductor" que permite que tu código Python hable con la base de datos sin escribir SQL puro manualmente.
+- Backend (FastAPI & Python 3.14): El "cerebro" del sistema es una API asíncrona construida con FastAPI, diseñada para manejar múltiples peticiones de la boutique simultáneamente con una latencia mínima.
 
-- PostgreSQL: El motor de base de datos relacional de nivel empresarial, conocido por su fiabilidad y manejo de datos complejos.
+- Laragon 6.0 Entorno de desarrollo local en Windows que nos proporciona el servidor de PostgreSQL y la herramienta Adminer para visualizar las tablas.
 
-- Laragon: Entorno de desarrollo local en Windows que nos proporciona el servidor de PostgreSQL y la herramienta Adminer para visualizar las tablas.
+- Gestor de Paquetes (pnpm 10): Implementamos pnpm para la gestión de dependencias del frontend, optimizando el espacio en disco y garantizando instalaciones deterministas.
 
-- Streamlit: La librería que utilizaremos para la Interfaz de Usuario (UI), permitiendo crear una aplicación web rápida y moderna para el personal de la boutique.
+- SQLAlchemy 2.0: Mantenemos este ORM avanzado como el traductor principal entre nuestros modelos de Python y la base de datos, aprovechando sus capacidades de tipado fuerte.
 
-- Bcrypt: Herramienta de seguridad para el hashing de contraseñas. Transforma claves como "admin123" en códigos indescifrables para proteger la privacidad del sistema.
+- PostgreSQL 17: El motor de base de datos relacional más avanzado del mercado, gestionado localmente a través de Laragon 6.0 para un entorno de desarrollo robusto en Windows.
+
+- Seguridad (Bcrypt & JWT): Además del hashing de contraseñas con Bcrypt, el sistema ahora implementa JSON Web Tokens (JWT) para gestionar sesiones seguras entre React y la API.
+
+- AccessControl Casbin (PyCasbin).Casbin: Es un framework de control de acceso poderoso. Te permite definir un modelo RBAC (Control de Acceso Basado en Roles) para separar quién puede ver qué:
+  - Vendedora (Boutique): Puede crear contratos y registrar medidas.
+  - Administrador (Tú/Dueña): Acceso total a los KPIs financieros de ingresos y egresos.
+- FastAPI Users: Es otra librería muy popular que ya trae integrado el manejo de registros, login (JWT) y roles de forma sencilla y segura.
 
 ### 🏗️ LOGROS DE INGENIERÍA ALCANZADOS.
 
-Hasta ahora, hemos implementado pilares fundamentales que garantizan la integridad del sistema:
+Con la nueva arquitectura, hemos consolidado pilares de nivel empresarial:
 
-- Seguridad por Diseño: Las contraseñas no se guardan como texto; se protegen mediante algoritmos de hash.
+- Desacoplamiento Total (Frontend/Backend): La interfaz y la lógica de negocio son ahora independientes. Esto permite que el sistema crezca o cambie de diseño sin afectar la integridad de los datos.
 
-- Normalización Automática: Implementamos validadores en los modelos para que todo registro de texto (nombres, cuentas, roles) se guarde automáticamente en MAYÚSCULAS, evitando duplicidad y desorden en los datos.
+- Seguridad por Diseño (Zero-Trust): Implementamos validación de esquemas con Pydantic en el backend y protección contra vulnerabilidades detectadas en diciembre de 2025 mediante el uso de React 19.0.0.
 
-- Arquitectura Modular: El proyecto está organizado en carpetas (core, models, services, ui, pages) para facilitar el mantenimiento y el crecimiento a futuro.
+- Normalización Estricta de Datos: Se mantienen los validadores automáticos para que registros como nombres, roles y estados se almacenen siempre en MAYÚSCULAS, garantizando la limpieza de la base de datos.
 
-- Gestión de Roles: El sistema ya distingue entre diferentes niveles de acceso, desde el SUPERADMIN hasta roles operativos como MODISTA o CAJERO(A).
+- Gestión de Versiones Profesional: Implementamos el uso de fnm para el control de versiones de Node.js y entornos virtuales (venv) para Python, asegurando que el proyecto sea reproducible en cualquier máquina de la boutique.
+
+- Arquitectura Orientada a Servicios: El proyecto está organizado en una estructura de carpetas modular (backend/ y frontend/) que facilita la futura implementación de contenedores con Docker.

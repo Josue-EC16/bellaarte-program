@@ -1,0 +1,118 @@
+:root {
+  --app-bg: radial-gradient(circle at top left, rgba(143, 61, 46, 0.14), transparent 32%),
+    radial-gradient(circle at bottom right, rgba(214, 165, 111, 0.18), transparent 24%),
+    linear-gradient(160deg, #f8f0e8 0%, #fffaf5 52%, #f4e5d6 100%);
+  --surface-color: rgba(255, 255, 255, 0.78);
+  --surface-border: rgba(143, 61, 46, 0.12);
+  --shadow-color: rgba(102, 52, 36, 0.14);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.app-shell {
+  min-height: 100vh;
+  background: var(--app-bg);
+}
+
+.glass-panel {
+  background: var(--surface-color);
+  backdrop-filter: blur(18px);
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 18px 45px var(--shadow-color);
+}
+
+.auth-page {
+  min-height: 100vh;
+  background: var(--app-bg);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.auth-card {
+  width: min(1080px, 100%);
+  border-radius: 28px;
+  overflow: hidden;
+}
+
+.auth-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+}
+
+.auth-brand {
+  padding: 48px;
+  background: linear-gradient(145deg, #5e2217 0%, #8f3d2e 45%, #d6a56f 100%);
+  color: #fffaf6;
+}
+
+.auth-brand h1 {
+  font-size: clamp(2rem, 4vw, 3.6rem);
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.auth-brand p {
+  max-width: 32rem;
+  font-size: 1rem;
+  color: rgba(255, 250, 246, 0.82);
+}
+
+.auth-form-panel {
+  padding: 42px;
+}
+
+.dashboard-hero {
+  border-radius: 28px;
+  padding: 28px;
+  background: linear-gradient(135deg, rgba(143, 61, 46, 0.96), rgba(214, 165, 111, 0.92));
+  color: #fffaf6;
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.dashboard-actions {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.card-muted {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.page-wrapper {
+  padding: 24px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.forbidden-wrap {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--app-bg);
+  padding: 24px;
+}
+
+@media (max-width: 900px) {
+  .auth-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-brand,
+  .auth-form-panel {
+    padding: 32px 24px;
+  }
+}

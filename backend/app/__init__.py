@@ -1,0 +1,2 @@
+"""Bellaarte backend application package."""
+
