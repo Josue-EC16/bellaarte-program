@@ -1,0 +1,64 @@
+# =========================
+# Seguridad / secretos / entorno
+# =========================
+**/.env
+**/.env.*
+!**/.env.example
+
+# Credenciales / llaves / certificados
+**/*.pem
+**/*.key
+**/*.crt
+**/*.pfx
+**/*.p12
+**/id_rsa*
+**/id_ed25519*
+**/credentials*.json
+**/*service-account*.json
+
+# Dumps / backups de base de datos
+**/*.sql
+**/*.postgres
+**/*.psql
+**/*.dump
+**/*.backup
+**/*.bak
+**/*.sqlite*
+**/*.pgpass
+
+# Python (entornos y cache)
+**/__pycache__/
+**/venv/
+**/.venv/
+**/env/
+**/.pytest_cache/
+**/pytest-cache-files-*/
+**/.mypy_cache/
+**/.ruff_cache/
+**/.coverage
+**/htmlcov/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+
+# Node (por seguridad, evita subir node_modules en cualquier carpeta)
+**/node_modules/
+**/dist/
+**/.vite/
+**/coverage/
+**/logs/
+**/*.log
+
+# IDEs / Editores
+**/.vscode/
+**/.idea/
+**/.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Temporales comunes
+*.tmp
+*.swp
+*.swo
