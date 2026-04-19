@@ -169,14 +169,29 @@ export function RolesPage() {
         destroyOnClose
       >
         <Form layout="vertical" form={form} onFinish={handleSubmit}>
-          <Form.Item label="Codigo" name="codigo" rules={[{ required: true }]} extra="No se podra cambiar despues de crear.">
-            <Input disabled={Boolean(editingRole)} />
+          <Form.Item 
+            label="Codigo" 
+            name="codigo" 
+            rules={[{ required: true }]} 
+            extra="No se podra cambiar despues de crear."
+            normalize={(value) => (value || '').toUpperCase().replace(/[^A-Z_]/g, '')}
+          >
+            <Input disabled={Boolean(editingRole)} placeholder="Ej. SUPER_ADMIN" />
           </Form.Item>
-          <Form.Item label="Nombre" name="nombre" rules={[{ required: true }]}>
-            <Input />
+          <Form.Item 
+            label="Nombre" 
+            name="nombre" 
+            rules={[{ required: true }]}
+            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+          >
+            <Input placeholder="Ej. SUPER ADMINISTRADOR" />
           </Form.Item>
-          <Form.Item label="Descripcion" name="descripcion">
-            <Input.TextArea rows={3} />
+          <Form.Item 
+            label="Descripcion" 
+            name="descripcion"
+            normalize={(value) => (value || '').toUpperCase()}
+          >
+            <Input.TextArea rows={3} placeholder="Describe las funciones u operaciones que puede realizar este rol" />
           </Form.Item>
           <Button type="primary" htmlType="submit" loading={saving}>
             Guardar rol

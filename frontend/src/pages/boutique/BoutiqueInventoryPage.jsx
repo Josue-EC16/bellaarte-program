@@ -217,7 +217,7 @@ export function BoutiqueInventoryPage() {
       title: 'Acciones',
       key: 'acciones',
       render: (_, record) => (
-        <Space>
+        <Space wrap>
           <Button icon={<EyeOutlined />} onClick={() => openView(record)}>
             Ver
           </Button>
@@ -302,6 +302,7 @@ export function BoutiqueInventoryPage() {
         dataSource={items}
         loading={loading}
         pagination={{ pageSize: 8 }}
+        scroll={{ x: 'max-content' }}
         style={{ borderRadius: 24, overflow: 'hidden' }}
       />
 

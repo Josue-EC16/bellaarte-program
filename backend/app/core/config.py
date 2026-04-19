@@ -39,6 +39,11 @@ class Settings(BaseSettings):
     bootstrap_admin_zone: str = "CENTRAL"
     bootstrap_admin_address: str = "OFICINA PRINCIPAL"
 
+    smtp_server: str = "smtp.gmail.com"
+    smtp_port: int = 465
+    smtp_username: str | None = None
+    smtp_password: str | None = None
+
     @computed_field
     @property
     def effective_database_url(self) -> str:

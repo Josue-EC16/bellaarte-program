@@ -25,51 +25,87 @@ export function BoutiqueItemForm({ form, types, mode = 'create', onFinish, savin
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="Codigo" name={['item', 'code']} rules={[{ required: true }]}>
-            <Input />
+          <Form.Item 
+            label="Codigo" 
+            name={['item', 'code']} 
+            rules={[{ required: true }]}
+            normalize={(value) => (value || '').replace(/[^a-zA-Z0-9-]/g, '').toUpperCase()}
+          >
+            <Input placeholder="Ej. VEST-001" />
           </Form.Item>
         </Col>
       </Row>
 
       <Row gutter={12}>
         <Col span={12}>
-          <Form.Item label="Nombre" name={['item', 'name']} rules={[{ required: true }]}>
-            <Input />
+          <Form.Item 
+            label="Nombre" 
+            name={['item', 'name']} 
+            rules={[{ required: true }]}
+            normalize={(value) => (value || '').toUpperCase()}
+          >
+            <Input placeholder="Ej. VESTIDO CORTE PRINCESA BLANCO" />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="Color" name={['item', 'color']} rules={[{ required: true }]}>
-            <Input />
+          <Form.Item 
+            label="Color" 
+            name={['item', 'color']} 
+            rules={[{ required: true }]}
+            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+          >
+            <Input placeholder="Ej. BLANCO MARFIL" />
           </Form.Item>
         </Col>
       </Row>
 
       <Row gutter={12}>
         <Col span={12}>
-          <Form.Item label="Forma" name={['item', 'shape']}>
-            <Input />
+          <Form.Item 
+            label="Forma" 
+            name={['item', 'shape']}
+            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+          >
+            <Input placeholder="Ej. CORTE SIRENA" />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="Material" name={['item', 'material']} rules={[{ required: true }]}>
-            <Input />
+          <Form.Item 
+            label="Material" 
+            name={['item', 'material']} 
+            rules={[{ required: true }]}
+            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+          >
+            <Input placeholder="Ej. SEDA Y ENCAJE" />
           </Form.Item>
         </Col>
       </Row>
 
-      <Form.Item label="Medidas" name={['item', 'measurements']}>
-        <Input.TextArea rows={2} />
+      <Form.Item 
+        label="Medidas" 
+        name={['item', 'measurements']}
+        normalize={(value) => (value || '').toUpperCase()}
+      >
+        <Input.TextArea rows={2} placeholder="Descripción de las medidas del artículo" />
       </Form.Item>
 
       <Row gutter={12}>
         <Col span={12}>
-          <Form.Item label="Proveedor" name={['item', 'supplier']}>
-            <Input />
+          <Form.Item 
+            label="Proveedor" 
+            name={['item', 'supplier']}
+            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+          >
+            <Input placeholder="Ej. IMPORTADORA TEXTIL" />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="Descripcion" name={['item', 'description']}>
-            <Input />
+          <Form.Item 
+            label="Descripcion" 
+            name={['item', 'description']}
+            normalize={(value) => (value || '').toUpperCase()}
+          >
+            <Input placeholder="Descripción adicional breve" />
           </Form.Item>
         </Col>
       </Row>
@@ -77,12 +113,12 @@ export function BoutiqueItemForm({ form, types, mode = 'create', onFinish, savin
       <Row gutter={12}>
         <Col span={12}>
           <Form.Item label="Precio compra" name={['item', 'purchase_price']} rules={[{ required: true }]}>
-            <InputNumber min={0} style={{ width: '100%' }} />
+            <InputNumber min={0} style={{ width: '100%' }} prefix="Bs." placeholder="Ej. 1500.50" decimalSeparator="." />
           </Form.Item>
         </Col>
         <Col span={12}>
           <Form.Item label="Precio venta" name={['item', 'sale_price']} rules={[{ required: true }]}>
-            <InputNumber min={0} style={{ width: '100%' }} />
+            <InputNumber min={0} style={{ width: '100%' }} prefix="Bs." placeholder="Ej. 3000.00" decimalSeparator="." />
           </Form.Item>
         </Col>
       </Row>
@@ -90,18 +126,22 @@ export function BoutiqueItemForm({ form, types, mode = 'create', onFinish, savin
       <Row gutter={12}>
         <Col span={12}>
           <Form.Item label="Stock" name={['item', 'stock']} rules={[{ required: true }]}>
-            <InputNumber min={0} style={{ width: '100%' }} />
+            <InputNumber min={0} style={{ width: '100%' }} placeholder="Ej. 5" />
           </Form.Item>
         </Col>
         <Col span={12}>
           <Form.Item label="Stock minimo" name={['item', 'stock_min']} rules={[{ required: true }]}>
-            <InputNumber min={0} style={{ width: '100%' }} />
+            <InputNumber min={0} style={{ width: '100%' }} placeholder="Ej. 1" />
           </Form.Item>
         </Col>
       </Row>
 
-      <Form.Item label="Observaciones" name={['item', 'notes']}>
-        <Input.TextArea rows={2} />
+      <Form.Item 
+        label="Observaciones" 
+        name={['item', 'notes']}
+        normalize={(value) => (value || '').toUpperCase()}
+      >
+        <Input.TextArea rows={2} placeholder="Observaciones adicionales del artículo" />
       </Form.Item>
 
       {detailKind !== 'OTRO' ? (
@@ -150,13 +190,21 @@ function VestidoFields() {
 
       <Row gutter={12}>
         <Col span={12}>
-          <Form.Item label="Corte de falda" name={['detail', 'skirt_cut']}>
-            <Input />
+          <Form.Item 
+            label="Corte de falda" 
+            name={['detail', 'skirt_cut']}
+            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+          >
+            <Input placeholder="Ej. PRINCESA" />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="Tipo de escote" name={['detail', 'neckline_type']}>
-            <Input />
+          <Form.Item 
+            label="Tipo de escote" 
+            name={['detail', 'neckline_type']}
+            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+          >
+            <Input placeholder="Ej. CORAZON" />
           </Form.Item>
         </Col>
       </Row>
@@ -169,7 +217,7 @@ function VestidoFields() {
         </Col>
         <Col span={12}>
           <Form.Item label="Largo de falda" name={['detail', 'skirt_length']}>
-            <InputNumber min={0} style={{ width: '100%' }} />
+            <InputNumber min={0} style={{ width: '100%' }} placeholder="Ej. 120" />
           </Form.Item>
         </Col>
       </Row>
@@ -186,8 +234,12 @@ function VestidoFields() {
         </Form.Item>
       </Space>
 
-      <Form.Item label="Observaciones del detalle" name={['detail', 'notes']}>
-        <Input.TextArea rows={2} />
+      <Form.Item 
+        label="Observaciones del detalle" 
+        name={['detail', 'notes']}
+        normalize={(value) => (value || '').toUpperCase()}
+      >
+        <Input.TextArea rows={2} placeholder="Observaciones específicas del vestido" />
       </Form.Item>
     </>
   )
@@ -198,8 +250,13 @@ function VeloFields() {
     <>
       <Row gutter={12}>
         <Col span={12}>
-          <Form.Item label="Tipo de velo" name={['detail', 'veil_type']} rules={[{ required: true }]}>
-            <Input />
+          <Form.Item 
+            label="Tipo de velo" 
+            name={['detail', 'veil_type']} 
+            rules={[{ required: true }]}
+            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+          >
+            <Input placeholder="Ej. MANTILLA" />
           </Form.Item>
         </Col>
         <Col span={12}>
@@ -212,31 +269,44 @@ function VeloFields() {
       <Row gutter={12}>
         <Col span={12}>
           <Form.Item label="Largo" name={['detail', 'length']}>
-            <InputNumber min={0} style={{ width: '100%' }} />
+            <InputNumber min={0} style={{ width: '100%' }} placeholder="Ej. 300" />
           </Form.Item>
         </Col>
         <Col span={12}>
           <Form.Item label="Capas" name={['detail', 'layers']}>
-            <InputNumber min={1} style={{ width: '100%' }} />
+            <InputNumber min={1} style={{ width: '100%' }} placeholder="Ej. 2" />
           </Form.Item>
         </Col>
       </Row>
 
       <Row gutter={12}>
         <Col span={12}>
-          <Form.Item label="Borde" name={['detail', 'edge']}>
-            <Input />
+          <Form.Item 
+            label="Borde" 
+            name={['detail', 'edge']}
+            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+          >
+            <Input placeholder="Ej. ONDULADO" />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="Decoracion" name={['detail', 'decoration']} rules={[{ required: true }]}>
-            <Input />
+          <Form.Item 
+            label="Decoracion" 
+            name={['detail', 'decoration']} 
+            rules={[{ required: true }]}
+            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}  
+          >
+            <Input placeholder="Ej. ENCAJE Y PEDRERIA" />
           </Form.Item>
         </Col>
       </Row>
 
-      <Form.Item label="Observaciones del detalle" name={['detail', 'notes']}>
-        <Input.TextArea rows={2} />
+      <Form.Item 
+        label="Observaciones del detalle" 
+        name={['detail', 'notes']}
+        normalize={(value) => (value || '').toUpperCase()}
+      >
+        <Input.TextArea rows={2} placeholder="Observaciones específicas del velo" />
       </Form.Item>
     </>
   )
@@ -247,8 +317,12 @@ function BouquetFields() {
     <>
       <Row gutter={12}>
         <Col span={12}>
-          <Form.Item label="Tipo de bouquet" name={['detail', 'bouquet_type']}>
-            <Input />
+          <Form.Item 
+            label="Tipo de bouquet" 
+            name={['detail', 'bouquet_type']}
+            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+          >
+            <Input placeholder="Ej. REDONDO" />
           </Form.Item>
         </Col>
         <Col span={12}>
@@ -260,19 +334,31 @@ function BouquetFields() {
 
       <Row gutter={12}>
         <Col span={12}>
-          <Form.Item label="Tipo de flor" name={['detail', 'flower_type']}>
-            <Input />
+          <Form.Item 
+            label="Tipo de flor" 
+            name={['detail', 'flower_type']}
+            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+          >
+            <Input placeholder="Ej. ROSAS BLANCAS" />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="Decoracion" name={['detail', 'decoration']}>
-            <Input />
+          <Form.Item 
+            label="Decoracion" 
+            name={['detail', 'decoration']}
+            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+          >
+            <Input placeholder="Ej. CINTA DE SEDA" />
           </Form.Item>
         </Col>
       </Row>
 
-      <Form.Item label="Observaciones del detalle" name={['detail', 'notes']}>
-        <Input.TextArea rows={2} />
+      <Form.Item 
+        label="Observaciones del detalle" 
+        name={['detail', 'notes']}
+        normalize={(value) => (value || '').toUpperCase()}
+      >
+        <Input.TextArea rows={2} placeholder="Observaciones específicas del bouquet" />
       </Form.Item>
     </>
   )

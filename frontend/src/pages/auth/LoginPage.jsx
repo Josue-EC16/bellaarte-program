@@ -29,7 +29,7 @@ export function LoginPage() {
 
   return (
     <main className="auth-page">
-      <Card className="auth-card glass-panel" bodyStyle={{ padding: 0 }}>
+      <Card className="auth-card glass-panel" styles={{ body: { padding: 0 } }}>
         <div className="auth-grid">
           <section className="auth-brand">
            <img

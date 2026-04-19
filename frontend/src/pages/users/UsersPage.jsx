@@ -23,14 +23,11 @@ export function UsersPage() {
   const [roles, setRoles] = useState([])
   const [loading, setLoading] = useState(true)
   const [drawerOpen, setDrawerOpen] = useState(false)
-  const [passwordDrawerOpen, setPasswordDrawerOpen] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
   const [editingUser, setEditingUser] = useState(null)
-  const [passwordTarget, setPasswordTarget] = useState(null)
   const [form] = Form.useForm()
-  const [passwordForm] = Form.useForm()
-  const { message } = AntdApp.useApp()
+  const { message, modal } = AntdApp.useApp()
   const { user } = useAuth()
 
   const canCreate = user?.permissions?.includes('users:create')
@@ -114,7 +111,6 @@ export function UsersPage() {
         correo: item.correo,
         zona: item.zona,
         direccion: item.direccion,
-        username: item.username,
         role_code: item.role_code,
         user_is_active: item.user_is_active,
         account_is_active: item.account_is_active,
@@ -135,20 +131,22 @@ export function UsersPage() {
     }
   }
 
-  const handleResetPassword = async (values) => {
-    setSaving(true)
-    try {
-      await apiClient.post(`/users/${passwordTarget.id}/reset-password`, values)
-      message.success('Contrasena temporal restablecida correctamente.')
-      passwordForm.resetFields()
-      setPasswordDrawerOpen(false)
-      setPasswordTarget(null)
-      await loadData()
-    } catch (requestError) {
-      message.error(requestError.response?.data?.detail || 'No fue posible resetear la contrasena.')
-    } finally {
-      setSaving(false)
-    }
+  const confirmResetPassword = (record) => {
+    modal.confirm({
+      title: `¿Estás seguro que quieres restablecer la contraseña del usuario ${record.full_name} (${record.ci})?`,
+      content: 'La contraseña volverá a ser la predeterminada (El número de CI).',
+      okText: 'Sí',
+      cancelText: 'No',
+      onOk: async () => {
+        try {
+          await apiClient.post(`/users/${record.id}/reset-password`, {})
+          message.success('Contraseña temporal restablecida correctamente.')
+          await loadData()
+        } catch (requestError) {
+          message.error(requestError.response?.data?.detail || 'No fue posible resetear la contrasena.')
+        }
+      },
+    })
   }
 
   const columns = [
@@ -213,11 +211,7 @@ export function UsersPage() {
           {canResetPassword ? (
             <Button
               icon={<KeyOutlined />}
-              onClick={() => {
-                setPasswordTarget(record)
-                passwordForm.resetFields()
-                setPasswordDrawerOpen(true)
-              }}
+              onClick={() => confirmResetPassword(record)}
             >
               Reset clave
             </Button>
@@ -276,7 +270,7 @@ export function UsersPage() {
             rules={[{ required: true }]}
             normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
           >
-            <Input />
+            <Input placeholder="Introducir el o los Nombres del Usuario" />
           </Form.Item>
 
           <Form.Item 
@@ -285,7 +279,7 @@ export function UsersPage() {
             rules={[{ required: true }]}
             normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
           >
-            <Input />
+            <Input placeholder="Introducir el Apellido Paterno del Usuario" />
           </Form.Item>
 
           <Form.Item 
@@ -293,7 +287,7 @@ export function UsersPage() {
             name="apellido_materno"
             normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
           >
-            <Input />
+            <Input placeholder="Introducir el Apellido Materno del Usuario (Si aplica)" />
           </Form.Item>
 
           <Space style={{ display: 'flex' }} size={12}>
@@ -304,7 +298,7 @@ export function UsersPage() {
               style={{ flex: 1 }}
               normalize={(value) => (value || '').replace(/[^0-9A-Z]/g, '').toUpperCase()}
             >
-              <Input />
+              <Input placeholder="Ej. 1234567" />
             </Form.Item>
             <Form.Item 
               label="Celular" 
@@ -313,7 +307,7 @@ export function UsersPage() {
               style={{ flex: 1 }}
               normalize={(value) => (value || '').replace(/[^0-9]/g, '')}
             >
-              <Input />
+              <Input placeholder="Ej. 70000000" />
             </Form.Item>
           </Space>
 
@@ -339,7 +333,7 @@ export function UsersPage() {
             rules={[{ required: true }]}
             normalize={(value) => (value || '').toUpperCase()}
           >
-            <Input />
+            <Input placeholder="Ej. ZONA SUR" />
           </Form.Item>
 
           <Form.Item 
@@ -347,22 +341,8 @@ export function UsersPage() {
             name="direccion"
             normalize={(value) => (value || '').toUpperCase()}
           >
-            <Input.TextArea rows={2} />
+            <Input.TextArea rows={2} placeholder="Descripción detallada de la dirección" />
           </Form.Item>
-
-          <Form.Item label="Nombre De Usuario" name="username" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-
-          {!editingUser ? (
-            <Form.Item
-              label="Contrasena Temporal"
-              name="password_temporal"
-              rules={[{ required: true }, { min: 8, message: 'Debe tener al menos 8 caracteres.' }]}
-            >
-              <Input.Password />
-            </Form.Item>
-          ) : null}
 
           <Form.Item label="Rol" name="role_code" rules={[{ required: true }]}>
             <Select options={roleOptions} placeholder="Selecciona un rol" />
@@ -381,31 +361,6 @@ export function UsersPage() {
 
           <Button type="primary" htmlType="submit" loading={saving}>
             {editingUser ? 'Guardar cambios' : 'Guardar usuario'}
-          </Button>
-        </Form>
-      </Drawer>
-
-      <Drawer
-        title={`Resetear contrasena${passwordTarget ? `: ${passwordTarget.username}` : ''}`}
-        width={420}
-        onClose={() => {
-          setPasswordDrawerOpen(false)
-          setPasswordTarget(null)
-          passwordForm.resetFields()
-        }}
-        open={passwordDrawerOpen}
-        destroyOnClose
-      >
-        <Form layout="vertical" form={passwordForm} onFinish={handleResetPassword}>
-          <Form.Item
-            label="Nueva contrasena temporal"
-            name="temporary_password"
-            rules={[{ required: true }, { min: 8, message: 'Debe tener al menos 8 caracteres.' }]}
-          >
-            <Input.Password />
-          </Form.Item>
-          <Button type="primary" htmlType="submit" loading={saving}>
-            Confirmar reset
           </Button>
         </Form>
       </Drawer>

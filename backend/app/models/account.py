@@ -23,4 +23,4 @@ class Cuenta(TimestampMixin, Base):
 
     @validates("username")
     def normalize_username(self, _key: str, value: str) -> str:
-        return value.strip().lower()
+        return value.strip()

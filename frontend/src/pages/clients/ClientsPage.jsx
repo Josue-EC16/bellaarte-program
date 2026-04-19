@@ -44,6 +44,7 @@ export function ClientsPage() {
   const openCreate = () => {
     setEditingClient(null)
     form.resetFields()
+    form.setFieldsValue({ correo: '@gmail.com' })
     setDrawerOpen(true)
   }
 
@@ -219,50 +220,115 @@ export function ClientsPage() {
                 message: 'Debe seguir el formato CLI-00001.',
               },
             ]}
+            normalize={(value) => (value || '').toUpperCase().replace(/[^C-LI\-\d]/g, '')}
           >
-            <Input placeholder="CLI-00001" />
+            <Input placeholder="Ej. CLI-00001" />
           </Form.Item>
-          <Form.Item label="Nombres" name="nombres" rules={[{ required: true }]}>
-            <Input />
+          <Form.Item 
+            label="Nombres" 
+            name="nombres" 
+            rules={[{ required: true }]}
+            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}  
+          >
+            <Input placeholder="Introducir el o los Nombres del Cliente" />
           </Form.Item>
-          <Form.Item label="Apellido paterno" name="apellido_paterno" rules={[{ required: true }]}>
-            <Input />
+          <Form.Item 
+            label="Apellido paterno" 
+            name="apellido_paterno" 
+            rules={[{ required: true }]}
+            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+          >
+            <Input placeholder="Introducir el Apellido Paterno del Cliente" />
           </Form.Item>
-          <Form.Item label="Apellido materno" name="apellido_materno">
-            <Input />
+          <Form.Item 
+            label="Apellido materno" 
+            name="apellido_materno"
+            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+          >
+            <Input placeholder="Introducir el Apellido Materno del Cliente (Opcional)" />
           </Form.Item>
           <Space style={{ display: 'flex' }} size={12}>
-            <Form.Item label="Celular" name="celular" rules={[{ required: true }]} style={{ flex: 1 }}>
-              <Input />
+            <Form.Item 
+              label="Celular" 
+              name="celular" 
+              rules={[{ required: true }]} 
+              style={{ flex: 1 }}
+              normalize={(value) => (value || '').replace(/[^0-9]/g, '')}
+            >
+              <Input placeholder="Ej. 70000000" />
             </Form.Item>
-            <Form.Item label="CI" name="ci" style={{ flex: 1 }}>
-              <Input />
+            <Form.Item 
+              label="CI" 
+              name="ci" 
+              style={{ flex: 1 }}
+              normalize={(value) => (value || '').replace(/[^0-9A-Z]/g, '').toUpperCase()}
+            >
+              <Input placeholder="Ej. 1234567" />
             </Form.Item>
           </Space>
           <Space style={{ display: 'flex' }} size={12}>
-            <Form.Item label="Celular referencia" name="celular_referencia" style={{ flex: 1 }}>
-              <Input />
+            <Form.Item 
+              label="Celular referencia" 
+              name="celular_referencia" 
+              style={{ flex: 1 }}
+              normalize={(value) => (value || '').replace(/[^0-9]/g, '')}
+            >
+              <Input placeholder="Ej. 70000000" />
             </Form.Item>
-            <Form.Item label="Nombre referencia" name="nombre_referencia" style={{ flex: 1 }}>
-              <Input />
+            <Form.Item 
+              label="Nombre referencia" 
+              name="nombre_referencia" 
+              style={{ flex: 1 }}
+              normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+            >
+              <Input placeholder="Ej. JUAN PEREZ" />
             </Form.Item>
           </Space>
-          <Form.Item label="Correo" name="correo" rules={[{ type: 'email' }]}>
-            <Input />
+          <Form.Item 
+            label="Correo" 
+            name="correo" 
+            rules={[
+              { type: 'email', message: 'Ingrese un formato de correo válido' },
+              {
+                pattern: /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
+                message: 'Solo se permiten correos @gmail.com',
+              },
+            ]}
+            normalize={(value) => (value || '').replace(/\s/g, '').toLowerCase()}
+          >
+            <Input placeholder="cliente@gmail.com" />
           </Form.Item>
           <Space style={{ display: 'flex' }} size={12}>
-            <Form.Item label="Nacionalidad" name="nacionalidad" style={{ flex: 1 }}>
-              <Input />
+            <Form.Item 
+              label="Nacionalidad" 
+              name="nacionalidad" 
+              style={{ flex: 1 }}
+              normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+            >
+              <Input placeholder="Ej. BOLIVIANA" />
             </Form.Item>
-            <Form.Item label="Zona" name="zona" style={{ flex: 1 }}>
-              <Input />
+            <Form.Item 
+              label="Zona" 
+              name="zona" 
+              style={{ flex: 1 }}
+              normalize={(value) => (value || '').toUpperCase()}
+            >
+              <Input placeholder="Ej. ZONA SUR" />
             </Form.Item>
           </Space>
-          <Form.Item label="Calle o direccion" name="calle">
-            <Input />
+          <Form.Item 
+            label="Calle o direccion" 
+            name="calle"
+            normalize={(value) => (value || '').toUpperCase()}
+          >
+            <Input placeholder="Descripción detallada de la calle o dirección" />
           </Form.Item>
-          <Form.Item label="Observaciones" name="observaciones">
-            <Input.TextArea rows={3} />
+          <Form.Item 
+            label="Observaciones" 
+            name="observaciones"
+            normalize={(value) => (value || '').toUpperCase()}
+          >
+            <Input.TextArea rows={3} placeholder="Información adicional relevante del cliente" />
           </Form.Item>
           <Button type="primary" htmlType="submit" loading={saving}>
             Guardar cliente

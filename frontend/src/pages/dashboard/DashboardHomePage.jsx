@@ -29,7 +29,7 @@ export function DashboardHomePage() {
       </section>
 
       <div className="dashboard-actions">
-        <Card className="glass-panel" bordered={false} style={{ borderRadius: 24 }}>
+        <Card className="glass-panel" variant="borderless" style={{ borderRadius: 24 }}>
           <Space direction="vertical" size={8}>
             <Typography.Title level={4} style={{ margin: 0 }}>
               Seguridad de cuenta
@@ -43,7 +43,7 @@ export function DashboardHomePage() {
           </Space>
         </Card>
 
-        <Card className="glass-panel" bordered={false} style={{ borderRadius: 24 }}>
+        <Card className="glass-panel" variant="borderless" style={{ borderRadius: 24 }}>
           <Space direction="vertical" size={8}>
             <Typography.Title level={4} style={{ margin: 0 }}>
               Estado del perfil
@@ -55,7 +55,7 @@ export function DashboardHomePage() {
           </Space>
         </Card>
 
-        <Card className="glass-panel" bordered={false} style={{ borderRadius: 24 }}>
+        <Card className="glass-panel" variant="borderless" style={{ borderRadius: 24 }}>
           <Space direction="vertical" size={8}>
             <Typography.Title level={4} style={{ margin: 0 }}>
               Accesos rapidos
@@ -76,7 +76,7 @@ export function DashboardHomePage() {
 
       <Row gutter={[16, 16]}>
         <Col xs={24} md={12}>
-          <Card className="glass-panel" bordered={false} style={{ borderRadius: 24, height: '100%' }}>
+          <Card className="glass-panel" variant="borderless" style={{ borderRadius: 24, height: '100%' }}>
             <Typography.Title level={4}>Siguiente paso funcional</Typography.Title>
             <Typography.Paragraph type="secondary">
               El sistema ya soporta autenticacion, cambio obligatorio de clave, control de roles y alta interna de usuarios.
@@ -87,7 +87,7 @@ export function DashboardHomePage() {
           </Card>
         </Col>
         <Col xs={24} md={12}>
-          <Card className="glass-panel" bordered={false} style={{ borderRadius: 24, height: '100%' }}>
+          <Card className="glass-panel" variant="borderless" style={{ borderRadius: 24, height: '100%' }}>
             <Typography.Title level={4}>Vista operativa</Typography.Title>
             <Typography.Paragraph type="secondary">
               Esta pantalla esta pensada como home operativo: identidad, accesos rapidos y contexto de sesion, sin KPI financieros complejos todavia.

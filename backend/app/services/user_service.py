@@ -1,4 +1,4 @@
-from fastapi import HTTPException, status
+from fastapi import BackgroundTasks, HTTPException, status
 from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session, joinedload
 
@@ -10,6 +10,7 @@ from app.models.role import Rol
 from app.models.user import Usuario
 from app.schemas.auth import CreateUserRequest, ResetPasswordRequest, UpdateUserRequest, UserSummary
 from app.schemas.role import RoleCreateRequest, RoleUpdateRequest
+from app.services.email_service import send_welcome_email
 
 
 def build_user_summary(account: Cuenta) -> UserSummary:
@@ -203,10 +204,14 @@ def create_user(
     *,
     payload: CreateUserRequest,
     created_by: Cuenta,
+    background_tasks: BackgroundTasks,
     ip_address: str | None,
     user_agent: str | None,
 ) -> Cuenta:
-    ensure_user_uniqueness(db, ci=payload.ci, correo=payload.correo, username=payload.username)
+    username = f"{payload.nombres[0]}{payload.apellido_paterno[0]}{payload.ci}".upper()
+    password_temporal = payload.ci.upper()
+
+    ensure_user_uniqueness(db, ci=payload.ci, correo=payload.correo, username=username)
     role = get_role_by_code(db, payload.role_code)
     if not role.activo:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="El rol asignado esta deshabilitado.")
@@ -228,8 +233,8 @@ def create_user(
     cuenta = Cuenta(
         usuario_id=usuario.id,
         rol_id=role.id,
-        username=payload.username.strip(),
-        password_hash=hash_password(payload.password_temporal),
+        username=username,
+        password_hash=hash_password(password_temporal),
         must_change_password=True,
         is_active=True,
     )
@@ -247,6 +252,15 @@ def create_user(
         user_agent=user_agent,
     )
     db.commit()
+
+    background_tasks.add_task(
+        send_welcome_email,
+        recipient_email=payload.correo,
+        full_name=f"{payload.nombres} {payload.apellido_paterno} {payload.apellido_materno or ''}".strip(),
+        username=username,
+        initial_password=password_temporal,
+    )
+
     return get_account(db, cuenta.id)
 
 
@@ -256,6 +270,7 @@ def update_user(
     account_id: int,
     payload: UpdateUserRequest,
     updated_by: Cuenta,
+    background_tasks: BackgroundTasks,
     ip_address: str | None,
     user_agent: str | None,
 ) -> Cuenta:
@@ -267,10 +282,13 @@ def update_user(
         db,
         ci=payload.ci,
         correo=payload.correo,
-        username=payload.username,
+        username=account.username,
         exclude_account_id=account.id,
         exclude_user_id=account.usuario.id,
     )
+
+    email_changed = account.usuario.correo.lower().strip() != payload.correo.lower().strip()
+    should_resend_welcome = email_changed and account.last_login_at is None
 
     account.usuario.nombres = payload.nombres
     account.usuario.apellido_paterno = payload.apellido_paterno
@@ -281,7 +299,6 @@ def update_user(
     account.usuario.zona = payload.zona
     account.usuario.direccion = payload.direccion
     account.usuario.activo = payload.user_is_active
-    account.username = payload.username.strip()
     account.rol_id = role.id
     account.is_active = payload.account_is_active
 
@@ -296,6 +313,16 @@ def update_user(
         user_agent=user_agent,
     )
     db.commit()
+
+    if should_resend_welcome:
+        background_tasks.add_task(
+            send_welcome_email,
+            recipient_email=payload.correo,
+            full_name=f"{payload.nombres} {payload.apellido_paterno} {payload.apellido_materno or ''}".strip(),
+            username=account.username,
+            initial_password=payload.ci.upper(),
+        )
+
     return get_account(db, account.id)
 
 
@@ -335,7 +362,8 @@ def reset_account_password(
     user_agent: str | None,
 ) -> Cuenta:
     account = get_account(db, account_id)
-    account.password_hash = hash_password(payload.temporary_password)
+    new_temporary_password = account.usuario.ci.upper()
+    account.password_hash = hash_password(new_temporary_password)
     account.must_change_password = True
     register_audit_event(
         db,

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, BackgroundTasks, Depends, Request
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
@@ -81,6 +81,7 @@ def get_user_detail(
 def create_internal_user(
     payload: CreateUserRequest,
     request: Request,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     account: Cuenta = Depends(require_permission("users:create")),
 ) -> UserCreateResponse:
@@ -88,6 +89,7 @@ def create_internal_user(
         db,
         payload=payload,
         created_by=account,
+        background_tasks=background_tasks,
         ip_address=request.client.host if request.client else None,
         user_agent=request.headers.get("user-agent"),
     )
@@ -114,6 +116,7 @@ def update_internal_user(
     account_id: int,
     payload: UpdateUserRequest,
     request: Request,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     account: Cuenta = Depends(require_permission("users:update")),
 ) -> UserCreateResponse:
@@ -122,6 +125,7 @@ def update_internal_user(
         account_id=account_id,
         payload=payload,
         updated_by=account,
+        background_tasks=background_tasks,
         ip_address=request.client.host if request.client else None,
         user_agent=request.headers.get("user-agent"),
     )

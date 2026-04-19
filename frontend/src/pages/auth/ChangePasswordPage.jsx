@@ -48,7 +48,10 @@ export function ChangePasswordPage() {
           label="Nueva contrasena"
           rules={[
             { required: true, message: 'Ingresa la nueva contrasena.' },
-            { min: 8, message: 'La nueva contrasena debe tener al menos 8 caracteres.' },
+            { 
+              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/, 
+              message: 'Mínimo 8 caracteres, 1 mayúscula, 1 minúscula, 1 número y 1 carácter especial.' 
+            },
           ]}
         >
           <Input.Password autoComplete="new-password" />
