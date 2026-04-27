@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 import { API_URL } from '../config/env'
+import { normalizeApiError } from '../components/forms/formErrorUtils'
 import { clearAccessToken, getAccessToken, runRefreshHandler } from './tokenStore'
 
 export const apiClient = axios.create({
@@ -39,6 +40,8 @@ apiClient.interceptors.response.use(
         return Promise.reject(refreshError)
       }
     }
+
+    error.normalizedError = normalizeApiError(error)
 
     return Promise.reject(error)
   },

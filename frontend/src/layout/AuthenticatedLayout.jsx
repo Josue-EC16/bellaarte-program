@@ -5,6 +5,7 @@ import {
   DashboardOutlined,
   LockOutlined,
   LogoutOutlined,
+  ShoppingCartOutlined,
   SafetyOutlined,
   TeamOutlined,
   UserOutlined,
@@ -14,6 +15,7 @@ import { useMemo } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import { useAuth } from '../auth/AuthProvider'
+import { FooterBar } from '../components/FooterBar'
 
 const { Header, Content, Sider } = Layout
 
@@ -55,7 +57,7 @@ export function AuthenticatedLayout() {
       })
     }
 
-    if (user?.permissions?.includes('clients:list')) {
+    if (user?.permissions?.includes('clients:update')) {
       baseItems.push({
         key: '/app/clientes',
         icon: <IdcardOutlined />,
@@ -76,14 +78,21 @@ export function AuthenticatedLayout() {
             ? {
                 key: '/app/boutique/tipos',
                 icon: <DatabaseOutlined />,
-                label: <Link to="/app/boutique/tipos">Tipos boutique</Link>,
+                label: <Link to="/app/boutique/tipos">Categorías Productos</Link>,
               }
             : null,
           user?.permissions?.includes('boutique_items:list')
             ? {
                 key: '/app/boutique/inventario',
                 icon: <AppstoreOutlined />,
-                label: <Link to="/app/boutique/inventario">Inventario boutique</Link>,
+                label: <Link to="/app/boutique/inventario">Inventario Boutique</Link>,
+              }
+            : null,
+          user?.permissions?.includes('boutique_sales:list')
+            ? {
+                key: '/app/boutique/ventas',
+                icon: <ShoppingCartOutlined />,
+                label: <Link to="/app/boutique/ventas">Ventas Boutique</Link>,
               }
             : null,
         ].filter(Boolean),
@@ -196,17 +205,19 @@ export function AuthenticatedLayout() {
         <Content className="page-wrapper">
           <Outlet />
         </Content>
+        <FooterBar />
       </Layout>
     </Layout>
   )
 }
 
 function pageTitle(pathname) {
-  if (pathname === '/app/seguridad/roles') return 'Gestion de roles'
-  if (pathname === '/app/seguridad/usuarios') return 'Gestion de usuarios'
-  if (pathname === '/app/clientes') return 'Gestion de clientes'
-  if (pathname === '/app/boutique/tipos') return 'Tipos boutique'
-  if (pathname === '/app/boutique/inventario') return 'Inventario boutique'
+  if (pathname === '/app/seguridad/roles') return 'Gestion de Roles'
+  if (pathname === '/app/seguridad/usuarios') return 'Gestion de Usuarios'
+  if (pathname === '/app/clientes') return 'Gestion de Clientes'
+  if (pathname === '/app/boutique/tipos') return 'Categorías Productos'
+  if (pathname === '/app/boutique/inventario') return 'Inventario Boutique'
+  if (pathname === '/app/boutique/ventas') return 'Ventas Boutique'
   if (pathname === '/app/cambiar-clave') return 'Cambiar contrasena'
   return 'Panel principal'
 }

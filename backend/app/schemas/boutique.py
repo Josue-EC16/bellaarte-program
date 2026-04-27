@@ -4,7 +4,10 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field, field_validator, model_validator
 
 from app.models.boutique_enums import (
+    EstadoVentaBoutiqueEnum,
     CopaTallaVestidoBoutiqueEnum,
+    MetodoPagoEnum,
+    MotivoDescVentaBoutiqueEnum,
     TallaVestidoBoutiqueEnum,
     TamanoEnum,
     TipoVestidoEnum,
@@ -48,9 +51,15 @@ class BoutiqueItemBasePayload(BaseModel):
     description: str | None = None
     purchase_price: float = Field(ge=0)
     sale_price: float = Field(ge=0)
-    stock: float = Field(ge=0)
-    stock_min: float = Field(ge=0)
+    stock: float = Field(gt=0)
+    stock_min: float = Field(gt=0)
     notes: str | None = None
+
+    @model_validator(mode="after")
+    def validate_prices(self) -> "BoutiqueItemBasePayload":
+        if self.sale_price <= self.purchase_price:
+            raise ValueError("El precio de venta no puede ser menor o igual al precio de compra.")
+        return self
 
 
 class DetalleVestidoBoutiquePayload(BaseModel):
@@ -187,3 +196,80 @@ class BoutiqueItemDetailResponse(ORMBaseModel):
     created_at: datetime
     detail_kind: DetailKind
     detail: dict[str, Any] | None
+
+
+class BoutiqueSaleCreateRequest(BaseModel):
+    item_id: int = Field(gt=0)
+    client_id: int | None = Field(default=None, gt=0)
+    quantity: float = Field(gt=0)
+    discount: float | None = Field(default=None, ge=0)
+    discount_reason: MotivoDescVentaBoutiqueEnum | None = None
+    payment_method: MetodoPagoEnum
+    observations: str | None = None
+
+    @model_validator(mode="after")
+    def validate_discount_and_payment_method(self) -> "BoutiqueSaleCreateRequest":
+        if self.payment_method == MetodoPagoEnum.MIXTO:
+            raise ValueError("El método de pago MIXTO no está disponible en esta versión.")
+        if self.discount is None and self.discount_reason is not None:
+            raise ValueError("No debes enviar motivo de descuento si no existe descuento.")
+        if self.discount is not None and self.discount_reason is None:
+            raise ValueError("Debes especificar el motivo del descuento.")
+        return self
+
+
+class BoutiqueSaleStateChangeRequest(BaseModel):
+    reason: str = Field(min_length=5, max_length=200)
+
+
+class BoutiqueSaleItemSummary(ORMBaseModel):
+    id: int
+    code: str
+    name: str
+    type_name: str
+
+
+class BoutiqueSaleClientSummary(ORMBaseModel):
+    id: int
+    codigo: str
+    full_name: str
+
+
+class BoutiqueSaleUserSummary(ORMBaseModel):
+    id: int
+    full_name: str
+    username: str
+
+
+class BoutiqueSaleListItem(ORMBaseModel):
+    id: int
+    fecha: datetime
+    estado: EstadoVentaBoutiqueEnum
+    payment_method: MetodoPagoEnum
+    item_id: int
+    item_code: str
+    item_name: str
+    client_id: int | None
+    client_code: str | None
+    client_name: str | None
+    registered_by: str
+    quantity: float
+    unit_price: float
+    discount: float | None
+    total: float
+
+
+class BoutiqueSaleDetailResponse(ORMBaseModel):
+    id: int
+    fecha: datetime
+    estado: EstadoVentaBoutiqueEnum
+    payment_method: MetodoPagoEnum
+    item: BoutiqueSaleItemSummary
+    client: BoutiqueSaleClientSummary | None
+    registered_by: BoutiqueSaleUserSummary
+    quantity: float
+    unit_price: float
+    discount: float | None
+    discount_reason: MotivoDescVentaBoutiqueEnum | None
+    total: float
+    observations: str | None

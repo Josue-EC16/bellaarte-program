@@ -4,6 +4,7 @@ import { AuthenticatedLayout } from '../layout/AuthenticatedLayout'
 import { ChangePasswordPage } from '../pages/auth/ChangePasswordPage'
 import { LoginPage } from '../pages/auth/LoginPage'
 import { BoutiqueInventoryPage } from '../pages/boutique/BoutiqueInventoryPage'
+import { BoutiqueSalesPage } from '../pages/boutique/BoutiqueSalesPage'
 import { BoutiqueTypesPage } from '../pages/boutique/BoutiqueTypesPage'
 import { ClientsPage } from '../pages/clients/ClientsPage'
 import { DashboardHomePage } from '../pages/dashboard/DashboardHomePage'
@@ -30,7 +31,7 @@ export function AppRoutes() {
           <Route element={<PermissionRoute permission="users:list" />}>
             <Route path="seguridad/usuarios" element={<UsersPage />} />
           </Route>
-          <Route element={<PermissionRoute permission="clients:list" />}>
+          <Route element={<PermissionRoute permission="clients:update" />}>
             <Route path="clientes" element={<ClientsPage />} />
           </Route>
           <Route element={<PermissionRoute permission="boutique_types:list" />}>
@@ -38,6 +39,9 @@ export function AppRoutes() {
           </Route>
           <Route element={<PermissionRoute permission="boutique_items:list" />}>
             <Route path="boutique/inventario" element={<BoutiqueInventoryPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="boutique_sales:list" />}>
+            <Route path="boutique/ventas" element={<BoutiqueSalesPage />} />
           </Route>
         </Route>
       </Route>

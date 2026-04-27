@@ -13,11 +13,14 @@ import {
   Table,
   Tag,
   Typography,
+  Modal,
 } from 'antd'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { apiClient } from '../../api/client'
 import { useAuth } from '../../auth/AuthProvider'
+import { applyFormApiError } from '../../components/forms/formErrorUtils'
+import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
 import { BoutiqueItemDetailCard } from './BoutiqueItemDetailCard'
 import { BoutiqueItemForm } from './BoutiqueItemForm'
 import { inferDetailKindFromTypeName } from './boutiqueConstants'
@@ -27,6 +30,7 @@ export function BoutiqueInventoryPage() {
   const [types, setTypes] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [formError, setFormError] = useState(null)
   const [saving, setSaving] = useState(false)
   const [detailOpen, setDetailOpen] = useState(false)
   const [formOpen, setFormOpen] = useState(false)
@@ -87,6 +91,7 @@ export function BoutiqueInventoryPage() {
 
   const openCreate = () => {
     setEditingItem(null)
+    setFormError(null)
     form.resetFields()
     form.setFieldsValue({
       item: { purchase_price: 0, sale_price: 0, stock: 0, stock_min: 0 },
@@ -100,6 +105,7 @@ export function BoutiqueInventoryPage() {
       const response = await apiClient.get(`/boutique/items/${record.id}`)
       const item = response.data
       setEditingItem(item)
+      setFormError(null)
       form.setFieldsValue({
         type_id: item.type.id,
         item: {
@@ -139,6 +145,7 @@ export function BoutiqueInventoryPage() {
 
   const handleSubmit = async (values) => {
     setSaving(true)
+    setFormError(null)
     try {
       const selectedType = types.find((type) => type.id === values.type_id)
       const detailKind = inferDetailKindFromTypeName(selectedType?.nombre)
@@ -148,7 +155,7 @@ export function BoutiqueInventoryPage() {
           item: values.item,
           detail: detailKind === 'OTRO' ? null : values.detail,
         })
-        message.success('Item boutique actualizado correctamente.')
+        message.success('Se guardaron los cambios del producto correctamente.')
       } else {
         await apiClient.post('/boutique/items', {
           type_id: values.type_id,
@@ -156,7 +163,7 @@ export function BoutiqueInventoryPage() {
           detail_kind: detailKind,
           detail: detailKind === 'OTRO' ? null : values.detail,
         })
-        message.success('Item boutique creado correctamente.')
+        message.success('Se creó el producto correctamente.')
       }
 
       setFormOpen(false)
@@ -164,7 +171,18 @@ export function BoutiqueInventoryPage() {
       form.resetFields()
       await loadItems()
     } catch (requestError) {
-      message.error(requestError.response?.data?.detail || 'No fue posible guardar el item boutique.')
+      const resolved = applyFormApiError(form, requestError, {
+        messageFieldMap: [
+          { test: /item boutique con ese codigo/i, field: ['item', 'code'] },
+          {
+            test: /precio de venta no puede ser menor o igual al precio de compra/i,
+            field: ['item', 'sale_price'],
+          },
+          { test: /tipo boutique esta deshabilitado/i, field: 'type_id' },
+        ],
+        fallbackGlobalMessage: 'No fue posible guardar la información del producto.',
+      })
+      setFormError(resolved.globalMessage)
     } finally {
       setSaving(false)
     }
@@ -176,17 +194,17 @@ export function BoutiqueInventoryPage() {
       message.success(`Item ${nextValue ? 'activado' : 'desactivado'} correctamente.`)
       await loadItems()
     } catch (requestError) {
-      message.error(requestError.response?.data?.detail || 'No fue posible actualizar el estado del item.')
+      message.error(requestError.response?.data?.detail || 'No fue posible actualizar el estado del Producto.')
     }
   }
 
   const columns = [
-    { title: 'Codigo', dataIndex: 'code', key: 'code' },
+    { title: 'Código', dataIndex: 'code', key: 'code' },
     { title: 'Nombre', dataIndex: 'name', key: 'name' },
     { title: 'Tipo', dataIndex: 'type_name', key: 'type_name', render: (value) => <Tag color="gold">{value}</Tag> },
     { title: 'Color', dataIndex: 'color', key: 'color' },
     { title: 'Material', dataIndex: 'material', key: 'material' },
-    { title: 'P. Venta', dataIndex: 'sale_price', key: 'sale_price' },
+    { title: 'P. Venta (Bs)', dataIndex: 'sale_price', key: 'sale_price' },
     {
       title: 'Stock',
       key: 'stock',
@@ -197,7 +215,7 @@ export function BoutiqueInventoryPage() {
         </Space>
       ),
     },
-    { title: 'Stock min', dataIndex: 'stock_min', key: 'stock_min' },
+    { title: 'Stock mín', dataIndex: 'stock_min', key: 'stock_min' },
     {
       title: 'Estado',
       key: 'estado',
@@ -236,16 +254,16 @@ export function BoutiqueInventoryPage() {
       <div className="page-header">
         <div>
           <Typography.Title level={2} style={{ margin: 0 }}>
-            Inventario boutique
+            Inventario Boutique
           </Typography.Title>
           <Typography.Paragraph type="secondary" style={{ marginBottom: 0 }}>
-            Gestiona articulos boutique con detalle especializado y control de stock.
+            Gestiona productos de la boutique con detalle específico y control de stock.
           </Typography.Paragraph>
         </div>
 
         {canCreate ? (
           <Button type="primary" icon={<PlusOutlined />} onClick={openCreate}>
-            Nuevo item
+            Nuevo Producto
           </Button>
         ) : null}
       </div>
@@ -307,16 +325,21 @@ export function BoutiqueInventoryPage() {
       />
 
       <Drawer
-        title={editingItem ? 'Editar item boutique' : 'Crear item boutique'}
+        title={editingItem ? 'Editar Producto Boutique' : 'Crear Producto Boutique'}
         width={780}
         open={formOpen}
         onClose={() => {
           setFormOpen(false)
           setEditingItem(null)
+          setFormError(null)
           form.resetFields()
         }}
         destroyOnClose
       >
+        <FormProcessAlert
+          message={formError}
+          title={editingItem ? 'No fue posible actualizar el producto.' : 'No fue posible crear el producto.'}
+        />
         <BoutiqueItemForm
           form={form}
           types={types}
@@ -326,17 +349,23 @@ export function BoutiqueInventoryPage() {
         />
       </Drawer>
 
-      <Drawer
-        title="Detalle del item boutique"
-        width={620}
+      <Modal
+        title={null}
+        width={750}
         open={detailOpen}
-        onClose={() => {
+        onCancel={() => {
           setDetailOpen(false)
           setSelectedItem(null)
         }}
+        maskClosable={false}
+        footer={[
+          <Button key="close" onClick={() => { setDetailOpen(false); setSelectedItem(null); }}>
+            Cerrar
+          </Button>,
+        ]}
       >
         <BoutiqueItemDetailCard item={selectedItem} />
-      </Drawer>
+      </Modal>
     </div>
   )
 }

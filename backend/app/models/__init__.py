@@ -3,6 +3,7 @@ from app.models.audit_log import AuditoriaSistema
 from app.models.base import Base
 from app.models.boutique_details import DetalleBouquetBoutique, DetalleVeloBoutique, DetalleVestidoBoutique
 from app.models.boutique_item import ItemBoutique
+from app.models.boutique_sale import VentaBoutique
 from app.models.boutique_type import TipoItemBoutique
 from app.models.client import Cliente
 from app.models.role import Rol
@@ -20,4 +21,5 @@ __all__ = [
     "Rol",
     "TipoItemBoutique",
     "Usuario",
+    "VentaBoutique",
 ]

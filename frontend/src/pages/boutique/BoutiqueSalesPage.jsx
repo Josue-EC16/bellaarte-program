@@ -1,0 +1,459 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { CloseCircleOutlined, EyeOutlined, PlusOutlined, RollbackOutlined, SearchOutlined, StopOutlined } from '@ant-design/icons'
+import {
+  Alert,
+  App as AntdApp,
+  Button,
+  DatePicker,
+  Drawer,
+  Form,
+  Input,
+  Modal,
+  Row,
+  Col,
+  Select,
+  Space,
+  Table,
+  Tag,
+  Typography,
+} from 'antd'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+
+import { apiClient } from '../../api/client'
+import { useAuth } from '../../auth/AuthProvider'
+import { FORM_COMMON_PROPS } from '../../components/forms/formConfig'
+import { applyFormApiError } from '../../components/forms/formErrorUtils'
+import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
+import { BoutiqueSaleDetailCard } from './BoutiqueSaleDetailCard'
+import { BoutiqueSaleForm } from './BoutiqueSaleForm'
+import { ESTADO_VENTA_OPTIONS, METODO_PAGO_OPTIONS, formatBs } from './boutiqueConstants'
+
+const { RangePicker } = DatePicker
+
+export function BoutiqueSalesPage() {
+  const [sales, setSales] = useState([])
+  const [items, setItems] = useState([])
+  const [clients, setClients] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState(null)
+  const [formError, setFormError] = useState(null)
+  const [reasonFormError, setReasonFormError] = useState(null)
+  const [filters, setFilters] = useState({
+    search: '',
+    item_id: undefined,
+    client_id: undefined,
+    payment_method: undefined,
+    state: undefined,
+    date_from: undefined,
+    date_to: undefined,
+  })
+  const [formOpen, setFormOpen] = useState(false)
+  const [detailOpen, setDetailOpen] = useState(false)
+  const [selectedSale, setSelectedSale] = useState(null)
+  const [stateAction, setStateAction] = useState(null)
+  const [form] = Form.useForm()
+  const [reasonForm] = Form.useForm()
+  const { message } = AntdApp.useApp()
+  const { user } = useAuth()
+
+  const canCreate = user?.permissions?.includes('boutique_sales:create')
+  const canView = user?.permissions?.includes('boutique_sales:view')
+  const canCancel = user?.permissions?.includes('boutique_sales:cancel')
+  const canAnnul = user?.permissions?.includes('boutique_sales:annul')
+  const canPickClient = user?.permissions?.includes('clients:list')
+
+  const loadReferenceData = useCallback(async () => {
+    const itemResponse = await apiClient.get('/boutique/items', { params: { is_active: true } })
+    setItems(itemResponse.data)
+
+    if (canPickClient) {
+      const clientResponse = await apiClient.get('/clientes', { params: { is_active: true } })
+      setClients(clientResponse.data)
+    } else {
+      setClients([])
+    }
+  }, [canPickClient])
+
+  const loadSales = useCallback(async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      const params = {}
+      if (filters.search) params.search = filters.search
+      if (filters.item_id) params.item_id = filters.item_id
+      if (filters.client_id) params.client_id = filters.client_id
+      if (filters.payment_method) params.payment_method = filters.payment_method
+      if (filters.state) params.state = filters.state
+      if (filters.date_from) params.date_from = filters.date_from
+      if (filters.date_to) params.date_to = filters.date_to
+      const response = await apiClient.get('/boutique/sales', { params })
+      setSales(response.data)
+    } catch (requestError) {
+      setError(requestError.response?.data?.detail || 'No fue posible cargar las ventas boutique.')
+    } finally {
+      setLoading(false)
+    }
+  }, [filters])
+
+  useEffect(() => {
+    Promise.all([loadReferenceData(), loadSales()]).catch(() => {
+      setError('No fue posible cargar la información inicial del módulo de ventas boutique.')
+      setLoading(false)
+    })
+  }, [])
+
+  useEffect(() => {
+    loadSales()
+  }, [filters.search, filters.item_id, filters.client_id, filters.payment_method, filters.state, filters.date_from, filters.date_to])
+
+  const itemOptions = useMemo(
+    () => items.map((item) => ({ label: `${item.code} - ${item.name}`, value: item.id })),
+    [items],
+  )
+  const clientOptions = useMemo(
+    () => clients.map((client) => ({ label: `${client.codigo} - ${client.full_name}`, value: client.id })),
+    [clients],
+  )
+
+  const openCreate = () => {
+    form.resetFields()
+    setFormError(null)
+    setFormOpen(true)
+  }
+
+  const openView = async (record) => {
+    try {
+      const response = await apiClient.get(`/boutique/sales/${record.id}`)
+      setSelectedSale(response.data)
+      setDetailOpen(true)
+    } catch (requestError) {
+      message.error(requestError.response?.data?.detail || 'No fue posible cargar el detalle de la venta.')
+    }
+  }
+
+  const handleCreate = async (values) => {
+    setSaving(true)
+    setFormError(null)
+    try {
+      await apiClient.post('/boutique/sales', values)
+      message.success('Se registró la venta correctamente.')
+      setFormOpen(false)
+      form.resetFields()
+      await Promise.all([loadSales(), loadReferenceData()])
+    } catch (requestError) {
+      const resolved = applyFormApiError(form, requestError, {
+        messageFieldMap: [
+          { test: /método de pago mixto/i, field: 'payment_method' },
+          { test: /metodo de pago mixto/i, field: 'payment_method' },
+          { test: /cliente inactivo/i, field: 'client_id' },
+          { test: /cliente no encontrado/i, field: 'client_id' },
+          { test: /producto boutique no encontrado/i, field: 'item_id' },
+          { test: /producto boutique inactivo/i, field: 'item_id' },
+          { test: /tipo boutique.*deshabilitado/i, field: 'item_id' },
+          { test: /stock suficiente/i, field: 'quantity' },
+          { test: /cantidad vendida debe ser mayor a cero/i, field: 'quantity' },
+          { test: /descuento no puede ser mayor/i, field: 'discount' },
+          { test: /motivo del descuento/i, field: 'discount_reason' },
+        ],
+        fallbackGlobalMessage: 'No fue posible registrar la venta.',
+      })
+      setFormError(resolved.globalMessage)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const openStateModal = (record, action) => {
+    setStateAction({ sale: record, action })
+    setReasonFormError(null)
+    reasonForm.resetFields()
+  }
+
+  const submitStateChange = async () => {
+    setSaving(true)
+    setReasonFormError(null)
+    try {
+      const values = await reasonForm.validateFields()
+      const endpoint = stateAction.action === 'cancel' ? 'cancel' : 'annul'
+      await apiClient.patch(`/boutique/sales/${stateAction.sale.id}/${endpoint}`, values)
+      message.success(`Se ${stateAction.action === 'cancel' ? 'canceló' : 'anuló'} la venta correctamente.`)
+      setStateAction(null)
+      reasonForm.resetFields()
+      if (selectedSale?.id === stateAction.sale.id) {
+        const response = await apiClient.get(`/boutique/sales/${stateAction.sale.id}`)
+        setSelectedSale(response.data)
+      }
+      await Promise.all([loadSales(), loadReferenceData()])
+    } catch (requestError) {
+      if (requestError?.errorFields) return
+      const resolved = applyFormApiError(reasonForm, requestError, {
+        fallbackGlobalMessage: 'No fue posible actualizar el estado de la venta.',
+      })
+      setReasonFormError(resolved.globalMessage)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const columns = [
+    {
+      title: 'Fecha',
+      dataIndex: 'fecha',
+      key: 'fecha',
+      render: (value) => new Date(value).toLocaleString(),
+    },
+    { title: 'Producto', dataIndex: 'item_name', key: 'item_name' },
+    { title: 'Código', dataIndex: 'item_code', key: 'item_code' },
+    {
+      title: 'Cliente',
+      key: 'client_name',
+      render: (_, record) => record.client_name || 'VENTA SIN CLIENTE',
+    },
+    { title: 'Cantidad', dataIndex: 'quantity', key: 'quantity' },
+    {
+      title: 'P. Unitario (Bs)',
+      dataIndex: 'unit_price',
+      key: 'unit_price',
+      render: (value) => formatBs(value),
+    },
+    {
+      title: 'Descuento (Bs)',
+      dataIndex: 'discount',
+      key: 'discount',
+      render: (value) => formatBs(value || 0),
+    },
+    {
+      title: 'Total (Bs)',
+      dataIndex: 'total',
+      key: 'total',
+      render: (value) => <Typography.Text strong>{formatBs(value)}</Typography.Text>,
+    },
+    {
+      title: 'Método',
+      dataIndex: 'payment_method',
+      key: 'payment_method',
+      render: (value) => <Tag color="gold">{String(value || '').replaceAll('_', ' ')}</Tag>,
+    },
+    {
+      title: 'Estado',
+      dataIndex: 'estado',
+      key: 'estado',
+      render: (value) => (
+        <Tag color={value === 'ACTIVA' ? 'green' : value === 'CANCELADA' ? 'orange' : 'red'}>
+          {value}
+        </Tag>
+      ),
+    },
+    { title: 'Registrado por', dataIndex: 'registered_by', key: 'registered_by' },
+    {
+      title: 'Acciones',
+      key: 'acciones',
+      render: (_, record) => (
+        <Space wrap>
+          {canView ? (
+            <Button icon={<EyeOutlined />} onClick={() => openView(record)}>
+              Ver
+            </Button>
+          ) : null}
+          {canCancel && record.estado === 'ACTIVA' ? (
+            <Button icon={<RollbackOutlined />} onClick={() => openStateModal(record, 'cancel')}>
+              Cancelar
+            </Button>
+          ) : null}
+          {canAnnul && record.estado === 'ACTIVA' ? (
+            <Button danger icon={<StopOutlined />} onClick={() => openStateModal(record, 'annul')}>
+              Anular
+            </Button>
+          ) : null}
+        </Space>
+      ),
+    },
+  ]
+
+  return (
+    <div>
+      <div className="page-header">
+        <div>
+          <Typography.Title level={2} style={{ margin: 0 }}>
+            Ventas Boutique
+          </Typography.Title>
+          <Typography.Paragraph type="secondary" style={{ marginBottom: 0 }}>
+            Registra ventas directas, controla reversión de stock y consulta el historial comercial de la boutique.
+          </Typography.Paragraph>
+        </div>
+        {canCreate ? (
+          <Button type="primary" icon={<PlusOutlined />} onClick={openCreate}>
+            Nueva venta
+          </Button>
+        ) : null}
+      </div>
+
+      <div className="glass-panel boutique-filter-bar">
+        <Space wrap style={{ width: '100%', justifyContent: 'space-between' }}>
+          <Space wrap>
+            <Input
+              allowClear
+              prefix={<SearchOutlined />}
+              placeholder="Buscar por producto o cliente"
+              value={filters.search}
+              onChange={(event) => setFilters((current) => ({ ...current, search: event.target.value }))}
+              style={{ width: 260 }}
+            />
+            <Select
+              allowClear
+              showSearch
+              optionFilterProp="label"
+              placeholder="Filtrar por producto"
+              options={itemOptions}
+              value={filters.item_id}
+              onChange={(value) => setFilters((current) => ({ ...current, item_id: value }))}
+              style={{ width: 220 }}
+            />
+            <Select
+              allowClear
+              showSearch
+              optionFilterProp="label"
+              placeholder="Filtrar por cliente"
+              options={clientOptions}
+              value={filters.client_id}
+              onChange={(value) => setFilters((current) => ({ ...current, client_id: value }))}
+              style={{ width: 240 }}
+            />
+            <Select
+              allowClear
+              placeholder="Método de pago"
+              options={METODO_PAGO_OPTIONS}
+              value={filters.payment_method}
+              onChange={(value) => setFilters((current) => ({ ...current, payment_method: value }))}
+              style={{ width: 180 }}
+            />
+            <Select
+              allowClear
+              placeholder="Estado"
+              options={ESTADO_VENTA_OPTIONS}
+              value={filters.state}
+              onChange={(value) => setFilters((current) => ({ ...current, state: value }))}
+              style={{ width: 160 }}
+            />
+          </Space>
+
+          <RangePicker
+            format="DD/MM/YYYY"
+            onChange={(dates) =>
+              setFilters((current) => ({
+                ...current,
+                date_from: dates?.[0] ? dates[0].format('YYYY-MM-DD') : undefined,
+                date_to: dates?.[1] ? dates[1].format('YYYY-MM-DD') : undefined,
+              }))
+            }
+          />
+        </Space>
+      </div>
+
+      {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
+
+      <Table
+        className="glass-panel"
+        rowKey="id"
+        columns={columns}
+        dataSource={sales}
+        loading={loading}
+        pagination={{ pageSize: 8 }}
+        scroll={{ x: 'max-content' }}
+        style={{ borderRadius: 24, overflow: 'hidden' }}
+      />
+
+      <Drawer
+        title="Registrar Venta Boutique"
+        width={760}
+        open={formOpen}
+        onClose={() => {
+          setFormOpen(false)
+          setFormError(null)
+          form.resetFields()
+        }}
+        destroyOnClose
+        maskClosable={false}
+      >
+        <FormProcessAlert
+          message={formError}
+          title="No fue posible registrar la venta."
+        />
+        <BoutiqueSaleForm
+          form={form}
+          items={items.filter((item) => item.is_active)}
+          clients={clients}
+          saving={saving}
+          canPickClient={canPickClient}
+          onFinish={handleCreate}
+        />
+      </Drawer>
+
+      <Modal
+        title="Detalle de Venta Boutique"
+        open={detailOpen}
+        onCancel={() => {
+          setDetailOpen(false)
+          setSelectedSale(null)
+        }}
+        maskClosable={false}
+        footer={[
+          <Button key="close" onClick={() => { setDetailOpen(false); setSelectedSale(null) }}>
+            Cerrar
+          </Button>,
+        ]}
+        width={820}
+      >
+        <BoutiqueSaleDetailCard sale={selectedSale} />
+      </Modal>
+
+      <Modal
+        title={stateAction?.action === 'cancel' ? 'Cancelar venta' : 'Anular venta'}
+        open={Boolean(stateAction)}
+        onCancel={() => {
+          setStateAction(null)
+          setReasonFormError(null)
+          reasonForm.resetFields()
+        }}
+        onOk={submitStateChange}
+        confirmLoading={saving}
+        maskClosable={false}
+        okText={stateAction?.action === 'cancel' ? 'Confirmar cancelación' : 'Confirmar anulación'}
+        cancelText="Cerrar"
+      >
+        {stateAction ? (
+          <>
+            <Alert
+              type={stateAction.action === 'cancel' ? 'warning' : 'error'}
+              showIcon
+              icon={stateAction.action === 'cancel' ? <CloseCircleOutlined /> : undefined}
+              message={`La venta #${stateAction.sale.id} devolverá la cantidad vendida al stock del producto.`}
+              style={{ marginBottom: 16 }}
+            />
+            <FormProcessAlert
+              message={reasonFormError}
+              title="No fue posible completar la reversión."
+              style={{ marginBottom: 16 }}
+            />
+            <Form {...FORM_COMMON_PROPS} form={reasonForm}>
+              <Row gutter={12}>
+                <Col span={24}>
+                  <Form.Item
+                    label="Motivo operativo"
+                    name="reason"
+                    rules={[{ required: true, message: 'Debe registrar el Motivo operativo de la reversión.' }]}
+                    extra="Explica con claridad por qué se cancela o anula la venta para mantener la trazabilidad."
+                    normalize={(value) => (value || '').toUpperCase()}
+                  >
+                    <Input.TextArea rows={3} placeholder="Ej. CLIENTE DESISTIÓ DE LA COMPRA O SE REGISTRÓ LA VENTA POR ERROR" />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Form>
+          </>
+        ) : null}
+      </Modal>
+    </div>
+  )
+}

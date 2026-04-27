@@ -25,7 +25,10 @@
 
 .auth-page {
   min-height: 100vh;
-  background: var(--app-bg);
+  background-image: url('/fondo_bellaarte.png');
+  background-size: cover; /* Para que la imagen cubra toda la pantalla */
+  background-position: center; /* Para que la imagen se centre */
+  background-repeat: no-repeat; /* Para que no se repita como mosaico */
   display: grid;
   place-items: center;
   padding: 24px;
@@ -110,6 +113,38 @@
   place-items: center;
   background: var(--app-bg);
   padding: 24px;
+}
+
+/* --- FOOTER STYLES --- */
+.app-footer {
+  margin-top: 40px;
+  margin-bottom: 24px;
+  margin-left: 24px;
+  margin-right: 24px;
+  padding: 32px 40px;
+  border-radius: 28px;
+}
+
+.app-footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 32px;
+}
+
+.app-footer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.app-footer-social a {
+  color: var(--shadow-color);
+  transition: all 0.3s ease;
+}
+
+.app-footer-social a:hover {
+  color: rgba(143, 61, 46, 0.96);
+  transform: translateY(-3px);
 }
 
 @media (max-width: 900px) {

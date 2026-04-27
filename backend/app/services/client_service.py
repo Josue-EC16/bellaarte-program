@@ -13,6 +13,8 @@ from app.schemas.client import ClienteCreateRequest, ClienteDetailResponse, Clie
 CLIENT_CODE_PATTERN = re.compile(r"^CLI-\d{5}$")
 
 
+
+
 def _to_list_item(cliente: Cliente) -> ClienteListItem:
     return ClienteListItem(
         id=cliente.id,
@@ -58,26 +60,33 @@ def _ensure_unique_client_code(db: Session, codigo: str, *, exclude_id: int | No
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Ya existe un cliente con ese codigo.")
 
 
+def _ensure_unique_client_ci(db: Session, ci: str | None, *, exclude_id: int | None = None) -> None:
+    if not ci:
+        return
+    stmt = select(Cliente).where(Cliente.ci == ci.strip())
+    if exclude_id is not None:
+        stmt = stmt.where(Cliente.id != exclude_id)
+    duplicate = db.execute(stmt).scalar_one_or_none()
+    if duplicate is not None:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Ya existe un cliente con esa Cédula de Identidad.")
+
+
+
 def _generate_client_code(db: Session) -> str:
     codes = db.execute(select(Cliente.codigo)).scalars().all()
     max_number = 0
     for code in codes:
         if not code:
             continue
-        match = re.match(r"CLI-(\d+)$", code.strip().upper())
+        match = CLIENT_CODE_PATTERN.match(code.strip().upper())
         if match:
-            max_number = max(max_number, int(match.group(1)))
+            max_number = max(max_number, int(code.strip().upper().split("-")[1]))
     return f"CLI-{max_number + 1:05d}"
 
 
 def _resolve_client_code(db: Session, codigo: str | None, *, exclude_id: int | None = None) -> str:
     if codigo:
         normalized = codigo.strip().upper()
-        if not CLIENT_CODE_PATTERN.match(normalized):
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="El codigo del cliente debe seguir el formato CLI-00001.",
-            )
         _ensure_unique_client_code(db, normalized, exclude_id=exclude_id)
         return normalized
     generated = _generate_client_code(db)
@@ -124,6 +133,7 @@ def create_client(
     user_agent: str | None,
 ) -> ClienteDetailResponse:
     codigo = _resolve_client_code(db, payload.codigo)
+    _ensure_unique_client_ci(db, payload.ci)
     cliente = Cliente(
         codigo=codigo,
         nombres=payload.nombres,
@@ -167,6 +177,7 @@ def update_client(
 ) -> ClienteDetailResponse:
     cliente = get_client_entity(db, client_id)
     cliente.codigo = _resolve_client_code(db, payload.codigo, exclude_id=cliente.id)
+    _ensure_unique_client_ci(db, payload.ci, exclude_id=cliente.id)
     cliente.nombres = payload.nombres
     cliente.apellido_paterno = payload.apellido_paterno
     cliente.apellido_materno = payload.apellido_materno

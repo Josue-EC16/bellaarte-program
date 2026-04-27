@@ -4,12 +4,19 @@ import { useEffect, useState } from 'react'
 
 import { apiClient } from '../../api/client'
 import { useAuth } from '../../auth/AuthProvider'
+import {
+  FORM_COMMON_PROPS,
+  FORM_DRAWER_SUBMIT_PROPS,
+} from '../../components/forms/formConfig'
+import { applyFormApiError } from '../../components/forms/formErrorUtils'
+import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
 
 export function RolesPage() {
   const [roles, setRoles] = useState([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
+  const [formError, setFormError] = useState(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [editingRole, setEditingRole] = useState(null)
   const [form] = Form.useForm()
@@ -39,12 +46,14 @@ export function RolesPage() {
 
   const openCreate = () => {
     setEditingRole(null)
+    setFormError(null)
     form.resetFields()
     setDrawerOpen(true)
   }
 
   const openEdit = (record) => {
     setEditingRole(record)
+    setFormError(null)
     form.setFieldsValue({
       codigo: record.codigo,
       nombre: record.nombre,
@@ -55,23 +64,27 @@ export function RolesPage() {
 
   const handleSubmit = async (values) => {
     setSaving(true)
+    setFormError(null)
     try {
       if (editingRole) {
         await apiClient.patch(`/roles/${editingRole.id}`, {
           nombre: values.nombre,
           descripcion: values.descripcion,
         })
-        message.success('Rol actualizado correctamente.')
+        message.success('Se guardaron los cambios del rol correctamente.')
       } else {
         await apiClient.post('/roles', values)
-        message.success('Rol creado correctamente.')
+        message.success('Se creó el rol correctamente.')
       }
       setDrawerOpen(false)
       setEditingRole(null)
       form.resetFields()
       await loadRoles()
     } catch (requestError) {
-      message.error(requestError.response?.data?.detail || 'No fue posible guardar el rol.')
+      const resolved = applyFormApiError(form, requestError, {
+        fallbackGlobalMessage: 'No fue posible guardar la información del rol.',
+      })
+      setFormError(resolved.globalMessage)
     } finally {
       setSaving(false)
     }
@@ -88,9 +101,9 @@ export function RolesPage() {
   }
 
   const columns = [
-    { title: 'Codigo', dataIndex: 'codigo', key: 'codigo' },
+    { title: 'Código', dataIndex: 'codigo', key: 'codigo' },
     { title: 'Nombre', dataIndex: 'nombre', key: 'nombre' },
-    { title: 'Descripcion', dataIndex: 'descripcion', key: 'descripcion', render: (value) => value || 'Sin descripcion' },
+    { title: 'Descripción', dataIndex: 'descripcion', key: 'descripcion', render: (value) => value || 'Sin descripción' },
     {
       title: 'Estado',
       key: 'activo',
@@ -163,38 +176,46 @@ export function RolesPage() {
         onClose={() => {
           setDrawerOpen(false)
           setEditingRole(null)
+          setFormError(null)
           form.resetFields()
         }}
         open={drawerOpen}
         destroyOnClose
       >
-        <Form layout="vertical" form={form} onFinish={handleSubmit}>
-          <Form.Item 
-            label="Codigo" 
-            name="codigo" 
-            rules={[{ required: true }]} 
-            extra="No se podra cambiar despues de crear."
+        <FormProcessAlert
+          message={formError}
+          title={editingRole ? 'No fue posible actualizar el rol.' : 'No fue posible crear el rol.'}
+        />
+
+        <Form {...FORM_COMMON_PROPS} form={form} onFinish={handleSubmit}>
+          <Form.Item
+            label="Código"
+            name="codigo"
+            rules={[{ required: true, message: 'Debe ingresar el código del rol.' }]}
+            extra="Usa solo letras mayúsculas y guiones bajos. No se podrá cambiar después de crear."
             normalize={(value) => (value || '').toUpperCase().replace(/[^A-Z_]/g, '')}
           >
-            <Input disabled={Boolean(editingRole)} placeholder="Ej. SUPER_ADMIN" />
+            <Input disabled={Boolean(editingRole)} placeholder="Ej. ADMIN o INV_BOUTIQUE" />
           </Form.Item>
-          <Form.Item 
-            label="Nombre" 
-            name="nombre" 
-            rules={[{ required: true }]}
+          <Form.Item
+            label="Nombre"
+            name="nombre"
+            rules={[{ required: true, message: 'Debe ingresar el nombre del rol.' }]}
+            extra="Escribe un nombre claro para identificar la función operativa del rol."
             normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
           >
-            <Input placeholder="Ej. SUPER ADMINISTRADOR" />
+            <Input placeholder="Ej. ADMINISTRACIÓN GENERAL" />
           </Form.Item>
-          <Form.Item 
-            label="Descripcion" 
+          <Form.Item
+            label="Descripción"
             name="descripcion"
+            extra="Opcional. Describe brevemente las responsabilidades del rol."
             normalize={(value) => (value || '').toUpperCase()}
           >
-            <Input.TextArea rows={3} placeholder="Describe las funciones u operaciones que puede realizar este rol" />
+            <Input.TextArea rows={3} placeholder="Ej. GESTIONA USUARIOS, ROLES Y CONFIGURACIONES CLAVE" />
           </Form.Item>
-          <Button type="primary" htmlType="submit" loading={saving}>
-            Guardar rol
+          <Button {...FORM_DRAWER_SUBMIT_PROPS} loading={saving}>
+            {editingRole ? 'Guardar cambios' : 'Crear rol'}
           </Button>
         </Form>
       </Drawer>

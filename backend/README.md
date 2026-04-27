@@ -21,6 +21,15 @@ Y ahora tambien incorpora la segunda fase inicial del modulo Boutique:
 - permisos por rol para operacion boutique
 - seed base de tipos boutique
 
+Y ahora tambien incorpora el submodulo de ventas directas de Boutique:
+
+- registro de `VENTA_BOUTIQUE`
+- control de stock al vender y al revertir
+- reversión por `CANCELADA` y `ANULADA`
+- permisos de venta para `ADMIN` y `CAJA`
+- lectura de ventas para `INV_BOUTIQUE`
+- bloqueo de `MIXTO` hasta tener desglose real
+
 Y ahora tambien incorpora la evolucion completa del modulo de seguridad y el nuevo modulo Cliente:
 
 - CRUD operativo de roles
@@ -56,6 +65,7 @@ Entidades implementadas:
 - `DETALLE_VESTIDO_BOUTIQUE`
 - `DETALLE_VELO_BOUTIQUE`
 - `DETALLE_BOUQUET_BOUTIQUE`
+- `VENTA_BOUTIQUE`
 
 Routers implementados:
 
@@ -77,6 +87,8 @@ Politicas implementadas:
 - gestion completa de clientes para `MODISTA`
 - CRUD boutique para `ADMIN` e `INV_BOUTIQUE`
 - lectura boutique para `CAJA`
+- ventas boutique para `ADMIN` y `CAJA`
+- lectura de ventas boutique para `INV_BOUTIQUE`
 
 ## Variables de entorno
 
@@ -421,6 +433,17 @@ Contenido:
 
 - tabla `CLIENTE`
 
+### Migracion del submodulo Ventas Boutique
+
+Archivo:
+
+- `alembic/versions/20260427_0004_venta_boutique.py`
+
+Contenido:
+
+- enums `METODO_PAGO`, `MOTIVO_DESC_VENTA_BOUTIQUE`, `ESTADO_VENTA_BOUTIQUE`
+- tabla `VENTA_BOUTIQUE`
+
 ### Regla de naming para Boutique
 
 El backend en seguridad usa tablas tecnicas en minuscula heredadas de la primera entrega.
@@ -470,6 +493,14 @@ Inventario:
 - `PATCH /api/v1/boutique/items/{id}`
 - `PATCH /api/v1/boutique/items/{id}/status`
 
+Ventas:
+
+- `GET /api/v1/boutique/sales`
+- `GET /api/v1/boutique/sales/{id}`
+- `POST /api/v1/boutique/sales`
+- `PATCH /api/v1/boutique/sales/{id}/cancel`
+- `PATCH /api/v1/boutique/sales/{id}/annul`
+
 ### Filtros soportados en inventario boutique
 
 - `type_id`
@@ -493,6 +524,30 @@ Inventario:
 
 - lectura de tipos boutique
 - lectura de inventario boutique
+- lectura de clientes como referencia de venta
+- registro y reversión de ventas boutique
+
+### Reglas de negocio del submodulo Ventas Boutique
+
+- `VENTA_BOUTIQUE` respeta nombres fisicos documentales en mayuscula
+- el precio unitario se toma automaticamente desde `ITEM_BOUTIQUE.ITB_PRECIO_VENTA`
+- el total se calcula en BD mediante `VEB_TOT`
+- no se vende stock insuficiente
+- no se vende un item inactivo o con tipo inactivo
+- `MIXTO` existe en enum pero queda bloqueado en esta version
+- si hay descuento, el motivo es obligatorio
+- si no hay descuento, el motivo debe quedar nulo
+- las ventas no se editan despues de creadas
+- `CANCELADA` y `ANULADA` revierten stock y dejan ingreso real en `0`
+- `USU_ID` conserva nombre documental, pero referencia internamente a `usuarios.id`
+
+### Auditoria del submodulo Ventas Boutique
+
+Eventos auditados:
+
+- `BOUTIQUE_SALE_CREATED`
+- `BOUTIQUE_SALE_CANCELLED`
+- `BOUTIQUE_SALE_ANNULLED`
 
 ### Auditoria del modulo Boutique
 
@@ -552,6 +607,11 @@ Eventos auditados:
 - `POST /api/v1/boutique/items`
 - `PATCH /api/v1/boutique/items/{id}`
 - `PATCH /api/v1/boutique/items/{id}/status`
+- `GET /api/v1/boutique/sales`
+- `GET /api/v1/boutique/sales/{id}`
+- `POST /api/v1/boutique/sales`
+- `PATCH /api/v1/boutique/sales/{id}/cancel`
+- `PATCH /api/v1/boutique/sales/{id}/annul`
 
 ## Contratos clave
 

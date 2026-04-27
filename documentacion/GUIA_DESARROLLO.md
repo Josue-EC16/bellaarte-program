@@ -12,6 +12,7 @@ Para el estado implementado del proyecto, la referencia principal ya no es la do
 - `documentacion/MODULO_SEGURIDAD_V2.md`
 - `documentacion/MODULO_CLIENTE_V1.md`
 - `documentacion/MODULO_BOUTIQUE_V1.md`
+- `documentacion/MODULO_VENTAS_BOUTIQUE_V1.md`
 
 ## Regla madre del proyecto
 
@@ -106,13 +107,12 @@ Minimo recomendado:
 - cambio de estado
 
 ## Orden sugerido de trabajo futuro
-1. ventas de boutique
-2. inventario taller / movimiento de inventario
-3. pedidos
-4. pagos de pedido
-5. ingresos
-6. egresos
-7. logs del sistema
+
+1. inventario taller / movimiento de inventario
+2. pedidos
+3. pagos de pedido
+4. egresos
+5. logs del sistema
 
 ## Convencion de tablas documentales
 
@@ -125,4 +125,5 @@ Casos vigentes:
 - `DETALLE_VESTIDO_BOUTIQUE`
 - `DETALLE_VELO_BOUTIQUE`
 - `DETALLE_BOUQUET_BOUTIQUE`
+- `VENTA_BOUTIQUE`
 - `CLIENTE`

@@ -19,6 +19,14 @@ Y ahora tambien incorpora la primera entrega funcional del modulo Boutique:
 - detalle dinamico para vestido, velo y bouquet
 - consulta protegida por permisos
 
+Y ahora tambien incorpora el submodulo de ventas directas de Boutique:
+
+- historial de ventas boutique
+- formulario de nueva venta con resumen en tiempo real
+- cancelacion y anulacion con reversión de stock
+- acceso de caja y admin
+- lectura operativa para inventario boutique
+
 Y ahora tambien incorpora:
 
 - gestion de roles del sistema
@@ -174,6 +182,7 @@ Protegidas:
 - `/app/clientes`
 - `/app/boutique/tipos`
 - `/app/boutique/inventario`
+- `/app/boutique/ventas`
 
 Rutas auxiliares:
 
@@ -339,6 +348,11 @@ GET /api/v1/boutique/items/{id}
 POST /api/v1/boutique/items
 PATCH /api/v1/boutique/items/{id}
 PATCH /api/v1/boutique/items/{id}/status
+GET /api/v1/boutique/sales
+GET /api/v1/boutique/sales/{id}
+POST /api/v1/boutique/sales
+PATCH /api/v1/boutique/sales/{id}/cancel
+PATCH /api/v1/boutique/sales/{id}/annul
 ```
 
 ## Modulo Seguridad v2
@@ -380,6 +394,9 @@ PATCH /api/v1/boutique/items/{id}/status
 - `src/pages/boutique/BoutiqueTypeForm.jsx`
 - `src/pages/boutique/BoutiqueItemForm.jsx`
 - `src/pages/boutique/BoutiqueItemDetailCard.jsx`
+- `src/pages/boutique/BoutiqueSalesPage.jsx`
+- `src/pages/boutique/BoutiqueSaleForm.jsx`
+- `src/pages/boutique/BoutiqueSaleDetailCard.jsx`
 - `src/pages/boutique/boutiqueConstants.js`
 
 ### Reglas del modulo
@@ -408,6 +425,15 @@ PATCH /api/v1/boutique/items/{id}/status
 - edicion de item
 - detalle en drawer
 - cambio de estado logico
+
+`/app/boutique/ventas`:
+
+- tabla historica de ventas
+- filtros por producto, cliente, metodo, estado y fecha
+- drawer para nueva venta
+- detalle por modal
+- cancelacion y anulacion con motivo operativo
+- resumen de subtotal, descuento y total en tiempo real
 
 ## Problemas comunes
 

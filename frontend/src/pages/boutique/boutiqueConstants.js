@@ -33,10 +33,30 @@ export const TALLA_OPTIONS = [
   'TALLA XXXL',
 ].map((value) => ({ label: value, value }))
 
+export const METODO_PAGO_OPTIONS = [
+  'EFECTIVO',
+  'QR',
+  'TRANSACCION',
+  'TARJETA',
+  'TICKET_O_VALE',
+].map((value) => ({ label: value.replaceAll('_', ' '), value }))
+
+export const MOTIVO_DESCUENTO_VENTA_OPTIONS = ['REBAJA', 'PROMOCION'].map((value) => ({ label: value, value }))
+
+export const ESTADO_VENTA_OPTIONS = ['ACTIVA', 'CANCELADA', 'ANULADA'].map((value) => ({ label: value, value }))
+
 export function inferDetailKindFromTypeName(typeName) {
   const normalized = `${typeName || ''}`.trim().toUpperCase()
   if (normalized === 'VESTIDO') return 'VESTIDO'
   if (normalized === 'VELO') return 'VELO'
   if (normalized === 'BOUQUET') return 'BOUQUET'
   return 'OTRO'
+}
+
+export function formatBs(value) {
+  const numeric = Number(value || 0)
+  return new Intl.NumberFormat('es-BO', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(numeric)
 }

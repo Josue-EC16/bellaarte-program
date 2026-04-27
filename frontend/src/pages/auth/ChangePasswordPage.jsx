@@ -1,18 +1,24 @@
-import { Alert, App as AntdApp, Button, Card, Form, Input, Typography } from 'antd'
+import { App as AntdApp, Button, Card, Form, Input, Typography } from 'antd'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { useAuth } from '../../auth/AuthProvider'
+import {
+  FORM_COMMON_PROPS,
+  FORM_DRAWER_SUBMIT_PROPS,
+} from '../../components/forms/formConfig'
+import { applyFormApiError } from '../../components/forms/formErrorUtils'
+import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
 
 export function ChangePasswordPage() {
-  const [error, setError] = useState(null)
+  const [formError, setFormError] = useState(null)
   const [form] = Form.useForm()
   const navigate = useNavigate()
   const { changePassword, loading } = useAuth()
   const { message } = AntdApp.useApp()
 
   const handleSubmit = async (values) => {
-    setError(null)
+    setFormError(null)
     try {
       await changePassword({
         current_password: values.current_password,
@@ -21,7 +27,17 @@ export function ChangePasswordPage() {
       message.success('Contrasena actualizada correctamente.')
       navigate('/app', { replace: true })
     } catch (requestError) {
-      setError(requestError.response?.data?.detail || 'No fue posible actualizar la contrasena.')
+      const resolved = applyFormApiError(form, requestError, {
+        messageFieldMap: [
+          { test: /contrasena actual no es valida/i, field: 'current_password' },
+          {
+            test: /nueva contrasena no puede ser igual a la actual/i,
+            field: 'new_password',
+          },
+        ],
+        fallbackGlobalMessage: 'No fue posible actualizar la contraseña.',
+      })
+      setFormError(resolved.globalMessage)
     }
   }
 
@@ -29,28 +45,31 @@ export function ChangePasswordPage() {
     <Card className="glass-panel" style={{ maxWidth: 640, margin: '0 auto', borderRadius: 28 }}>
       <Typography.Title level={2}>Cambio obligatorio de clave</Typography.Title>
       <Typography.Paragraph type="secondary">
-        Antes de continuar, debes definir una contrasena nueva para proteger tu cuenta.
+        Antes de continuar, debes definir una contraseña nueva para proteger tu cuenta.
       </Typography.Paragraph>
 
-      {error ? <Alert type="error" message={error} showIcon style={{ marginBottom: 20 }} /> : null}
+      <FormProcessAlert message={formError} title="No fue posible actualizar la contraseña." />
 
-      <Form form={form} layout="vertical" onFinish={handleSubmit} size="large">
+      <Form {...FORM_COMMON_PROPS} form={form} onFinish={handleSubmit} size="large">
         <Form.Item
           name="current_password"
-          label="Contrasena actual"
-          rules={[{ required: true, message: 'Ingresa tu contrasena actual.' }]}
+          label="Contraseña actual"
+          extra="Ingresa la contraseña con la que accedes hoy al sistema."
+          rules={[{ required: true, message: 'Debe ingresar tu contraseña actual.' }]}
         >
           <Input.Password autoComplete="current-password" />
         </Form.Item>
 
         <Form.Item
           name="new_password"
-          label="Nueva contrasena"
+          label="Nueva contraseña"
+          extra="Debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial."
           rules={[
-            { required: true, message: 'Ingresa la nueva contrasena.' },
-            { 
-              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/, 
-              message: 'Mínimo 8 caracteres, 1 mayúscula, 1 minúscula, 1 número y 1 carácter especial.' 
+            { required: true, message: 'Debe ingresar tu nueva contraseña.' },
+            {
+              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/,
+              message:
+                'Debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.',
             },
           ]}
         >
@@ -59,10 +78,10 @@ export function ChangePasswordPage() {
 
         <Form.Item
           name="confirm_password"
-          label="Confirmar nueva contrasena"
+          label="Confirmar nueva contraseña"
           dependencies={['new_password']}
           rules={[
-            { required: true, message: 'Confirma la nueva contrasena.' },
+            { required: true, message: 'Debe confirmar tu nueva contraseña.' },
             ({ getFieldValue }) => ({
               validator(_, value) {
                 if (!value || getFieldValue('new_password') === value) {
@@ -76,11 +95,10 @@ export function ChangePasswordPage() {
           <Input.Password autoComplete="new-password" />
         </Form.Item>
 
-        <Button type="primary" htmlType="submit" loading={loading}>
-          Guardar nueva contrasena
+        <Button {...FORM_DRAWER_SUBMIT_PROPS} loading={loading}>
+          Guardar nueva contraseña
         </Button>
       </Form>
     </Card>
   )
 }
-

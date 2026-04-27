@@ -19,7 +19,9 @@ Cada campo debe interceptar la entrada del usuario para garantizar que los datos
   - Campos númericos: Solo números (sin puntos, comas ni espacios).
   - Campos de texto: Solo letras y espacios.
   - Campos de medidas: Solo números y puntos (sin comas ni espacios).
-  - Campos monetarios (dinero): Solo números y puntos (sin comas ni espacios) y mostrar todo en Bolivianos (Bs).
+  - Campos monetarios (dinero): Solo números y puntos (sin comas, ni espacios, no números negativos, no caracteres especiales) y mostrar todo en Bolivianos (Bs).
+  - Campos de Códigos: Debe validarse que no se ingresen códigos iguales a otros códigos ya existentes (que siga la regla de UNIQUE).
+  - Campos de tallas: Solo números y puntos (sin comas ni espacios).
 
 ### B. Guía Visual (Propiedad `placeholder`)
 

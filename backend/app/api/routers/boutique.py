@@ -1,10 +1,17 @@
+from datetime import date
+
 from fastapi import APIRouter, Depends, Query, Request, status
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.deps.auth import require_permission
+from app.models.boutique_enums import EstadoVentaBoutiqueEnum, MetodoPagoEnum
 from app.models.account import Cuenta
 from app.schemas.boutique import (
+    BoutiqueSaleCreateRequest,
+    BoutiqueSaleDetailResponse,
+    BoutiqueSaleListItem,
+    BoutiqueSaleStateChangeRequest,
     BoutiqueItemCreateRequest,
     BoutiqueItemDetailResponse,
     BoutiqueItemListItem,
@@ -26,6 +33,12 @@ from app.services.boutique_service import (
     set_boutique_type_status,
     update_boutique_item,
     update_boutique_type,
+)
+from app.services.boutique_sale_service import (
+    change_boutique_sale_state,
+    create_boutique_sale,
+    get_boutique_sale_detail,
+    list_boutique_sales,
 )
 
 
@@ -171,6 +184,93 @@ def update_item_status(
         db,
         item_id=item_id,
         is_active=payload.is_active,
+        changed_by=account,
+        ip_address=request.client.host if request.client else None,
+        user_agent=request.headers.get("user-agent"),
+    )
+
+
+@router.get("/sales", response_model=list[BoutiqueSaleListItem])
+def get_sales(
+    search: str | None = Query(default=None, min_length=1),
+    item_id: int | None = Query(default=None, gt=0),
+    client_id: int | None = Query(default=None, gt=0),
+    payment_method: MetodoPagoEnum | None = Query(default=None),
+    state: EstadoVentaBoutiqueEnum | None = Query(default=None),
+    date_from: date | None = Query(default=None),
+    date_to: date | None = Query(default=None),
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("boutique_sales:list")),
+) -> list[BoutiqueSaleListItem]:
+    return list_boutique_sales(
+        db,
+        search=search,
+        item_id=item_id,
+        client_id=client_id,
+        payment_method=payment_method,
+        state=state,
+        date_from=date_from,
+        date_to=date_to,
+    )
+
+
+@router.get("/sales/{sale_id}", response_model=BoutiqueSaleDetailResponse)
+def get_sale(
+    sale_id: int,
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("boutique_sales:view")),
+) -> BoutiqueSaleDetailResponse:
+    return get_boutique_sale_detail(db, sale_id)
+
+
+@router.post("/sales", response_model=BoutiqueSaleDetailResponse, status_code=status.HTTP_201_CREATED)
+def create_sale(
+    payload: BoutiqueSaleCreateRequest,
+    request: Request,
+    db: Session = Depends(get_db),
+    account: Cuenta = Depends(require_permission("boutique_sales:create")),
+) -> BoutiqueSaleDetailResponse:
+    return create_boutique_sale(
+        db,
+        payload=payload,
+        created_by=account,
+        ip_address=request.client.host if request.client else None,
+        user_agent=request.headers.get("user-agent"),
+    )
+
+
+@router.patch("/sales/{sale_id}/cancel", response_model=BoutiqueSaleDetailResponse)
+def cancel_sale(
+    sale_id: int,
+    payload: BoutiqueSaleStateChangeRequest,
+    request: Request,
+    db: Session = Depends(get_db),
+    account: Cuenta = Depends(require_permission("boutique_sales:cancel")),
+) -> BoutiqueSaleDetailResponse:
+    return change_boutique_sale_state(
+        db,
+        sale_id=sale_id,
+        target_state=EstadoVentaBoutiqueEnum.CANCELADA,
+        reason=payload.reason,
+        changed_by=account,
+        ip_address=request.client.host if request.client else None,
+        user_agent=request.headers.get("user-agent"),
+    )
+
+
+@router.patch("/sales/{sale_id}/annul", response_model=BoutiqueSaleDetailResponse)
+def annul_sale(
+    sale_id: int,
+    payload: BoutiqueSaleStateChangeRequest,
+    request: Request,
+    db: Session = Depends(get_db),
+    account: Cuenta = Depends(require_permission("boutique_sales:annul")),
+) -> BoutiqueSaleDetailResponse:
+    return change_boutique_sale_state(
+        db,
+        sale_id=sale_id,
+        target_state=EstadoVentaBoutiqueEnum.ANULADA,
+        reason=payload.reason,
         changed_by=account,
         ip_address=request.client.host if request.client else None,
         user_agent=request.headers.get("user-agent"),

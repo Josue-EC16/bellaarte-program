@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 
 import './App.css'
 import { AuthProvider } from './auth/AuthProvider'
+import { FORM_VALIDATE_MESSAGES } from './components/forms/formConfig'
 import { AppRoutes } from './routes/AppRoutes'
 
 const theme = {
@@ -17,7 +18,11 @@ const theme = {
 
 function App() {
   return (
-    <ConfigProvider locale={esES} theme={theme}>
+    <ConfigProvider
+      locale={esES}
+      theme={theme}
+      form={{ validateMessages: FORM_VALIDATE_MESSAGES }}
+    >
       <AntdApp>
         <BrowserRouter>
           <AuthProvider>

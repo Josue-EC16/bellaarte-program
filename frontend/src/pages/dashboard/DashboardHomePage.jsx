@@ -1,4 +1,4 @@
-import { ArrowRightOutlined, LockOutlined, TeamOutlined } from '@ant-design/icons'
+import { ArrowRightOutlined, LockOutlined, ShoppingCartOutlined, TeamOutlined } from '@ant-design/icons'
 import { Button, Card, Col, Row, Space, Tag, Typography } from 'antd'
 import { Link } from 'react-router-dom'
 
@@ -67,9 +67,15 @@ export function DashboardHomePage() {
               <Button icon={<TeamOutlined />} type="default">
                 <Link to="/app/seguridad/usuarios">Gestionar usuarios</Link>
               </Button>
-            ) : (
+            ) : null}
+            {user?.permissions?.includes('boutique_sales:list') ? (
+              <Button icon={<ShoppingCartOutlined />} type="default">
+                <Link to="/app/boutique/ventas">Ir a ventas boutique</Link>
+              </Button>
+            ) : null}
+            {!user?.permissions?.includes('users:list') && !user?.permissions?.includes('boutique_sales:list') ? (
               <Typography.Text type="secondary">Tu rol no administra usuarios en esta etapa.</Typography.Text>
-            )}
+            ) : null}
           </Space>
         </Card>
       </div>

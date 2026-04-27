@@ -1,22 +1,32 @@
-import { EditOutlined, KeyOutlined, PlusOutlined } from '@ant-design/icons'
+import { EditOutlined, KeyOutlined, PlusOutlined, EyeOutlined } from '@ant-design/icons'
 import {
   Alert,
   App as AntdApp,
   Button,
+  Col,
   Drawer,
   Form,
   Input,
+  Row,
   Select,
   Space,
   Switch,
   Table,
   Tag,
   Typography,
+  Modal,
+  Descriptions,
 } from 'antd'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { apiClient } from '../../api/client'
 import { useAuth } from '../../auth/AuthProvider'
+import {
+  FORM_COMMON_PROPS,
+  FORM_DRAWER_SUBMIT_PROPS,
+} from '../../components/forms/formConfig'
+import { applyFormApiError } from '../../components/forms/formErrorUtils'
+import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
 
 export function UsersPage() {
   const [users, setUsers] = useState([])
@@ -25,7 +35,9 @@ export function UsersPage() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
+  const [formError, setFormError] = useState(null)
   const [editingUser, setEditingUser] = useState(null)
+  const [viewingUser, setViewingUser] = useState(null)
   const [form] = Form.useForm()
   const { message, modal } = AntdApp.useApp()
   const { user } = useAuth()
@@ -67,20 +79,27 @@ export function UsersPage() {
 
   const handleSubmitUser = async (values) => {
     setSaving(true)
+    setFormError(null)
     try {
       if (editingUser) {
         await apiClient.patch(`/users/${editingUser.id}`, values)
-        message.success('Usuario actualizado correctamente.')
+        message.success('Se guardaron los cambios del usuario correctamente.')
       } else {
         await apiClient.post('/users', values)
-        message.success('Usuario creado correctamente.')
+        message.success('Se creó el usuario correctamente.')
       }
       form.resetFields()
       setDrawerOpen(false)
       setEditingUser(null)
       await loadData()
     } catch (requestError) {
-      message.error(requestError.response?.data?.detail || 'No fue posible guardar el usuario.')
+      const resolved = applyFormApiError(form, requestError, {
+        messageFieldMap: [
+          { test: /rol asignado esta deshabilitado/i, field: 'role_code' },
+        ],
+        fallbackGlobalMessage: 'No fue posible guardar la información del usuario.',
+      })
+      setFormError(resolved.globalMessage)
     } finally {
       setSaving(false)
     }
@@ -88,6 +107,7 @@ export function UsersPage() {
 
   const openCreate = () => {
     setEditingUser(null)
+    setFormError(null)
     form.resetFields()
     form.setFieldsValue({
       user_is_active: true,
@@ -102,6 +122,7 @@ export function UsersPage() {
       const response = await apiClient.get(`/users/${record.user_id}`)
       const item = response.data
       setEditingUser(item)
+      setFormError(null)
       form.setFieldsValue({
         nombres: item.nombres,
         apellido_paterno: item.apellido_paterno,
@@ -118,6 +139,15 @@ export function UsersPage() {
       setDrawerOpen(true)
     } catch (requestError) {
       message.error(requestError.response?.data?.detail || 'No fue posible cargar el usuario.')
+    }
+  }
+
+  const openView = async (record) => {
+    try {
+      const response = await apiClient.get(`/users/${record.user_id}`)
+      setViewingUser(response.data)
+    } catch (requestError) {
+      message.error(requestError.response?.data?.detail || 'No fue posible cargar el detalle del usuario.')
     }
   }
 
@@ -203,6 +233,9 @@ export function UsersPage() {
       key: 'actions',
       render: (_, record) => (
         <Space wrap>
+          <Button icon={<EyeOutlined />} onClick={() => openView(record)}>
+            Ver
+          </Button>
           {canUpdate ? (
             <Button icon={<EditOutlined />} onClick={() => openEdit(record)}>
               Editar
@@ -258,112 +291,187 @@ export function UsersPage() {
         onClose={() => {
           setDrawerOpen(false)
           setEditingUser(null)
+          setFormError(null)
           form.resetFields()
         }}
         open={drawerOpen}
         destroyOnClose
       >
-        <Form layout="vertical" form={form} onFinish={handleSubmitUser}>
-          <Form.Item 
-            label="Nombres" 
-            name="nombres" 
-            rules={[{ required: true }]}
+        <FormProcessAlert
+          message={formError}
+          title={editingUser ? 'No fue posible actualizar el usuario.' : 'No fue posible crear el usuario.'}
+        />
+
+        <Form {...FORM_COMMON_PROPS} form={form} onFinish={handleSubmitUser}>
+          <Form.Item
+            label="Nombres"
+            name="nombres"
+            rules={[{ required: true, message: 'Debe ingresar los nombres del usuario.' }]}
+            extra="Escribe el nombre o los nombres tal como deben quedar registrados."
             normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
           >
-            <Input placeholder="Introducir el o los Nombres del Usuario" />
+            <Input placeholder="Ej. MARÍA JOSÉ" />
           </Form.Item>
 
-          <Form.Item 
-            label="Apellido Paterno" 
-            name="apellido_paterno" 
-            rules={[{ required: true }]}
+          <Form.Item
+            label="Apellido paterno"
+            name="apellido_paterno"
+            rules={[{ required: true, message: 'Debe ingresar el apellido paterno del usuario.' }]}
             normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
           >
-            <Input placeholder="Introducir el Apellido Paterno del Usuario" />
+            <Input placeholder="Ej. PÉREZ" />
           </Form.Item>
 
-          <Form.Item 
-            label="Apellido Materno" 
+          <Form.Item
+            label="Apellido materno"
             name="apellido_materno"
+            extra="Opcional. Complétalo solo si aplica."
             normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
           >
-            <Input placeholder="Introducir el Apellido Materno del Usuario (Si aplica)" />
+            <Input placeholder="Ej. GARCÍA" />
           </Form.Item>
 
-          <Space style={{ display: 'flex' }} size={12}>
-            <Form.Item 
-              label="Cédula de Identidad" 
-              name="ci" 
-              rules={[{ required: true }]} 
-              style={{ flex: 1 }}
-              normalize={(value) => (value || '').replace(/[^0-9A-Z]/g, '').toUpperCase()}
-            >
-              <Input placeholder="Ej. 1234567" />
-            </Form.Item>
-            <Form.Item 
-              label="Celular" 
-              name="celular" 
-              rules={[{ required: true }]} 
-              style={{ flex: 1 }}
-              normalize={(value) => (value || '').replace(/[^0-9]/g, '')}
-            >
-              <Input placeholder="Ej. 70000000" />
-            </Form.Item>
-          </Space>
+          <Row gutter={12}>
+            <Col span={12}>
+              <Form.Item
+                label="Cédula de identidad"
+                name="ci"
+                rules={[
+                  { required: true, message: 'La Cédula de Identidad es obligatoria.' },
+                  { min: 6, message: 'La Cédula de Identidad debe tener al menos 6 caracteres.' },
+                ]}
+                extra="Usa solo números y letras válidas del documento."
+                normalize={(value) => (value || '').replace(/[^0-9A-Z]/g, '').toUpperCase()}
+              >
+                <Input placeholder="Ej. 1234567" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="Celular"
+                name="celular"
+                rules={[
+                  { required: true, message: 'El número de Celular es obligatorio.' },
+                  { min: 8, message: 'El número de Celular debe tener al menos 8 dígitos.' },
+                ]}
+                extra="Ingresa un número activo para contacto operativo."
+                normalize={(value) => (value || '').replace(/[^0-9]/g, '')}
+              >
+                <Input placeholder="Ej. 70000000" />
+              </Form.Item>
+            </Col>
+          </Row>
 
-          <Form.Item 
-            label="Correo Electrónico" 
-            name="correo" 
+          <Form.Item
+            label="Correo electrónico"
+            name="correo"
             rules={[
-              { required: true, message: 'El correo es obligatorio' },
-              { type: 'email', message: 'Ingrese un formato de correo válido' },
+              { required: true, message: 'Debe ingresar el correo electrónico del usuario.' },
+              { type: 'email', message: 'Debe ingresar un correo electrónico válido.' },
               {
                 pattern: /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
-                message: 'Solo se permiten correos @gmail.com',
+                message: 'Solo se permiten correos @gmail.com.',
               },
             ]}
+            extra="Por política interna solo se aceptan correos con dominio @gmail.com."
             normalize={(value) => (value || '').replace(/\s/g, '').toLowerCase()}
           >
             <Input placeholder="usuario@gmail.com" />
           </Form.Item>
 
-          <Form.Item 
-            label="Zona" 
-            name="zona" 
-            rules={[{ required: true }]}
+          <Form.Item
+            label="Zona"
+            name="zona"
+            rules={[{ required: true, message: 'Debe ingresar la zona del usuario.' }]}
+            extra="Describe la zona principal donde reside el usuario."
             normalize={(value) => (value || '').toUpperCase()}
           >
-            <Input placeholder="Ej. ZONA SUR" />
+            <Input placeholder="Ej. VILLA FÁTIMA" />
           </Form.Item>
 
-          <Form.Item 
-            label="Dirección" 
+          <Form.Item
+            label="Dirección"
             name="direccion"
+            extra="Opcional. Agrega una referencia útil para ubicar al usuario."
             normalize={(value) => (value || '').toUpperCase()}
           >
-            <Input.TextArea rows={2} placeholder="Descripción detallada de la dirección" />
+            <Input.TextArea rows={2} placeholder="Ej. AV. PRINCIPAL, CALLE 10, CASA AZUL" />
           </Form.Item>
 
-          <Form.Item label="Rol" name="role_code" rules={[{ required: true }]}>
-            <Select options={roleOptions} placeholder="Selecciona un rol" />
+          <Form.Item
+            label="Rol"
+            name="role_code"
+            rules={[{ required: true, message: 'Debe seleccionar el rol del usuario.' }]}
+            extra="El rol define los permisos que tendrá el usuario dentro del sistema."
+          >
+            <Select options={roleOptions} placeholder="Selecciona el rol operativo" />
           </Form.Item>
 
           {editingUser ? (
-            <Space style={{ display: 'flex' }} size={16}>
-              <Form.Item label="Usuario Activo" name="user_is_active" valuePropName="checked">
-                <Switch />
-              </Form.Item>
-              <Form.Item label="Cuenta Activa" name="account_is_active" valuePropName="checked">
-                <Switch />
-              </Form.Item>
-            </Space>
+            <Row gutter={12}>
+              <Col span={12}>
+                <Form.Item
+                  label="Usuario activo"
+                  name="user_is_active"
+                  valuePropName="checked"
+                  extra="Controla si la ficha personal del usuario permanece habilitada."
+                >
+                  <Switch />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label="Cuenta activa"
+                  name="account_is_active"
+                  valuePropName="checked"
+                  extra="Controla si puede iniciar sesión con su cuenta."
+                >
+                  <Switch />
+                </Form.Item>
+              </Col>
+            </Row>
           ) : null}
 
-          <Button type="primary" htmlType="submit" loading={saving}>
+          <Button {...FORM_DRAWER_SUBMIT_PROPS} loading={saving}>
             {editingUser ? 'Guardar cambios' : 'Guardar usuario'}
           </Button>
         </Form>
       </Drawer>
+
+      <Modal
+        title="Detalles del Usuario"
+        open={!!viewingUser}
+        onCancel={() => setViewingUser(null)}
+        maskClosable={false}
+        footer={[
+          <Button key="close" onClick={() => setViewingUser(null)}>
+            Cerrar
+          </Button>,
+        ]}
+        width={700}
+      >
+        {viewingUser && (
+          <Descriptions bordered column={2} size="small" layout="vertical">
+            <Descriptions.Item label="Usuario (Login)">{viewingUser.username}</Descriptions.Item>
+            <Descriptions.Item label="Nombre Completo">{viewingUser.nombres} {viewingUser.apellido_paterno} {viewingUser.apellido_materno}</Descriptions.Item>
+            <Descriptions.Item label="Rol">{viewingUser.role_name}</Descriptions.Item>
+            <Descriptions.Item label="Correo Electrónico">{viewingUser.correo}</Descriptions.Item>
+            <Descriptions.Item label="Celular">{viewingUser.celular}</Descriptions.Item>
+            <Descriptions.Item label="Cédula de Identidad">{viewingUser.ci || 'Ninguna'}</Descriptions.Item>
+            <Descriptions.Item label="Zona">{viewingUser.zona || 'Ninguna'}</Descriptions.Item>
+            <Descriptions.Item label="Dirección" span={2}>{viewingUser.direccion || 'Ninguna'}</Descriptions.Item>
+            <Descriptions.Item label="Estado de Usuario">
+              <Tag color={viewingUser.user_is_active ? 'green' : 'default'}>{viewingUser.user_is_active ? 'Activo' : 'Inactivo'}</Tag>
+            </Descriptions.Item>
+            <Descriptions.Item label="Estado de Cuenta">
+              <Tag color={viewingUser.account_is_active ? 'blue' : 'default'}>{viewingUser.account_is_active ? 'Activa' : 'Inactiva'}</Tag>
+            </Descriptions.Item>
+            <Descriptions.Item label="Último Acceso" span={2}>
+              {viewingUser.last_login_at ? new Date(viewingUser.last_login_at).toLocaleString() : 'Sin registro'}
+            </Descriptions.Item>
+          </Descriptions>
+        )}
+      </Modal>
     </div>
   )
 }

@@ -31,6 +31,11 @@ ADMIN_PERMISSIONS = (
     "boutique_items:create",
     "boutique_items:update",
     "boutique_items:update_status",
+    "boutique_sales:list",
+    "boutique_sales:view",
+    "boutique_sales:create",
+    "boutique_sales:cancel",
+    "boutique_sales:annul",
 )
 
 INV_BOUTIQUE_PERMISSIONS = (
@@ -43,12 +48,21 @@ INV_BOUTIQUE_PERMISSIONS = (
     "boutique_items:create",
     "boutique_items:update",
     "boutique_items:update_status",
+    "boutique_sales:list",
+    "boutique_sales:view",
 )
 
 CAJA_PERMISSIONS = (
+    "clients:list",
+    "clients:view",
     "boutique_types:list",
     "boutique_items:list",
     "boutique_items:view",
+    "boutique_sales:list",
+    "boutique_sales:view",
+    "boutique_sales:create",
+    "boutique_sales:cancel",
+    "boutique_sales:annul",
 )
 
 MODISTA_PERMISSIONS = (

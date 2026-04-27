@@ -38,3 +38,23 @@ class TallaVestidoBoutiqueEnum(str, Enum):
     TALLA_XL = "TALLA XL"
     TALLA_XXL = "TALLA XXL"
     TALLA_XXXL = "TALLA XXXL"
+
+
+class MetodoPagoEnum(str, Enum):
+    EFECTIVO = "EFECTIVO"
+    QR = "QR"
+    MIXTO = "MIXTO"
+    TRANSACCION = "TRANSACCION"
+    TARJETA = "TARJETA"
+    TICKET_O_VALE = "TICKET_O_VALE"
+
+
+class MotivoDescVentaBoutiqueEnum(str, Enum):
+    REBAJA = "REBAJA"
+    PROMOCION = "PROMOCION"
+
+
+class EstadoVentaBoutiqueEnum(str, Enum):
+    ACTIVA = "ACTIVA"
+    CANCELADA = "CANCELADA"
+    ANULADA = "ANULADA"

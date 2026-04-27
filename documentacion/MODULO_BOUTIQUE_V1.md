@@ -15,10 +15,14 @@ El modulo cubre:
 
 No cubre todavia:
 
-- `VENTA_BOUTIQUE`
+- `VENTA_BOUTIQUE` en este documento de inventario
 - ingresos automaticos
 - recibos
 - movimientos financieros del modulo
+
+La implementacion de ventas directas ahora vive en un documento separado:
+
+- `documentacion/MODULO_VENTAS_BOUTIQUE_V1.md`
 
 ## Modelo de datos implementado
 
@@ -59,6 +63,7 @@ No cubre todavia:
 - no se permite desactivar un tipo con items activos
 - no se permite activar un item si su tipo esta deshabilitado
 - el tipo del item no se cambia desde UI una vez creado
+- el precio de venta no puede ser menor o igual al precio de compra
 
 ## Permisos
 

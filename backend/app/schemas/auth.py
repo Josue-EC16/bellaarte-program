@@ -77,4 +77,4 @@ class UpdateUserRequest(BaseModel):
 
 
 class ResetPasswordRequest(BaseModel):
-    pass
+    temporary_password: str = Field(min_length=8, max_length=128)
