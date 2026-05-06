@@ -113,18 +113,18 @@ export function BoutiqueSaleForm({ form, items, clients, saving, onFinish, canPi
                 },
               },
             ]}
-            extra="Debe ser mayor a cero y no puede superar el stock disponible."
+            extra="Debe ser un número entero mayor a cero y no puede superar el stock disponible."
             normalize={(value) => {
               if (value === null || value === undefined || value === '') return null
-              return value.toString().replace(/[^0-9.]/g, '')
+              return value.toString().replace(/[^0-9]/g, '')
             }}
           >
             <InputNumber
-              min={0.01}
+              min={1}
               max={selectedItem ? Number(selectedItem.stock) : undefined}
-              precision={2}
+              precision={0}
               style={{ width: '100%' }}
-              placeholder="Ej. 1 o 1.50"
+              placeholder="Ej. 1, 2, 5"
             />
           </Form.Item>
         </Col>

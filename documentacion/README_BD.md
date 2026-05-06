@@ -1,829 +1,941 @@
-# README – BASE DE DATOS V.0.3
+# README – BASE DE DATOS V4
 
 ## BELLAARTE BOUTIQUE
 
-**Motor de base de datos:** PostgreSQL 17
+**Motor de base de datos:** PostgreSQL 17  
+**Versión documentada:** Base de Datos V4  
+**Enfoque:** gestión empresarial, inventario, pedidos, fletes, pagos, comprobantes internos, multimoneda, auditoría y notificaciones.
 
----
+\---
 
-## 1. Descripción general
+## 1\. Descripción general
 
-La base de datos v.0.3 fue diseñada para centralizar los procesos principales de **BELLAARTE BOUTIQUE** en una estructura más modular, ordenada y escalable.  
-Esta versión organiza la información en módulos funcionales: seguridad del sistema, clientes, inventario de boutique, inventario de taller, pedidos especializados, pruebas, pagos, recibos, ingresos, egresos y auditoría.
+La base de datos V4 de **BELLAARTE BOUTIQUE** fue diseñada para centralizar y controlar los procesos operativos, comerciales, administrativos y financieros de la empresa. Su estructura responde al modelo real de trabajo de la boutique, donde conviven tres flujos principales de ingreso:
 
-A diferencia de versiones anteriores, esta estructura separa mejor la información general de la información específica.  
-Por ejemplo, en boutique se usa una tabla base para artículos y tablas detalle para vestidos, velos y bouquets.  
-En pedidos se aplica el mismo enfoque: existe una tabla base `PEDIDO` y tablas complementarias para vestido, velo, cola, manga y bouquet.  
-Además, la parte documental se organiza mediante comprobantes internos, los cuales permiten dejar constancia de ventas directas, pagos de pedidos, fletes, garantías y otros movimientos comerciales no fiscales. Estos comprobantes no sustituyen una factura, nota fiscal ni documento equivalente tributario; su finalidad es servir como respaldo interno y constancia comercial para la boutique y el cliente.
+- venta directa de productos de boutique;
+- flete de vestidos, principalmente vestidos de 15 años;
+- pedidos de confección personalizada y sus pagos parciales o finales.
 
----
+La versión V4 mejora la estructura anterior incorporando proveedores, entradas de inventario, multimoneda, tipos de cambio, comprobantes internos, trazabilidad de cambios de estado, auditoría y notificaciones operativas. La base mantiene una separación clara entre tablas maestras, tablas operativas, tablas detalle, tablas documentales y tablas de control.
 
-## 2. Objetivo de la base de datos
+La regla económica principal del sistema es que los precios base se manejan en **bolivianos (Bs)**. Las monedas externas se utilizan para mostrar equivalencias y registrar pagos en moneda elegida por el cliente, congelando el tipo de cambio usado en la operación. Esto permite mantener reportes consistentes en Bs sin perder la trazabilidad del cobro real.
 
-El objetivo principal de esta base de datos es:
+Los comprobantes internos se mantienen como documentos de control comercial y administrativo. No reemplazan una factura, nota fiscal ni documento equivalente tributario. Su función es dejar constancia interna y entregar un respaldo comercial al cliente por ventas, pagos de pedido y fletes.
 
-- centralizar la información operativa y administrativa
-- reducir el uso disperso de archivos Excel y registros manuales
-- mejorar el control de ventas, pedidos, pagos, inventario e insumos
-- generar trazabilidad documental y financiera
-- permitir crecimiento progresivo del sistema sin rediseñar toda la estructura
+\---
 
----
+## 2\. Objetivo de la base de datos
 
-## 3. Estructura general por módulos
+El objetivo principal de la base de datos es centralizar la información de BELLAARTE BOUTIQUE para mejorar el control de ventas, pedidos, inventarios, pagos, fletes, egresos, comprobantes, notificaciones y auditoría.
 
-La base se divide en los siguientes bloques:
+Objetivos específicos:
 
-- **Seguridad:** `ROL`, `USUARIO`, `CUENTA`
-- **Clientes:** `CLIENTE`
-- **Boutique:** `TIPO_ITEM_BOUTIQUE`, `ITEM_BOUTIQUE`, `DETALLE_VESTIDO_BOUTIQUE`, `DETALLE_VELO_BOUTIQUE`, `DETALLE_BOUQUET_BOUTIQUE`, `VENTA_BOUTIQUE`, `FLETE_VESTIDO`, `SALIDA_FLETE`
-- **Taller:** `INVENTARIO_TALLER`, `SALIDA_MATERIAL_TALLER`
-- **Fletes:** `FLETE_VESTIDO`, `SALIDA_FLETE`
-- **Pedidos:** `PEDIDO`, `PEDIDO_VESTIDO`, `PEDIDO_VELO`, `PEDIDO_COLA`, `PEDIDO_MANGA`, `PEDIDO_BOUQUET`, `PRUEBA_PEDIDO`, `PAGO_PEDIDO`
-- **Documentos internos:** `TIPO_COMPROBANTE`, `COMPROBANTE_INTERNO`, `DETALLE_COMPROBANTE`
-- **Finanzas:** `EGRESO`
-- **Auditoría:** `AUDITORIA_SISTEMA`
+- reducir la dependencia de registros manuales, hojas Excel y cuadernos físicos;
+- mejorar la trazabilidad de clientes, pedidos, pruebas, ventas, pagos y fletes;
+- controlar inventario de boutique e inventario de taller mediante entradas y salidas formales;
+- documentar operaciones económicas mediante comprobantes internos no fiscales;
+- permitir reportes de ingresos, egresos, saldos, stock, fletes, pruebas y entregas;
+- conservar trazabilidad de cambios de estado, anulaciones y cancelaciones;
+- permitir crecimiento progresivo del sistema sin rediseñar la estructura completa.
 
----
+\---
 
-## 4. Para qué sirve cada tabla
+## 3\. Estructura general por módulos
+
+La base de datos se organiza en los siguientes módulos:
+
+- **Seguridad y acceso:** `ROL`, `USUARIO`, `CUENTA`.
+- **Clientes y proveedores:** `CLIENTE`, `PROVEEDOR`.
+- **Multimoneda:** `MONEDA`, `TIPO\_CAMBIO\_MONEDA`.
+- **Inventario boutique:** `TIPO\_ITEM\_BOUTIQUE`, `ITEM\_BOUTIQUE`, `DETALLE\_BRASSIER\_BOUTIQUE`, `DETALLE\_VESTIDO\_BOUTIQUE`, `DETALLE\_VELO\_BOUTIQUE`, `DETALLE\_BOUQUET\_BOUTIQUE`, `ENTRADA\_ITEM\_BOUTIQUE`, `VENTA\_BOUTIQUE`.
+- **Fletes:** `FLETE\_VESTIDO`, `SALIDA\_FLETE`.
+- **Inventario taller:** `TIPO\_INVENTARIO\_TALLER`, `INVENTARIO\_TALLER`, `ENTRADA\_INVENTARIO\_TALLER`, `SALIDA\_MATERIAL\_TALLER`.
+- **Pedidos:** `PEDIDO`, `PEDIDO\_VESTIDO`, `PEDIDO\_VELO`, `PEDIDO\_COLA`, `PEDIDO\_MANGA`, `PEDIDO\_BOUQUET`, `PRUEBA\_PEDIDO`, `PAGO\_PEDIDO`.
+- **Documentos internos:** `TIPO\_COMPROBANTE`, `COMPROBANTE\_INTERNO`, `DETALLE\_COMPROBANTE`.
+- **Finanzas:** `EGRESO`.
+- **Control interno:** `AUDITORIA\_SISTEMA`, `NOTIFICACION`.
+
+\---
+
+## 4\. Reglas globales del modelo
+
+### 4.1 Moneda base
+
+La moneda base del sistema es el boliviano. Todos los precios maestros de productos, pedidos, fletes, inventario y egresos se registran en Bs. Las otras monedas se usan para conversión, visualización y cobro.
+
+Reglas principales:
+
+- solo debe existir una moneda base activa en `MONEDA`;
+- el índice `UQ\_MONEDA\_BASE` evita que existan varias monedas con `MON\_ES\_BASE = TRUE`;
+- cada operación monetaria debe conservar el tipo de cambio usado en ese momento;
+- los reportes económicos generales deben consolidarse en Bs.
+
+### 4.2 Tipo de cambio
+
+`TIPO\_CAMBIO\_MONEDA` registra el valor de una moneda respecto al boliviano. El campo `TCM\_VALOR\_BOB` indica cuántos bolivianos equivale una unidad de esa moneda.
+
+Ejemplo:
+
+- 1 USD = 9.80 Bs → `TCM\_VALOR\_BOB = 9.80`;
+- 1 PEN = 2.50 Bs → `TCM\_VALOR\_BOB = 2.50`;
+- 1 BOB = 1 Bs → `TCM\_VALOR\_BOB = 1`.
+
+El índice `UQ\_TIPO\_CAMBIO\_ACTIVO\_MONEDA` evita más de un tipo de cambio activo por moneda.
+
+### 4.3 Trazabilidad de estados
+
+Las tablas operativas que pueden cambiar de estado deben conservar:
+
+- estado actual;
+- fecha del cambio de estado;
+- motivo del cambio de estado.
+
+El usuario que realiza el cambio debe quedar registrado principalmente en `AUDITORIA\_SISTEMA`. En las tablas operativas se guarda el hecho del cambio, pero no necesariamente el usuario del cambio.
+
+Tablas con trazabilidad de estado:
+
+- `VENTA\_BOUTIQUE`;
+- `SALIDA\_FLETE`;
+- `PEDIDO`;
+- `PAGO\_PEDIDO`;
+- `COMPROBANTE\_INTERNO`;
+- `EGRESO`.
+
+### 4.4 Columnas generadas
+
+La BD usa columnas generadas para valores que se calculan dentro de la misma fila y no deben ser editados manualmente.
+
+Ejemplos:
+
+- `VENTA\_BOUTIQUE.VEB\_TOT` = cantidad × precio unitario − descuento;
+- `SALIDA\_FLETE.SFL\_TOTAL\_FLETE` = precio de flete − descuento;
+- `PEDIDO.PED\_PRE\_TOT` = precio base − descuento;
+- `PAGO\_PEDIDO.PPD\_MONTO\_BOB` = monto pagado × tipo de cambio usado;
+- `EGRESO.EGR\_MONTO` = cantidad × precio unitario.
+
+Los valores acumulados, como `PED\_TOTAL\_PAGADO`, `PED\_SALDO`, `ITB\_STOCK`, `INT\_STOCK` y `FLE\_SALIDAS\_ACTUALES`, no deben ser columnas generadas porque dependen de operaciones en otras tablas. Estos valores deben actualizarse mediante backend, procedimientos o transacciones controladas.
+
+\---
+
+## 5\. Descripción funcional de tablas
 
 ### `ROL`
 
-- Define los roles del sistema.
-- Permite clasificar el nivel de acceso de cada cuenta.
-- Sirve para la gestión de permisos generales.
+Define los roles del sistema y permite clasificar permisos de acceso. Se relaciona con `CUENTA`, ya que cada cuenta debe tener un rol asignado.
+
+**Campos principales:** `ROL\_ID`, `ROL\_NOM`, `ROL\_DES`, `ROL\_HAB`, `ROL\_FEC\_REG`.
+
+**Restricciones relevantes:**
+
+- `ROL\_NOM` es único;
+- `ROL\_HAB` indica si el rol puede seguir usándose.
+
+\---
 
 ### `USUARIO`
 
-- Guarda los datos del personal que utiliza el sistema.
-- Representa a la persona que registra operaciones.
-- Sirve como referencia en ventas, pagos, salidas de material, ingresos, egresos y auditoría.
+Registra al personal interno que utiliza el sistema. Sirve como referencia para operaciones como ventas, pagos, entradas de inventario, salidas de material, comprobantes, tipos de cambio, egresos, auditoría y notificaciones.
+
+**Campos principales:** `USU\_ID`, `USU\_NOM`, `USU\_APE\_PAT`, `USU\_APE\_MAT`, `USU\_CEL`, `USU\_CI`, `USU\_COR`, `USU\_FEC\_TRA`, `USU\_HAB`, `USU\_FEC\_REG`.
+
+**Restricciones relevantes:**
+
+- `USU\_CEL`, `USU\_CI` y `USU\_COR` son únicos cuando tienen valor;
+- `USU\_HAB` permite habilitar o deshabilitar usuarios sin eliminarlos.
+
+\---
 
 ### `CUENTA`
 
-- Almacena las credenciales de acceso al sistema.
-- Relaciona un usuario con un rol.
-- Permite controlar login, habilitación de cuenta y último acceso.
+Almacena las credenciales de acceso del sistema. Relaciona a un usuario con un rol.
+
+**Campos principales:** `CUE\_ID`, `USU\_ID`, `ROL\_ID`, `CUE\_NOM\_USU`, `CUE\_CON`, `CUE\_HAB`, `CUE\_FEC\_CRE`, `CUE\_ULT\_ACC`.
+
+**Relaciones:**
+
+- `CUENTA.USU\_ID` → `USUARIO.USU\_ID`;
+- `CUENTA.ROL\_ID` → `ROL.ROL\_ID`.
+
+**Restricciones relevantes:**
+
+- `CUE\_NOM\_USU` es único;
+- las contraseñas deben almacenarse en hash desde backend.
+
+\---
 
 ### `CLIENTE`
 
-- Guarda la información personal y de contacto de los clientes.
-- Sirve para asociar pedidos, ventas y recibos.
-- Centraliza los datos comerciales del cliente.
+Registra la información personal y de contacto de los clientes. Se utiliza en ventas, pedidos, fletes y comprobantes.
 
-### `TIPO_ITEM_BOUTIQUE`
+**Campos principales:** `CLI\_ID`, `CLI\_COD`, `CLI\_NOM`, `CLI\_APE\_PAT`, `CLI\_APE\_MAT`, `CLI\_CEL`, `CLI\_CEL\_REF`, `CLI\_COR`, `CLI\_CI`, `CLI\_PAIS`, `CLI\_CIUDAD`, `CLI\_ZONA`, `CLI\_CALLE`, `CLI\_OBS`, `CLI\_HAB`, `CLI\_FEC\_REG`.
 
-- Define los tipos de artículos que maneja la boutique.
-- Permite clasificar los artículos del inventario.
-- Hace más flexible el mantenimiento de los ítems boutique.
+**Restricciones relevantes:**
 
-### `ITEM_BOUTIQUE`
+- `CLI\_COD` es único;
+- `CLI\_COR` y `CLI\_CI` son únicos cuando se registran;
+- `CLI\_CEL` es obligatorio, pero no necesariamente único, permitiendo casos familiares o números compartidos.
 
-- Es la tabla base del inventario de boutique.
-- Guarda la información general de cualquier artículo boutique.
-- Registra código, nombre, color, forma, material, proveedor, precios y stock.
+\---
 
-### `DETALLE_VESTIDO_BOUTIQUE`
+### `PROVEEDOR`
 
-- Guarda la información específica de los vestidos de boutique.
-- Complementa a `ITEM_BOUTIQUE` cuando el artículo es un vestido.
-- Permite registrar tipo de vestido, escote, corte de falda, talla, copa y largo.
+Centraliza los datos de proveedores de boutique y taller. Reemplaza la captura de proveedores como texto libre dentro de inventarios.
 
-### `DETALLE_VELO_BOUTIQUE`
+**Campos principales:** `PRO\_ID`, `PRO\_NOM`, `PRO\_APE\_PAT`, `PRO\_APE\_MAT`, `PRO\_NOM\_COMERCIAL`, `PRO\_CEL`, `PRO\_CEL\_SEC`, `PRO\_COR`, `PRO\_PAIS`, `PRO\_CIUDAD`, `PRO\_DIR`, `PRO\_OBS`, `PRO\_HAB`, `PRO\_FEC\_REG`.
 
-- Guarda la información específica de los velos de boutique.
-- Complementa a `ITEM_BOUTIQUE` cuando el artículo es un velo.
-- Registra largo, tamaño, capas, borde y decoración.
+**Relaciones:**
 
-### `DETALLE_BOUQUET_BOUTIQUE`
+- `ITEM\_BOUTIQUE.PRO\_ID` puede apuntar a `PROVEEDOR.PRO\_ID`;
+- `INVENTARIO\_TALLER.PRO\_ID` puede apuntar a `PROVEEDOR.PRO\_ID`;
+- las entradas de inventario también pueden conservar proveedor.
 
-- Guarda la información específica de los bouquets de boutique.
-- Complementa a `ITEM_BOUTIQUE` cuando el artículo es un bouquet.
-- Registra tamaño, tipo de flor y decoración.
+**Restricciones relevantes:**
 
-### `VENTA_BOUTIQUE`
+- `PRO\_CEL` y `PRO\_COR` son únicos cuando se registran;
+- `PRO\_HAB` permite retirar un proveedor sin eliminar su historial.
 
-- Registra las ventas directas de artículos boutique.
-- Guarda cliente, usuario, artículo, cantidad, precio, descuento, total, método de pago y estado.
-- Sirve como base comercial para generar ingresos y comprobantes internos.
+\---
 
-### `FLETE_VESTIDO`
+### `MONEDA`
 
-- Registra la configuración general de un vestido de boutique habilitado para flete.
-- Permite controlar si un vestido está disponible, en flete, en revisión, agotado, pasado para venta o retirado.
-- Guarda el precio referencial de flete, el máximo de salidas permitidas y la cantidad de salidas actuales.
-- Sirve para evitar que un vestido sea fletado más veces de las permitidas.
-- Se relaciona con `DETALLE_VESTIDO_BOUTIQUE`, porque solo los vestidos registrados en boutique pueden ser habilitados para flete.
+Catálogo de monedas disponibles en el sistema. Permite registrar monedas como BOB, USD, PEN o EUR.
 
-### `SALIDA_FLETE`
+**Campos principales:** `MON\_ID`, `MON\_COD`, `MON\_NOM`, `MON\_SIMBOLO`, `MON\_ES\_BASE`, `MON\_HAB`, `MON\_FEC\_REG`.
 
-- Registra cada salida individual de un vestido fletable.
-- Guarda el cliente que se llevó el vestido, el usuario que registró la operación, el número de salida, fechas, precio, descuento, garantía y estado de devolución.
-- Permite controlar la trazabilidad completa de cada flete realizado.
-- Sirve para registrar si el vestido fue devuelto en buen estado, con observación, dañado, incompleto o con necesidad de arreglo.
-- Permite generar recibos e ingresos por operaciones de flete.
+**Restricciones relevantes:**
 
-### `INVENTARIO_TALLER`
+- `MON\_COD` es único;
+- `UQ\_MONEDA\_BASE` garantiza una única moneda base.
 
-- Registra los materiales e insumos del taller.
-- Controla telas, guipures, hilos, cierres, pedrería y otros materiales.
-- Sirve para monitorear stock, costo referencial y proveedor.
+**Lógica:**
 
-### `SALIDA_MATERIAL_TALLER`
+Los precios maestros no se duplican por moneda. Se guardan en Bs y se convierten usando el tipo de cambio activo.
 
-- Registra las salidas de materiales del taller.
-- Permite saber qué material salió, cuánto salió y a qué destino fue entregado.
-- Ayuda a controlar consumo y distribución de insumos.
+\---
+
+### `TIPO\_CAMBIO\_MONEDA`
+
+Registra el tipo de cambio vigente e histórico de cada moneda respecto al boliviano.
+
+**Campos principales:** `TCM\_ID`, `MON\_ID`, `USU\_ID`, `TCM\_VALOR\_BOB`, `TCM\_FEC\_REG`, `TCM\_OBS`, `TCM\_ACTIVO`.
+
+**Relaciones:**
+
+- `TCM.MON\_ID` → `MONEDA.MON\_ID`;
+- `TCM.USU\_ID` → `USUARIO.USU\_ID`.
+
+**Restricciones relevantes:**
+
+- `TCM\_VALOR\_BOB > 0`;
+- `UQ\_TIPO\_CAMBIO\_ACTIVO\_MONEDA` evita más de un tipo de cambio activo por moneda.
+
+**Lógica:**
+
+Cuando se actualiza una moneda, el tipo de cambio anterior debe desactivarse y el nuevo registro debe quedar activo. Las operaciones ya registradas no deben recalcularse con el nuevo tipo de cambio.
+
+\---
+
+### `TIPO\_ITEM\_BOUTIQUE`
+
+Catálogo de tipos de artículos de boutique: vestido, velo, bouquet, brassier, accesorio u otros.
+
+**Campos principales:** `TIB\_ID`, `TIB\_NOM`, `TIB\_DES`, `TIB\_HAB`, `TIB\_FEC\_REG`.
+
+**Restricciones relevantes:**
+
+- `TIB\_NOM` es único;
+- se usa como FK desde `ITEM\_BOUTIQUE`.
+
+\---
+
+### `ITEM\_BOUTIQUE`
+
+Tabla base del inventario de boutique. Guarda los atributos comunes de cualquier artículo disponible para venta o flete.
+
+**Campos principales:** `ITB\_ID`, `TIB\_ID`, `PRO\_ID`, `ITB\_COD`, `ITB\_NOM`, `ITB\_COLOR\_PRIM`, `ITB\_COLOR\_SECUN`, `ITB\_MATERIAL`, `ITB\_LARGO`, `ITB\_ANCHO`, `ITB\_PRECIO\_COMPRA`, `ITB\_PRECIO\_VENTA`, `ITB\_STOCK`, `ITB\_STOCK\_MIN`, `ITB\_DETALLE`, `ITB\_ESTADO`, `ITB\_FEC\_REG`.
+
+**Relaciones:**
+
+- `ITB.TIB\_ID` → `TIPO\_ITEM\_BOUTIQUE.TIB\_ID`;
+- `ITB.PRO\_ID` → `PROVEEDOR.PRO\_ID`;
+- se especializa mediante tablas detalle;
+- se relaciona con `ENTRADA\_ITEM\_BOUTIQUE`, `VENTA\_BOUTIQUE` y `FLETE\_VESTIDO`.
+
+**Restricciones relevantes:**
+
+- `ITB\_COD` es único;
+- precios y stock no pueden ser negativos;
+- largo y ancho aceptan nulo o valores mayores/iguales a cero.
+
+**Lógica:**
+
+`ITB\_STOCK` representa el stock actual. No debe editarse manualmente desde la interfaz común. Debe modificarse por entradas, ventas, anulaciones controladas o ajustes operativos.
+
+\---
+
+### `DETALLE\_BRASSIER\_BOUTIQUE`
+
+Registra información específica cuando el ítem de boutique es un brassier.
+
+**Campos principales:** `DBB\_ID`, `ITB\_ID`, `DBB\_COPA\_TALL`, `DBB\_TIENE\_ENCAJE`, `DBB\_MARCA`, `DBB\_OBS`.
+
+**Restricciones relevantes:**
+
+- `ITB\_ID` es `UNIQUE`, porque un ítem brassier solo debe tener un detalle brassier;
+- `DBB\_COPA\_TALL` es obligatorio.
+
+\---
+
+### `DETALLE\_VESTIDO\_BOUTIQUE`
+
+Registra información específica de vestidos de boutique.
+
+**Campos principales:** `DVB\_ID`, `ITB\_ID`, `DVB\_TIPO\_VESTIDO`, `DVB\_CORTE\_FALDA`, `DVB\_TIPO\_ESCOTE`, `DVB\_TIENE\_COLA`, `DVB\_TIENE\_MANGA`, `DVB\_TIENE\_PEDRERIA`, `DVB\_COPA\_TALLA`, `DVB\_TALLA`, `DVB\_LARGO\_FALDA`, `DVB\_OBS`.
+
+**Restricciones relevantes:**
+
+- `ITB\_ID` es `UNIQUE`;
+- `DVB\_TIPO\_VESTIDO` y `DVB\_TALLA` son obligatorios;
+- largo de falda no puede ser negativo.
+
+\---
+
+### `DETALLE\_VELO\_BOUTIQUE`
+
+Registra información específica de velos de boutique.
+
+**Campos principales:** `DVE\_ID`, `ITB\_ID`, `DVE\_TIPO\_VELO`, `DVE\_CAPAS`, `DVE\_BORDE`, `DVE\_DECORACION`, `DVE\_OBS`.
+
+**Restricciones relevantes:**
+
+- `ITB\_ID` es `UNIQUE`;
+- `DVE\_CAPAS` debe ser nulo o mayor a cero.
+
+\---
+
+### `DETALLE\_BOUQUET\_BOUTIQUE`
+
+Registra información específica de bouquets de boutique.
+
+**Campos principales:** `DBO\_ID`, `ITB\_ID`, `DBO\_TIPO\_BOUQUET`, `DBO\_FORMA`, `DBO\_TIPO\_FLOR`, `DBO\_DECORACION`, `DBO\_OBS`.
+
+**Restricciones relevantes:**
+
+- `ITB\_ID` es `UNIQUE`;
+- permite describir forma, flor y decoración del bouquet.
+
+\---
+
+### `ENTRADA\_ITEM\_BOUTIQUE`
+
+Registra entradas de stock al inventario de boutique. Evita modificar el stock directamente sin historial.
+
+**Campos principales:** `EIB\_ID`, `ITB\_ID`, `USU\_ID`, `PRO\_ID`, `EIB\_FEC`, `EIB\_CANT`, `EIB\_COSTO\_UNITARIO`, `EIB\_MOTIVO`, `EIB\_DOC\_REF`, `EIB\_OBS`, `EIB\_ESTADO`.
+
+**Relaciones:**
+
+- `EIB.ITB\_ID` → `ITEM\_BOUTIQUE.ITB\_ID`;
+- `EIB.USU\_ID` → `USUARIO.USU\_ID`;
+- `EIB.PRO\_ID` → `PROVEEDOR.PRO\_ID`.
+
+**Restricciones relevantes:**
+
+- `EIB\_CANT > 0`;
+- `EIB\_COSTO\_UNITARIO >= 0`;
+- el motivo se controla por `MOTIVO\_ENTRADA\_ITEM`.
+
+**Lógica:**
+
+Una entrada puede originarse por `ENTRADA\_STOCK`, `PRODUCCION\_INTERNA`, `DEVOLUCION`, `AJUSTE\_POSITIVO`, `REGISTRO\_INICIAL` u `OTRO`. Al registrar una entrada válida, el backend debe incrementar `ITEM\_BOUTIQUE.ITB\_STOCK` dentro de una transacción.
+
+\---
+
+### `VENTA\_BOUTIQUE`
+
+Registra ventas directas de artículos de boutique.
+
+**Campos principales:** `VEB\_ID`, `ITB\_ID`, `USU\_ID`, `CLI\_ID`, `MON\_ID`, `VEB\_FEC`, `VEB\_CANT`, `VEB\_PRE\_UNI`, `VEB\_DESCUENTO`, `VEB\_MOTIVO\_DESC`, `VEB\_TOT`, `VEB\_TIPO\_CAMBIO\_USADO`, `VEB\_TOTAL\_MONEDA\_ORIG`, `VEB\_METODO\_PAGO`, `VEB\_OBS`, `VEB\_ESTADO`, `VEB\_FEC\_CAMB\_EST`, `VEB\_MOTIVO\_CAMB\_EST`.
+
+**Relaciones:**
+
+- `VEB.ITB\_ID` → `ITEM\_BOUTIQUE.ITB\_ID`;
+- `VEB.USU\_ID` → `USUARIO.USU\_ID`;
+- `VEB.CLI\_ID` → `CLIENTE.CLI\_ID`;
+- `VEB.MON\_ID` → `MONEDA.MON\_ID`.
+
+**Restricciones relevantes:**
+
+- cantidad y precio unitario deben ser mayores a cero;
+- el descuento no puede superar el subtotal;
+- si hay descuento, el motivo es obligatorio;
+- `VEB\_TOT` se calcula automáticamente;
+- `VEB\_TOTAL\_MONEDA\_ORIG > 0`;
+- si la venta está `CANCELADA` o `ANULADA`, debe existir fecha y motivo de cambio de estado.
+
+**Lógica:**
+
+La venta conserva el total base en Bs mediante `VEB\_TOT` y el total cobrado en moneda de origen mediante `VEB\_TOTAL\_MONEDA\_ORIG`. Al registrar una venta activa, el backend debe descontar stock y generar comprobante interno.
+
+\---
+
+### `FLETE\_VESTIDO`
+
+Configura un artículo de boutique como vestido habilitado para flete.
+
+**Campos principales:** `FLE\_ID`, `ITB\_ID`, `USU\_ID`, `FLE\_PRECIO\_FLETE\_REF`, `FLE\_MAX\_SALIDAS`, `FLE\_SALIDAS\_ACTUALES`, `FLE\_ESTADO`, `FLE\_FEC\_HAB\_FLETE`, `FLE\_OBS`, `FLE\_HAB`.
+
+**Relaciones:**
+
+- `FLE.ITB\_ID` → `ITEM\_BOUTIQUE.ITB\_ID`;
+- `FLE.USU\_ID` → `USUARIO.USU\_ID`.
+
+**Restricciones relevantes:**
+
+- `ITB\_ID` es único, por tanto un ítem solo puede tener una configuración de flete;
+- `FLE\_MAX\_SALIDAS` debe estar entre 1 y 4;
+- `FLE\_SALIDAS\_ACTUALES` no puede superar `FLE\_MAX\_SALIDAS`;
+- precio referencial de flete debe ser mayor a cero.
+
+**Lógica:**
+
+El backend debe validar que el ítem corresponda a un vestido apto para flete, usualmente de 15 años. Cuando alcance el máximo de salidas, debe pasar a estado `AGOTADO` o `PASADO\_PARA\_VENTA` según la política del negocio.
+
+\---
+
+### `SALIDA\_FLETE`
+
+Registra cada salida individual de un vestido fletable.
+
+**Campos principales:** `SFL\_ID`, `FLE\_ID`, `CLI\_ID`, `USU\_ID`, `MON\_ID`, `SFL\_NUM`, `SFL\_FEC\_REG`, `SFL\_FEC\_SALIDA`, `SFL\_FEC\_DEVOLUCION\_PREVISTA`, `SFL\_FEC\_DEVOLUCION\_REAL`, `SFL\_PRECIO`, `SFL\_DESCUENTO`, `SFL\_MOTIVO\_DESC`, `SFL\_METODO\_PAGO`, `SFL\_TIPO\_CAMBIO\_USADO`, `SFL\_TOTAL\_FLETE`, `SFL\_TOTAL\_FLETE\_MONEDA\_ORIG`, `SFL\_GARANTIA`, `SFL\_GARANTIA\_DEVUELTA`, `SFL\_ESTADO\_SALIDA`, `SFL\_FEC\_CAMB\_EST`, `SFL\_MOTIVO\_CAMB\_EST`, `SFL\_ESTADO\_ENTREGA`, `SFL\_ESTADO\_DEVOLUCION`, `SFL\_REQUIERE\_ARREGLO`, `SFL\_MONTO\_ARREGLO`, `SFL\_DESCRIPCION\_ARREGLO`, `SFL\_OBS\_ENTREGA`, `SFL\_OBS\_DEVOLUCION`, `SFL\_HAB`.
+
+**Relaciones:**
+
+- `SFL.FLE\_ID` → `FLETE\_VESTIDO.FLE\_ID`;
+- `SFL.CLI\_ID` → `CLIENTE.CLI\_ID`;
+- `SFL.USU\_ID` → `USUARIO.USU\_ID`;
+- `SFL.MON\_ID` → `MONEDA.MON\_ID`.
+
+**Restricciones relevantes:**
+
+- precio del flete mayor a cero;
+- descuento no puede superar el precio;
+- si hay descuento, el motivo es obligatorio;
+- `SFL\_TOTAL\_FLETE` se calcula automáticamente;
+- la garantía y garantía devuelta no pueden ser negativas;
+- la garantía devuelta no puede superar la garantía recibida;
+- la fecha prevista y real de devolución no pueden ser anteriores a la fecha de salida;
+- `SFL\_NUM` debe estar entre 1 y 4;
+- `UNIQUE(FLE\_ID, SFL\_NUM)` evita repetir el número de salida para el mismo vestido;
+- si la salida está anulada, debe existir fecha y motivo de cambio de estado.
+
+**Lógica:**
+
+`SFL\_TOTAL\_FLETE` representa el monto del servicio en Bs. `SFL\_TOTAL\_FLETE\_MONEDA\_ORIG` conserva el valor cobrado en la moneda seleccionada por el cliente. La garantía se maneja por separado y no debe considerarse ingreso real mientras sea reembolsable.
+
+\---
+
+### `TIPO\_INVENTARIO\_TALLER`
+
+Catálogo de tipos de materiales o insumos de taller.
+
+**Campos principales:** `TIT\_ID`, `TIT\_NOM`, `TIT\_DES`, `TIT\_HAB`, `TIT\_FEC\_REG`.
+
+**Restricciones relevantes:**
+
+- `TIT\_NOM` es único;
+- se relaciona con `INVENTARIO\_TALLER`.
+
+\---
+
+### `INVENTARIO\_TALLER`
+
+Tabla base del inventario de materiales e insumos del taller.
+
+**Campos principales:** `INT\_ID`, `TIT\_ID`, `PRO\_ID`, `INT\_COD`, `INT\_NOM`, `INT\_COLOR`, `INT\_LARGO`, `INT\_ANCHO`, `INT\_MATERIAL`, `INT\_DES`, `INT\_COSTO\_REF`, `INT\_STOCK`, `INT\_UNI\_MED`, `INT\_STOCK\_MIN`, `INT\_ESTADO`, `INT\_OBS`, `INT\_FEC\_REG`.
+
+**Relaciones:**
+
+- `INT.TIT\_ID` → `TIPO\_INVENTARIO\_TALLER.TIT\_ID`;
+- `INT.PRO\_ID` → `PROVEEDOR.PRO\_ID`.
+
+**Restricciones relevantes:**
+
+- `INT\_COD` es único;
+- costo, stock y stock mínimo no pueden ser negativos;
+- largo y ancho aceptan nulo o valores no negativos;
+- unidad de medida es obligatoria.
+
+**Lógica:**
+
+`INT\_STOCK` representa el stock actual del material. Debe modificarse por entradas y salidas registradas, no por edición manual directa.
+
+\---
+
+### `ENTRADA\_INVENTARIO\_TALLER`
+
+Registra ingresos de stock al inventario del taller.
+
+**Campos principales:** `EMT\_ID`, `INT\_ID`, `USU\_ID`, `PRO\_ID`, `EMT\_FEC`, `EMT\_CAN`, `EMT\_UNI\_MED`, `EMT\_COSTO\_UNITARIO`, `EMT\_MOTIVO`, `EMT\_DOC\_REF`, `EMT\_OBS`, `EMT\_ESTADO`.
+
+**Relaciones:**
+
+- `EMT.INT\_ID` → `INVENTARIO\_TALLER.INT\_ID`;
+- `EMT.USU\_ID` → `USUARIO.USU\_ID`;
+- `EMT.PRO\_ID` → `PROVEEDOR.PRO\_ID`.
+
+**Restricciones relevantes:**
+
+- `EMT\_CAN > 0`;
+- `EMT\_COSTO\_UNITARIO >= 0`;
+- el motivo se controla por `MOTIVO\_ENTRADA\_TALLER`.
+
+**Lógica:**
+
+Al registrar una entrada, el backend debe aumentar `INVENTARIO\_TALLER.INT\_STOCK` dentro de una transacción.
+
+\---
+
+### `SALIDA\_MATERIAL\_TALLER`
+
+Registra salidas de materiales o insumos del taller hacia costura, decoración, pedidos, áreas internas u otros destinos.
+
+**Campos principales:** `SMT\_ID`, `INT\_ID`, `USU\_ID`, `SMT\_FEC`, `SMT\_CAN`, `SMT\_UNI\_MED`, `SMT\_DESTINO`, `SMT\_OBS1`, `SMT\_OBS2`, `SMT\_ESTADO`.
+
+**Relaciones:**
+
+- `SMT.INT\_ID` → `INVENTARIO\_TALLER.INT\_ID`;
+- `SMT.USU\_ID` → `USUARIO.USU\_ID`.
+
+**Restricciones relevantes:**
+
+- `SMT\_CAN > 0`;
+- debe existir material relacionado.
+
+**Lógica:**
+
+El backend debe validar stock suficiente antes de registrar una salida y descontar `INT\_STOCK` en la misma transacción.
+
+\---
 
 ### `PEDIDO`
 
-- Es la tabla base de los pedidos.
-- Guarda la información general común a cualquier pedido.
-- Registra cliente, código, tipo de pedido, fechas, descuento, precio total, total pagado, saldo y estado.
+Tabla principal de pedidos de confección o componentes asociados.
 
-### `PEDIDO_VESTIDO`
+**Campos principales:** `PED\_ID`, `CLI\_ID`, `PED\_COD`, `PED\_TIPO`, `PED\_FEC\_REG\_CONTRATO`, `PED\_USU\_ENCARGADO`, `PED\_FEC\_DE\_ENTREGA`, `PED\_FEC\_ENTREGA\_FINAL`, `PED\_VIAJE`, `PED\_PAIS\_DESTINO`, `PED\_CIUDAD\_DESTINO`, `PED\_PRECIO`, `PED\_DESCUENTO`, `PED\_MOTIVO\_DESCUENTO`, `PED\_PRE\_TOT`, `PED\_TOTAL\_PAGADO`, `PED\_SALDO`, `PED\_OBS`, `PED\_ESTADO\_GENERAL`, `PED\_FEC\_CAMB\_EST`, `PED\_MOTIVO\_CAMB\_EST`, `PED\_HAB`.
 
-- Guarda la información específica de pedidos de vestido.
-- Complementa a `PEDIDO` cuando el pedido corresponde a un vestido.
-- Registra color, materiales, diseño y medidas del cuerpo.
+**Relaciones:**
 
-### `PEDIDO_VELO`
+- `PED.CLI\_ID` → `CLIENTE.CLI\_ID`;
+- `PED.PED\_USU\_ENCARGADO` → `USUARIO.USU\_ID`;
+- se relaciona con tablas detalle de pedido, pruebas y pagos.
 
-- Guarda la información específica de pedidos de velo.
-- Complementa a `PEDIDO` cuando el pedido incluye o corresponde a un velo.
-- Registra largo, capas, borde, material y decoración.
+**Restricciones relevantes:**
 
-### `PEDIDO_COLA`
+- código de pedido único;
+- precio, total pagado y saldo no pueden ser negativos;
+- descuento no puede superar el precio;
+- si hay descuento, el motivo es obligatorio;
+- `PED\_PRE\_TOT` se calcula automáticamente;
+- si el pedido está cancelado, debe existir fecha y motivo de cambio de estado.
 
-- Guarda la información específica de pedidos de cola.
-- Complementa a `PEDIDO` cuando el pedido incluye una cola.
-- Registra largo, material, color y decoración.
+**Lógica:**
 
-### `PEDIDO_MANGA`
+`PED\_TOTAL\_PAGADO` y `PED\_SALDO` deben actualizarse mediante backend a partir de pagos válidos en `PAGO\_PEDIDO`. No deben ser editados manualmente desde la interfaz.
 
-- Guarda la información específica de pedidos de manga.
-- Complementa a `PEDIDO` cuando el pedido incluye mangas.
-- Registra medidas de manga, material y decoración.
+\---
 
-### `PEDIDO_BOUQUET`
+### `PEDIDO\_VESTIDO`
 
-- Guarda la información específica de pedidos de bouquet.
-- Complementa a `PEDIDO` cuando el pedido corresponde a bouquet.
-- Registra tipo, color, tamaño, flores y decoración.
+Registra detalles específicos cuando el pedido corresponde o incluye un vestido.
 
-### `PRUEBA_PEDIDO`
+**Campos principales:** `PDV\_ID`, `PED\_ID`, `PDV\_TIPO\_VESTIDO`, `PDV\_COLOR\_PRIN`, `PDV\_COLOR\_SECU`, `PDV\_DESCR\_MATERIAL`, `PDV\_DESCR\_DISENO`, `PDV\_DESCRIPCION\_2`, medidas corporales y `PDV\_OBS`.
 
-- Registra las pruebas asociadas a un pedido.
-- Permite guardar una cantidad flexible de pruebas.
-- Almacena número, fecha, hora, estado y observaciones de cada prueba.
+**Restricciones relevantes:**
 
-### `PAGO_PEDIDO`
+- `PED\_ID` es único;
+- las medidas aceptan nulo o valores no negativos.
 
-- Registra cada pago realizado sobre un pedido.
-- Guarda el historial real de cuotas o pagos del cliente.
-- Sirve para recalcular total pagado y saldo pendiente.
+\---
 
-### `TIPO_COMPROBANTE`
+### `PEDIDO\_VELO`
 
-- Define los tipos de comprobantes internos que puede generar el sistema.
-- Permite clasificar documentos como nota de venta, recibo de pago de pedido, comprobante de flete, comprobante de garantía u otros documentos internos.
-- Sirve como catálogo documental para diferenciar el origen y finalidad de cada comprobante.
-- Permite indicar si el tipo de comprobante corresponde o no a un documento fiscal, aunque en la versión actual los comprobantes serán manejados como documentos internos no fiscales.
+Registra detalles específicos de velo asociado a un pedido.
 
-### `COMPROBANTE_INTERNO`
+**Campos principales:** `PDVE\_ID`, `PED\_ID`, `PDVE\_TIPO\_VELO`, `PDVE\_COLOR\_PRIN`, `PDVE\_COLOR\_SECU`, `PDVE\_LARGO`, `PDVE\_ANCHO`, `PDVE\_CAPAS`, `PDVE\_BORDE`, `PDVE\_DECORACION`, `PDVE\_MATERIAL`, `PDVE\_OBS`.
 
-- Guarda el encabezado de los comprobantes internos generados por el sistema.
-- Registra cliente, usuario, código, fecha, datos mostrados del cliente, montos, método de pago, estado y observaciones.
-- Puede estar asociado a una venta directa de boutique, a un pago de pedido o a una salida de flete.
-- Sirve como constancia comercial interna para documentar pagos, ventas, fletes, garantías y saldos.
-- No representa una factura, nota fiscal ni documento equivalente tributario.
-- Conserva una copia histórica de los datos principales mostrados al cliente al momento de emitir el comprobante.
+**Restricciones relevantes:**
 
-### `DETALLE_COMPROBANTE`
+- `PED\_ID` es único;
+- largo debe ser mayor a cero;
+- ancho acepta nulo o valor no negativo;
+- capas acepta nulo o valor mayor a cero.
 
-- Guarda el detalle interno de cada comprobante generado.
-- Registra conceptos, cantidades, precios unitarios, descuentos y subtotales.
-- Sirve para mostrar las líneas internas del comprobante entregado al cliente.
-- Permite describir con claridad el motivo del cobro, por ejemplo venta de artículo, pago a cuenta, pago final, flete, garantía o arreglo.
+\---
+
+### `PEDIDO\_COLA`
+
+Registra detalles específicos de cola asociada a un pedido.
+
+**Campos principales:** `PDCO\_ID`, `PED\_ID`, `PDCO\_TIPO\_COLA`, `PDCO\_COLOR\_PRIN`, `PDCO\_COLOR\_SECUN`, `PDCO\_LARGO`, `PDCO\_ANCHO`, `PDCO\_MATERIAL`, `PDCO\_DECORACION`, `PDCO\_OBS`.
+
+**Restricciones relevantes:**
+
+- `PED\_ID` es único;
+- largo debe ser mayor a cero;
+- ancho acepta nulo o valor no negativo.
+
+\---
+
+### `PEDIDO\_MANGA`
+
+Registra detalles específicos de mangas asociadas a un pedido.
+
+**Campos principales:** `PDMA\_ID`, `PED\_ID`, `PDMA\_TIPO\_MANGA`, `PDMA\_COLOR\_PRIN`, `PDMA\_COLOR\_SECUN`, `PDMA\_LAR\_MAN`, `PDMA\_BRA`, `PDMA\_PUN`, `PDMA\_MATERIAL`, `PDMA\_DECORACION`, `PDMA\_OBS`.
+
+**Restricciones relevantes:**
+
+- `PED\_ID` es único;
+- largo de manga debe ser mayor a cero;
+- brazo y puño no deben ser negativos.
+
+\---
+
+### `PEDIDO\_BOUQUET`
+
+Registra detalles específicos de bouquet asociado a un pedido.
+
+**Campos principales:** `PDB\_ID`, `PED\_ID`, `PDB\_TIPO\_BOUQUET`, `PDB\_COLOR\_PRIN`, `PDB\_COLOR\_SECUN`, `PDB\_LARGO`, `PDB\_ANCHO`, `PDB\_TIPO\_FLOR`, `PDB\_DECORACION`, `PDB\_OBS`.
+
+**Restricciones relevantes:**
+
+- `PED\_ID` es único;
+- largo no debe ser negativo;
+- ancho acepta nulo o valor no negativo.
+
+\---
+
+### `PRUEBA\_PEDIDO`
+
+Registra las pruebas programadas o realizadas sobre un pedido.
+
+**Campos principales:** `PRP\_ID`, `PED\_ID`, `PRP\_NUM`, `PRP\_FEC`, `PRP\_HOR`, `PRP\_ESTADO`, `PRP\_OBS`.
+
+**Restricciones relevantes:**
+
+- `PRP\_NUM > 0`;
+- `UNIQUE(PED\_ID, PRP\_NUM)` evita repetir el mismo número de prueba para un pedido.
+
+**Lógica:**
+
+Permite una cantidad flexible de pruebas. El backend debe validar secuencia lógica y coherencia de fechas.
+
+\---
+
+### `PAGO\_PEDIDO`
+
+Registra pagos parciales o totales sobre pedidos.
+
+**Campos principales:** `PPD\_ID`, `PED\_ID`, `USU\_ID`, `MON\_ID`, `PPD\_FEC`, `PPD\_MONTO`, `PPD\_TIPO\_CAMBIO\_USADO`, `PPD\_MONTO\_BOB`, `PPD\_METODO`, `PPD\_OBS1`, `PPD\_ESTADO`, `PPD\_FEC\_CAMB\_EST`, `PPD\_MOTIVO\_CAMB\_EST`.
+
+**Relaciones:**
+
+- `PPD.PED\_ID` → `PEDIDO.PED\_ID`;
+- `PPD.USU\_ID` → `USUARIO.USU\_ID`;
+- `PPD.MON\_ID` → `MONEDA.MON\_ID`.
+
+**Restricciones relevantes:**
+
+- `PPD\_MONTO > 0`;
+- `PPD\_TIPO\_CAMBIO\_USADO > 0`;
+- `PPD\_MONTO\_BOB` se calcula automáticamente;
+- si el pago está anulado, debe existir fecha y motivo de cambio.
+
+**Lógica:**
+
+Los pagos anulados no deben sumar al total pagado. Cuando se corrige un pago registrado por error, no se debe editar el monto: debe anularse el pago y registrar uno nuevo.
+
+\---
+
+### `TIPO\_COMPROBANTE`
+
+Catálogo de tipos de comprobantes internos.
+
+**Campos principales:** `TCO\_ID`, `TCO\_NOM`, `TCO\_DES`, `TCO\_ES\_FISCAL`, `TCO\_HAB`, `TCO\_FEC\_REG`.
+
+**Restricciones relevantes:**
+
+- `TCO\_NOM` es único;
+- `TCO\_ES\_FISCAL` permite diferenciar si el tipo se considera fiscal o no, aunque en la versión actual los comprobantes se manejan como internos no fiscales.
+
+\---
+
+### `COMPROBANTE\_INTERNO`
+
+Encabezado documental de comprobantes internos generados por ventas, pagos de pedido o fletes.
+
+**Campos principales:** `COI\_ID`, `TCO\_ID`, `CLI\_ID`, `USU\_ID`, `VEB\_ID`, `PPD\_ID`, `SFL\_ID`, `MON\_ID`, `COI\_COD`, `COI\_FEC`, datos snapshot del cliente, `COI\_SUBTOTAL`, `COI\_DESCUENTO`, `COI\_TOTAL`, `COI\_TOTAL\_MONEDA\_ORIG`, `COI\_SALDO\_POSTERIOR`, `COI\_GARANTIA`, `COI\_TIPO\_CAMBIO\_USADO`, `COI\_METODO\_PAGO`, `COI\_ESTADO`, `COI\_FEC\_CAMB\_EST`, `COI\_MOTIVO\_CAMB\_EST`, `COI\_HAB`.
+
+**Relaciones:**
+
+- `COI.TCO\_ID` → `TIPO\_COMPROBANTE.TCO\_ID`;
+- `COI.CLI\_ID` → `CLIENTE.CLI\_ID`;
+- `COI.USU\_ID` → `USUARIO.USU\_ID`;
+- `COI.MON\_ID` → `MONEDA.MON\_ID`;
+- puede originarse en una sola de estas tablas: `VENTA\_BOUTIQUE`, `PAGO\_PEDIDO` o `SALIDA\_FLETE`.
+
+**Restricciones relevantes:**
+
+- `COI\_COD` es único;
+- `CK\_COMPROBANTE\_UN\_ORIGEN` obliga a que el comprobante tenga un solo origen operativo;
+- el descuento no puede superar el subtotal;
+- el total debe ser subtotal menos descuento;
+- los montos no pueden ser negativos;
+- si el comprobante está anulado, debe existir fecha y motivo.
+
+**Lógica:**
+
+El comprobante debe generarse automáticamente desde backend. Conserva una copia histórica de los datos entregados al cliente. No debe ser el origen de ingresos, sino la constancia documental de una operación real.
+
+\---
+
+### `DETALLE\_COMPROBANTE`
+
+Registra las líneas o conceptos de un comprobante interno.
+
+**Campos principales:** `DCO\_ID`, `COI\_ID`, `DCO\_CONCEPTO`, `DCO\_CANTIDAD`, `DCO\_PRECIO\_UNIDAD`, `DCO\_DESCUENTO`, `DCO\_SUBTOTAL`, `DCO\_OBS`.
+
+**Restricciones relevantes:**
+
+- cantidad debe ser mayor a cero;
+- precio y descuento no pueden ser negativos;
+- descuento no puede superar cantidad × precio unitario;
+- subtotal debe ser igual a cantidad × precio unitario − descuento.
+
+\---
 
 ### `EGRESO`
 
-- Registra salidas de dinero del sistema.
-- Controla gastos de operación, compras, servicios, pagos y otros egresos.
-- Sirve para análisis de costos y flujo financiero.
-
-### `AUDITORIA_SISTEMA`
-
-- Registra eventos relevantes del sistema.
-- Guarda quién hizo una acción, cuándo la hizo, sobre qué tabla y qué cambió.
-- Sirve para trazabilidad, control interno y auditoría.
-
----
-
-## 5. Significado de columnas por tabla
-
-### `ROL`
-
-- `ROL_ID`: identificador único del rol.
-- `ROL_NOM`: nombre del rol.
-- `ROL_DES`: descripción del rol.
-- `ROL_HAB`: indica si el rol está habilitado.
-- `ROL_FEC_REG`: fecha y hora de registro.
-
-### `USUARIO`
-
-- `USU_ID`: identificador único del usuario.
-- `USU_NOM`: nombres del usuario.
-- `USU_APE_PAT`: apellido paterno.
-- `USU_APE_MAT`: apellido materno.
-- `USU_CEL`: celular.
-- `USU_CI`: carnet de identidad.
-- `USU_COR`: correo.
-- `USU_DIR`: dirección.
-- `USU_HAB`: estado de habilitación.
-- `USU_FEC_REG`: fecha de registro.
-
-### `CUENTA`
-
-- `CUE_ID`: identificador de la cuenta.
-- `USU_ID`: usuario propietario de la cuenta.
-- `ROL_ID`: rol asignado.
-- `CUE_NOM_USU`: nombre de usuario para login.
-- `CUE_CON`: contraseña almacenada.
-- `CUE_HAB`: estado de habilitación de la cuenta.
-- `CUE_FEC_CRE`: fecha de creación.
-- `CUE_ULT_ACC`: último acceso registrado.
-
-### `CLIENTE`
-
-- `CLI_ID`: identificador del cliente.
-- `CLI_COD`: código interno del cliente.
-- `CLI_NOM`: nombres.
-- `CLI_APE_PAT`: apellido paterno.
-- `CLI_APE_MAT`: apellido materno.
-- `CLI_CEL`: celular principal.
-- `CLI_CEL_REF`: celular de referencia.
-- `CLI_NOM_CEL_REF`: nombre de la referencia.
-- `CLI_COR`: correo electrónico.
-- `CLI_CI`: carnet de identidad.
-- `CLI_NAC`: nacionalidad.
-- `CLI_ZONA`: zona.
-- `CLI_CALLE`: calle o dirección.
-- `CLI_OBS`: observaciones.
-- `CLI_HAB`: estado de habilitación.
-- `CLI_FEC_REG`: fecha de registro.
-
-### `TIPO_ITEM_BOUTIQUE`
-
-- `TIB_ID`: identificador del tipo de artículo.
-- `TIB_NOM`: nombre del tipo.
-- `TIB_DES`: descripción del tipo.
-- `TIB_HAB`: estado de habilitación.
-- `TIB_FEC_REG`: fecha de registro.
-
-### `ITEM_BOUTIQUE`
-
-- `ITB_ID`: identificador del artículo.
-- `TIB_ID`: tipo de artículo boutique.
-- `ITB_COD`: código interno.
-- `ITB_NOM`: nombre del artículo.
-- `ITB_COLOR`: color principal.
-- `ITB_FORMA`: forma o estilo.
-- `ITB_MATERIAL`: material principal.
-- `ITB_MEDIDAS`: medidas generales.
-- `ITB_PROVEEDOR`: proveedor.
-- `ITB_DES`: descripción.
-- `ITB_PRECIO_COMPRA`: costo de compra.
-- `ITB_PRECIO_VENTA`: precio de venta.
-- `ITB_STOCK`: stock disponible.
-- `ITB_STOCK_MIN`: stock mínimo recomendado.
-- `ITB_ESTADO`: habilitación del artículo.
-- `ITB_OBS`: observaciones.
-- `ITB_FEC_REG`: fecha de registro.
-
-### `DETALLE_VESTIDO_BOUTIQUE`
-
-- `DVB_ID`: identificador del detalle.
-- `ITB_ID`: artículo boutique asociado.
-- `DVB_TIPO_VESTIDO`: tipo de vestido.
-- `DVB_CORTE_FALDA`: corte de falda.
-- `DVB_TIPO_ESCOTE`: tipo de escote.
-- `DVB_TIENE_COLA`: indica si tiene cola.
-- `DVB_TIENE_MANGA`: indica si tiene manga.
-- `DVB_TIENE_PEDRERIA`: indica si tiene pedrería.
-- `DVB_COPA_TALLA`: copa del vestido.
-- `DVB_TALLA`: talla del vestido.
-- `DVB_LARGO_FALDA`: largo de falda.
-- `DVB_OBS`: observaciones.
-
-### `DETALLE_VELO_BOUTIQUE`
-
-- `DVE_ID`: identificador del detalle.
-- `ITB_ID`: artículo boutique asociado.
-- `DVE_TIPO_VELO`: tipo de velo.
-- `DVE_LARGO`: largo del velo.
-- `DVE_TAMANO`: tamaño.
-- `DVE_CAPAS`: número de capas.
-- `DVE_BORDE`: tipo de borde.
-- `DVE_DECORACION`: decoración.
-- `DVE_OBS`: observaciones.
-
-### `DETALLE_BOUQUET_BOUTIQUE`
-
-- `DBO_ID`: identificador del detalle.
-- `ITB_ID`: artículo boutique asociado.
-- `DBO_TIPO_BOUQUET`: tipo de bouquet.
-- `DBO_TAMANO`: tamaño.
-- `DBO_TIPO_FLOR`: tipo de flor.
-- `DBO_DECORACION`: decoración.
-- `DBO_OBS`: observaciones.
-
-### `VENTA_BOUTIQUE`
-
-- `VEB_ID`: identificador de la venta.
-- `ITB_ID`: artículo vendido.
-- `USU_ID`: usuario que registró la venta.
-- `CLI_ID`: cliente asociado.
-- `VEB_FEC`: fecha y hora de la venta.
-- `VEB_CANT`: cantidad vendida.
-- `VEB_PRE_UNI`: precio unitario.
-- `VEB_DESCUENTO`: descuento aplicado.
-- `VEB_MOTIVO_DESC`: motivo del descuento.
-- `VEB_TOT`: total calculado de la venta.
-- `VEB_METODO_PAGO`: método de pago.
-- `VEB_OBS`: observaciones.
-- `VEB_ESTADO`: estado de la venta.
-
-### `FLETE_VESTIDO`
-
-- `FLE_ID`: identificador único del registro de flete del vestido.
-- `DVB_ID`: vestido de boutique asociado al flete.
-- `USU_ID`: usuario interno que habilitó o registró el vestido como fletable.
-- `FLE_PRECIO_FLETE_REF`: precio referencial sugerido para fletar el vestido.
-- `FLE_MAX_SALIDAS`: cantidad máxima de salidas permitidas para el vestido.
-- `FLE_SALIDAS_ACTUALES`: cantidad acumulada de veces que el vestido ya fue fletado.
-- `FLE_ESTADO`: estado actual del vestido dentro del ciclo de flete.
-- `FLE_FEC_HAB_FLETE`: fecha y hora en que el vestido fue habilitado para flete.
-- `FLE_OBS`: observaciones generales sobre el vestido fletable.
-- `FLE_HAB`: indica si el registro de flete se encuentra habilitado.
-
-### `SALIDA_FLETE`
-
-- `SFL_ID`: identificador único de la salida de flete.
-- `FLE_ID`: vestido fletable asociado a la salida.
-- `CLI_ID`: cliente que se llevó el vestido en flete.
-- `USU_ID`: usuario interno que registró la salida.
-- `SFL_NUM`: número de salida del vestido dentro de su ciclo de flete.
-- `SFL_FEC_REG`: fecha y hora en que se registró la salida.
-- `SFL_FEC_SALIDA`: fecha en que el vestido sale de boutique.
-- `SFL_FEC_DEVOLUCION_PREVISTA`: fecha acordada para la devolución del vestido.
-- `SFL_FEC_DEVOLUCION_REAL`: fecha real en que el vestido fue devuelto.
-- `SFL_PRECIO`: precio cobrado por esa salida de flete.
-- `SFL_DESCUENTO`: descuento aplicado al precio del flete, si corresponde.
-- `SFL_MOTIVO_DESC`: motivo del descuento aplicado al flete.
-- `SFL_GARANTIA`: monto recibido como garantía por la salida del vestido.
-- `SFL_GARANTIA_DEVUELTA`: monto de garantía devuelto al cliente después de revisar el vestido.
-- `SFL_ESTADO_SALIDA`: estado operativo de la salida de flete.
-- `SFL_ESTADO_ENTREGA`: estado del vestido al momento de entregarlo al cliente.
-- `SFL_ESTADO_DEVOLUCION`: estado del vestido al momento de ser devuelto.
-- `SFL_REQUIERE_ARREGLO`: indica si el vestido requiere arreglo después de la devolución.
-- `SFL_MONTO_ARREGLO`: monto cobrado o descontado por arreglo, daño o deterioro.
-- `SFL_DESCRIPCION_ARREGLO`: descripción del daño, arreglo o situación detectada.
-- `SFL_OBS_ENTREGA`: observaciones registradas al momento de entregar el vestido.
-- `SFL_OBS_DEVOLUCION`: observaciones registradas al momento de devolver el vestido.
-- `SFL_HAB`: indica si la salida de flete se encuentra habilitada.
-
-### `INVENTARIO_TALLER`
-
-- `INT_ID`: identificador del material.
-- `INT_COD`: código interno.
-- `INT_NOM`: nombre del material.
-- `INT_TIPO`: tipo de material.
-- `INT_DES1`: descripción principal.
-- `INT_DES2`: descripción complementaria.
-- `INT_COLOR`: color.
-- `INT_TAMANO`: tamaño.
-- `INT_MATERIAL`: material o composición.
-- `INT_PROVEEDOR`: proveedor.
-- `INT_COSTO_REF`: costo referencial.
-- `INT_STOCK`: stock.
-- `INT_UNI_MED`: unidad de medida.
-- `INT_STOCK_MIN`: stock mínimo.
-- `INT_ESTADO`: habilitación del material.
-- `INT_OBS`: observaciones.
-- `INT_FEC_REG`: fecha de registro.
-
-### `SALIDA_MATERIAL_TALLER`
-
-- `SMT_ID`: identificador de la salida.
-- `INT_ID`: material que salió.
-- `USU_ID`: usuario que registró la salida.
-- `SMT_FEC`: fecha y hora de salida.
-- `SMT_CAN`: cantidad entregada.
-- `SMT_UNI_MED`: unidad de medida.
-- `SMT_DESTINO`: destino o persona receptora.
-- `SMT_OBS1`: observación principal.
-- `SMT_OBS2`: observación secundaria.
-- `SMT_ESTADO`: estado del registro.
-
-### `PEDIDO`
-
-- `PED_ID`: identificador del pedido.
-- `CLI_ID`: cliente del pedido.
-- `PED_COD`: código interno del pedido.
-- `PED_TIPO`: tipo general del pedido.
-- `PED_FEC_REG_CONTRATO`: fecha de contrato.
-- `PED_ENCARGADO_CONTRATO`: persona que cerró el contrato.
-- `PED_FEC_DE_ENTREGA`: fecha comprometida de entrega.
-- `PED_FEC_ENTREGA_FINAL`: fecha real/final de entrega.
-- `PED_VIAJE`: indica si el pedido tiene condición de viaje.
-- `PED_DESTINO`: destino del pedido si aplica.
-- `PED_DESCUENTO`: descuento del pedido.
-- `PED_MOTIVO_DESCUENTO`: motivo del descuento.
-- `PED_PRE_TOT`: precio total del pedido.
-- `PED_TOTAL_PAGADO`: total pagado acumulado.
-- `PED_SALDO`: saldo pendiente.
-- `PED_OBS`: observaciones.
-- `PED_ESTADO_GENERAL`: estado general del pedido.
-- `PED_HAB`: habilitación lógica.
-
-### `PEDIDO_VESTIDO`
-
-- `PDV_ID`: identificador del detalle.
-- `PED_ID`: pedido asociado.
-- `PDV_TIPO_VESTIDO`: tipo de vestido pedido.
-- `PDV_COLOR`: color principal.
-- `PDV_DESCRIPCION_MATERIAL`: descripción de materiales.
-- `PDV_DESCRIPCION_DISENO`: descripción de diseño.
-- `PDV_DESCRIPCION_2`: descripción adicional.
-- `PDV_ANE_ESP`, `PDV_TAL_ESP`, `PDV_TAL_DEL`, `PDV_CON_CIN`, `PDV_CON_CAD`, `PDV_LAR_FAL`, `PDV_SISA`, `PDV_ANB_BUS`, `PDV_SEP_BUS`, `PDV_TAL_BUS`, `PDV_TAL_COS`: medidas del cuerpo o vestido.
-- `PDV_OBS`: observaciones.
-
-### `PEDIDO_VELO`
-
-- `PDVE_ID`: identificador del detalle.
-- `PED_ID`: pedido asociado.
-- `PDVE_TIPO_VELO`: tipo de velo.
-- `PDVE_COLOR`: color.
-- `PDVE_LARGO`: largo.
-- `PDVE_CAPAS`: número de capas.
-- `PDVE_BORDE`: borde.
-- `PDVE_DECORACION`: decoración.
-- `PDVE_MATERIAL`: material.
-- `PDVE_OBS`: observaciones.
-
-### `PEDIDO_COLA`
-
-- `PDCO_ID`: identificador del detalle.
-- `PED_ID`: pedido asociado.
-- `PDCO_TIPO_COLA`: tipo de cola.
-- `PDCO_COLOR`: color.
-- `PDCO_LARGO`: largo.
-- `PDCO_MATERIAL`: material.
-- `PDCO_DECORACION`: decoración.
-- `PDCO_OBS`: observaciones.
-
-### `PEDIDO_MANGA`
-
-- `PDMA_ID`: identificador del detalle.
-- `PED_ID`: pedido asociado.
-- `PDMA_TIPO_MANGA`: tipo de manga.
-- `PDMA_LAR_MAN`: largo de manga.
-- `PDMA_BRA`: medida de brazo.
-- `PDMA_PUN`: medida de puño.
-- `PDMA_MATERIAL`: material.
-- `PDMA_DECORACION`: decoración.
-- `PDMA_OBS`: observaciones.
-
-### `PEDIDO_BOUQUET`
-
-- `PDB_ID`: identificador del detalle.
-- `PED_ID`: pedido asociado.
-- `PDB_TIPO_BOUQUET`: tipo de bouquet.
-- `PDB_COLOR`: color.
-- `PDB_TAMANO`: tamaño.
-- `PDB_TIPO_FLOR`: tipo de flor.
-- `PDB_DECORACION`: decoración.
-- `PDB_OBS`: observaciones.
-
-### `PRUEBA_PEDIDO`
-
-- `PRP_ID`: identificador de la prueba.
-- `PED_ID`: pedido asociado.
-- `PRP_NUM`: número de prueba.
-- `PRP_FEC`: fecha de prueba.
-- `PRP_HOR`: hora de prueba.
-- `PRP_ESTADO`: estado de la prueba.
-- `PRP_OBS`: observaciones.
-- `PRP_HAB`: habilitación lógica.
-
-### `PAGO_PEDIDO`
-
-- `PPD_ID`: identificador del pago.
-- `PED_ID`: pedido al que pertenece el pago.
-- `USU_ID`: usuario que registró el pago.
-- `PPD_FEC`: fecha y hora del pago.
-- `PPD_MONTO`: monto pagado.
-- `PPD_METODO`: método de pago.
-- `PPD_OBS1`: observación principal.
-- `PPD_OBS2`: observación secundaria.
-
-### `TIPO_COMPROBANTE`
-
-- `TCO_ID`: identificador único del tipo de comprobante.
-- `TCO_NOM`: nombre del tipo de comprobante.
-- `TCO_DES`: descripción del tipo de comprobante.
-- `TCO_ES_FISCAL`: indica si el tipo de comprobante tiene finalidad fiscal. En la versión actual normalmente será falso.
-- `TCO_HAB`: estado de habilitación del tipo de comprobante.
-- `TCO_FEC_REG`: fecha y hora de registro.
-
-### `COMPROBANTE_INTERNO`
-
-- `COI_ID`: identificador único del comprobante interno.
-- `TCO_ID`: tipo de comprobante interno asociado.
-- `CLI_ID`: cliente asociado al comprobante, si corresponde.
-- `USU_ID`: usuario que generó o registró el comprobante.
-- `VEB_ID`: venta directa de boutique asociada, si el comprobante nace de una venta.
-- `PPD_ID`: pago de pedido asociado, si el comprobante nace de un pago de pedido.
-- `SFL_ID`: salida de flete asociada, si el comprobante nace de una operación de flete.
-- `COI_COD`: código interno único del comprobante.
-- `COI_FEC`: fecha y hora de emisión del comprobante.
-- `COI_NOM_CLIENTE`: nombre del cliente mostrado en el comprobante.
-- `COI_CI_NIT_CLIENTE`: CI o NIT del cliente mostrado en el comprobante.
-- `COI_CEL_CLIENTE`: celular del cliente mostrado en el comprobante.
-- `COI_SUBTOTAL`: subtotal documentado en el comprobante.
-- `COI_DESCUENTO`: descuento documentado en el comprobante.
-- `COI_TOTAL`: total final documentado en el comprobante.
-- `COI_MONTO_PAGADO`: monto recibido en esa operación.
-- `COI_SALDO_POSTERIOR`: saldo restante después del pago, si corresponde.
-- `COI_GARANTIA`: monto de garantía registrado, si corresponde.
-- `COI_METODO_PAGO`: método de pago utilizado.
-- `COI_ESTADO`: estado del comprobante, por ejemplo emitido o anulado.
-- `COI_OBS`: observaciones del comprobante.
-- `COI_HAB`: habilitación lógica del comprobante.
-
-### `DETALLE_COMPROBANTE`
-
-- `DCO_ID`: identificador único del detalle del comprobante.
-- `COI_ID`: comprobante interno al que pertenece el detalle.
-- `DCO_CONCEPTO`: concepto o descripción de la línea del comprobante.
-- `DCO_CANTIDAD`: cantidad correspondiente al concepto.
-- `DCO_PRECIO_UNIDAD`: precio unitario del concepto.
-- `DCO_DESCUENTO`: descuento aplicado a la línea del detalle.
-- `DCO_SUBTOTAL`: subtotal calculado de la línea.
-- `DCO_OBS`: observaciones específicas del detalle.
-
-### `EGRESO`
-
-- `EGR_ID`: identificador del egreso.
-- `USU_ID`: usuario que registró el egreso.
-- `EGR_FEC`: fecha y hora.
-- `EGR_TIPO`: tipo de egreso.
-- `EGR_CONCEPTO`: concepto del gasto.
-- `EGR_CANTIDAD`: cantidad.
-- `EGR_PRECIO_UNIDAD`: precio unitario.
-- `EGR_BENEFICIARIO`: persona o entidad beneficiaria.
-- `EGR_MONTO`: monto calculado del egreso.
-- `EGR_OBS1`, `EGR_OBS2`, `EGR_OBS3`: observaciones.
-- `EGR_ESTADO`: estado del registro.
-
-### `AUDITORIA_SISTEMA`
-
-- `AUD_ID`: identificador del log.
-- `USU_ID`: usuario que hizo la acción.
-- `AUD_FEC`: fecha y hora del evento.
-- `AUD_TABLA`: tabla afectada.
-- `AUD_ID_REGISTRO`: identificador del registro afectado.
-- `AUD_ACCION`: tipo de acción.
-- `AUD_CAMPO`: campo afectado, si aplica.
-- `AUD_VALOR_ANTERIOR`: valor previo.
-- `AUD_VALOR_NUEVO`: valor nuevo.
-- `AUD_DESCRIPCION`: descripción del evento.
-- `AUD_IP`: IP de origen.
-- `AUD_DISPOSITIVO`: dispositivo o cliente usado.
-
----
-
-## 6. Relaciones entre tablas
-
-La tabla `ROL` se relaciona con `CUENTA`, ya que cada cuenta necesita un rol para determinar su nivel de acceso dentro del sistema. La tabla `USUARIO` se relaciona también con `CUENTA`, porque una cuenta pertenece a un usuario específico, y además participa en módulos operativos como ventas, pagos, salidas de material, ingresos, egresos, recibos y auditoría, permitiendo identificar quién ejecutó cada acción.
-
-La tabla `CLIENTE` se relaciona con `PEDIDO`, `VENTA_BOUTIQUE` y `RECIBO`. Esto permite que un cliente pueda tener varios pedidos, varias compras directas y varios comprobantes emitidos a su nombre. De esta manera, el sistema conserva trazabilidad comercial y documental.
-
-La tabla `TIPO_ITEM_BOUTIQUE` se relaciona con `ITEM_BOUTIQUE`, ya que cada artículo de boutique debe pertenecer a un tipo definido. A su vez, `ITEM_BOUTIQUE` se relaciona con `DETALLE_VESTIDO_BOUTIQUE`, `DETALLE_VELO_BOUTIQUE` y `DETALLE_BOUQUET_BOUTIQUE`, permitiendo que el artículo base tenga información especializada solo cuando corresponde. También se relaciona con `VENTA_BOUTIQUE`, porque las ventas se realizan sobre los artículos registrados en boutique.
-
-a tabla `FLETE_VESTIDO` se relaciona con `DETALLE_VESTIDO_BOUTIQUE`, ya que solo un vestido previamente registrado dentro del inventario de boutique puede ser habilitado para flete. Esta relación permite mantener separada la información general del vestido de su configuración específica como prenda fletable.
-
-La tabla `FLETE_VESTIDO` también se relaciona con `USUARIO`, porque debe identificarse qué usuario interno habilitó o registró el vestido como disponible para flete. Esto permite mantener trazabilidad operativa sobre la gestión de inventario y decisiones comerciales.
-
-La tabla `SALIDA_FLETE` se relaciona con `FLETE_VESTIDO`, ya que cada salida corresponde a un vestido fletable específico. Un mismo vestido puede tener varias salidas históricas, pero solo una salida activa a la vez.
-
-La tabla `SALIDA_FLETE` se relaciona con `CLIENTE`, porque cada salida debe estar asociada al cliente que recibe temporalmente el vestido. Esto permite consultar el historial de fletes por cliente y saber quién tuvo el vestido en una determinada fecha.
-
-La tabla `SALIDA_FLETE` se relaciona con `USUARIO`, ya que cada salida debe registrar al usuario interno responsable de realizar la operación. Esto permite controlar quién entregó, registró o gestionó el flete.
-
-De forma documental, `SALIDA_FLETE` puede relacionarse con `RECIBO`, ya que una salida de flete puede generar un comprobante por el monto cobrado, la garantía recibida o algún cobro adicional por arreglo. Esta relación permite que los ingresos por flete formen parte de los reportes financieros del sistema.
-
-La tabla `INVENTARIO_TALLER` se relaciona con `SALIDA_MATERIAL_TALLER`, ya que cada salida de material debe corresponder a un insumo existente en el inventario del taller. Esto permite controlar el flujo de materiales desde el stock hacia costureros, decoradores u otros destinos.
-
-La tabla `PEDIDO` se relaciona con `CLIENTE` y funciona como tabla base del módulo de pedidos. A partir de ella se conectan `PEDIDO_VESTIDO`, `PEDIDO_VELO`, `PEDIDO_COLA`, `PEDIDO_MANGA` y `PEDIDO_BOUQUET`, que almacenan únicamente la información específica del componente pedido. Además, `PEDIDO` se relaciona con `PRUEBA_PEDIDO`, permitiendo registrar múltiples pruebas por pedido, y con `PAGO_PEDIDO`, que registra cada pago realizado sobre el pedido.
-
-La tabla `PAGO_PEDIDO` se relaciona indirectamente con `COMPROBANTE_INTERNO`, ya que cada pago realizado sobre un pedido puede generar una constancia interna de pago. Esta constancia permite documentar el monto pagado, el método de pago y el saldo posterior del pedido.
-
-La tabla `VENTA_BOUTIQUE` también se relaciona con `COMPROBANTE_INTERNO`, porque una venta directa puede generar una nota de venta interna. Esta nota permite dejar constancia del artículo vendido, el monto cobrado, el descuento aplicado y el usuario responsable de la operación.
-
-La tabla `SALIDA_FLETE` puede relacionarse con `COMPROBANTE_INTERNO`, ya que una operación de flete puede generar comprobantes internos por el cobro del flete, la garantía recibida, una devolución de garantía o un arreglo cobrado por daño o deterioro.
-
-La tabla `TIPO_COMPROBANTE` se relaciona con `COMPROBANTE_INTERNO`, clasificando cada documento emitido según su finalidad: nota de venta, recibo de pago de pedido, comprobante de flete, comprobante de garantía u otro documento interno.
-
-La tabla `COMPROBANTE_INTERNO` se relaciona con `CLIENTE` y `USUARIO`, permitiendo identificar a quién corresponde el comprobante y quién lo generó. Además, se relaciona opcionalmente con `VENTA_BOUTIQUE`, `PAGO_PEDIDO` o `SALIDA_FLETE`, manteniendo un único origen operativo por comprobante.
-
-La tabla `DETALLE_COMPROBANTE` se relaciona con `COMPROBANTE_INTERNO`, descomponiendo el contenido del documento en conceptos, cantidades, precios, descuentos y subtotales.
-
-La tabla `EGRESO` se relaciona con `USUARIO`, ya que todo gasto registrado debe estar asociado al responsable que lo ingresó al sistema.
-
-Finalmente, `AUDITORIA_SISTEMA` se relaciona con `USUARIO` y de forma lógica con todas las demás tablas, ya que su función es registrar eventos relevantes que ocurren sobre ellas. De esta manera, el sistema puede dejar constancia de inserciones, actualizaciones, eliminaciones lógicas, cambios de estado y accesos.
-
----
-
-## 7. Reglas de control que debe aplicar el backend
-
-### Seguridad
-
-- Las contraseñas de `CUENTA` deben guardarse en hash, nunca en texto plano.
-- No se debe permitir iniciar sesión con cuentas deshabilitadas.
-- No se debe permitir operar con usuarios deshabilitados.
-- La confirmación de contraseña se valida en frontend y backend, pero no se almacena en la BD.
-
-### Boutique
-
-- Al registrar un `ITEM_BOUTIQUE`, el backend debe validar que el `TIB_ID` exista y esté habilitado.
-- Si el artículo es vestido, velo o bouquet, el backend debe guardar primero `ITEM_BOUTIQUE` y luego su tabla detalle correspondiente dentro de una misma transacción.
-- No debe permitirse vender un artículo sin stock suficiente.
-- `VEB_TOT` se calcula automáticamente en la BD, pero el backend debe validar que el descuento no supere el subtotal.
-- Si hay descuento, debe exigirse motivo; si no hay descuento, el motivo debe quedar nulo.
-- No debe permitirse vender artículos deshabilitados.
-
-### Fletes
-
-- Solo deben habilitarse para flete los vestidos registrados en `DETALLE_VESTIDO_BOUTIQUE`.
-- El backend debe validar que el vestido corresponda a un tipo permitido para flete, principalmente vestidos de 15 años.
-- No debe permitirse habilitar dos veces el mismo vestido como fletable.
-- Un vestido fletable debe iniciar normalmente con estado `DISPONIBLE`.
-- No debe permitirse registrar una salida si el vestido no está en estado `DISPONIBLE`.
-- No debe permitirse registrar una nueva salida si el vestido ya tiene una salida activa en estado `RESERVADO` o `EN_FLETE`.
-- El número de salida `SFL_NUM` debe ser único por cada vestido fletable.
-- El backend debe calcular o validar que `SFL_NUM` siga una secuencia lógica según las salidas anteriores del vestido.
-- No debe permitirse que `FLE_SALIDAS_ACTUALES` supere `FLE_MAX_SALIDAS`.
-- Cuando se registra una salida efectiva, el estado del vestido debe cambiar a `EN_FLETE`.
-- Cuando el vestido se devuelve, el backend debe registrar la fecha real de devolución y el estado de devolución.
-- Cuando una salida queda como `DEVUELTO`, `DEVUELTO_CON_OBSERVACION` o `DEVUELTO_CON_ARREGLO`, debe actualizarse el contador `FLE_SALIDAS_ACTUALES`.
-- Si el vestido todavía no alcanzó el máximo de salidas, puede volver a estado `DISPONIBLE` después de la revisión correspondiente.
-- Si el vestido alcanzó el máximo de salidas permitidas, debe pasar a estado `AGOTADO`.
-- Un vestido en estado `AGOTADO`, `PASADO_PARA_VENTA` o `RETIRADO` no debe poder registrar nuevas salidas de flete.
-- Si el vestido vuelve con daño, observación o arreglo, deben registrarse las observaciones correspondientes.
-- Si `SFL_REQUIERE_ARREGLO` es verdadero, debe existir descripción del arreglo y monto asociado.
-- Si se aplica descuento en una salida de flete, debe registrarse obligatoriamente el motivo del descuento.
-- No debe permitirse que el descuento sea mayor al precio del flete.
-- La fecha de devolución prevista no debe ser anterior a la fecha de salida.
-- La fecha de devolución real no debe ser anterior a la fecha de salida.
-- La garantía devuelta no debe ser mayor a la garantía recibida.
-- Las salidas anuladas no deben incrementar el contador de salidas actuales.
-- Los cambios de estado relevantes deben registrarse en auditoría.
-
-### Taller
-
-- No debe permitirse registrar salidas de material si el stock disponible es insuficiente.
-- Cada salida de material debe descontar stock automáticamente desde el backend o mediante la lógica que implementes.
-- La unidad de medida usada en la salida debe ser coherente con la del material.
-
-### Pedidos
-
-- Al crear un pedido, debe existir un cliente válido.
-- `PED_TOTAL_PAGADO` y `PED_SALDO` deben recalcularse automáticamente a partir de `PAGO_PEDIDO`.
-- No debe permitirse editar manualmente desde interfaz los campos resumen del pedido si estos dependen de pagos reales.
-- Si el pedido tiene descuento, debe existir motivo del descuento.
-- No debe permitirse que el descuento supere el precio total del pedido.
-- Las tablas hijas `PEDIDO_VESTIDO`, `PEDIDO_VELO`, `PEDIDO_COLA`, `PEDIDO_MANGA` y `PEDIDO_BOUQUET` solo deben llenarse si aplican al tipo real del pedido.
-- En `PRUEBA_PEDIDO`, el backend debe evitar duplicar el mismo número de prueba para un mismo pedido.
-- El backend debe validar que la secuencia de pruebas tenga sentido cronológico.
-
-### Pagos de pedido
-
-- No debe permitirse registrar pagos con monto menor o igual a cero.
-- No debe permitirse registrar pagos sobre pedidos cancelados.
-- Después de registrar, editar o eliminar un pago, el backend debe recalcular:
-  - `PED_TOTAL_PAGADO`
-  - `PED_SALDO`
-- Si manejas clasificación de pago como “a cuenta” o “pago final”, esta debe calcularse automáticamente desde backend según el saldo posterior.
-
-### Comprobantes internos
-
-- **Los comprobantes internos deben generarse automáticamente desde el backend.**
-- El usuario no debe llenar manualmente montos, saldo, totales ni detalle general del comprobante si estos datos provienen de una operación registrada.
-- El comprobante interno no debe ser el origen de una venta, pago o flete; solo debe documentar una operación ya registrada.
-- Cuando se registre una `VENTA_BOUTIQUE`, el backend debe generar automáticamente:
-  - el registro en `COMPROBANTE_INTERNO`
-  - sus filas en `DETALLE_COMPROBANTE`
-- Cuando se registre un `PAGO_PEDIDO`, el backend debe generar automáticamente:
-  - el registro en `COMPROBANTE_INTERNO`
-  - sus filas en `DETALLE_COMPROBANTE`
-- Cuando se registre una `SALIDA_FLETE` con cobro, el backend debe generar automáticamente:
-  - el comprobante interno correspondiente al flete
-  - el detalle del comprobante
-- Si la operación de flete incluye garantía, el backend debe registrar la garantía en la operación correspondiente y documentarla en el comprobante interno según la lógica definida.
-- El backend debe tomar automáticamente de las tablas relacionadas:
-  - cliente
-  - usuario
-  - método de pago
-  - montos
-  - descuento
-  - total
-  - saldo posterior
-  - garantía
-  - fecha
-  - concepto de la operación
-- Cada comprobante interno debe tener un solo origen operativo:
-  - `VENTA_BOUTIQUE`
-  - `PAGO_PEDIDO`
-  - `SALIDA_FLETE`
-- No debe permitirse que un mismo comprobante esté asociado simultáneamente a una venta, a un pago de pedido y a una salida de flete.
-- Los campos de montos guardados en `COMPROBANTE_INTERNO` y `DETALLE_COMPROBANTE` representan una copia histórica del documento emitido.
-- La copia histórica del comprobante permite conservar los datos mostrados al cliente aunque después se modifiquen datos del cliente, producto, pedido o flete.
-- Solo deberían permitirse ajustes manuales en datos documentales excepcionales como nombre mostrado del cliente, CI/NIT, celular u observaciones, si el flujo del negocio lo requiere.
-- Todo comprobante interno debe mostrar desde frontend una leyenda clara indicando que no constituye factura, nota fiscal ni documento equivalente.
-- La leyenda sugerida es: “Documento de control interno. No constituye factura, nota fiscal ni documento equivalente. No válido para crédito fiscal ni descargo tributario.”
-- Los comprobantes anulados no deben eliminarse físicamente; deben conservarse con estado `ANULADO` para mantener trazabilidad.
-- La anulación de un comprobante no debe anular automáticamente la operación original, salvo que el backend ejecute explícitamente una transacción de reversión controlada.
-
-### Ingresos
-
-- Los ingresos no se registran manualmente en una tabla independiente.
-- Los ingresos se obtienen mediante reportes generados a partir de operaciones reales:
-  - ventas directas registradas en `VENTA_BOUTIQUE`
-  - pagos de pedidos registrados en `PAGO_PEDIDO`
-  - cobros de fletes registrados en `SALIDA_FLETE`
-  - cobros por arreglos o daños asociados a fletes, si corresponde
-- Los comprobantes internos sirven como respaldo documental de estas operaciones, pero no deben ser considerados como el origen primario del ingreso.
-- Las garantías de flete no deben considerarse ingreso definitivo mientras estén pendientes de devolución.
-- Una garantía solo puede convertirse en ingreso si existe una justificación operativa, por ejemplo daño, arreglo, penalidad o incumplimiento de devolución.
-
-### Egresos
-
-- `EGR_MONTO` se calcula automáticamente en la BD.
-- El backend debe validar que cantidad y precio unitario sean positivos.
-- No debe registrarse como egreso el dinero entregado bruto si hubo cambio; solo el gasto real.
-- El backend debe validar la coherencia entre tipo de egreso y concepto.
-
-### Auditoría
-
-- Las operaciones críticas del sistema deben registrar automáticamente eventos en `AUDITORIA_SISTEMA`.
-- Se recomienda auditar:
-  - creación y modificación de clientes
-  - creación y cambio de cuentas
-  - ventas
-  - pagos
-  - cambios de estado
-  - egresos
-  - anulaciones
-  - cancelaciones
-  - login y logout
-
----
-
-## 8. Recomendaciones operativas
-
-- Usar siempre transacciones en operaciones compuestas, por ejemplo:
-  - venta + recibo + detalle_recibo
-  - pago_pedido + actualización de pedido + recibo + detalle_recibo
-- Validar en backend antes de insertar, aunque la BD ya tenga restricciones.
-- Evitar ingreso manual repetido de datos ya existentes en relaciones.
-- Usar UTF-8 para aceptar nombres, textos, tildes y caracteres especiales.
-- Mantener control estricto del estado de registros activos, cancelados o anulados según el módulo.
-- Usar transacciones en operaciones compuestas de comprobantes internos, por ejemplo:
-  - venta_boutique + comprobante_interno + detalle_comprobante
-  - pago_pedido + actualización de saldo + comprobante_interno + detalle_comprobante
-  - salida_flete + comprobante_interno + detalle_comprobante
-  - devolución de flete + ajuste de garantía + comprobante interno, si corresponde
-- No permitir que el usuario edite manualmente montos generados desde operaciones reales.
-- Mantener los comprobantes internos como documentos históricos, no como tablas operativas principales.
-- La operación real debe registrarse primero en su módulo correspondiente y luego generar el comprobante.
-- Los comprobantes internos deben conservarse incluso si son anulados, para mantener trazabilidad.
-- El frontend debe mostrar claramente que el comprobante interno no tiene valor fiscal.
-
----
-
-## 9. Index
-
-Verificar los index que se sugieren en BASE_DE_DATOS.postgres
-
-## 10. Reportes
-
-Verificar los reportes que se sugieren en BASE_DE_DATOS.postgres
-
-- MUY IMPORTANTE cambiar el dato correspondiente de la tabla "usuario" y sus atributos correspondientes en los reportes (para seguir un uso adecuado de la sintaxis).
-
-## 11. Conclusión
-
-La base de datos v.0.3 de BELLAARTE BOUTIQUE está organizada para soportar de manera más estructurada el funcionamiento real de la empresa: gestión de usuarios, clientes, artículos boutique, materiales de taller, pedidos especializados, pagos, recibos, egresos y auditoría. El diseño combina tablas base y tablas detalle para evitar mezclar atributos que no aplican a todos los casos, y además establece una lógica clara para que los módulos financieros y documentales se alimenten automáticamente desde las operaciones reales del sistema.
+Registra salidas de dinero de la empresa.
+
+**Campos principales:** `EGR\_ID`, `USU\_ID`, `EGR\_FEC`, `EGR\_TIPO`, `EGR\_CONCEPTO`, `EGR\_CANTIDAD`, `EGR\_PRECIO\_UNIDAD`, `EGR\_BENEFICIARIO`, `EGR\_MONTO`, `EGR\_OBS1`, `EGR\_OBS2`, `EGR\_ESTADO`, `EGR\_FEC\_CAMB\_EST`, `EGR\_MOTIVO\_CAMB\_EST`.
+
+**Restricciones relevantes:**
+
+- cantidad y precio unitario deben ser mayores a cero;
+- `EGR\_MONTO` se calcula automáticamente;
+- si el egreso está anulado, debe existir fecha y motivo.
+
+**Lógica:**
+
+Los egresos anulados deben conservarse como historial, pero no deben sumar en reportes de egreso real.
+
+\---
+
+### `AUDITORIA\_SISTEMA`
+
+Registra eventos importantes del sistema.
+
+**Campos principales:** `AUD\_ID`, `USU\_ID`, `AUD\_FEC`, `AUD\_TABLA`, `AUD\_ID\_REGISTRO`, `AUD\_ACCION`, `AUD\_CAMPO`, `AUD\_VALOR\_ANTERIOR`, `AUD\_VALOR\_NUEVO`, `AUD\_DESCRIPCION`, `AUD\_IP`, `AUD\_DISPOSITIVO`.
+
+**Lógica:**
+
+Debe registrar inserciones, actualizaciones, eliminaciones lógicas, cambios de estado, anulaciones, cancelaciones, login y logout.
+
+\---
+
+### `NOTIFICACION`
+
+Registra notificaciones internas dirigidas a usuarios del sistema.
+
+**Campos principales:** `NOT\_ID`, `USU\_ID`, `NOT\_TIPO`, `NOT\_PRIORIDAD`, `NOT\_TITULO`, `NOT\_MENSAJE`, `NOT\_MODULO`, `NOT\_LEIDA`, `NOT\_FEC`, `NOT\_FEC\_LEIDA`.
+
+**Relaciones:**
+
+- `NOT.USU\_ID` → `USUARIO.USU\_ID`.
+
+**Lógica:**
+
+Sirve para alertar sobre stock agotado, pruebas programadas, entregas próximas, devoluciones de flete, saldos pendientes, pedidos atrasados u otros eventos operativos.
+
+\---
+
+## 6\. Relaciones clave del modelo
+
+- `ROL` 1 : N `CUENTA`.
+- `USUARIO` 1 : N `CUENTA`.
+- `USUARIO` 1 : N operaciones registradas: ventas, pagos, fletes, entradas, egresos, auditorías y notificaciones.
+- `CLIENTE` 1 : N `PEDIDO`.
+- `CLIENTE` 1 : N `VENTA\_BOUTIQUE`.
+- `CLIENTE` 1 : N `SALIDA\_FLETE`.
+- `CLIENTE` 1 : N `COMPROBANTE\_INTERNO`.
+- `PROVEEDOR` 1 : N `ITEM\_BOUTIQUE`.
+- `PROVEEDOR` 1 : N `INVENTARIO\_TALLER`.
+- `MONEDA` 1 : N `TIPO\_CAMBIO\_MONEDA`.
+- `MONEDA` 1 : N `VENTA\_BOUTIQUE`, `PAGO\_PEDIDO`, `SALIDA\_FLETE`, `COMPROBANTE\_INTERNO`.
+- `TIPO\_ITEM\_BOUTIQUE` 1 : N `ITEM\_BOUTIQUE`.
+- `ITEM\_BOUTIQUE` 1 : 0..1 `DETALLE\_BRASSIER\_BOUTIQUE`.
+- `ITEM\_BOUTIQUE` 1 : 0..1 `DETALLE\_VESTIDO\_BOUTIQUE`.
+- `ITEM\_BOUTIQUE` 1 : 0..1 `DETALLE\_VELO\_BOUTIQUE`.
+- `ITEM\_BOUTIQUE` 1 : 0..1 `DETALLE\_BOUQUET\_BOUTIQUE`.
+- `ITEM\_BOUTIQUE` 1 : N `ENTRADA\_ITEM\_BOUTIQUE`.
+- `ITEM\_BOUTIQUE` 1 : N `VENTA\_BOUTIQUE`.
+- `ITEM\_BOUTIQUE` 1 : 0..1 `FLETE\_VESTIDO`.
+- `FLETE\_VESTIDO` 1 : N `SALIDA\_FLETE`.
+- `TIPO\_INVENTARIO\_TALLER` 1 : N `INVENTARIO\_TALLER`.
+- `INVENTARIO\_TALLER` 1 : N `ENTRADA\_INVENTARIO\_TALLER`.
+- `INVENTARIO\_TALLER` 1 : N `SALIDA\_MATERIAL\_TALLER`.
+- `PEDIDO` 1 : 0..1 `PEDIDO\_VESTIDO`.
+- `PEDIDO` 1 : 0..1 `PEDIDO\_VELO`.
+- `PEDIDO` 1 : 0..1 `PEDIDO\_COLA`.
+- `PEDIDO` 1 : 0..1 `PEDIDO\_MANGA`.
+- `PEDIDO` 1 : 0..1 `PEDIDO\_BOUQUET`.
+- `PEDIDO` 1 : N `PRUEBA\_PEDIDO`.
+- `PEDIDO` 1 : N `PAGO\_PEDIDO`.
+- `TIPO\_COMPROBANTE` 1 : N `COMPROBANTE\_INTERNO`.
+- `COMPROBANTE\_INTERNO` 1 : N `DETALLE\_COMPROBANTE`.
+- `VENTA\_BOUTIQUE`, `PAGO\_PEDIDO` y `SALIDA\_FLETE` pueden originar `COMPROBANTE\_INTERNO`, pero cada comprobante tiene un solo origen.
+
+\---
+
+## 7\. Reglas de control que debe aplicar el backend
+
+### 7.1 Seguridad
+
+- Las contraseñas de `CUENTA` deben guardarse en hash.
+- No permitir login con cuenta, usuario o rol deshabilitado.
+- Auditar login, logout y cambios de cuenta o rol.
+
+### 7.2 Multimoneda
+
+- Si la moneda seleccionada es la moneda base, el tipo de cambio usado debe ser 1.
+- Si la moneda no es base, debe existir un tipo de cambio activo.
+- No permitir operar con monedas deshabilitadas.
+- Congelar el tipo de cambio usado en cada venta, flete, pago o comprobante.
+- No recalcular operaciones históricas cuando cambie el tipo de cambio.
+
+### 7.3 Inventario boutique
+
+- Registrar producto con stock inicial 0 y crear una entrada con motivo `REGISTRO\_INICIAL` si corresponde.
+- Toda entrada válida debe aumentar stock.
+- Toda venta activa debe disminuir stock.
+- No vender artículos deshabilitados o sin stock suficiente.
+- Si la venta se anula, el backend debe definir si corresponde reversar stock.
+
+### 7.4 Fletes
+
+- Solo habilitar para flete artículos que sean vestidos y cumplan la regla comercial definida.
+- No permitir más de una salida activa por vestido.
+- No superar `FLE\_MAX\_SALIDAS`.
+- Actualizar `FLE\_ESTADO` y `FLE\_SALIDAS\_ACTUALES` al registrar devoluciones válidas.
+- No considerar la garantía como ingreso definitivo mientras sea reembolsable.
+- Registrar observación y monto cuando exista arreglo.
+
+### 7.5 Inventario taller
+
+- Toda entrada válida debe aumentar `INT\_STOCK`.
+- Toda salida válida debe disminuir `INT\_STOCK`.
+- No permitir salidas sin stock suficiente.
+- Validar coherencia de unidad de medida.
+
+### 7.6 Pedidos
+
+- El cliente y el usuario encargado deben existir.
+- El descuento requiere motivo.
+- `PED\_TOTAL\_PAGADO` y `PED\_SALDO` deben recalcularse desde pagos registrados y no anulados.
+- No permitir pagos sobre pedidos cancelados.
+- Controlar que las pruebas tengan secuencia lógica.
+- Si el pedido se cancela, conservar fecha y motivo.
+
+### 7.7 Pagos
+
+- No editar montos de pagos registrados.
+- Si un pago fue registrado con error, debe anularse y crearse un nuevo pago correcto.
+- Los pagos anulados no deben afectar saldo ni total pagado.
+- Cada pago registrado debe generar comprobante interno.
+
+### 7.8 Comprobantes internos
+
+- Deben generarse desde backend, no llenarse manualmente.
+- Deben conservar snapshot del cliente, moneda, tipo de cambio, montos y saldo posterior.
+- Deben tener un solo origen: venta, pago de pedido o salida de flete.
+- Si se anulan, conservar fecha y motivo.
+- Mostrar leyenda: “Documento de control interno. No constituye factura, nota fiscal ni documento equivalente. No válido para crédito fiscal ni descargo tributario.”
+
+### 7.9 Egresos
+
+- No editar montos calculados manualmente.
+- Anular egresos con fecha y motivo, no eliminarlos físicamente.
+- Los egresos anulados no deben sumar en reportes financieros.
+
+### 7.10 Auditoría y notificaciones
+
+- Auditar operaciones críticas: registros, actualizaciones, anulaciones, cancelaciones y cambios de estado.
+- Generar notificaciones para stock agotado, entregas, pruebas, saldos pendientes, fletes próximos a devolución y pedidos atrasados.
+
+\---
+
+## 8\. Reportes recomendados
+
+La base permite construir reportes sobre:
+
+- ventas de boutique por fecha, método de pago, producto, cliente y estado;
+- ingresos reales desde ventas, pagos y fletes;
+- movimientos económicos incluyendo anulados y cancelados;
+- saldos pendientes de pedidos;
+- calendario de pruebas por día, semana y mes;
+- pedidos por tipo y por tipo de vestido;
+- pedidos de viaje por destino;
+- fletes activos, devueltos, anulados y agotados;
+- inventario boutique general y stock bajo;
+- inventario taller general, entradas, salidas y stock bajo;
+- egresos por tipo, fecha y usuario;
+- comprobantes emitidos y anulados;
+- auditoría de cambios de estado y operaciones sensibles.
+
+\---
+
+## 9\. Índices recomendados
+
+La base ya genera índices automáticos en claves primarias y columnas únicas. Además, se recomienda crear índices sobre claves foráneas y columnas de consulta frecuente:
+
+- `VENTA\_BOUTIQUE(VEB\_ESTADO, VEB\_FEC)`;
+- `VENTA\_BOUTIQUE(MON\_ID, VEB\_FEC)`;
+- `PAGO\_PEDIDO(PED\_ID, PPD\_FEC)`;
+- `PAGO\_PEDIDO(PPD\_ESTADO, PPD\_FEC)`;
+- `SALIDA\_FLETE(FLE\_ID, SFL\_NUM)`;
+- `SALIDA\_FLETE(SFL\_ESTADO\_SALIDA, SFL\_FEC\_DEVOLUCION\_PREVISTA)`;
+- `PEDIDO(PED\_ESTADO\_GENERAL, PED\_FEC\_DE\_ENTREGA)`;
+- `PRUEBA\_PEDIDO(PRP\_FEC, PRP\_HOR)`;
+- `ITEM\_BOUTIQUE(TIB\_ID)`;
+- `ITEM\_BOUTIQUE(PRO\_ID)`;
+- `INVENTARIO\_TALLER(TIT\_ID)`;
+- `INVENTARIO\_TALLER(PRO\_ID)`;
+- `COMPROBANTE\_INTERNO(COI\_ESTADO, COI\_FEC)`;
+- `EGRESO(EGR\_ESTADO, EGR\_FEC)`;
+- `AUDITORIA\_SISTEMA(AUD\_TABLA, AUD\_ID\_REGISTRO)`;
+- `NOTIFICACION(USU\_ID, NOT\_LEIDA)`.
+
+\---
+
+## 10\. Recomendaciones operativas
+
+- Usar transacciones en operaciones compuestas.
+- No editar stock directamente desde formularios generales.
+- No editar pagos registrados; anular y registrar nuevamente si hubo error.
+- No eliminar físicamente ventas, pagos, comprobantes o egresos anulados.
+- Generar comprobantes desde backend a partir de operaciones reales.
+- Recalcular saldos de pedido desde pagos válidos.
+- Congelar tipo de cambio en cada operación monetaria.
+- Mantener reportes económicos en Bs como moneda base.
+- Usar auditoría para registrar quién realizó cambios sensibles.
+- Validar en backend aunque existan restricciones `CHECK` en la BD.
+
+\---
+
+## 11\. Conclusión
+
+La Base de Datos V4 de BELLAARTE BOUTIQUE representa una estructura más completa, segura y alineada con el funcionamiento real del negocio. La versión integra inventario boutique, inventario taller, proveedores, multimoneda, tipos de cambio, ventas, fletes, pedidos, pruebas, pagos, comprobantes internos, egresos, auditoría y notificaciones.
+
+Su diseño separa correctamente las tablas maestras, las operaciones, los detalles especializados y los documentos internos. Además, incorpora validaciones, relaciones, columnas generadas y trazabilidad de estados para reducir inconsistencias y mejorar el control administrativo.
+
+El sistema debe apoyarse en el backend para ejecutar transacciones completas, validar reglas de negocio, actualizar saldos, actualizar stock, emitir comprobantes y registrar auditoría. Con esta base, BELLAARTE BOUTIQUE puede avanzar hacia un sistema web empresarial más ordenado, escalable y preparado para reportes operativos y gerenciales.

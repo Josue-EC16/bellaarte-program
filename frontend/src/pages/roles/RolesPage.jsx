@@ -147,13 +147,13 @@ export function RolesPage() {
             Roles del sistema
           </Typography.Title>
           <Typography.Paragraph type="secondary" style={{ marginBottom: 0 }}>
-            Administra catalogo, estado y descripciones de roles operativos.
+            Administra catálogo, estado y descripciones de roles operativos.
           </Typography.Paragraph>
         </div>
 
         {canCreate ? (
           <Button type="primary" icon={<PlusOutlined />} onClick={openCreate}>
-            Nuevo rol
+            Nuevo Rol
           </Button>
         ) : null}
       </div>

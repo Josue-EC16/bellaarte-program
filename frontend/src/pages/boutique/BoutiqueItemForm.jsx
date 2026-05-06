@@ -1,16 +1,21 @@
 /* eslint-disable react/prop-types */
+import { BgColorsOutlined } from '@ant-design/icons'
 import { Button, Col, Form, Input, InputNumber, Row, Select, Space, Switch, Typography } from 'antd'
+import { useState } from 'react'
 
 import {
   FORM_COMMON_PROPS,
   FORM_DRAWER_SUBMIT_PROPS,
 } from '../../components/forms/formConfig'
 import { COPA_OPTIONS, TAMANO_OPTIONS, TALLA_OPTIONS, TIPO_VESTIDO_OPTIONS, inferDetailKindFromTypeName } from './boutiqueConstants'
+import { ColorPickerModal, COLOR_MAP } from './ColorPickerModal'
 
 export function BoutiqueItemForm({ form, types, mode = 'create', onFinish, saving }) {
   const selectedTypeId = Form.useWatch('type_id', form)
   const selectedType = types.find((type) => type.id === selectedTypeId)
   const detailKind = inferDetailKindFromTypeName(selectedType?.nombre)
+  const [colorModalOpen, setColorModalOpen] = useState(false)
+  const selectedColor = Form.useWatch(['item', 'color'], form)
 
   return (
     <Form {...FORM_COMMON_PROPS} form={form} onFinish={onFinish}>
@@ -63,10 +68,67 @@ export function BoutiqueItemForm({ form, types, mode = 'create', onFinish, savin
             label="Color"
             name={['item', 'color']}
             rules={[{ required: true, message: 'El Color del producto es obligatorio.' }]}
-            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
           >
-            <Input placeholder="Ej. BLANCO PERLA" />
+            <div
+              onClick={() => setColorModalOpen(true)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
+                border: '1px solid #d9d9d9',
+                borderRadius: 8,
+                padding: '6px 12px',
+                cursor: 'pointer',
+                background: '#fff',
+                transition: 'border-color 0.2s',
+                minHeight: 40,
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.borderColor = '#8f3d2e')}
+              onMouseLeave={(e) => (e.currentTarget.style.borderColor = '#d9d9d9')}
+            >
+              {selectedColor ? (
+                <>
+                  <div
+                    style={{
+                      width: 26,
+                      height: 26,
+                      borderRadius: 6,
+                      background: COLOR_MAP[selectedColor] || '#e0e0e0',
+                      border: '1.5px solid rgba(0,0,0,0.15)',
+                      flexShrink: 0,
+                    }}
+                  />
+                  <span style={{ fontWeight: 500 }}>{selectedColor}</span>
+                </>
+              ) : (
+                <span style={{ color: '#aaa' }}>
+                  <BgColorsOutlined style={{ marginRight: 6 }} />
+                  Haz clic para seleccionar un color
+                </span>
+              )}
+              <Button
+                size="small"
+                type="link"
+                style={{ marginLeft: 'auto', fontSize: 12 }}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setColorModalOpen(true)
+                }}
+              >
+                Cambiar
+              </Button>
+            </div>
           </Form.Item>
+
+          <ColorPickerModal
+            open={colorModalOpen}
+            onSelect={(colorName) => {
+              form.setFieldValue(['item', 'color'], colorName)
+              form.validateFields([['item', 'color']]) // Forzar re-validación al seleccionar
+              setColorModalOpen(false)
+            }}
+            onCancel={() => setColorModalOpen(false)}
+          />
         </Col>
       </Row>
 

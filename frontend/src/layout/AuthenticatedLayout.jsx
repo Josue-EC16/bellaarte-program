@@ -128,12 +128,17 @@ export function AuthenticatedLayout() {
   ]
 
   return (
-    <Layout className="app-shell">
+    <Layout className="app-shell" style={{ height: '100vh', overflow: 'hidden' }}>
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
         width={260}
-        style={{ background: 'rgba(77, 34, 25, 0.96)', paddingTop: 12 }}
+        style={{ 
+          background: 'rgba(77, 34, 25, 0.96)', 
+          paddingTop: 12,
+          height: '100vh',
+          overflowY: 'auto'
+        }}
       >
       <div style={{ position: 'relative', padding: '16px 20px 24px', 
                     display: 'flex', alignItems: 'center', overflow: 'hidden', minHeight: 100}}>
@@ -164,7 +169,7 @@ export function AuthenticatedLayout() {
         />
       </Sider>
 
-      <Layout style={{ background: 'transparent' }}>
+      <Layout style={{ background: 'transparent', height: '100vh', overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
         <Header
           style={{
             background: 'transparent',
@@ -202,7 +207,7 @@ export function AuthenticatedLayout() {
           </Space>
         </Header>
 
-        <Content className="page-wrapper">
+        <Content className="page-wrapper" style={{ flex: '1 0 auto' }}>
           <Outlet />
         </Content>
         <FooterBar />
