@@ -1,36 +1,38 @@
 /* eslint-disable react/prop-types */
 import { BgColorsOutlined } from '@ant-design/icons'
-import { Button, Col, Form, Input, InputNumber, Row, Select, Space, Switch, Typography } from 'antd'
+import { Button, Col, Form, Input, InputNumber, Row, Select, Switch, Typography } from 'antd'
 import { useState } from 'react'
 
-import {
-  FORM_COMMON_PROPS,
-  FORM_DRAWER_SUBMIT_PROPS,
-} from '../../components/forms/formConfig'
-import { COPA_OPTIONS, TAMANO_OPTIONS, TALLA_OPTIONS, TIPO_VESTIDO_OPTIONS, inferDetailKindFromTypeName } from './boutiqueConstants'
+import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/forms/formConfig'
+import { COPA_OPTIONS, TALLA_OPTIONS, TIPO_VESTIDO_OPTIONS, inferDetailKindFromTypeName } from './boutiqueConstants'
 import { ColorPickerModal, COLOR_MAP } from './ColorPickerModal'
 
-export function BoutiqueItemForm({ form, types, mode = 'create', onFinish, saving }) {
+export function BoutiqueItemForm({ form, types, providers, mode = 'create', onFinish, saving }) {
   const selectedTypeId = Form.useWatch('type_id', form)
   const selectedType = types.find((type) => type.id === selectedTypeId)
   const detailKind = inferDetailKindFromTypeName(selectedType?.nombre)
-  const [colorModalOpen, setColorModalOpen] = useState(false)
-  const selectedColor = Form.useWatch(['item', 'color'], form)
+
+  const [colorPrimaryModalOpen, setColorPrimaryModalOpen] = useState(false)
+  const [colorSecondaryModalOpen, setColorSecondaryModalOpen] = useState(false)
+
+  const selectedColorPrimary = Form.useWatch(['item', 'color_primary'], form)
+  const selectedColorSecondary = Form.useWatch(['item', 'color_secondary'], form)
 
   return (
     <Form {...FORM_COMMON_PROPS} form={form} onFinish={onFinish}>
       <Typography.Title level={5}>Datos base</Typography.Title>
+
       <Row gutter={12}>
         <Col span={12}>
           <Form.Item
             label="Tipo de producto"
             name="type_id"
-            rules={[{ required: true, message: 'Debe seleccionar el tipo de producto.' }]}
-            extra={mode === 'edit' ? 'El tipo queda bloqueado para conservar la consistencia del detalle.' : 'Selecciona primero la categoría para habilitar el detalle correcto.'}
+            rules={[{ required: true, message: 'Debe seleccionar el Tipo de producto.' }]}
+            extra={mode === 'edit' ? 'El tipo no se modifica para mantener la integridad del detalle.' : 'Selecciona primero la categoría del producto.'}
           >
             <Select
               disabled={mode === 'edit'}
-              placeholder="Selecciona la categoría del producto"
+              placeholder="Seleccionar el tipo de producto"
               options={types.map((type) => ({
                 label: type.nombre,
                 value: type.id,
@@ -44,10 +46,9 @@ export function BoutiqueItemForm({ form, types, mode = 'create', onFinish, savin
             label="Código"
             name={['item', 'code']}
             rules={[{ required: true, message: 'El Código del producto es obligatorio.' }]}
-            extra="Usa un código único y fácil de identificar en inventario."
             normalize={(value) => (value || '').replace(/[^a-zA-Z0-9-]/g, '').toUpperCase()}
           >
-            <Input placeholder="Ej. VES-001 o BOU-015" />
+            <Input placeholder="Ej. VES-001, VEL-002 o BOU-003" />
           </Form.Item>
         </Col>
       </Row>
@@ -60,17 +61,40 @@ export function BoutiqueItemForm({ form, types, mode = 'create', onFinish, savin
             rules={[{ required: true, message: 'El Nombre del producto es obligatorio.' }]}
             normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
           >
-            <Input placeholder="Ej. VESTIDO PRINCESA BLANCO" />
+            <Input placeholder="Introducir el nombre del producto boutique" />
           </Form.Item>
         </Col>
         <Col span={12}>
           <Form.Item
-            label="Color"
-            name={['item', 'color']}
-            rules={[{ required: true, message: 'El Color del producto es obligatorio.' }]}
+            label="Proveedor"
+            name={['item', 'provider_id']}
+            extra="Opcional. Selecciona un proveedor habilitado si el artículo lo tiene asociado."
+          >
+            <Select
+              allowClear
+              showSearch
+              optionFilterProp="label"
+              placeholder="Buscar y seleccionar proveedor"
+              options={providers.map((provider) => ({
+                label: provider.nombre_comercial
+                  ? `${provider.full_name} - ${provider.nombre_comercial}`
+                  : provider.full_name,
+                value: provider.id,
+              }))}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={12}>
+        <Col span={12}>
+          <Form.Item
+            label="Color primario"
+            name={['item', 'color_primary']}
+            rules={[{ required: true, message: 'El Color primario es obligatorio.' }]}
           >
             <div
-              onClick={() => setColorModalOpen(true)}
+              onClick={() => setColorPrimaryModalOpen(true)}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -86,24 +110,24 @@ export function BoutiqueItemForm({ form, types, mode = 'create', onFinish, savin
               onMouseEnter={(e) => (e.currentTarget.style.borderColor = '#8f3d2e')}
               onMouseLeave={(e) => (e.currentTarget.style.borderColor = '#d9d9d9')}
             >
-              {selectedColor ? (
+              {selectedColorPrimary ? (
                 <>
                   <div
                     style={{
                       width: 26,
                       height: 26,
                       borderRadius: 6,
-                      background: COLOR_MAP[selectedColor] || '#e0e0e0',
+                      background: COLOR_MAP[selectedColorPrimary] || '#e0e0e0',
                       border: '1.5px solid rgba(0,0,0,0.15)',
                       flexShrink: 0,
                     }}
                   />
-                  <span style={{ fontWeight: 500 }}>{selectedColor}</span>
+                  <span style={{ fontWeight: 500 }}>{selectedColorPrimary}</span>
                 </>
               ) : (
                 <span style={{ color: '#aaa' }}>
                   <BgColorsOutlined style={{ marginRight: 6 }} />
-                  Haz clic para seleccionar un color
+                  Seleccionar color
                 </span>
               )}
               <Button
@@ -112,22 +136,102 @@ export function BoutiqueItemForm({ form, types, mode = 'create', onFinish, savin
                 style={{ marginLeft: 'auto', fontSize: 12 }}
                 onClick={(e) => {
                   e.stopPropagation()
-                  setColorModalOpen(true)
+                  setColorPrimaryModalOpen(true)
                 }}
               >
                 Cambiar
               </Button>
             </div>
           </Form.Item>
-
+          
           <ColorPickerModal
-            open={colorModalOpen}
+            open={colorPrimaryModalOpen}
             onSelect={(colorName) => {
-              form.setFieldValue(['item', 'color'], colorName)
-              form.validateFields([['item', 'color']]) // Forzar re-validación al seleccionar
-              setColorModalOpen(false)
+              form.setFieldValue(['item', 'color_primary'], colorName)
+              form.validateFields([['item', 'color_primary']])
+              setColorPrimaryModalOpen(false)
             }}
-            onCancel={() => setColorModalOpen(false)}
+            onCancel={() => setColorPrimaryModalOpen(false)}
+          />
+        </Col>
+        
+        <Col span={12}>
+          <Form.Item
+            label="Color secundario"
+            name={['item', 'color_secondary']}
+          >
+            <div
+              onClick={() => setColorSecondaryModalOpen(true)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
+                border: '1px solid #d9d9d9',
+                borderRadius: 8,
+                padding: '6px 12px',
+                cursor: 'pointer',
+                background: '#fff',
+                transition: 'border-color 0.2s',
+                minHeight: 40,
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.borderColor = '#8f3d2e')}
+              onMouseLeave={(e) => (e.currentTarget.style.borderColor = '#d9d9d9')}
+            >
+              {selectedColorSecondary ? (
+                <>
+                  <div
+                    style={{
+                      width: 26,
+                      height: 26,
+                      borderRadius: 6,
+                      background: COLOR_MAP[selectedColorSecondary] || '#e0e0e0',
+                      border: '1.5px solid rgba(0,0,0,0.15)',
+                      flexShrink: 0,
+                    }}
+                  />
+                  <span style={{ fontWeight: 500 }}>{selectedColorSecondary}</span>
+                </>
+              ) : (
+                <span style={{ color: '#aaa' }}>
+                  <BgColorsOutlined style={{ marginRight: 6 }} />
+                  Opcional
+                </span>
+              )}
+              {selectedColorSecondary && (
+                <Button
+                  size="small"
+                  type="text"
+                  danger
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    form.setFieldValue(['item', 'color_secondary'], null)
+                  }}
+                >
+                  Quitar
+                </Button>
+              )}
+              <Button
+                size="small"
+                type="link"
+                style={{ marginLeft: selectedColorSecondary ? '0' : 'auto', fontSize: 12 }}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setColorSecondaryModalOpen(true)
+                }}
+              >
+                {selectedColorSecondary ? 'Cambiar' : 'Seleccionar'}
+              </Button>
+            </div>
+          </Form.Item>
+          
+          <ColorPickerModal
+            open={colorSecondaryModalOpen}
+            onSelect={(colorName) => {
+              form.setFieldValue(['item', 'color_secondary'], colorName)
+              form.validateFields([['item', 'color_secondary']])
+              setColorSecondaryModalOpen(false)
+            }}
+            onCancel={() => setColorSecondaryModalOpen(false)}
           />
         </Col>
       </Row>
@@ -135,132 +239,126 @@ export function BoutiqueItemForm({ form, types, mode = 'create', onFinish, savin
       <Row gutter={12}>
         <Col span={12}>
           <Form.Item
-            label="Forma"
-            name={['item', 'shape']}
-            extra="Opcional. Úsalo si la forma o estilo ayuda a identificar el producto."
-            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
-          >
-            <Input placeholder="Ej. CORTE A, REDONDO O RECTO" />
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item
             label="Material"
             name={['item', 'material']}
-            rules={[{ required: true, message: 'El Material del producto es obligatorio.' }]}
-            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
-          >
-            <Input placeholder="Ej. SATÉN, TUL O FLORES ARTIFICIALES" />
-          </Form.Item>
-        </Col>
-      </Row>
-
-      <Form.Item
-        label="Medidas (cm)"
-        name={['item', 'measurements']}
-        extra="Opcional. Registra medidas generales si el artículo las necesita."
-        normalize={(value) => (value || '').toUpperCase()}
-      >
-        <Input.TextArea rows={2} placeholder="Ej. LARGO 120 CM, CINTURA 68 CM, CONTORNO 88 CM" />
-      </Form.Item>
-
-      <Row gutter={12}>
-        <Col span={12}>
-          <Form.Item
-            label="Proveedor"
-            name={['item', 'supplier']}
-            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
-          >
-            <Input placeholder="Ej. PROVEEDOR CENTRAL O IMPORTADORA SUR" />
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item
-            label="Descripción"
-            name={['item', 'description']}
-            extra="Opcional. Resume un rasgo distintivo útil para venta o consulta."
+            rules={[{ required: true, message: 'El Material es obligatorio.' }]}
             normalize={(value) => (value || '').toUpperCase()}
           >
-            <Input placeholder="Ej. MODELO DE EXHIBICIÓN CON APLICACIONES DE ENCAJE" />
+            <Input placeholder="Ej. SATÉN, TUL, FLORES ARTIFICIALES" />
+          </Form.Item>
+        </Col>
+        <Col span={6}>
+          <Form.Item
+            label="Largo"
+            name={['item', 'length']}
+            normalize={(value) => {
+              if (value === null || value === undefined || value === '') return null
+              return value.toString().replace(/[^0-9.]/g, '')
+            }}
+          >
+            <InputNumber min={0} precision={2} style={{ width: '100%' }} placeholder="Ej. 120.50" />
+          </Form.Item>
+        </Col>
+        <Col span={6}>
+          <Form.Item
+            label="Ancho"
+            name={['item', 'width']}
+            normalize={(value) => {
+              if (value === null || value === undefined || value === '') return null
+              return value.toString().replace(/[^0-9.]/g, '')
+            }}
+          >
+            <InputNumber min={0} precision={2} style={{ width: '100%' }} placeholder="Ej. 45.00" />
           </Form.Item>
         </Col>
       </Row>
 
       <Row gutter={12}>
         <Col span={12}>
-          <Form.Item label="Precio de compra" name={['item', 'purchase_price']} rules={[{ required: true, message: 'El Precio de compra es obligatorio.' }]} extra="Ingresa el costo referencial pagado por la boutique." normalize={(value) => {
-              if (value === null || value === undefined || value === '') return null;
+          <Form.Item
+            label="Precio de compra"
+            name={['item', 'purchase_price']}
+            rules={[{ required: true, message: 'El Precio de compra es obligatorio.' }]}
+            normalize={(value) => {
+              if (value === null || value === undefined || value === '') return null
               return value.toString().replace(/[^0-9.]/g, '')
-            }}>
-            <InputNumber min={0} style={{ width: '100%' }} prefix="Bs." placeholder="Ej. 1500.50" decimalSeparator="." />
+            }}
+          >
+            <InputNumber min={0} precision={2} prefix="Bs." style={{ width: '100%' }} placeholder="Ej. 1500.00" />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item 
+          <Form.Item
             label="Precio de venta"
-            name={['item', 'sale_price']} 
-            extra="Debe ser mayor al precio de compra para respetar la regla comercial."
-            normalize={(value) => {
-              if (value === null || value === undefined || value === '') return null;
-              return value.toString().replace(/[^0-9.]/g, '')
-            }}
+            name={['item', 'sale_price']}
             rules={[
               { required: true, message: 'El Precio de venta es obligatorio.' },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  const purchasePrice = getFieldValue(['item', 'purchase_price'])
-                  if (value !== undefined && value !== null && purchasePrice !== undefined && purchasePrice !== null) {
-                    if (value <= purchasePrice) {
-                      return Promise.reject(new Error('El precio de venta no puede ser menor o igual al de compra.'))
-                    }
+                  const purchasePrice = Number(getFieldValue(['item', 'purchase_price']) || 0)
+                  if (value === undefined || value === null || value === '') return Promise.resolve()
+                  if (Number(value) < purchasePrice) {
+                    return Promise.reject(new Error('El precio de venta no puede ser menor al precio de compra.'))
                   }
                   return Promise.resolve()
                 },
               }),
             ]}
+            normalize={(value) => {
+              if (value === null || value === undefined || value === '') return null
+              return value.toString().replace(/[^0-9.]/g, '')
+            }}
           >
-            <InputNumber min={0} style={{ width: '100%' }} prefix="Bs." placeholder="Ej. 3000.00" decimalSeparator="." />
+            <InputNumber min={0} precision={2} prefix="Bs." style={{ width: '100%' }} placeholder="Ej. 2500.00" />
           </Form.Item>
         </Col>
       </Row>
 
       <Row gutter={12}>
         <Col span={12}>
-          <Form.Item label="Stock" name={['item', 'stock']} rules={[{ required: true, message: 'El Stock es obligatorio.' }]} extra="Registra la cantidad disponible para vender hoy." normalize={(value) => {
-              if (value === null || value === undefined || value === '') return null;
+          <Form.Item
+            label="Stock"
+            name={['item', 'stock']}
+            rules={[{ required: true, message: 'El Stock es obligatorio.' }]}
+            normalize={(value) => {
+              if (value === null || value === undefined || value === '') return null
               return value.toString().replace(/[^0-9]/g, '')
-            }}>
-            <InputNumber min={1} style={{ width: '100%' }} placeholder="Ej. 5" />
+            }}
+          >
+            <InputNumber min={0} precision={0} style={{ width: '100%' }} placeholder="Ej. 1, 2, 5" />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="Stock mínimo" name={['item', 'stock_min']} rules={[{ required: true, message: 'El Stock mínimo es obligatorio.' }]} extra="Define desde qué cantidad debe considerarse stock bajo." normalize={(value) => {
-              if (value === null || value === undefined || value === '') return null;
+          <Form.Item
+            label="Stock mínimo"
+            name={['item', 'stock_min']}
+            rules={[{ required: true, message: 'El Stock mínimo es obligatorio.' }]}
+            normalize={(value) => {
+              if (value === null || value === undefined || value === '') return null
               return value.toString().replace(/[^0-9]/g, '')
-            }}>
-            <InputNumber min={1} style={{ width: '100%' }} placeholder="Ej. 1" />
+            }}
+          >
+            <InputNumber min={0} precision={0} style={{ width: '100%' }} placeholder="Ej. 0, 1, 2" />
           </Form.Item>
         </Col>
       </Row>
 
       <Form.Item
-        label="Observaciones"
-        name={['item', 'notes']}
-        extra="Opcional. Agrega datos útiles para ventas, control o reposición."
+        label="Detalle general"
+        name={['item', 'detail']}
         normalize={(value) => (value || '').toUpperCase()}
+        extra="Opcional. Registra información general útil del artículo."
       >
-        <Input.TextArea rows={2} placeholder="Ej. REQUIERE FUNDA ESPECIAL O PRESENTA DETALLES DE EXHIBICIÓN" />
+        <Input.TextArea rows={3} placeholder="Ej. MODELO DE EXHIBICIÓN, INCLUYE ACCESORIOS O PRESENTA DETALLES ESPECIALES" />
       </Form.Item>
 
       {detailKind !== 'OTRO' ? (
         <>
           <Typography.Title level={5}>Detalle especializado</Typography.Title>
-          <Typography.Paragraph type="secondary">
-            Completa solo el detalle que corresponde al tipo seleccionado. Esto ayuda a mantener la información consistente con la base de datos.
-          </Typography.Paragraph>
           {detailKind === 'VESTIDO' ? <VestidoFields /> : null}
           {detailKind === 'VELO' ? <VeloFields /> : null}
           {detailKind === 'BOUQUET' ? <BouquetFields /> : null}
+          {detailKind === 'BRASIER' ? <BrassierFields /> : null}
         </>
       ) : null}
 
@@ -276,34 +374,42 @@ function VestidoFields() {
     <>
       <Row gutter={12}>
         <Col span={12}>
-          <Form.Item label="Tipo de vestido" name={['detail', 'dress_type']} rules={[{ required: true, message: 'Debe seleccionar un tipo de vestido.' }]} extra="Selecciona la categoría documental que mejor describe el vestido.">
-            <Select options={TIPO_VESTIDO_OPTIONS} placeholder="Selecciona el tipo de vestido"/>
+          <Form.Item
+            label="Tipo de vestido"
+            name={['detail', 'dress_type']}
+            rules={[{ required: true, message: 'Debe seleccionar el Tipo de vestido.' }]}
+          >
+            <Select options={TIPO_VESTIDO_OPTIONS} placeholder="Seleccionar el tipo de vestido" />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="Talla" name={['detail', 'dress_size']} rules={[{ required: true, message: 'Debe seleccionar una talla de vestido.' }]} extra="Elige la talla base más cercana al producto registrado.">
-            <Select options={TALLA_OPTIONS} placeholder="Selecciona la talla del vestido"/>
+          <Form.Item
+            label="Talla"
+            name={['detail', 'dress_size']}
+            rules={[{ required: true, message: 'Debe seleccionar la Talla del vestido.' }]}
+          >
+            <Select options={TALLA_OPTIONS} placeholder="Seleccionar la talla del vestido" />
           </Form.Item>
         </Col>
       </Row>
 
       <Row gutter={12}>
         <Col span={12}>
-          <Form.Item 
-            label="Corte de falda" 
+          <Form.Item
+            label="Corte de falda"
             name={['detail', 'skirt_cut']}
-            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+            normalize={(value) => (value || '').toUpperCase()}
           >
-            <Input placeholder="Ej. PRINCESA" />
+            <Input placeholder="Ej. PRINCESA, LÍNEA A O RECTA" />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item 
-            label="Tipo de escote" 
+          <Form.Item
+            label="Tipo de escote"
             name={['detail', 'neckline_type']}
-            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+            normalize={(value) => (value || '').toUpperCase()}
           >
-            <Input placeholder="Ej. CORAZON" />
+            <Input placeholder="Ej. CORAZÓN, BARCO O RECTO" />
           </Form.Item>
         </Col>
       </Row>
@@ -311,37 +417,43 @@ function VestidoFields() {
       <Row gutter={12}>
         <Col span={12}>
           <Form.Item label="Copa" name={['detail', 'cup_size']}>
-            <Select allowClear options={COPA_OPTIONS} placeholder="Selecciona la talla de copa"/>
+            <Select allowClear options={COPA_OPTIONS} placeholder="Seleccionar la copa" />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="Largo de falda (cm)" name={['detail', 'skirt_length']} normalize={(value) => {
-              if (value === null || value === undefined || value === '') return null;
+          <Form.Item
+            label="Largo de falda"
+            name={['detail', 'skirt_length']}
+            normalize={(value) => {
+              if (value === null || value === undefined || value === '') return null
               return value.toString().replace(/[^0-9.]/g, '')
-            }}>
-            <InputNumber min={0} style={{ width: '100%' }} placeholder="Ej. 120" />
+            }}
+          >
+            <InputNumber min={0} precision={2} style={{ width: '100%' }} placeholder="Ej. 115.00" />
           </Form.Item>
         </Col>
       </Row>
 
-      <Space size={24} wrap style={{ marginBottom: 12 }}>
-        <Form.Item label="Tiene cola" name={['detail', 'has_train']} valuePropName="checked">
-          <Switch />
-        </Form.Item>
-        <Form.Item label="Tiene manga" name={['detail', 'has_sleeves']} valuePropName="checked">
-          <Switch />
-        </Form.Item>
-        <Form.Item label="Tiene pedrería" name={['detail', 'has_stoning']} valuePropName="checked">
-          <Switch />
-        </Form.Item>
-      </Space>
+      <Row gutter={12}>
+        <Col span={8}>
+          <Form.Item label="Tiene cola" name={['detail', 'has_train']} valuePropName="checked">
+            <Switch />
+          </Form.Item>
+        </Col>
+        <Col span={8}>
+          <Form.Item label="Tiene manga" name={['detail', 'has_sleeves']} valuePropName="checked">
+            <Switch />
+          </Form.Item>
+        </Col>
+        <Col span={8}>
+          <Form.Item label="Tiene pedrería" name={['detail', 'has_stoning']} valuePropName="checked">
+            <Switch />
+          </Form.Item>
+        </Col>
+      </Row>
 
-      <Form.Item 
-        label="Observaciones del detalle" 
-        name={['detail', 'notes']}
-        normalize={(value) => (value || '').toUpperCase()}
-      >
-        <Input.TextArea rows={2} placeholder="Observaciones específicas del vestido" />
+      <Form.Item label="Observaciones del vestido" name={['detail', 'notes']} normalize={(value) => (value || '').toUpperCase()}>
+        <Input.TextArea rows={2} placeholder="Ej. CUENTA CON PEDRERÍA EN BUSTO O FALDA EN CAPAS" />
       </Form.Item>
     </>
   )
@@ -352,69 +464,44 @@ function VeloFields() {
     <>
       <Row gutter={12}>
         <Col span={12}>
-          <Form.Item 
-            label="Tipo de velo" 
-            name={['detail', 'veil_type']} 
-            rules={[{ required: true, message: 'Debe especificar el tipo de velo.' }]}
-            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+          <Form.Item
+            label="Tipo de velo"
+            name={['detail', 'veil_type']}
+            rules={[{ required: true, message: 'Debe introducir el Tipo de velo.' }]}
+            normalize={(value) => (value || '').toUpperCase()}
           >
-            <Input placeholder="Ej. MANTILLA" />
+            <Input placeholder="Ej. MANTILLA, CATEDRAL O CORTO" />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="Tamaño" name={['detail', 'size']} rules={[{ required: true, message: 'Debe seleccionar un tamaño para el velo.' }]} extra="Selecciona la categoría de tamaño según el documento base.">
-            <Select options={TAMANO_OPTIONS} placeholder="Selecciona el tamaño del velo"/>
+          <Form.Item
+            label="Capas"
+            name={['detail', 'layers']}
+            normalize={(value) => {
+              if (value === null || value === undefined || value === '') return null
+              return value.toString().replace(/[^0-9]/g, '')
+            }}
+          >
+            <InputNumber min={1} precision={0} style={{ width: '100%' }} placeholder="Ej. 1, 2 o 3" />
           </Form.Item>
         </Col>
       </Row>
 
       <Row gutter={12}>
         <Col span={12}>
-          <Form.Item label="Largo (cm)" name={['detail', 'length']} normalize={(value) => {
-              if (value === null || value === undefined || value === '') return null;
-              return value.toString().replace(/[^0-9]/g, '')
-            }}>
-            <InputNumber min={0} style={{ width: '100%' }} placeholder="Ej. 300" />
+          <Form.Item label="Borde" name={['detail', 'edge']} normalize={(value) => (value || '').toUpperCase()}>
+            <Input placeholder="Ej. ONDULADO, LISO O ENCAJE" />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="Capas" name={['detail', 'layers']} normalize={(value) => {
-              if (value === null || value === undefined || value === '') return null;
-              return value.toString().replace(/[^0-9]/g, '')
-            }}>
-            <InputNumber min={1} style={{ width: '100%' }} placeholder="Introducir el numero de capas del velo" />
+          <Form.Item label="Decoración" name={['detail', 'decoration']} normalize={(value) => (value || '').toUpperCase()}>
+            <Input.TextArea rows={2} placeholder="Ej. ENCAJE, PERLAS O PEDRERÍA" />
           </Form.Item>
         </Col>
       </Row>
 
-      <Row gutter={12}>
-        <Col span={12}>
-          <Form.Item 
-            label="Borde" 
-            name={['detail', 'edge']}
-            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
-          >
-            <Input placeholder="Ej. ONDULADO" />
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item 
-            label="Decoración" 
-            name={['detail', 'decoration']} 
-            rules={[{ required: true, message: 'Debe describir la decoración del velo.' }]}
-            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}  
-          >
-            <Input placeholder="Ej. ENCAJE Y PEDRERIA" />
-          </Form.Item>
-        </Col>
-      </Row>
-
-      <Form.Item 
-        label="Observaciones del detalle" 
-        name={['detail', 'notes']}
-        normalize={(value) => (value || '').toUpperCase()}
-      >
-        <Input.TextArea rows={2} placeholder="Observaciones específicas del velo" />
+      <Form.Item label="Observaciones del velo" name={['detail', 'notes']} normalize={(value) => (value || '').toUpperCase()}>
+        <Input.TextArea rows={2} placeholder="Ej. VELO LIVIANO O IDEAL PARA FOTOGRAFÍA EXTERIOR" />
       </Form.Item>
     </>
   )
@@ -425,48 +512,67 @@ function BouquetFields() {
     <>
       <Row gutter={12}>
         <Col span={12}>
-          <Form.Item 
-            label="Tipo de bouquet" 
-            name={['detail', 'bouquet_type']}
-            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
-          >
-            <Input placeholder="Ej. REDONDO" />
+          <Form.Item label="Tipo de bouquet" name={['detail', 'bouquet_type']} normalize={(value) => (value || '').toUpperCase()}>
+            <Input placeholder="Ej. REDONDO, CASCADA O SILVESTRE" />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item label="Tamaño" name={['detail', 'size']} rules={[{ required: true, message: 'Debe seleccionar un tamaño para el bouquet.' }]} extra="Selecciona la categoría de tamaño que mejor represente el bouquet.">
-            <Select options={TAMANO_OPTIONS} placeholder="Selecciona el tamaño del bouquet"/>
+          <Form.Item label="Forma" name={['detail', 'shape']} normalize={(value) => (value || '').toUpperCase()}>
+            <Input placeholder="Ej. OVALADO, COMPACTO O DESPEINADO" />
           </Form.Item>
         </Col>
       </Row>
 
       <Row gutter={12}>
         <Col span={12}>
-          <Form.Item 
-            label="Tipo de flor" 
-            name={['detail', 'flower_type']}
-            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
-          >
-            <Input placeholder="Ej. ROSAS BLANCAS" />
+          <Form.Item label="Tipo de flor" name={['detail', 'flower_type']} normalize={(value) => (value || '').toUpperCase()}>
+            <Input placeholder="Ej. ROSAS, PEONÍAS O FLORES MIXTAS" />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item 
-            label="Decoración" 
-            name={['detail', 'decoration']}
-            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
-          >
-            <Input placeholder="Ej. CINTA DE SEDA" />
+          <Form.Item label="Decoración" name={['detail', 'decoration']} normalize={(value) => (value || '').toUpperCase()}>
+            <Input.TextArea rows={2} placeholder="Ej. CINTA DE SATÉN, PERLAS O HOJAS SECAS" />
           </Form.Item>
         </Col>
       </Row>
 
-      <Form.Item 
-        label="Observaciones del detalle" 
-        name={['detail', 'notes']}
-        normalize={(value) => (value || '').toUpperCase()}
-      >
-        <Input.TextArea rows={2} placeholder="Observaciones específicas del bouquet" />
+      <Form.Item label="Observaciones del bouquet" name={['detail', 'notes']} normalize={(value) => (value || '').toUpperCase()}>
+        <Input.TextArea rows={2} placeholder="Ej. REQUIERE BASE DE AGUA O EMBALAJE ESPECIAL" />
+      </Form.Item>
+    </>
+  )
+}
+
+function BrassierFields() {
+  return (
+    <>
+      <Row gutter={12}>
+        <Col span={12}>
+          <Form.Item
+            label="Copa"
+            name={['detail', 'cup_size']}
+            rules={[{ required: true, message: 'Debe seleccionar la Copa del brassier.' }]}
+          >
+            <Select options={COPA_OPTIONS} placeholder="Seleccionar la copa del brassier" />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item label="Marca" name={['detail', 'brand']} normalize={(value) => (value || '').toUpperCase()}>
+            <Input placeholder="Ej. LEONISA, INTIME O MARCA PROPIA" />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Row gutter={12}>
+        <Col span={12}>
+          <Form.Item label="Tiene encaje" name={['detail', 'has_lace']} valuePropName="checked">
+            <Switch />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Form.Item label="Observaciones del brassier" name={['detail', 'notes']} normalize={(value) => (value || '').toUpperCase()}>
+        <Input.TextArea rows={2} placeholder="Ej. MODELO REFORZADO, CON ARO O DISEÑO PARA EXHIBICIÓN" />
       </Form.Item>
     </>
   )

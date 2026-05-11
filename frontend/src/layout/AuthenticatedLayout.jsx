@@ -3,8 +3,10 @@ import {
   IdcardOutlined,
   DatabaseOutlined,
   DashboardOutlined,
+  DollarOutlined,
   LockOutlined,
   LogoutOutlined,
+  ScissorOutlined,
   ShoppingCartOutlined,
   SafetyOutlined,
   TeamOutlined,
@@ -57,7 +59,7 @@ export function AuthenticatedLayout() {
       })
     }
 
-    if (user?.permissions?.includes('clients:update')) {
+    if (user?.permissions?.includes('clients:list')) {
       baseItems.push({
         key: '/app/clientes',
         icon: <IdcardOutlined />,
@@ -67,7 +69,10 @@ export function AuthenticatedLayout() {
 
     if (
       user?.permissions?.includes('boutique_types:list') ||
-      user?.permissions?.includes('boutique_items:list')
+      user?.permissions?.includes('boutique_providers:list') ||
+      user?.permissions?.includes('boutique_items:list') ||
+      user?.permissions?.includes('boutique_entries:list') ||
+      user?.permissions?.includes('boutique_sales:list')
     ) {
       baseItems.push({
         key: 'boutique',
@@ -81,6 +86,13 @@ export function AuthenticatedLayout() {
                 label: <Link to="/app/boutique/tipos">Categorías Productos</Link>,
               }
             : null,
+          user?.permissions?.includes('boutique_providers:list')
+            ? {
+                key: '/app/boutique/proveedores',
+                icon: <TeamOutlined />,
+                label: <Link to="/app/boutique/proveedores">Proveedores</Link>,
+              }
+            : null,
           user?.permissions?.includes('boutique_items:list')
             ? {
                 key: '/app/boutique/inventario',
@@ -88,11 +100,88 @@ export function AuthenticatedLayout() {
                 label: <Link to="/app/boutique/inventario">Inventario Boutique</Link>,
               }
             : null,
+          user?.permissions?.includes('boutique_entries:list')
+            ? {
+                key: '/app/boutique/entradas',
+                icon: <DatabaseOutlined />,
+                label: <Link to="/app/boutique/entradas">Entradas Boutique</Link>,
+              }
+            : null,
           user?.permissions?.includes('boutique_sales:list')
             ? {
                 key: '/app/boutique/ventas',
                 icon: <ShoppingCartOutlined />,
                 label: <Link to="/app/boutique/ventas">Ventas Boutique</Link>,
+              }
+            : null,
+        ].filter(Boolean),
+      })
+    }
+
+    if (
+      user?.permissions?.includes('workshop_types:list') ||
+      user?.permissions?.includes('workshop_inventory:list') ||
+      user?.permissions?.includes('workshop_entries:list') ||
+      user?.permissions?.includes('workshop_outputs:list')
+    ) {
+      baseItems.push({
+        key: 'taller',
+        icon: <ScissorOutlined />,
+        label: 'Taller',
+        children: [
+          user?.permissions?.includes('workshop_types:list')
+            ? {
+                key: '/app/taller/tipos',
+                icon: <DatabaseOutlined />,
+                label: <Link to="/app/taller/tipos">Tipos Taller</Link>,
+              }
+            : null,
+          user?.permissions?.includes('workshop_inventory:list')
+            ? {
+                key: '/app/taller/inventario',
+                icon: <AppstoreOutlined />,
+                label: <Link to="/app/taller/inventario">Inventario Taller</Link>,
+              }
+            : null,
+          user?.permissions?.includes('workshop_entries:list')
+            ? {
+                key: '/app/taller/entradas',
+                icon: <DatabaseOutlined />,
+                label: <Link to="/app/taller/entradas">Entradas Taller</Link>,
+              }
+            : null,
+          user?.permissions?.includes('workshop_outputs:list')
+            ? {
+                key: '/app/taller/salidas',
+                icon: <ScissorOutlined />,
+                label: <Link to="/app/taller/salidas">Salidas Taller</Link>,
+              }
+            : null,
+        ].filter(Boolean),
+      })
+    }
+
+    if (
+      user?.permissions?.includes('currencies:list') ||
+      user?.permissions?.includes('exchange_rates:list')
+    ) {
+      baseItems.push({
+        key: 'monedas',
+        icon: <DollarOutlined />,
+        label: 'Monedas',
+        children: [
+          user?.permissions?.includes('currencies:list')
+            ? {
+                key: '/app/monedas',
+                icon: <DollarOutlined />,
+                label: <Link to="/app/monedas">Monedas</Link>,
+              }
+            : null,
+          user?.permissions?.includes('exchange_rates:list')
+            ? {
+                key: '/app/monedas/tipos-cambio',
+                icon: <DatabaseOutlined />,
+                label: <Link to="/app/monedas/tipos-cambio">Tipos de Cambio</Link>,
               }
             : null,
         ].filter(Boolean),
@@ -140,20 +229,19 @@ export function AuthenticatedLayout() {
           overflowY: 'auto'
         }}
       >
-      <div style={{ position: 'relative', padding: '16px 20px 24px', 
-                    display: 'flex', alignItems: 'center', overflow: 'hidden', minHeight: 100}}>
-         <div style={{ position: 'absolute', top: 0, left: 0, width: 125, overflow: 'hidden'}}>
+      <div style={{ padding: '16px 16px 24px', display: 'flex', alignItems: 'center', gap: 12 }}>
+         <div style={{ width: 80, flexShrink: 0 }}>
           <img
            src="/logo_bellaarte2.png"
            alt="BellaArte"
-           style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
+           style={{ width: '100%', height: 'auto', display: 'block', objectFit: 'contain' }}
           />
          </div>
-         <div style={{ marginLeft: 95, lineHeight: 1.1 }}>
-          <Typography.Title level={3} style={{ color: '#fff7f1', margin: 0 }}>
+         <div style={{ lineHeight: 1.1 }}>
+          <Typography.Title level={4} style={{ color: '#fff7f1', margin: 0, wordBreak: 'normal', fontSize: '1.2rem' }}>
            BELLAARTE BOUTIQUE
           </Typography.Title>
-          <Typography.Text style={{ color: 'rgba(255,247,241,0.7)' }}>
+          <Typography.Text style={{ color: 'rgba(255,247,241,0.7)', fontSize: '0.85rem' }}>
            Sistema interno
           </Typography.Text>
          </div>
@@ -163,7 +251,7 @@ export function AuthenticatedLayout() {
           theme="dark"
           mode="inline"
           selectedKeys={[location.pathname]}
-          defaultOpenKeys={['seguridad', 'boutique']}
+          defaultOpenKeys={['seguridad', 'boutique', 'taller', 'monedas']}
           items={items}
           style={{ background: 'transparent' }}
         />
@@ -221,8 +309,16 @@ function pageTitle(pathname) {
   if (pathname === '/app/seguridad/usuarios') return 'Gestion de Usuarios'
   if (pathname === '/app/clientes') return 'Gestion de Clientes'
   if (pathname === '/app/boutique/tipos') return 'Categorías Productos'
+  if (pathname === '/app/boutique/proveedores') return 'Proveedores Boutique'
   if (pathname === '/app/boutique/inventario') return 'Inventario Boutique'
+  if (pathname === '/app/boutique/entradas') return 'Entradas Boutique'
   if (pathname === '/app/boutique/ventas') return 'Ventas Boutique'
+  if (pathname === '/app/taller/tipos') return 'Tipos Inventario Taller'
+  if (pathname === '/app/taller/inventario') return 'Inventario Taller'
+  if (pathname === '/app/taller/entradas') return 'Entradas Taller'
+  if (pathname === '/app/taller/salidas') return 'Salidas Taller'
+  if (pathname === '/app/monedas') return 'Monedas'
+  if (pathname === '/app/monedas/tipos-cambio') return 'Tipos de Cambio'
   if (pathname === '/app/cambiar-clave') return 'Cambiar contrasena'
   return 'Panel principal'
 }

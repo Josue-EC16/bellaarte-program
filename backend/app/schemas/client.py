@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 
 from pydantic import BaseModel, EmailStr, Field
 
@@ -15,7 +15,9 @@ class ClienteCreateRequest(BaseModel):
     nombre_referencia: str | None = Field(default=None, max_length=120)
     correo: EmailStr | None = None
     ci: str | None = Field(default=None, max_length=30)
-    nacionalidad: str | None = Field(default=None, max_length=100)
+    fecha_nacimiento: date | None = None
+    pais: str | None = Field(default=None, max_length=100)
+    ciudad: str | None = Field(default=None, max_length=100)
     zona: str | None = Field(default=None, max_length=100)
     calle: str | None = Field(default=None, max_length=100)
     observaciones: str | None = None
@@ -36,6 +38,7 @@ class ClienteListItem(ORMBaseModel):
     celular: str
     correo: str | None
     ci: str | None
+    ciudad: str | None
     zona: str | None
     is_active: bool
     created_at: datetime
@@ -53,7 +56,9 @@ class ClienteDetailResponse(ORMBaseModel):
     nombre_referencia: str | None
     correo: str | None
     ci: str | None
-    nacionalidad: str | None
+    fecha_nacimiento: date | None
+    pais: str | None
+    ciudad: str | None
     zona: str | None
     calle: str | None
     observaciones: str | None

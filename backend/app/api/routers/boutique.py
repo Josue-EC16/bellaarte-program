@@ -5,23 +5,34 @@ from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.deps.auth import require_permission
-from app.models.boutique_enums import EstadoVentaBoutiqueEnum, MetodoPagoEnum
 from app.models.account import Cuenta
+from app.models.boutique_enums import EstadoVentaBoutiqueEnum, MetodoPagoEnum
 from app.schemas.boutique import (
-    BoutiqueSaleCreateRequest,
-    BoutiqueSaleDetailResponse,
-    BoutiqueSaleListItem,
-    BoutiqueSaleStateChangeRequest,
+    BoutiqueEntryCreateRequest,
+    BoutiqueEntryDetailResponse,
+    BoutiqueEntryListItem,
+    BoutiqueEntryStatusUpdateRequest,
     BoutiqueItemCreateRequest,
     BoutiqueItemDetailResponse,
     BoutiqueItemListItem,
     BoutiqueItemStatusUpdateRequest,
     BoutiqueItemUpdateRequest,
+    BoutiqueSaleCreateRequest,
+    BoutiqueSaleDetailResponse,
+    BoutiqueSaleListItem,
+    BoutiqueSaleStateChangeRequest,
+    ProveedorCreateRequest,
+    ProveedorDetailResponse,
+    ProveedorListItem,
+    ProveedorStatusUpdateRequest,
+    ProveedorUpdateRequest,
     TipoItemBoutiqueCreate,
     TipoItemBoutiqueResponse,
     TipoItemBoutiqueStatusUpdate,
     TipoItemBoutiqueUpdate,
 )
+from app.services.boutique_entry_service import create_boutique_entry, get_boutique_entry_detail, list_boutique_entries, set_boutique_entry_status
+from app.services.boutique_sale_service import change_boutique_sale_state, create_boutique_sale, get_boutique_sale_detail, list_boutique_sales
 from app.services.boutique_service import (
     create_boutique_item,
     create_boutique_type,
@@ -34,12 +45,7 @@ from app.services.boutique_service import (
     update_boutique_item,
     update_boutique_type,
 )
-from app.services.boutique_sale_service import (
-    change_boutique_sale_state,
-    create_boutique_sale,
-    get_boutique_sale_detail,
-    list_boutique_sales,
-)
+from app.services.provider_service import create_provider, get_provider, list_providers, set_provider_status, update_provider
 
 
 router = APIRouter()
@@ -115,6 +121,131 @@ def update_type_status(
         user_agent=request.headers.get("user-agent"),
     )
     return TipoItemBoutiqueResponse.model_validate(updated)
+
+
+@router.get("/proveedores", response_model=list[ProveedorListItem])
+def get_providers(
+    search: str | None = Query(default=None, min_length=1),
+    is_active: bool | None = Query(default=None),
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("boutique_providers:list")),
+) -> list[ProveedorListItem]:
+    return list_providers(db, search=search, is_active=is_active)
+
+
+@router.get("/proveedores/{provider_id}", response_model=ProveedorDetailResponse)
+def get_provider_detail(
+    provider_id: int,
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("boutique_providers:view")),
+) -> ProveedorDetailResponse:
+    return get_provider(db, provider_id)
+
+
+@router.post("/proveedores", response_model=ProveedorDetailResponse, status_code=status.HTTP_201_CREATED)
+def create_provider_record(
+    payload: ProveedorCreateRequest,
+    request: Request,
+    db: Session = Depends(get_db),
+    account: Cuenta = Depends(require_permission("boutique_providers:create")),
+) -> ProveedorDetailResponse:
+    return create_provider(
+        db,
+        payload=payload,
+        created_by=account,
+        ip_address=request.client.host if request.client else None,
+        user_agent=request.headers.get("user-agent"),
+    )
+
+
+@router.patch("/proveedores/{provider_id}", response_model=ProveedorDetailResponse)
+def update_provider_record(
+    provider_id: int,
+    payload: ProveedorUpdateRequest,
+    request: Request,
+    db: Session = Depends(get_db),
+    account: Cuenta = Depends(require_permission("boutique_providers:update")),
+) -> ProveedorDetailResponse:
+    return update_provider(
+        db,
+        provider_id=provider_id,
+        payload=payload,
+        updated_by=account,
+        ip_address=request.client.host if request.client else None,
+        user_agent=request.headers.get("user-agent"),
+    )
+
+
+@router.patch("/proveedores/{provider_id}/status", response_model=ProveedorDetailResponse)
+def update_provider_record_status(
+    provider_id: int,
+    payload: ProveedorStatusUpdateRequest,
+    request: Request,
+    db: Session = Depends(get_db),
+    account: Cuenta = Depends(require_permission("boutique_providers:update_status")),
+) -> ProveedorDetailResponse:
+    return set_provider_status(
+        db,
+        provider_id=provider_id,
+        enabled=payload.habilitado,
+        changed_by=account,
+        ip_address=request.client.host if request.client else None,
+        user_agent=request.headers.get("user-agent"),
+    )
+
+
+@router.get("/entries", response_model=list[BoutiqueEntryListItem])
+def get_entries(
+    search: str | None = Query(default=None, min_length=1),
+    item_id: int | None = Query(default=None, gt=0),
+    is_active: bool | None = Query(default=None),
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("boutique_entries:list")),
+) -> list[BoutiqueEntryListItem]:
+    return list_boutique_entries(db, search=search, item_id=item_id, is_active=is_active)
+
+
+@router.get("/entries/{entry_id}", response_model=BoutiqueEntryDetailResponse)
+def get_entry(
+    entry_id: int,
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("boutique_entries:view")),
+) -> BoutiqueEntryDetailResponse:
+    return get_boutique_entry_detail(db, entry_id)
+
+
+@router.post("/entries", response_model=BoutiqueEntryDetailResponse, status_code=status.HTTP_201_CREATED)
+def create_entry(
+    payload: BoutiqueEntryCreateRequest,
+    request: Request,
+    db: Session = Depends(get_db),
+    account: Cuenta = Depends(require_permission("boutique_entries:create")),
+) -> BoutiqueEntryDetailResponse:
+    return create_boutique_entry(
+        db,
+        payload=payload,
+        created_by=account,
+        ip_address=request.client.host if request.client else None,
+        user_agent=request.headers.get("user-agent"),
+    )
+
+
+@router.patch("/entries/{entry_id}/status", response_model=BoutiqueEntryDetailResponse)
+def update_entry_status(
+    entry_id: int,
+    payload: BoutiqueEntryStatusUpdateRequest,
+    request: Request,
+    db: Session = Depends(get_db),
+    account: Cuenta = Depends(require_permission("boutique_entries:update_status")),
+) -> BoutiqueEntryDetailResponse:
+    return set_boutique_entry_status(
+        db,
+        entry_id=entry_id,
+        is_active=payload.is_active,
+        changed_by=account,
+        ip_address=request.client.host if request.client else None,
+        user_agent=request.headers.get("user-agent"),
+    )
 
 
 @router.get("/items", response_model=list[BoutiqueItemListItem])
@@ -195,6 +326,7 @@ def get_sales(
     search: str | None = Query(default=None, min_length=1),
     item_id: int | None = Query(default=None, gt=0),
     client_id: int | None = Query(default=None, gt=0),
+    currency_id: int | None = Query(default=None, gt=0),
     payment_method: MetodoPagoEnum | None = Query(default=None),
     state: EstadoVentaBoutiqueEnum | None = Query(default=None),
     date_from: date | None = Query(default=None),
@@ -207,6 +339,7 @@ def get_sales(
         search=search,
         item_id=item_id,
         client_id=client_id,
+        currency_id=currency_id,
         payment_method=payment_method,
         state=state,
         date_from=date_from,

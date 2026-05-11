@@ -12,7 +12,6 @@ import {
   Row,
   Col,
   Select,
-  Space,
   Table,
   Tag,
   Typography,
@@ -26,7 +25,7 @@ import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
 import { BoutiqueSaleDetailCard } from './BoutiqueSaleDetailCard'
 import { BoutiqueSaleForm } from './BoutiqueSaleForm'
-import { ESTADO_VENTA_OPTIONS, METODO_PAGO_OPTIONS, formatBs } from './boutiqueConstants'
+import { ESTADO_VENTA_OPTIONS, METODO_PAGO_OPTIONS, formatBs, labelFromOptions } from './boutiqueConstants'
 
 const { RangePicker } = DatePicker
 
@@ -34,6 +33,8 @@ export function BoutiqueSalesPage() {
   const [sales, setSales] = useState([])
   const [items, setItems] = useState([])
   const [clients, setClients] = useState([])
+  const [currencies, setCurrencies] = useState([])
+  const [exchangeRates, setExchangeRates] = useState([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
@@ -43,6 +44,7 @@ export function BoutiqueSalesPage() {
     search: '',
     item_id: undefined,
     client_id: undefined,
+    currency_id: undefined,
     payment_method: undefined,
     state: undefined,
     date_from: undefined,
@@ -64,8 +66,14 @@ export function BoutiqueSalesPage() {
   const canPickClient = user?.permissions?.includes('clients:list')
 
   const loadReferenceData = useCallback(async () => {
-    const itemResponse = await apiClient.get('/boutique/items', { params: { is_active: true } })
+    const [itemResponse, currencyResponse, rateResponse] = await Promise.all([
+      apiClient.get('/boutique/items', { params: { is_active: true } }),
+      apiClient.get('/monedas', { params: { is_active: true } }),
+      apiClient.get('/monedas/tipos-cambio', { params: { is_active: true } }),
+    ])
     setItems(itemResponse.data)
+    setCurrencies(currencyResponse.data)
+    setExchangeRates(rateResponse.data)
 
     if (canPickClient) {
       const clientResponse = await apiClient.get('/clientes', { params: { is_active: true } })
@@ -83,6 +91,7 @@ export function BoutiqueSalesPage() {
       if (filters.search) params.search = filters.search
       if (filters.item_id) params.item_id = filters.item_id
       if (filters.client_id) params.client_id = filters.client_id
+      if (filters.currency_id) params.currency_id = filters.currency_id
       if (filters.payment_method) params.payment_method = filters.payment_method
       if (filters.state) params.state = filters.state
       if (filters.date_from) params.date_from = filters.date_from
@@ -105,7 +114,7 @@ export function BoutiqueSalesPage() {
 
   useEffect(() => {
     loadSales()
-  }, [filters.search, filters.item_id, filters.client_id, filters.payment_method, filters.state, filters.date_from, filters.date_to])
+  }, [filters.search, filters.item_id, filters.client_id, filters.currency_id, filters.payment_method, filters.state, filters.date_from, filters.date_to])
 
   const itemOptions = useMemo(
     () => items.map((item) => ({ label: `${item.code} - ${item.name}`, value: item.id })),
@@ -114,6 +123,10 @@ export function BoutiqueSalesPage() {
   const clientOptions = useMemo(
     () => clients.map((client) => ({ label: `${client.codigo} - ${client.full_name}`, value: client.id })),
     [clients],
+  )
+  const currencyOptions = useMemo(
+    () => currencies.map((currency) => ({ label: `${currency.codigo} - ${currency.nombre}`, value: currency.id })),
+    [currencies],
   )
 
   const openCreate = () => {
@@ -144,15 +157,12 @@ export function BoutiqueSalesPage() {
     } catch (requestError) {
       const resolved = applyFormApiError(form, requestError, {
         messageFieldMap: [
-          { test: /método de pago mixto/i, field: 'payment_method' },
-          { test: /metodo de pago mixto/i, field: 'payment_method' },
-          { test: /cliente inactivo/i, field: 'client_id' },
+          { test: /cliente.*inactivo/i, field: 'client_id' },
           { test: /cliente no encontrado/i, field: 'client_id' },
-          { test: /producto boutique no encontrado/i, field: 'item_id' },
-          { test: /producto boutique inactivo/i, field: 'item_id' },
-          { test: /tipo boutique.*deshabilitado/i, field: 'item_id' },
-          { test: /stock suficiente/i, field: 'quantity' },
-          { test: /cantidad vendida debe ser mayor a cero/i, field: 'quantity' },
+          { test: /producto boutique.*no encontrado/i, field: 'item_id' },
+          { test: /producto boutique.*inactivo/i, field: 'item_id' },
+          { test: /stock disponible/i, field: 'quantity' },
+          { test: /moneda seleccionada no tiene un tipo de cambio activo/i, field: 'currency_id' },
           { test: /descuento no puede ser mayor/i, field: 'discount' },
           { test: /motivo del descuento/i, field: 'discount_reason' },
         ],
@@ -210,6 +220,7 @@ export function BoutiqueSalesPage() {
       key: 'client_name',
       render: (_, record) => record.client_name || 'VENTA SIN CLIENTE',
     },
+    { title: 'Moneda', dataIndex: 'currency_code', key: 'currency_code' },
     { title: 'Cantidad', dataIndex: 'quantity', key: 'quantity' },
     {
       title: 'P. Unitario (Bs)',
@@ -218,30 +229,30 @@ export function BoutiqueSalesPage() {
       render: (value) => formatBs(value),
     },
     {
-      title: 'Descuento (Bs)',
-      dataIndex: 'discount',
-      key: 'discount',
-      render: (value) => formatBs(value || 0),
-    },
-    {
       title: 'Total (Bs)',
       dataIndex: 'total',
       key: 'total',
       render: (value) => <Typography.Text strong>{formatBs(value)}</Typography.Text>,
     },
     {
+      title: 'Total moneda origen',
+      dataIndex: 'total_currency_origin',
+      key: 'total_currency_origin',
+      render: (value) => formatBs(value),
+    },
+    {
       title: 'Método',
       dataIndex: 'payment_method',
       key: 'payment_method',
-      render: (value) => <Tag color="gold">{String(value || '').replaceAll('_', ' ')}</Tag>,
+      render: (value) => <Tag color="gold">{labelFromOptions(METODO_PAGO_OPTIONS, value)}</Tag>,
     },
     {
       title: 'Estado',
       dataIndex: 'estado',
       key: 'estado',
       render: (value) => (
-        <Tag color={value === 'ACTIVA' ? 'green' : value === 'CANCELADA' ? 'orange' : 'red'}>
-          {value}
+        <Tag color={value === 'activa' ? 'green' : value === 'cancelada' ? 'orange' : 'red'}>
+          {labelFromOptions(ESTADO_VENTA_OPTIONS, value)}
         </Tag>
       ),
     },
@@ -250,23 +261,23 @@ export function BoutiqueSalesPage() {
       title: 'Acciones',
       key: 'acciones',
       render: (_, record) => (
-        <Space wrap>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           {canView ? (
             <Button icon={<EyeOutlined />} onClick={() => openView(record)}>
               Ver
             </Button>
           ) : null}
-          {canCancel && record.estado === 'ACTIVA' ? (
+          {canCancel && record.estado === 'activa' ? (
             <Button icon={<RollbackOutlined />} onClick={() => openStateModal(record, 'cancel')}>
               Cancelar
             </Button>
           ) : null}
-          {canAnnul && record.estado === 'ACTIVA' ? (
+          {canAnnul && record.estado === 'activa' ? (
             <Button danger icon={<StopOutlined />} onClick={() => openStateModal(record, 'annul')}>
               Anular
             </Button>
           ) : null}
-        </Space>
+        </div>
       ),
     },
   ]
@@ -279,7 +290,7 @@ export function BoutiqueSalesPage() {
             Ventas Boutique
           </Typography.Title>
           <Typography.Paragraph type="secondary" style={{ marginBottom: 0 }}>
-            Registra ventas directas, controla reversión de stock y consulta el historial comercial de la boutique.
+            Registra ventas directas, usa moneda activa y conserva la trazabilidad del tipo de cambio aplicado.
           </Typography.Paragraph>
         </div>
         {canCreate ? (
@@ -290,65 +301,84 @@ export function BoutiqueSalesPage() {
       </div>
 
       <div className="glass-panel boutique-filter-bar">
-        <Space wrap style={{ width: '100%', justifyContent: 'space-between' }}>
-          <Space wrap>
+        <Row gutter={[12, 12]}>
+          <Col xs={24} md={8}>
             <Input
               allowClear
               prefix={<SearchOutlined />}
               placeholder="Buscar por producto o cliente"
               value={filters.search}
               onChange={(event) => setFilters((current) => ({ ...current, search: event.target.value }))}
-              style={{ width: 260 }}
             />
+          </Col>
+          <Col xs={24} md={4}>
             <Select
               allowClear
               showSearch
               optionFilterProp="label"
-              placeholder="Filtrar por producto"
+              placeholder="Producto"
               options={itemOptions}
               value={filters.item_id}
               onChange={(value) => setFilters((current) => ({ ...current, item_id: value }))}
-              style={{ width: 220 }}
+              style={{ width: '100%' }}
             />
+          </Col>
+          <Col xs={24} md={4}>
             <Select
               allowClear
               showSearch
               optionFilterProp="label"
-              placeholder="Filtrar por cliente"
+              placeholder="Cliente"
               options={clientOptions}
               value={filters.client_id}
               onChange={(value) => setFilters((current) => ({ ...current, client_id: value }))}
-              style={{ width: 240 }}
+              style={{ width: '100%' }}
             />
+          </Col>
+          <Col xs={24} md={4}>
             <Select
               allowClear
-              placeholder="Método de pago"
-              options={METODO_PAGO_OPTIONS}
-              value={filters.payment_method}
-              onChange={(value) => setFilters((current) => ({ ...current, payment_method: value }))}
-              style={{ width: 180 }}
+              placeholder="Moneda"
+              options={currencyOptions}
+              value={filters.currency_id}
+              onChange={(value) => setFilters((current) => ({ ...current, currency_id: value }))}
+              style={{ width: '100%' }}
             />
+          </Col>
+          <Col xs={24} md={4}>
             <Select
               allowClear
               placeholder="Estado"
               options={ESTADO_VENTA_OPTIONS}
               value={filters.state}
               onChange={(value) => setFilters((current) => ({ ...current, state: value }))}
-              style={{ width: 160 }}
+              style={{ width: '100%' }}
             />
-          </Space>
-
-          <RangePicker
-            format="DD/MM/YYYY"
-            onChange={(dates) =>
-              setFilters((current) => ({
-                ...current,
-                date_from: dates?.[0] ? dates[0].format('YYYY-MM-DD') : undefined,
-                date_to: dates?.[1] ? dates[1].format('YYYY-MM-DD') : undefined,
-              }))
-            }
-          />
-        </Space>
+          </Col>
+          <Col xs={24} md={6}>
+            <Select
+              allowClear
+              placeholder="Método de pago"
+              options={METODO_PAGO_OPTIONS}
+              value={filters.payment_method}
+              onChange={(value) => setFilters((current) => ({ ...current, payment_method: value }))}
+              style={{ width: '100%' }}
+            />
+          </Col>
+          <Col xs={24} md={6}>
+            <RangePicker
+              format="DD/MM/YYYY"
+              style={{ width: '100%' }}
+              onChange={(dates) =>
+                setFilters((current) => ({
+                  ...current,
+                  date_from: dates?.[0] ? dates[0].format('YYYY-MM-DD') : undefined,
+                  date_to: dates?.[1] ? dates[1].format('YYYY-MM-DD') : undefined,
+                }))
+              }
+            />
+          </Col>
+        </Row>
       </div>
 
       {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
@@ -366,7 +396,7 @@ export function BoutiqueSalesPage() {
 
       <Drawer
         title="Registrar Venta Boutique"
-        width={760}
+        width={840}
         open={formOpen}
         onClose={() => {
           setFormOpen(false)
@@ -376,14 +406,13 @@ export function BoutiqueSalesPage() {
         destroyOnClose
         maskClosable={false}
       >
-        <FormProcessAlert
-          message={formError}
-          title="No fue posible registrar la venta."
-        />
+        <FormProcessAlert message={formError} title="No fue posible registrar la venta." />
         <BoutiqueSaleForm
           form={form}
           items={items.filter((item) => item.is_active)}
           clients={clients}
+          currencies={currencies}
+          exchangeRates={exchangeRates}
           saving={saving}
           canPickClient={canPickClient}
           onFinish={handleCreate}
@@ -403,7 +432,7 @@ export function BoutiqueSalesPage() {
             Cerrar
           </Button>,
         ]}
-        width={820}
+        width={900}
       >
         <BoutiqueSaleDetailCard sale={selectedSale} />
       </Modal>
@@ -443,7 +472,6 @@ export function BoutiqueSalesPage() {
                     label="Motivo operativo"
                     name="reason"
                     rules={[{ required: true, message: 'Debe registrar el Motivo operativo de la reversión.' }]}
-                    extra="Explica con claridad por qué se cancela o anula la venta para mantener la trazabilidad."
                     normalize={(value) => (value || '').toUpperCase()}
                   >
                     <Input.TextArea rows={3} placeholder="Ej. CLIENTE DESISTIÓ DE LA COMPRA O SE REGISTRÓ LA VENTA POR ERROR" />

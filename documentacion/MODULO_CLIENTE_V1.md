@@ -1,41 +1,45 @@
-# Modulo Cliente v1
+# Modulo Cliente
 
 ## Objetivo
 
-Esta entrega implementa el registro y CRUD del modulo `CLIENTE`, alineado al SQL documental y a la arquitectura ya usada en Boutique.
+Esta versión implementa el CRUD de `cliente` ya normalizado a minúsculas y alineado con el bloque comercial actual.
 
 ## Tabla implementada
 
-- `CLIENTE`
+- `cliente`
 
-## Columnas fisicas respetadas
+## Columnas clave
 
-- `CLI_ID`
-- `CLI_COD`
-- `CLI_NOM`
-- `CLI_APE_PAT`
-- `CLI_APE_MAT`
-- `CLI_CEL`
-- `CLI_CEL_REF`
-- `CLI_NOM_CEL_REF`
-- `CLI_COR`
-- `CLI_CI`
-- `CLI_NAC`
-- `CLI_ZONA`
-- `CLI_CALLE`
-- `CLI_OBS`
-- `CLI_HAB`
-- `CLI_FEC_REG`
+- `cli_id`
+- `cli_cod`
+- `cli_nom`
+- `cli_ape_pat`
+- `cli_ape_mat`
+- `cli_cel`
+- `cli_cel_ref`
+- `cli_nom_cel_ref`
+- `cli_cor`
+- `cli_ci`
+- `cli_fecha_nac`
+- `cli_pais`
+- `cli_ciudad`
+- `cli_zona`
+- `cli_calle`
+- `cli_obs`
+- `cli_hab`
+- `cli_fec_reg`
 
 ## Reglas de negocio
 
-- `CLI_COD` es unico
-- si no se envia `CLI_COD`, el backend genera uno automatico
-- si se envia `CLI_COD`, debe seguir el formato `CLI-00001`
-- `CLI_NOM`, `CLI_APE_PAT` y `CLI_CEL` son obligatorios
-- el estado del cliente es logico mediante `CLI_HAB`
-- nombres, apellidos, zona, calle, nacionalidad y observaciones se normalizan en mayusculas
-- correo se normaliza en minusculas
+- `cli_cod` es único
+- si no se envía `cli_cod`, backend lo genera con patrón `CLI-00001`
+- si se envía `cli_cod`, debe respetar ese mismo formato
+- `cli_nom`, `cli_ape_pat` y `cli_cel` son obligatorios
+- `cli_cor` y `cli_ci` son únicos cuando existen
+- `cli_fecha_nac` es opcional
+- nombres, país, ciudad, zona, calle y observaciones se normalizan en mayúsculas
+- correo se normaliza en minúsculas
+- el estado es lógico mediante `cli_hab`
 
 ## API
 
@@ -45,18 +49,19 @@ Esta entrega implementa el registro y CRUD del modulo `CLIENTE`, alineado al SQL
 - `PATCH /api/v1/clientes/{id}`
 - `PATCH /api/v1/clientes/{id}/status`
 
-## Filtros
+Filtros:
 
 - `search`
 - `is_active`
 
-La busqueda contempla:
+La búsqueda contempla:
 
-- codigo
+- código
 - nombres
 - apellidos
-- CI
 - celular
+- CI
+- ciudad
 
 ## Permisos
 
@@ -68,31 +73,42 @@ La busqueda contempla:
 
 - CRUD completo
 
+`CAJA`:
+
+- lectura técnica para referencia en ventas boutique
+
 ## Frontend
 
 ### Ruta
 
 - `/app/clientes`
 
-### Comportamiento
+### Campos visibles principales
 
-- tabla con filtros
-- drawer de alta y edicion
-- activacion y desactivacion logica
-- campo de codigo editable
-- soporte para autogeneracion backend
+- código
+- nombres
+- apellidos
+- celular
+- celular de referencia
+- nombre de referencia
+- correo
+- CI
+- fecha de nacimiento
+- país
+- ciudad
+- zona
+- calle
+- observaciones
 
-## Auditoria
-
-Eventos registrados:
+## Auditoría
 
 - `CLIENT_CREATED`
 - `CLIENT_UPDATED`
 - `CLIENT_STATUS_CHANGED`
 
-## Validacion realizada
+## Validación objetivo del módulo
 
-- migracion aplicada correctamente
-- smoke test real de alta de cliente
-- smoke test real de acceso permitido para `MODISTA`
-- smoke test real de acceso denegado a roles para `MODISTA`
+- autogeneración de `cli_cod`
+- edición manual válida de `cli_cod`
+- unicidad de correo y CI
+- acceso completo para `MODISTA`

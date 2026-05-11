@@ -1,4 +1,4 @@
-from datetime import date, datetime, time
+from datetime import datetime, timezone
 from decimal import Decimal
 
 from fastapi import HTTPException, status
@@ -7,37 +7,82 @@ from sqlalchemy.orm import Session, joinedload
 
 from app.core.audit import register_audit_event
 from app.models.account import Cuenta
-from app.models.boutique_enums import EstadoVentaBoutiqueEnum, MetodoPagoEnum
+from app.models.boutique_enums import EstadoVentaBoutiqueEnum
 from app.models.boutique_item import ItemBoutique
 from app.models.boutique_sale import VentaBoutique
 from app.models.client import Cliente
+from app.models.currency import Moneda
 from app.models.user import Usuario
 from app.schemas.boutique import (
-    BoutiqueSaleClientSummary,
     BoutiqueSaleCreateRequest,
+    BoutiqueSaleCurrencySummary,
     BoutiqueSaleDetailResponse,
     BoutiqueSaleItemSummary,
     BoutiqueSaleListItem,
+    BoutiqueSaleClientSummary,
     BoutiqueSaleUserSummary,
 )
+from app.services.currency_service import get_active_exchange_rate_for_currency
 
 
-def _to_float(value: Decimal | float | None) -> float | None:
+def _to_float(value: Decimal | float | int | None) -> float | None:
     if value is None:
         return None
     return float(value)
 
 
-def _base_sale_query():
-    return select(VentaBoutique).options(
-        joinedload(VentaBoutique.item).joinedload(ItemBoutique.tipo_item),
-        joinedload(VentaBoutique.cliente),
-        joinedload(VentaBoutique.usuario).joinedload(Usuario.cuenta),
-    )
+def _get_sale_entity(db: Session, sale_id: int) -> VentaBoutique:
+    sale = db.execute(
+        select(VentaBoutique)
+        .options(
+            joinedload(VentaBoutique.item).joinedload(ItemBoutique.tipo_item),
+            joinedload(VentaBoutique.cliente),
+            joinedload(VentaBoutique.usuario).joinedload(Usuario.cuenta),
+            joinedload(VentaBoutique.moneda),
+        )
+        .where(VentaBoutique.id == sale_id)
+    ).scalar_one_or_none()
+    if sale is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Venta boutique no encontrada.")
+    return sale
 
 
-def _sale_to_list_item(sale: VentaBoutique) -> BoutiqueSaleListItem:
-    client = sale.cliente
+def _get_item_for_sale(db: Session, item_id: int) -> ItemBoutique:
+    item = db.execute(
+        select(ItemBoutique)
+        .options(joinedload(ItemBoutique.tipo_item))
+        .where(ItemBoutique.id == item_id)
+    ).scalar_one_or_none()
+    if item is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Producto boutique no encontrado.")
+    if not item.estado:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="El producto boutique está inactivo.")
+    if not item.tipo_item.habilitado:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="El tipo boutique del producto está deshabilitado.")
+    return item
+
+
+def _get_client_for_sale(db: Session, client_id: int | None) -> Cliente | None:
+    if client_id is None:
+        return None
+    client = db.execute(select(Cliente).where(Cliente.id == client_id)).scalar_one_or_none()
+    if client is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Cliente no encontrado.")
+    if not client.habilitado:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="El cliente está inactivo.")
+    return client
+
+
+def _get_currency_for_sale(db: Session, currency_id: int) -> Moneda:
+    currency = db.execute(select(Moneda).where(Moneda.id == currency_id)).scalar_one_or_none()
+    if currency is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Moneda no encontrada.")
+    if not currency.habilitado:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="No puedes operar con monedas deshabilitadas.")
+    return currency
+
+
+def _to_sale_list_item(sale: VentaBoutique) -> BoutiqueSaleListItem:
     return BoutiqueSaleListItem(
         id=sale.id,
         fecha=sale.fecha,
@@ -46,25 +91,21 @@ def _sale_to_list_item(sale: VentaBoutique) -> BoutiqueSaleListItem:
         item_id=sale.item.id,
         item_code=sale.item.codigo,
         item_name=sale.item.nombre,
-        client_id=client.id if client else None,
-        client_code=client.codigo if client else None,
-        client_name=client.nombre_completo if client else None,
+        client_id=sale.cliente.id if sale.cliente else None,
+        client_code=sale.cliente.codigo if sale.cliente else None,
+        client_name=sale.cliente.nombre_completo if sale.cliente else None,
+        currency_code=sale.moneda.codigo,
         registered_by=sale.usuario.nombre_completo,
-        quantity=_to_float(sale.cantidad) or 0,
-        unit_price=_to_float(sale.precio_unitario) or 0,
+        quantity=sale.cantidad,
+        unit_price=float(sale.precio_unitario),
         discount=_to_float(sale.descuento),
-        total=_to_float(sale.total) or 0,
+        total=float(sale.total),
+        total_currency_origin=float(sale.total_moneda_original),
     )
 
 
-def _sale_to_detail(sale: VentaBoutique) -> BoutiqueSaleDetailResponse:
-    client = None
-    if sale.cliente is not None:
-        client = BoutiqueSaleClientSummary(
-            id=sale.cliente.id,
-            codigo=sale.cliente.codigo,
-            full_name=sale.cliente.nombre_completo,
-        )
+def get_boutique_sale_detail(db: Session, sale_id: int) -> BoutiqueSaleDetailResponse:
+    sale = _get_sale_entity(db, sale_id)
     return BoutiqueSaleDetailResponse(
         id=sale.id,
         fecha=sale.fecha,
@@ -76,30 +117,36 @@ def _sale_to_detail(sale: VentaBoutique) -> BoutiqueSaleDetailResponse:
             name=sale.item.nombre,
             type_name=sale.item.tipo_item.nombre,
         ),
-        client=client,
+        client=BoutiqueSaleClientSummary(
+            id=sale.cliente.id,
+            codigo=sale.cliente.codigo,
+            full_name=sale.cliente.nombre_completo,
+        )
+        if sale.cliente
+        else None,
+        currency=BoutiqueSaleCurrencySummary(
+            id=sale.moneda.id,
+            codigo=sale.moneda.codigo,
+            nombre=sale.moneda.nombre,
+            simbolo=sale.moneda.simbolo,
+            es_base=sale.moneda.es_base,
+        ),
         registered_by=BoutiqueSaleUserSummary(
             id=sale.usuario.id,
             full_name=sale.usuario.nombre_completo,
-            username=sale.usuario.cuenta.username,
+            username=sale.usuario.cuenta.username if sale.usuario.cuenta else "",
         ),
-        quantity=_to_float(sale.cantidad) or 0,
-        unit_price=_to_float(sale.precio_unitario) or 0,
+        quantity=sale.cantidad,
+        unit_price=float(sale.precio_unitario),
         discount=_to_float(sale.descuento),
         discount_reason=sale.motivo_descuento,
-        total=_to_float(sale.total) or 0,
+        total=float(sale.total),
+        exchange_rate_used=float(sale.tipo_cambio_usado),
+        total_currency_origin=float(sale.total_moneda_original),
         observations=sale.observaciones,
+        changed_at=sale.fecha_cambio_estado,
+        state_change_reason=sale.motivo_cambio_estado,
     )
-
-
-def get_boutique_sale_entity(db: Session, sale_id: int) -> VentaBoutique:
-    sale = db.execute(_base_sale_query().where(VentaBoutique.id == sale_id)).scalar_one_or_none()
-    if sale is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Venta boutique no encontrada.")
-    return sale
-
-
-def get_boutique_sale_detail(db: Session, sale_id: int) -> BoutiqueSaleDetailResponse:
-    return _sale_to_detail(get_boutique_sale_entity(db, sale_id))
 
 
 def list_boutique_sales(
@@ -108,12 +155,22 @@ def list_boutique_sales(
     search: str | None = None,
     item_id: int | None = None,
     client_id: int | None = None,
-    payment_method: MetodoPagoEnum | None = None,
-    state: EstadoVentaBoutiqueEnum | None = None,
-    date_from: date | None = None,
-    date_to: date | None = None,
+    payment_method=None,
+    state=None,
+    currency_id: int | None = None,
+    date_from=None,
+    date_to=None,
 ) -> list[BoutiqueSaleListItem]:
-    stmt = _base_sale_query().order_by(VentaBoutique.fecha.desc(), VentaBoutique.id.desc())
+    stmt = (
+        select(VentaBoutique)
+        .options(
+            joinedload(VentaBoutique.item).joinedload(ItemBoutique.tipo_item),
+            joinedload(VentaBoutique.cliente),
+            joinedload(VentaBoutique.usuario),
+            joinedload(VentaBoutique.moneda),
+        )
+        .order_by(VentaBoutique.fecha.desc())
+    )
     if item_id is not None:
         stmt = stmt.where(VentaBoutique.item_id == item_id)
     if client_id is not None:
@@ -122,52 +179,23 @@ def list_boutique_sales(
         stmt = stmt.where(VentaBoutique.metodo_pago == payment_method)
     if state is not None:
         stmt = stmt.where(VentaBoutique.estado == state)
+    if currency_id is not None:
+        stmt = stmt.where(VentaBoutique.moneda_id == currency_id)
     if date_from is not None:
-        stmt = stmt.where(VentaBoutique.fecha >= datetime.combine(date_from, time.min))
+        stmt = stmt.where(func.date(VentaBoutique.fecha) >= date_from)
     if date_to is not None:
-        stmt = stmt.where(VentaBoutique.fecha <= datetime.combine(date_to, time.max))
+        stmt = stmt.where(func.date(VentaBoutique.fecha) <= date_to)
     if search:
         term = f"%{search.strip().upper()}%"
-        stmt = stmt.join(VentaBoutique.item).join(ItemBoutique.tipo_item).join(VentaBoutique.usuario).outerjoin(VentaBoutique.cliente)
-        stmt = stmt.where(
+        stmt = stmt.join(VentaBoutique.item).outerjoin(VentaBoutique.cliente).where(
             or_(
                 func.upper(ItemBoutique.codigo).like(term),
                 func.upper(ItemBoutique.nombre).like(term),
                 func.upper(func.coalesce(Cliente.codigo, "")).like(term),
-                func.upper(func.coalesce(Cliente.nombres, "")).like(term),
-                func.upper(func.coalesce(Cliente.apellido_paterno, "")).like(term),
-                func.upper(func.coalesce(Cliente.apellido_materno, "")).like(term),
+                func.upper(func.concat(func.coalesce(Cliente.nombres, ""), " ", func.coalesce(Cliente.apellido_paterno, ""))).like(term),
             )
         )
-    sales = db.execute(stmt).scalars().unique().all()
-    return [_sale_to_list_item(sale) for sale in sales]
-
-
-def _get_item_for_sale(db: Session, item_id: int) -> ItemBoutique:
-    item = db.execute(
-        select(ItemBoutique).options(joinedload(ItemBoutique.tipo_item)).where(ItemBoutique.id == item_id)
-    ).scalar_one_or_none()
-    if item is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Producto boutique no encontrado.")
-    if not item.estado:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="No puedes vender un producto boutique inactivo.")
-    if not item.tipo_item.habilitado:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="No puedes vender un producto cuyo tipo boutique está deshabilitado.",
-        )
-    return item
-
-
-def _get_active_client(db: Session, client_id: int | None) -> Cliente | None:
-    if client_id is None:
-        return None
-    client = db.execute(select(Cliente).where(Cliente.id == client_id)).scalar_one_or_none()
-    if client is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Cliente no encontrado.")
-    if not client.habilitado:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="No puedes asociar un cliente inactivo a la venta.")
-    return client
+    return [_to_sale_list_item(sale) for sale in db.execute(stmt).unique().scalars().all()]
 
 
 def create_boutique_sale(
@@ -178,49 +206,57 @@ def create_boutique_sale(
     ip_address: str | None,
     user_agent: str | None,
 ) -> BoutiqueSaleDetailResponse:
-    if payload.payment_method == MetodoPagoEnum.MIXTO:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El método de pago MIXTO no está disponible en esta versión.")
+    if not created_by.is_active or not created_by.usuario.activo or not created_by.rol.activo:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="La cuenta usada para registrar la venta no está habilitada.")
 
     item = _get_item_for_sale(db, payload.item_id)
-    _get_active_client(db, payload.client_id)
+    client = _get_client_for_sale(db, payload.client_id)
+    currency = _get_currency_for_sale(db, payload.currency_id)
 
-    quantity = Decimal(str(payload.quantity)).quantize(Decimal("0.01"))
-    unit_price = Decimal(str(item.precio_venta)).quantize(Decimal("0.01"))
-    discount = Decimal(str(payload.discount)).quantize(Decimal("0.01")) if payload.discount is not None else None
-    subtotal = (quantity * unit_price).quantize(Decimal("0.01"))
+    if payload.quantity > item.stock:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="La cantidad vendida no puede ser mayor al stock disponible.")
 
-    if quantity <= 0:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="La cantidad vendida debe ser mayor a cero.")
-    if Decimal(str(item.stock)) < quantity:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="No hay stock suficiente para completar la venta.")
-    if discount is not None and discount > subtotal:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El descuento no puede ser mayor al subtotal de la venta.")
-    if discount is None and payload.discount_reason is not None:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No debes enviar motivo de descuento si no existe descuento.")
-    if discount is not None and payload.discount_reason is None:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Debes registrar el motivo del descuento.")
+    unit_price = Decimal(item.precio_venta)
+    subtotal = Decimal(payload.quantity) * unit_price
+    discount = Decimal(payload.discount or 0)
+    if discount > subtotal:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="El descuento no puede ser mayor al subtotal de la venta.")
+    total_bob = subtotal - discount
+    if total_bob <= 0:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="El total final de la venta debe ser mayor a cero.")
+
+    if currency.es_base:
+        exchange_rate_used = Decimal("1")
+        total_currency_origin = total_bob
+    else:
+        exchange_rate = get_active_exchange_rate_for_currency(db, currency.id)
+        if exchange_rate is None:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="La moneda seleccionada no tiene un tipo de cambio activo.")
+        exchange_rate_used = Decimal(exchange_rate.valor_bob)
+        total_currency_origin = (total_bob / exchange_rate_used).quantize(Decimal("0.01"))
 
     sale = VentaBoutique(
         item_id=item.id,
-        usuario_id=created_by.usuario.id,
-        cliente_id=payload.client_id,
-        cantidad=quantity,
+        usuario_id=created_by.usuario_id,
+        cliente_id=client.id if client else None,
+        moneda_id=currency.id,
+        cantidad=payload.quantity,
         precio_unitario=unit_price,
-        descuento=discount,
-        motivo_descuento=payload.discount_reason,
+        descuento=discount if discount > 0 else None,
+        motivo_descuento=payload.discount_reason if discount > 0 else None,
+        tipo_cambio_usado=exchange_rate_used,
+        total_moneda_original=total_currency_origin,
         metodo_pago=payload.payment_method,
         observaciones=payload.observations,
         estado=EstadoVentaBoutiqueEnum.ACTIVA,
     )
-    item.stock = Decimal(str(item.stock)) - quantity
+    item.stock -= payload.quantity
     db.add(sale)
     db.flush()
-    db.refresh(sale)
-
     register_audit_event(
         db,
         action="BOUTIQUE_SALE_CREATED",
-        description=f"Se registró la venta boutique #{sale.id} del producto '{item.codigo}'.",
+        description=f"Se registró la venta boutique '{sale.id}' del producto '{item.codigo}'.",
         account=created_by,
         user=created_by.usuario,
         reference=str(sale.id),
@@ -241,23 +277,20 @@ def change_boutique_sale_state(
     ip_address: str | None,
     user_agent: str | None,
 ) -> BoutiqueSaleDetailResponse:
-    sale = get_boutique_sale_entity(db, sale_id)
+    sale = _get_sale_entity(db, sale_id)
     if sale.estado != EstadoVentaBoutiqueEnum.ACTIVA:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Solo puedes revertir ventas que estén en estado ACTIVA.",
-        )
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Solo puedes cambiar el estado de ventas activas.")
     if target_state not in {EstadoVentaBoutiqueEnum.CANCELADA, EstadoVentaBoutiqueEnum.ANULADA}:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El estado destino no es válido para una reversión.")
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="El estado destino no es válido para una reversión.")
 
     sale.estado = target_state
-    sale.item.stock = Decimal(str(sale.item.stock)) + Decimal(str(sale.cantidad))
-    action = "BOUTIQUE_SALE_CANCELLED" if target_state == EstadoVentaBoutiqueEnum.CANCELADA else "BOUTIQUE_SALE_ANNULLED"
-    label = "canceló" if target_state == EstadoVentaBoutiqueEnum.CANCELADA else "anuló"
+    sale.fecha_cambio_estado = datetime.now(timezone.utc)
+    sale.motivo_cambio_estado = reason
+    sale.item.stock += sale.cantidad
     register_audit_event(
         db,
-        action=action,
-        description=f"Se {label} la venta boutique #{sale.id}. Motivo: {reason.strip().upper()}",
+        action="BOUTIQUE_SALE_CANCELLED" if target_state == EstadoVentaBoutiqueEnum.CANCELADA else "BOUTIQUE_SALE_ANNULLED",
+        description=f"Se cambió la venta boutique '{sale.id}' a estado '{target_state.value}'.",
         account=changed_by,
         user=changed_by.usuario,
         reference=str(sale.id),

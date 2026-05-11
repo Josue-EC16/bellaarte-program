@@ -17,26 +17,30 @@ depends_on = None
 
 def upgrade() -> None:
     op.create_table(
-        "CLIENTE",
-        sa.Column("CLI_ID", sa.BigInteger(), sa.Identity(always=True), primary_key=True),
-        sa.Column("CLI_COD", sa.String(length=20), nullable=False),
-        sa.Column("CLI_NOM", sa.String(length=100), nullable=False),
-        sa.Column("CLI_APE_PAT", sa.String(length=100), nullable=False),
-        sa.Column("CLI_APE_MAT", sa.String(length=100), nullable=True),
-        sa.Column("CLI_CEL", sa.String(length=30), nullable=False),
-        sa.Column("CLI_CEL_REF", sa.String(length=30), nullable=True),
-        sa.Column("CLI_NOM_CEL_REF", sa.String(length=120), nullable=True),
-        sa.Column("CLI_COR", sa.String(length=120), nullable=True),
-        sa.Column("CLI_CI", sa.String(length=30), nullable=True),
-        sa.Column("CLI_NAC", sa.String(length=100), nullable=True),
-        sa.Column("CLI_ZONA", sa.String(length=100), nullable=True),
-        sa.Column("CLI_CALLE", sa.String(length=100), nullable=True),
-        sa.Column("CLI_OBS", sa.Text(), nullable=True),
-        sa.Column("CLI_HAB", sa.Boolean(), nullable=False, server_default=sa.true()),
-        sa.Column("CLI_FEC_REG", sa.DateTime(timezone=True), nullable=False, server_default=sa.text("CURRENT_TIMESTAMP")),
-        sa.UniqueConstraint("CLI_COD", name="UQ_CLI_COD"),
+        "cliente",
+        sa.Column("cli_id", sa.BigInteger(), sa.Identity(always=True), primary_key=True),
+        sa.Column("cli_cod", sa.String(length=20), nullable=False),
+        sa.Column("cli_nom", sa.String(length=100), nullable=False),
+        sa.Column("cli_ape_pat", sa.String(length=100), nullable=False),
+        sa.Column("cli_ape_mat", sa.String(length=100), nullable=True),
+        sa.Column("cli_cel", sa.String(length=30), nullable=False),
+        sa.Column("cli_cel_ref", sa.String(length=30), nullable=True),
+        sa.Column("cli_nom_cel_ref", sa.String(length=120), nullable=True),
+        sa.Column("cli_cor", sa.String(length=100), nullable=True),
+        sa.Column("cli_ci", sa.String(length=30), nullable=True),
+        sa.Column("cli_fecha_nac", sa.Date(), nullable=True),
+        sa.Column("cli_pais", sa.String(length=100), nullable=True),
+        sa.Column("cli_ciudad", sa.String(length=100), nullable=True),
+        sa.Column("cli_zona", sa.String(length=100), nullable=True),
+        sa.Column("cli_calle", sa.String(length=100), nullable=True),
+        sa.Column("cli_obs", sa.Text(), nullable=True),
+        sa.Column("cli_hab", sa.Boolean(), nullable=False, server_default=sa.true()),
+        sa.Column("cli_fec_reg", sa.DateTime(timezone=True), nullable=False, server_default=sa.text("CURRENT_TIMESTAMP")),
+        sa.UniqueConstraint("cli_cod", name="uq_cliente_cod"),
+        sa.UniqueConstraint("cli_cor", name="uq_cliente_cor"),
+        sa.UniqueConstraint("cli_ci", name="uq_cliente_ci"),
     )
 
 
 def downgrade() -> None:
-    op.drop_table("CLIENTE")
+    op.drop_table("cliente")

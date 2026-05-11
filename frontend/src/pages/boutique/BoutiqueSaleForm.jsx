@@ -1,26 +1,30 @@
 /* eslint-disable react/prop-types */
 import { Alert, Button, Col, Form, Input, InputNumber, Row, Select, Typography } from 'antd'
 
-import {
-  FORM_COMMON_PROPS,
-  FORM_DRAWER_SUBMIT_PROPS,
-} from '../../components/forms/formConfig'
+import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/forms/formConfig'
 import { METODO_PAGO_OPTIONS, MOTIVO_DESCUENTO_VENTA_OPTIONS, formatBs } from './boutiqueConstants'
 
-export function BoutiqueSaleForm({ form, items, clients, saving, onFinish, canPickClient = true }) {
+export function BoutiqueSaleForm({ form, items, clients, currencies, exchangeRates, saving, onFinish, canPickClient = true }) {
   const selectedItemId = Form.useWatch('item_id', form)
+  const selectedCurrencyId = Form.useWatch('currency_id', form)
   const quantity = Form.useWatch('quantity', form)
   const discount = Form.useWatch('discount', form)
 
   const selectedItem = items.find((item) => item.id === selectedItemId) || null
+  const selectedCurrency = currencies.find((currency) => currency.id === selectedCurrencyId) || null
+  const selectedRate = exchangeRates.find((rate) => rate.moneda_id === selectedCurrencyId && rate.activo) || null
+
   const stock = Number(selectedItem?.stock || 0)
   const unitPrice = Number(selectedItem?.sale_price || 0)
   const quantityValue = Number(quantity || 0)
   const normalizedDiscount = Number(discount || 0)
   const subtotal = quantityValue > 0 ? quantityValue * unitPrice : 0
   const total = Math.max(subtotal - normalizedDiscount, 0)
+  const exchangeRateValue = selectedCurrency?.es_base ? 1 : Number(selectedRate?.valor_bob || 0)
+  const totalCurrencyOrigin = exchangeRateValue > 0 ? total / exchangeRateValue : 0
   const requiresDiscountReason = normalizedDiscount > 0
   const quantityExceedsStock = Boolean(selectedItem && quantityValue > stock)
+  const selectedCurrencyWithoutRate = Boolean(selectedCurrency && !selectedCurrency.es_base && !selectedRate)
 
   return (
     <Form
@@ -42,12 +46,11 @@ export function BoutiqueSaleForm({ form, items, clients, saving, onFinish, canPi
           <Form.Item
             label="Producto boutique"
             name="item_id"
-            rules={[{ required: true, message: 'Debe seleccionar el Producto Boutique a vender.' }]}
-            extra="Busca el producto por código o nombre y confirma el stock disponible antes de registrar la venta."
+            rules={[{ required: true, message: 'Debe seleccionar el Producto boutique a vender.' }]}
           >
             <Select
               showSearch
-              placeholder="Busca y selecciona el producto a vender"
+              placeholder="Buscar y seleccionar el producto a vender"
               optionFilterProp="label"
               options={items.map((item) => ({
                 label: `${item.code} - ${item.name} | Stock: ${item.stock} | Bs. ${formatBs(item.sale_price)}`,
@@ -74,14 +77,14 @@ export function BoutiqueSaleForm({ form, items, clients, saving, onFinish, canPi
           <Form.Item
             label="Cliente"
             name="client_id"
-            extra={canPickClient ? 'Campo opcional. Si no eliges cliente, la venta se registrará sin asociación.' : 'Tu rol puede registrar la venta sin asociar cliente.'}
+            extra={canPickClient ? 'Opcional. Puedes registrar ventas sin asociar cliente.' : 'Tu rol no gestiona la selección de clientes.'}
           >
             <Select
               showSearch
               allowClear
               disabled={!canPickClient}
-              placeholder={canPickClient ? 'Busca un cliente o deja este campo vacío' : 'Cliente no disponible para tu rol'}
               optionFilterProp="label"
+              placeholder={canPickClient ? 'Buscar cliente o dejar vacío' : 'Cliente no disponible para tu rol'}
               options={clients.map((client) => ({
                 label: `${client.codigo} - ${client.full_name} | ${client.celular}`,
                 value: client.id,
@@ -94,38 +97,23 @@ export function BoutiqueSaleForm({ form, items, clients, saving, onFinish, canPi
             label="Cantidad"
             name="quantity"
             rules={[
-              { required: true, message: 'La Cantidad vendida es obligatoria.' },
+              { required: true, message: 'La Cantidad es obligatoria.' },
               {
                 validator(_, value) {
-                  if (value === undefined || value === null || value === '') {
-                    return Promise.resolve()
-                  }
-                  if (!selectedItem) {
-                    return Promise.reject(new Error('Primero debe seleccionar el Producto Boutique.'))
-                  }
-                  if (Number(value) <= 0) {
-                    return Promise.reject(new Error('La Cantidad vendida debe ser mayor a cero.'))
-                  }
-                  if (Number(value) > Number(selectedItem.stock)) {
-                    return Promise.reject(new Error('La Cantidad vendida no puede ser mayor al Stock disponible.'))
-                  }
+                  if (value === undefined || value === null || value === '') return Promise.resolve()
+                  if (!selectedItem) return Promise.reject(new Error('Primero debe seleccionar el Producto boutique.'))
+                  if (Number(value) <= 0) return Promise.reject(new Error('La Cantidad vendida debe ser mayor a cero.'))
+                  if (Number(value) > Number(selectedItem.stock)) return Promise.reject(new Error('La Cantidad vendida no puede ser mayor al stock disponible.'))
                   return Promise.resolve()
                 },
               },
             ]}
-            extra="Debe ser un número entero mayor a cero y no puede superar el stock disponible."
             normalize={(value) => {
               if (value === null || value === undefined || value === '') return null
               return value.toString().replace(/[^0-9]/g, '')
             }}
           >
-            <InputNumber
-              min={1}
-              max={selectedItem ? Number(selectedItem.stock) : undefined}
-              precision={0}
-              style={{ width: '100%' }}
-              placeholder="Ej. 1, 2, 5"
-            />
+            <InputNumber min={1} max={selectedItem ? Number(selectedItem.stock) : undefined} precision={0} style={{ width: '100%' }} placeholder="Ej. 1, 2, 3" />
           </Form.Item>
         </Col>
       </Row>
@@ -133,17 +121,57 @@ export function BoutiqueSaleForm({ form, items, clients, saving, onFinish, canPi
       <Row gutter={12}>
         <Col span={12}>
           <Form.Item label="Precio unitario vigente">
-            <Input value={selectedItem ? `Bs. ${formatBs(selectedItem.sale_price)}` : ''} placeholder="Se completa automáticamente al elegir el producto" readOnly />
+            <Input value={selectedItem ? `Bs. ${formatBs(selectedItem.sale_price)}` : ''} placeholder="Se completa al elegir el producto" readOnly />
           </Form.Item>
         </Col>
+        <Col span={12}>
+          <Form.Item
+            label="Moneda"
+            name="currency_id"
+            rules={[{ required: true, message: 'Debe seleccionar la Moneda.' }]}
+          >
+            <Select
+              showSearch
+              optionFilterProp="label"
+              placeholder="Seleccionar moneda de cobro"
+              options={currencies.map((currency) => ({
+                label: `${currency.codigo} - ${currency.nombre}`,
+                value: currency.id,
+              }))}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+
+      {selectedCurrency ? (
+        <Alert
+          style={{ marginBottom: 16 }}
+          type={selectedCurrencyWithoutRate ? 'error' : 'info'}
+          showIcon
+          message={selectedCurrencyWithoutRate ? 'La moneda seleccionada no tiene tipo de cambio activo.' : `Tipo de cambio activo: ${exchangeRateValue}`}
+          description={
+            selectedCurrency.es_base
+              ? 'La moneda base usa tipo de cambio 1 automáticamente.'
+              : selectedCurrencyWithoutRate
+                ? 'No podrás registrar la venta hasta que exista un tipo de cambio activo para esta moneda.'
+                : `El total en moneda original se calculará automáticamente con ${exchangeRateValue} Bs por unidad de moneda.`
+          }
+        />
+      ) : null}
+
+      <Row gutter={12}>
         <Col span={12}>
           <Form.Item
             label="Método de pago"
             name="payment_method"
             rules={[{ required: true, message: 'Debe seleccionar el Método de pago.' }]}
-            extra="Selecciona solo una modalidad permitida en esta versión del sistema."
           >
-            <Select placeholder="Selecciona el método de pago" options={METODO_PAGO_OPTIONS} />
+            <Select placeholder="Seleccionar método de pago" options={METODO_PAGO_OPTIONS} />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item label="Tipo de cambio usado">
+            <Input value={selectedCurrency ? String(exchangeRateValue || '') : ''} placeholder="Se completa según la moneda seleccionada" readOnly />
           </Form.Item>
         </Col>
       </Row>
@@ -160,20 +188,13 @@ export function BoutiqueSaleForm({ form, items, clients, saving, onFinish, canPi
             rules={[
               {
                 validator(_, value) {
-                  if (value === undefined || value === null || value === '') {
-                    return Promise.resolve()
-                  }
-                  if (Number(value) < 0) {
-                    return Promise.reject(new Error('El Descuento no puede ser negativo.'))
-                  }
-                  if (Number(value) > subtotal) {
-                    return Promise.reject(new Error('El Descuento no puede ser mayor al subtotal de la venta.'))
-                  }
+                  if (value === undefined || value === null || value === '') return Promise.resolve()
+                  if (Number(value) < 0) return Promise.reject(new Error('El Descuento no puede ser negativo.'))
+                  if (Number(value) > subtotal) return Promise.reject(new Error('El Descuento no puede ser mayor al subtotal de la venta.'))
                   return Promise.resolve()
                 },
               },
             ]}
-            extra="Opcional. Si registras descuento, no puede superar el subtotal."
           >
             <InputNumber min={0} precision={2} style={{ width: '100%' }} prefix="Bs." placeholder="Ej. 50.00" />
           </Form.Item>
@@ -183,19 +204,13 @@ export function BoutiqueSaleForm({ form, items, clients, saving, onFinish, canPi
             label="Motivo del descuento"
             name="discount_reason"
             rules={requiresDiscountReason ? [{ required: true, message: 'Debe seleccionar el Motivo del descuento.' }] : []}
-            extra="Se habilita solo cuando registras un descuento."
           >
-            <Select allowClear disabled={!requiresDiscountReason} placeholder="Selecciona el motivo del descuento" options={MOTIVO_DESCUENTO_VENTA_OPTIONS} />
+            <Select allowClear disabled={!requiresDiscountReason} placeholder="Seleccionar motivo de descuento" options={MOTIVO_DESCUENTO_VENTA_OPTIONS} />
           </Form.Item>
         </Col>
       </Row>
 
-      <Form.Item
-        label="Observaciones"
-        name="observations"
-        extra="Opcional. Registra solo información relevante para seguimiento comercial o aclaraciones de la venta."
-        normalize={(value) => (value || '').toUpperCase()}
-      >
+      <Form.Item label="Observaciones" name="observations" normalize={(value) => (value || '').toUpperCase()}>
         <Input.TextArea rows={3} placeholder="Ej. CLIENTE RETIRA EL PRODUCTO HOY O SOLICITA EMBALAJE ESPECIAL" />
       </Form.Item>
 
@@ -204,28 +219,34 @@ export function BoutiqueSaleForm({ form, items, clients, saving, onFinish, canPi
           Resumen de cobro
         </Typography.Title>
         <Row gutter={12}>
-          <Col span={8}>
-            <Typography.Text type="secondary">Subtotal</Typography.Text>
+          <Col span={6}>
+            <Typography.Text type="secondary">Subtotal Bs.</Typography.Text>
             <Typography.Title level={4} style={{ marginTop: 4, marginBottom: 0 }}>
-              Bs. {formatBs(subtotal)}
+              {formatBs(subtotal)}
             </Typography.Title>
           </Col>
-          <Col span={8}>
-            <Typography.Text type="secondary">Descuento</Typography.Text>
+          <Col span={6}>
+            <Typography.Text type="secondary">Descuento Bs.</Typography.Text>
             <Typography.Title level={4} style={{ marginTop: 4, marginBottom: 0 }}>
-              Bs. {formatBs(normalizedDiscount)}
+              {formatBs(normalizedDiscount)}
             </Typography.Title>
           </Col>
-          <Col span={8}>
-            <Typography.Text type="secondary">Total final</Typography.Text>
+          <Col span={6}>
+            <Typography.Text type="secondary">Total Bs.</Typography.Text>
             <Typography.Title level={4} style={{ marginTop: 4, marginBottom: 0, color: '#8f3d2e' }}>
-              Bs. {formatBs(total)}
+              {formatBs(total)}
+            </Typography.Title>
+          </Col>
+          <Col span={6}>
+            <Typography.Text type="secondary">Total moneda origen</Typography.Text>
+            <Typography.Title level={4} style={{ marginTop: 4, marginBottom: 0 }}>
+              {selectedCurrency?.simbolo || selectedCurrency?.codigo || ''} {formatBs(totalCurrencyOrigin)}
             </Typography.Title>
           </Col>
         </Row>
       </div>
 
-      <Button {...FORM_DRAWER_SUBMIT_PROPS} loading={saving} disabled={quantityExceedsStock}>
+      <Button {...FORM_DRAWER_SUBMIT_PROPS} loading={saving} disabled={quantityExceedsStock || selectedCurrencyWithoutRate}>
         Registrar venta
       </Button>
     </Form>

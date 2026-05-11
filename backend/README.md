@@ -2,42 +2,14 @@
 
 Backend del sistema `bellaarte-program`, construido con FastAPI, SQLAlchemy, Alembic, JWT y Casbin.
 
-Esta primera fase ya implementa el modulo base de seguridad del sistema:
+La version actual ya consolida:
 
-- login interno
-- sesiones con `access token` + `refresh token`
-- cambio obligatorio de contrasena
-- roles base del negocio
-- control de permisos con Casbin
-- creacion interna de usuarios por `ADMIN`
-- auditoria de eventos de seguridad
-
-Y ahora tambien incorpora la segunda fase inicial del modulo Boutique:
-
-- CRUD de `TIPO_ITEM_BOUTIQUE`
-- CRUD de `ITEM_BOUTIQUE`
-- detalle especializado para `VESTIDO`, `VELO` y `BOUQUET`
-- control logico de activacion y desactivacion
-- permisos por rol para operacion boutique
-- seed base de tipos boutique
-
-Y ahora tambien incorpora el submodulo de ventas directas de Boutique:
-
-- registro de `VENTA_BOUTIQUE`
-- control de stock al vender y al revertir
-- reversión por `CANCELADA` y `ANULADA`
-- permisos de venta para `ADMIN` y `CAJA`
-- lectura de ventas para `INV_BOUTIQUE`
-- bloqueo de `MIXTO` hasta tener desglose real
-
-Y ahora tambien incorpora la evolucion completa del modulo de seguridad y el nuevo modulo Cliente:
-
-- CRUD operativo de roles
-- CRUD operativo de usuarios y cuentas
-- reset administrativo de contrasena temporal
-- CRUD de `CLIENTE`
-- permisos de `MODISTA` para clientes
-- migracion documental para `CLIENTE`
+- seguridad interna con login, refresh, roles, cuentas y auditoria
+- CRUD operativo de usuarios y roles
+- CRUD de `cliente`
+- CRUD de `tipo_item_boutique`, `proveedor`, `item_boutique` y sus detalles
+- CRUD de `moneda` y `tipo_cambio_moneda`
+- ventas directas de `venta_boutique` con descuento de stock y reversión
 
 ## Stack
 
@@ -51,50 +23,33 @@ Y ahora tambien incorpora la evolucion completa del modulo de seguridad y el nue
 - Casbin
 - Pytest
 
-## Estado actual del modulo
+## Estado actual de base de datos
 
-Entidades implementadas:
+Tablas de seguridad:
 
 - `roles`
 - `usuarios`
 - `cuentas`
 - `auditoria_sistema`
-- `CLIENTE`
-- `TIPO_ITEM_BOUTIQUE`
-- `ITEM_BOUTIQUE`
-- `DETALLE_VESTIDO_BOUTIQUE`
-- `DETALLE_VELO_BOUTIQUE`
-- `DETALLE_BOUQUET_BOUTIQUE`
-- `VENTA_BOUTIQUE`
 
-Routers implementados:
+Tablas comerciales y boutique refactorizadas en minúscula:
 
-- `auth`
-- `roles`
-- `users`
-- `clientes`
-- `boutique`
-
-Politicas implementadas:
-
-- acceso autenticado al dashboard
-- lectura de sesion actual
-- cambio de contrasena
-- cierre de sesion
-- gestion de usuarios solo para `ADMIN`
-- gestion completa de roles solo para `ADMIN`
-- gestion completa de clientes para `ADMIN`
-- gestion completa de clientes para `MODISTA`
-- CRUD boutique para `ADMIN` e `INV_BOUTIQUE`
-- lectura boutique para `CAJA`
-- ventas boutique para `ADMIN` y `CAJA`
-- lectura de ventas boutique para `INV_BOUTIQUE`
+- `cliente`
+- `proveedor`
+- `moneda`
+- `tipo_cambio_moneda`
+- `tipo_item_boutique`
+- `item_boutique`
+- `detalle_vestido_boutique`
+- `detalle_velo_boutique`
+- `detalle_bouquet_boutique`
+- `venta_boutique`
 
 ## Variables de entorno
 
 Crear `.env` en `backend/` a partir de `.env.example`.
 
-Variables soportadas:
+Variables principales:
 
 - `DATABASE_URL`
 - `DB_HOST`
@@ -119,27 +74,10 @@ Variables soportadas:
 - `BOOTSTRAP_ADMIN_ZONE`
 - `BOOTSTRAP_ADMIN_ADDRESS`
 
-### Regla importante
+Regla:
 
-Si existe `DATABASE_URL`, el backend usa esa URL como fuente principal.
-
-Si no existe, arma la conexion con:
-
-- `DB_HOST`
-- `DB_NAME`
-- `DB_USER`
-- `DB_PASS`
-- `DB_PORT`
-
-### Nota del entorno local actual
-
-En la implementacion validada localmente se uso:
-
-```env
-DATABASE_URL=postgresql://MARCELO@localhost:5432/bellaarte_db
-```
-
-porque en el PostgreSQL local de Laragon no existia el rol `postgres`.
+- si existe `DATABASE_URL`, esa es la fuente principal
+- si no existe, la conexión se arma con `DB_*`
 
 ## Comandos
 
@@ -157,22 +95,22 @@ Levantar API:
 uvicorn main:app --reload
 ```
 
-Ejecutar pruebas:
-
-```powershell
-pytest
-```
-
 Aplicar migraciones:
 
 ```powershell
 python -m alembic -c alembic.ini upgrade head
 ```
 
-Ejecutar seed de seguridad:
+Ejecutar seed base:
 
 ```powershell
 python scripts/seed_security.py
+```
+
+Ejecutar pruebas:
+
+```powershell
+pytest
 ```
 
 ## Estructura oficial
@@ -202,363 +140,142 @@ backend/
 └─ README.md
 ```
 
-## Responsabilidad por carpeta
-
-### `app/main.py`
-
-Factory principal de FastAPI.
-
-Aqui se define:
-
-- metadata de la app
-- CORS
-- healthcheck
-- inclusion del router `/api/v1`
-
-### `app/api/routers/`
-
-Un router por dominio funcional.
-
-Regla:
-
-- no poner logica de negocio pesada aqui
-- solo orquestacion HTTP, dependencias y respuestas
-
-### `app/core/`
-
-Infraestructura y piezas transversales:
-
-- config
-- database
-- seguridad JWT
-- permisos
-- auditoria
-
-### `app/deps/`
-
-Dependencias reutilizables para FastAPI.
-
-Ejemplo actual:
-
-- autenticacion por bearer token
-- validacion de permisos con Casbin
-
-### `app/models/`
-
-Modelos ORM de SQLAlchemy.
-
-Reglas:
-
-- una entidad por archivo
-- `snake_case` fisico en tablas y columnas
-- sin acentos en nombres tecnicos
-- relaciones claras
-
-### `app/schemas/`
-
-Contratos de entrada y salida con Pydantic.
-
-Regla:
-
-- no exponer modelos ORM directamente en respuestas HTTP
-
-### `app/services/`
-
-Logica de negocio por dominio.
-
-Regla:
-
-- si una regla no es puramente HTTP ni puramente ORM, va aqui
-
-### `app/security/`
-
-Definicion base de Casbin:
-
-- `model.conf`
-- `policy.csv`
-
-### `scripts/`
-
-Scripts operativos.
-
-Regla:
-
-- deben ser idempotentes cuando sea posible
-- no deben duplicar logica que ya vive en `services/`
-
-### `tests/`
-
-Pruebas automatizadas.
-
 ## Flujo oficial de base de datos
 
-Este proyecto ya no debe crear tablas con `create_all()` como mecanismo principal de evolucion.
+No usar `create_all()` como mecanismo de evolución.
 
 El flujo correcto es:
 
-1. definir o modificar modelos SQLAlchemy
-2. crear migracion Alembic
-3. revisar migracion
-4. aplicar migracion con `upgrade head`
-5. correr seeds si corresponde
+1. cambiar modelos ORM
+2. crear o ajustar migración Alembic
+3. revisar SQL y constraints
+4. aplicar `upgrade head`
+5. correr seeds
 
-## Primera migracion actual
+## Migraciones vigentes
 
-Archivo:
+- `20260408_0001_initial_security.py`
+- `20260413_0002_boutique_inventory.py`
+- `20260413_0003_clientes.py`
+- `20260427_0004_venta_boutique.py`
 
-- `alembic/versions/20260408_0001_initial_security.py`
+Estas migraciones ya crean el bloque boutique/comercial con nombres físicos en minúscula.
 
-Contenido:
+## Seeds oficiales
 
-- tabla `roles`
-- tabla `usuarios`
-- tabla `cuentas`
-- tabla `auditoria_sistema`
-
-## Seed oficial
-
-El seed base vive en:
+El seed principal vive en:
 
 - `scripts/seed_security.py`
 - `app/services/seed_service.py`
 
-Sembrado actual:
+Actualmente garantiza:
 
-- `ADMIN`
-- `INV_TALLER`
-- `INV_BOUTIQUE`
-- `CAJA`
-- `MODISTA`
-- tipos boutique iniciales: `VESTIDO`, `VELO`, `BOUQUET`, `OTRO`
+- roles base: `ADMIN`, `INV_TALLER`, `INV_BOUTIQUE`, `CAJA`, `MODISTA`
+- admin inicial usando `BOOTSTRAP_ADMIN_*`
+- tipos boutique base: `VESTIDO`, `VELO`, `BOUQUET`, `OTRO`
+- moneda base `BOB`
+- tipo de cambio activo de `BOB = 1`
 
-Tambien crea el primer admin usando variables `BOOTSTRAP_ADMIN_*`.
+Reglas del seed:
 
-### Regla para futuros seeds
+- debe ser idempotente
+- no debe hardcodear credenciales sensibles
+- no debe asumir datos previos del bloque boutique
 
-- no poner contrasenas hardcodeadas en el codigo
-- usar variables de entorno
-- hacer el seed idempotente
-- si un seed depende de tablas nuevas, ejecutar primero `alembic upgrade head`
+## Seguridad y permisos
 
-## Seguridad y autenticacion
+Autenticación:
 
-### Tokens
+- `access token` en header `Authorization`
+- `refresh token` en cookie `HttpOnly`
+- toda cuenta nueva nace con `must_change_password = true`
 
-Se usan dos tokens:
-
-- `access token`
-- `refresh token`
-
-El `access token` viaja en header `Authorization: Bearer`.
-
-El `refresh token` viaja en cookie `HttpOnly`.
-
-### Reglas
-
-- no guardar refresh token en base de datos en esta fase
-- no devolver password hash bajo ninguna circunstancia
-- toda cuenta nueva debe nacer con `must_change_password = true`
-
-### Auditoria actual
-
-Eventos auditados:
-
-- `LOGIN_SUCCESS`
-- `LOGIN_FAILED`
-- `LOGOUT`
-- `PASSWORD_CHANGED`
-- `USER_CREATED`
-- `ACCOUNT_STATUS_CHANGED`
-
-## Casbin y permisos
-
-Casbin se inicializa en:
-
-- `app/api/router.py`
-
-La politica actual usa como sujeto:
+Casbin usa como sujeto:
 
 - `rol.codigo`
 
-No usa el nombre visible del rol.
+Formato obligatorio de permisos:
 
-### Regla para futuros modulos
+- `<modulo>:<accion>`
 
-Cada nuevo modulo debe definir permisos con formato:
+Ejemplos actuales:
 
-```text
-<modulo>:<accion>
-```
+- `users:create`
+- `clients:update`
+- `boutique_items:list`
+- `currencies:update`
+- `exchange_rates:view`
+- `boutique_sales:annul`
 
-Ejemplos:
+## Reglas de negocio por módulo
 
-- `inventario_boutique:view`
-- `inventario_boutique:create`
-- `pedidos:update`
-- `finanzas:read`
+### Seguridad
 
-### Donde actualizar permisos
+- `USUARIO` y `CUENTA` se administran juntos desde UI, pero siguen separados en backend
+- no se puede desactivar un rol con cuentas activas asociadas
+- reset de contraseña administrativo vuelve a marcar `must_change_password = true`
 
-Si agregas un modulo nuevo, debes tocar estas piezas:
+### Cliente
 
-1. `app/security/policy.csv`
-2. `app/core/permissions.py`
-3. dependencias de proteccion en routers
-4. frontend para mostrar u ocultar menu
+- tabla física: `cliente`
+- `cli_cod` es único
+- si no se envía `cli_cod`, backend autogenera uno con patrón `CLI-00001`
+- `cli_cor` y `cli_ci` son únicos cuando existen
+- campos nuevos soportados:
+  - `cli_fecha_nac`
+  - `cli_pais`
+  - `cli_ciudad`
+- textos de negocio se normalizan en mayúsculas y correo en minúsculas
 
-## Modulo Boutique
+### Proveedor
 
-### Migracion del modulo
+- tabla física: `proveedor`
+- `pro_cel` y `pro_cor` son únicos cuando existen
+- no se puede desactivar un proveedor con items activos asociados
 
-Archivo:
+### Moneda
 
-- `alembic/versions/20260413_0002_boutique_inventory.py`
+- tabla física: `moneda`
+- `mon_cod` es único
+- solo puede existir una moneda base activa
+- la moneda base no puede quedar deshabilitada
 
-Contenido:
+### Tipo de cambio
 
-- enums `TAMANO`, `TIPO_VESTIDO`, `COPA_TALLA_VESTIDO_BOUTIQUE`, `TALLA_VESTIDO_BOUTIQUE`
-- tabla `TIPO_ITEM_BOUTIQUE`
-- tabla `ITEM_BOUTIQUE`
-- tabla `DETALLE_VESTIDO_BOUTIQUE`
-- tabla `DETALLE_VELO_BOUTIQUE`
-- tabla `DETALLE_BOUQUET_BOUTIQUE`
+- tabla física: `tipo_cambio_moneda`
+- `tcm_valor_bob > 0`
+- solo puede existir un tipo de cambio activo por moneda
+- si la moneda es base, el valor activo debe ser `1`
 
-### Migracion del modulo Cliente
+### Inventario boutique
 
-Archivo:
-
-- `alembic/versions/20260413_0003_clientes.py`
-
-Contenido:
-
-- tabla `CLIENTE`
-
-### Migracion del submodulo Ventas Boutique
-
-Archivo:
-
-- `alembic/versions/20260427_0004_venta_boutique.py`
-
-Contenido:
-
-- enums `METODO_PAGO`, `MOTIVO_DESC_VENTA_BOUTIQUE`, `ESTADO_VENTA_BOUTIQUE`
-- tabla `VENTA_BOUTIQUE`
-
-### Regla de naming para Boutique
-
-El backend en seguridad usa tablas tecnicas en minuscula heredadas de la primera entrega.
-
-El modulo Boutique se implemento respetando el SQL documental, por eso sus nombres fisicos estan en mayuscula:
-
-- `TIPO_ITEM_BOUTIQUE`
-- `ITEM_BOUTIQUE`
-- `DETALLE_VESTIDO_BOUTIQUE`
-- `DETALLE_VELO_BOUTIQUE`
-- `DETALLE_BOUQUET_BOUTIQUE`
-
-Regla:
-
-- no renombrar estas tablas a `snake_case` porque el objetivo aqui fue respetar el contrato documental
-- los siguientes modulos que dependan del SQL historico deben seguir el mismo criterio si el documento oficial ya define nombres fisicos cerrados
-
-### Reglas de negocio del modulo Boutique
-
-- `TIPO_ITEM_BOUTIQUE.TIB_NOM` es unico
-- `ITEM_BOUTIQUE.ITB_COD` es unico
-- no se aceptan precios ni stock negativos
-- un item solo puede tener un detalle especializado
-- el detalle depende del tipo boutique
-- `VESTIDO` exige detalle de vestido
-- `VELO` exige detalle de velo
-- `BOUQUET` exige detalle de bouquet
+- `item_boutique.itb_cod` es único
+- `itb_stock` e `itb_stock_min` son enteros y no negativos
+- `pro_id` es opcional, pero si existe debe referenciar un proveedor habilitado
+- `VESTIDO`, `VELO` y `BOUQUET` exigen detalle especializado
 - `OTRO` no admite detalle especializado
-- no se puede activar un item si su tipo esta deshabilitado
-- no se puede desactivar un tipo con items activos asociados
+- no se activa un item si su tipo o proveedor están deshabilitados
 
-### Endpoints del modulo Boutique
+### Ventas boutique
 
-Tipos:
+- tabla física: `venta_boutique`
+- `veb_pre_uni` siempre sale de `item_boutique.itb_precio_venta`
+- `veb_cant` es entero y debe ser mayor a cero
+- si hay descuento, `veb_motivo_desc` es obligatorio
+- `veb_tot` se calcula en base de datos
+- si la moneda es base, `veb_tipo_cambio_usado = 1`
+- si la moneda no es base, se usa el tipo de cambio activo vigente
+- `veb_total_moneda_orig` queda congelado al registrar la venta
+- `cancelada` y `anulada` revierten stock, guardan motivo y fecha de cambio de estado
 
-- `GET /api/v1/boutique/types`
-- `GET /api/v1/boutique/types/{id}`
-- `POST /api/v1/boutique/types`
-- `PATCH /api/v1/boutique/types/{id}`
-- `PATCH /api/v1/boutique/types/{id}/status`
+## Routers implementados
 
-Inventario:
-
-- `GET /api/v1/boutique/items`
-- `GET /api/v1/boutique/items/{id}`
-- `POST /api/v1/boutique/items`
-- `PATCH /api/v1/boutique/items/{id}`
-- `PATCH /api/v1/boutique/items/{id}/status`
-
-Ventas:
-
-- `GET /api/v1/boutique/sales`
-- `GET /api/v1/boutique/sales/{id}`
-- `POST /api/v1/boutique/sales`
-- `PATCH /api/v1/boutique/sales/{id}/cancel`
-- `PATCH /api/v1/boutique/sales/{id}/annul`
-
-### Filtros soportados en inventario boutique
-
-- `type_id`
-- `search`
-- `is_active`
-- `low_stock`
-
-### Permisos del modulo Boutique
-
-`ADMIN`:
-
-- CRUD completo de tipos boutique
-- CRUD completo de inventario boutique
-
-`INV_BOUTIQUE`:
-
-- CRUD completo de tipos boutique
-- CRUD completo de inventario boutique
-
-`CAJA`:
-
-- lectura de tipos boutique
-- lectura de inventario boutique
-- lectura de clientes como referencia de venta
-- registro y reversión de ventas boutique
-
-### Reglas de negocio del submodulo Ventas Boutique
-
-- `VENTA_BOUTIQUE` respeta nombres fisicos documentales en mayuscula
-- el precio unitario se toma automaticamente desde `ITEM_BOUTIQUE.ITB_PRECIO_VENTA`
-- el total se calcula en BD mediante `VEB_TOT`
-- no se vende stock insuficiente
-- no se vende un item inactivo o con tipo inactivo
-- `MIXTO` existe en enum pero queda bloqueado en esta version
-- si hay descuento, el motivo es obligatorio
-- si no hay descuento, el motivo debe quedar nulo
-- las ventas no se editan despues de creadas
-- `CANCELADA` y `ANULADA` revierten stock y dejan ingreso real en `0`
-- `USU_ID` conserva nombre documental, pero referencia internamente a `usuarios.id`
-
-### Auditoria del submodulo Ventas Boutique
-
-Eventos auditados:
-
-- `BOUTIQUE_SALE_CREATED`
-- `BOUTIQUE_SALE_CANCELLED`
-- `BOUTIQUE_SALE_ANNULLED`
-
-### Auditoria del modulo Boutique
-
-Eventos auditados:
-
-- `BOUTIQUE_TYPE_CREATED`
-- `BOUTIQUE_TYPE_UPDATED`
-- `BOUTIQUE_TYPE_STATUS_CHANGED`
-- `BOUTIQUE_ITEM_CREATED`
-- `BOUTIQUE_ITEM_UPDATED`
-- `BOUTIQUE_ITEM_STATUS_CHANGED`
+- `auth`
+- `roles`
+- `users`
+- `clientes`
+- `boutique`
+- `monedas`
 
 ## Endpoints actuales
 
@@ -602,6 +319,11 @@ Eventos auditados:
 - `POST /api/v1/boutique/types`
 - `PATCH /api/v1/boutique/types/{id}`
 - `PATCH /api/v1/boutique/types/{id}/status`
+- `GET /api/v1/boutique/proveedores`
+- `GET /api/v1/boutique/proveedores/{id}`
+- `POST /api/v1/boutique/proveedores`
+- `PATCH /api/v1/boutique/proveedores/{id}`
+- `PATCH /api/v1/boutique/proveedores/{id}/status`
 - `GET /api/v1/boutique/items`
 - `GET /api/v1/boutique/items/{id}`
 - `POST /api/v1/boutique/items`
@@ -613,119 +335,65 @@ Eventos auditados:
 - `PATCH /api/v1/boutique/sales/{id}/cancel`
 - `PATCH /api/v1/boutique/sales/{id}/annul`
 
-## Contratos clave
+### Monedas
 
-### Login request
+- `GET /api/v1/monedas`
+- `GET /api/v1/monedas/{id}`
+- `POST /api/v1/monedas`
+- `PATCH /api/v1/monedas/{id}`
+- `PATCH /api/v1/monedas/{id}/status`
+- `GET /api/v1/monedas/tipos-cambio`
+- `GET /api/v1/monedas/tipos-cambio/{id}`
+- `POST /api/v1/monedas/tipos-cambio`
+- `PATCH /api/v1/monedas/tipos-cambio/{id}`
+- `PATCH /api/v1/monedas/tipos-cambio/{id}/status`
 
-```json
-{
-  "username": "admin",
-  "password": "Admin12345!"
-}
-```
+## Auditoría mínima actual
 
-### Login response
+- `LOGIN_SUCCESS`
+- `LOGIN_FAILED`
+- `LOGOUT`
+- `PASSWORD_CHANGED`
+- `USER_CREATED`
+- `ACCOUNT_STATUS_CHANGED`
+- `CLIENT_CREATED`
+- `CLIENT_UPDATED`
+- `CLIENT_STATUS_CHANGED`
+- `BOUTIQUE_PROVIDER_CREATED`
+- `BOUTIQUE_PROVIDER_UPDATED`
+- `BOUTIQUE_PROVIDER_STATUS_CHANGED`
+- `BOUTIQUE_TYPE_CREATED`
+- `BOUTIQUE_TYPE_UPDATED`
+- `BOUTIQUE_TYPE_STATUS_CHANGED`
+- `BOUTIQUE_ITEM_CREATED`
+- `BOUTIQUE_ITEM_UPDATED`
+- `BOUTIQUE_ITEM_STATUS_CHANGED`
+- `CURRENCY_CREATED`
+- `CURRENCY_UPDATED`
+- `CURRENCY_STATUS_CHANGED`
+- `EXCHANGE_RATE_CREATED`
+- `EXCHANGE_RATE_UPDATED`
+- `EXCHANGE_RATE_STATUS_CHANGED`
+- `BOUTIQUE_SALE_CREATED`
+- `BOUTIQUE_SALE_CANCELLED`
+- `BOUTIQUE_SALE_ANNULLED`
 
-```json
-{
-  "access_token": "token",
-  "token_type": "bearer",
-  "user": {
-    "id": 1,
-    "full_name": "ADMIN BELLAARTE SISTEMA",
-    "role_code": "ADMIN",
-    "role_name": "ADMIN",
-    "username": "admin",
-    "must_change_password": true,
-    "permissions": [
-      "dashboard:view",
-      "auth:me",
-      "auth:change_password",
-      "auth:logout"
-    ]
-  }
-}
-```
+## Convenciones obligatorias para próximos módulos
 
-## Convenciones obligatorias para futuros modulos
+1. un dominio nuevo debe tener modelo, schema, service, router, migración y permisos
+2. no mezclar lógica HTTP con reglas de negocio
+3. toda mutación sensible debe auditarse
+4. toda ruta protegida debe usar `require_permission(...)`
+5. los módulos nuevos de base de datos deben usar nombres físicos en minúscula
+6. no modificar la base manualmente como flujo oficial
 
-### 1. Un dominio, un router, un servicio
+## Validación recomendada después de cambios grandes
 
-Si agregas `pedidos`, debes crear como minimo:
+1. `python -m alembic -c alembic.ini upgrade head`
+2. `python scripts/seed_security.py`
+3. `pytest`
+4. smoke tests manuales de login, inventario y ventas
 
-- `app/api/routers/pedidos.py`
-- `app/services/pedidos_service.py`
-- `app/schemas/pedidos.py`
+## Problema conocido
 
-Y si aplica:
-
-- `app/models/pedido.py`
-
-### 2. No mezclar logica
-
-- routers: HTTP
-- services: negocio
-- models: persistencia
-- schemas: contrato
-
-### 3. No leer `request` dentro de servicios salvo datos explicitamente necesarios
-
-Los servicios deben recibir datos claros, no depender del contexto web completo.
-
-### 4. Toda ruta protegida debe usar dependencia de permiso
-
-Ejemplo esperado:
-
-```python
-account: Cuenta = Depends(require_permission("pedidos:create"))
-```
-
-### 5. Toda mutacion sensible debe auditarse
-
-Si un modulo crea, modifica, cancela o anula informacion critica, debe registrar auditoria.
-
-### 6. No saltarse Alembic
-
-No usar cambios manuales en PostgreSQL como flujo normal de evolucion.
-
-### 7. Mantener naming consistente
-
-- tablas: `snake_case`
-- columnas: `snake_case`
-- clases Python: `PascalCase`
-- funciones: `snake_case`
-- permisos: `modulo:accion`
-
-Excepcion vigente:
-
-- los modulos ya cerrados por SQL documental oficial pueden mantener sus nombres fisicos historicos en mayuscula si ese contrato ya fue aceptado, como sucede con Boutique
-- `CLIENTE` sigue este mismo criterio documental y por eso conserva nombre fisico en mayuscula
-
-## Problemas conocidos
-
-### Warning de Passlib con bcrypt
-
-Puede aparecer este mensaje:
-
-```text
-(trapped) error reading bcrypt version
-```
-
-La autenticacion sigue funcionando, pero conviene revisar a futuro el pin de versiones de `passlib` y `bcrypt`.
-
-### Diferencia entre documentacion historica y entorno real
-
-La documentacion historica menciona Python 3.14, pero la implementacion actual fue validada localmente con el `venv` existente en Python 3.10.6.
-
-## Checklist para agregar un nuevo modulo
-
-1. crear modelos ORM
-2. crear schemas
-3. crear servicio
-4. crear router
-5. registrar router en `app/api/router.py`
-6. agregar permisos en Casbin
-7. crear migracion Alembic
-8. agregar pruebas
-9. documentar el modulo
-10. conectar el frontend
+Puede aparecer el warning de `passlib` con `bcrypt`. La autenticación sigue funcionando, pero conviene revisar el pin de versiones más adelante.

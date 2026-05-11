@@ -9,6 +9,7 @@ from app.models.account import Cuenta
 from app.models.role import Rol
 from app.models.user import Usuario
 from app.services.boutique_service import seed_boutique_types
+from app.services.currency_service import seed_default_currency
 
 
 ROLE_SEED = (
@@ -76,3 +77,7 @@ def seed_security(db: Session) -> None:
     ensure_policy_files()
     seed_admin_account(db)
     seed_boutique_types(db)
+    admin_account = db.execute(
+        select(Cuenta).where(Cuenta.username == settings.bootstrap_admin_username)
+    ).scalar_one()
+    seed_default_currency(db, admin_account=admin_account)

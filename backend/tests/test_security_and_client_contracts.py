@@ -10,6 +10,8 @@ def test_admin_permissions_include_security_and_client_crud() -> None:
     assert "roles:create" in permissions
     assert "users:reset_password" in permissions
     assert "clients:update_status" in permissions
+    assert "currencies:create" in permissions
+    assert "exchange_rates:update" in permissions
 
 
 def test_modista_permissions_include_clients_only() -> None:
@@ -53,8 +55,14 @@ def test_client_create_request_accepts_optional_code() -> None:
         nombres="MARIA",
         apellido_paterno="LOPEZ",
         celular="70000000",
+        fecha_nacimiento="1998-03-15",
+        pais="Bolivia",
+        ciudad="La Paz",
     )
     assert payload.codigo is None
+    assert str(payload.fecha_nacimiento) == "1998-03-15"
+    assert payload.pais == "Bolivia"
+    assert payload.ciudad == "La Paz"
 
 
 def test_client_code_pattern_matches_expected_format() -> None:

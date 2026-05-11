@@ -3,14 +3,22 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { AuthenticatedLayout } from '../layout/AuthenticatedLayout'
 import { ChangePasswordPage } from '../pages/auth/ChangePasswordPage'
 import { LoginPage } from '../pages/auth/LoginPage'
+import { BoutiqueEntriesPage } from '../pages/boutique/BoutiqueEntriesPage'
 import { BoutiqueInventoryPage } from '../pages/boutique/BoutiqueInventoryPage'
+import { ProvidersPage } from '../pages/boutique/ProvidersPage'
 import { BoutiqueSalesPage } from '../pages/boutique/BoutiqueSalesPage'
 import { BoutiqueTypesPage } from '../pages/boutique/BoutiqueTypesPage'
 import { ClientsPage } from '../pages/clients/ClientsPage'
 import { DashboardHomePage } from '../pages/dashboard/DashboardHomePage'
+import { CurrenciesPage } from '../pages/monedas/CurrenciesPage'
+import { ExchangeRatesPage } from '../pages/monedas/ExchangeRatesPage'
 import { ForbiddenPage } from '../pages/ForbiddenPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { RolesPage } from '../pages/roles/RolesPage'
+import { WorkshopEntriesPage } from '../pages/taller/WorkshopEntriesPage'
+import { WorkshopInventoryPage } from '../pages/taller/WorkshopInventoryPage'
+import { WorkshopOutputsPage } from '../pages/taller/WorkshopOutputsPage'
+import { WorkshopTypesPage } from '../pages/taller/WorkshopTypesPage'
 import { UsersPage } from '../pages/users/UsersPage'
 import { PermissionRoute, ProtectedRoute, PublicRoute } from './RouteGuards'
 
@@ -31,17 +39,41 @@ export function AppRoutes() {
           <Route element={<PermissionRoute permission="users:list" />}>
             <Route path="seguridad/usuarios" element={<UsersPage />} />
           </Route>
-          <Route element={<PermissionRoute permission="clients:update" />}>
+          <Route element={<PermissionRoute permission="clients:list" />}>
             <Route path="clientes" element={<ClientsPage />} />
           </Route>
           <Route element={<PermissionRoute permission="boutique_types:list" />}>
             <Route path="boutique/tipos" element={<BoutiqueTypesPage />} />
           </Route>
+          <Route element={<PermissionRoute permission="boutique_providers:list" />}>
+            <Route path="boutique/proveedores" element={<ProvidersPage />} />
+          </Route>
           <Route element={<PermissionRoute permission="boutique_items:list" />}>
             <Route path="boutique/inventario" element={<BoutiqueInventoryPage />} />
           </Route>
+          <Route element={<PermissionRoute permission="boutique_entries:list" />}>
+            <Route path="boutique/entradas" element={<BoutiqueEntriesPage />} />
+          </Route>
           <Route element={<PermissionRoute permission="boutique_sales:list" />}>
             <Route path="boutique/ventas" element={<BoutiqueSalesPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="workshop_types:list" />}>
+            <Route path="taller/tipos" element={<WorkshopTypesPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="workshop_inventory:list" />}>
+            <Route path="taller/inventario" element={<WorkshopInventoryPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="workshop_entries:list" />}>
+            <Route path="taller/entradas" element={<WorkshopEntriesPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="workshop_outputs:list" />}>
+            <Route path="taller/salidas" element={<WorkshopOutputsPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="currencies:list" />}>
+            <Route path="monedas" element={<CurrenciesPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="exchange_rates:list" />}>
+            <Route path="monedas/tipos-cambio" element={<ExchangeRatesPage />} />
           </Route>
         </Route>
       </Route>
