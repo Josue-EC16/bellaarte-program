@@ -23,6 +23,8 @@ from app.schemas.boutique import (
     BoutiqueSaleUserSummary,
 )
 from app.services.currency_service import get_active_exchange_rate_for_currency
+from app.services.notification_service import sync_boutique_stock_notification
+from app.services.receipt_service import _to_receipt_summary, annul_receipt, create_sale_receipt
 
 
 def _to_float(value: Decimal | float | int | None) -> float | None:
@@ -39,6 +41,7 @@ def _get_sale_entity(db: Session, sale_id: int) -> VentaBoutique:
             joinedload(VentaBoutique.cliente),
             joinedload(VentaBoutique.usuario).joinedload(Usuario.cuenta),
             joinedload(VentaBoutique.moneda),
+            joinedload(VentaBoutique.comprobante),
         )
         .where(VentaBoutique.id == sale_id)
     ).scalar_one_or_none()
@@ -146,6 +149,7 @@ def get_boutique_sale_detail(db: Session, sale_id: int) -> BoutiqueSaleDetailRes
         observations=sale.observaciones,
         changed_at=sale.fecha_cambio_estado,
         state_change_reason=sale.motivo_cambio_estado,
+        receipt=_to_receipt_summary(sale.comprobante),
     )
 
 
@@ -253,6 +257,12 @@ def create_boutique_sale(
     item.stock -= payload.quantity
     db.add(sale)
     db.flush()
+    create_sale_receipt(
+        db,
+        sale=sale,
+        client=client,
+        snapshot_payload=payload.receipt_customer_snapshot,
+    )
     register_audit_event(
         db,
         action="BOUTIQUE_SALE_CREATED",
@@ -263,6 +273,7 @@ def create_boutique_sale(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    sync_boutique_stock_notification(db, item_id=item.id)
     db.commit()
     return get_boutique_sale_detail(db, sale.id)
 
@@ -287,6 +298,7 @@ def change_boutique_sale_state(
     sale.fecha_cambio_estado = datetime.now(timezone.utc)
     sale.motivo_cambio_estado = reason
     sale.item.stock += sale.cantidad
+    annul_receipt(sale.comprobante, reason=reason)
     register_audit_event(
         db,
         action="BOUTIQUE_SALE_CANCELLED" if target_state == EstadoVentaBoutiqueEnum.CANCELADA else "BOUTIQUE_SALE_ANNULLED",
@@ -297,5 +309,6 @@ def change_boutique_sale_state(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    sync_boutique_stock_notification(db, item_id=sale.item_id)
     db.commit()
     return get_boutique_sale_detail(db, sale.id)

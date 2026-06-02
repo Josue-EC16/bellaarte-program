@@ -16,6 +16,8 @@ Las referencias principales del estado actual son:
 - `documentacion/MODULO_MONEDA.md`
 - `documentacion/MODULO_TIPO_CAMBIO_MONEDA.md`
 - `documentacion/MODULO_VENTAS_BOUTIQUE.md`
+- `documentacion/MODULO_TALLER.md`
+- `documentacion/MODULO_FLETES.md`
 
 ## Regla madre del proyecto
 
@@ -113,14 +115,18 @@ Mínimo recomendado:
 - monedas
 - tipos de cambio
 - ventas boutique
+- taller
+- fletes
+- pedidos, pagos y pruebas
 
 ## Orden sugerido de crecimiento
 
 1. inventario taller
 2. movimientos de stock
-3. pedidos
-4. pagos de pedido
-5. ingresos y egresos
+3. ingresos y egresos
+4. comprobantes internos generales
+5. notificaciones automáticas
+6. reportes avanzados
 
 ## Checklist para agregar un módulo
 

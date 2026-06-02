@@ -25,6 +25,7 @@ from app.schemas.workshop import (
     TallerTypeResponse,
     TallerUserSummary,
 )
+from app.services.notification_service import sync_workshop_stock_notification
 
 
 def _to_float(value):
@@ -397,6 +398,7 @@ def create_workshop_entry(db: Session, *, payload: TallerEntryCreateRequest, cre
     db.add(entry)
     db.flush()
     register_audit_event(db, action="WORKSHOP_ENTRY_CREATED", description=f"Se registró la entrada de taller '{entry.id}' para el material '{item.codigo}'.", account=created_by, user=created_by.usuario, reference=str(entry.id), ip_address=ip_address, user_agent=user_agent)
+    sync_workshop_stock_notification(db, item_id=item.id)
     db.commit()
     return get_workshop_entry_detail(db, entry.id)
 
@@ -418,6 +420,7 @@ def set_workshop_entry_status(db: Session, *, entry_id: int, is_active: bool, ch
         entry.estado = False
         entry.item.stock -= entry.cantidad
     register_audit_event(db, action="WORKSHOP_ENTRY_STATUS_CHANGED", description=f"Se actualizó el estado de la entrada de taller '{entry.id}' a {'ACTIVA' if is_active else 'INACTIVA'}.", account=changed_by, user=changed_by.usuario, reference=str(entry.id), ip_address=ip_address, user_agent=user_agent)
+    sync_workshop_stock_notification(db, item_id=entry.item_id)
     db.commit()
     return get_workshop_entry_detail(db, entry.id)
 
@@ -499,6 +502,7 @@ def create_workshop_output(db: Session, *, payload: TallerOutputCreateRequest, c
     db.add(output)
     db.flush()
     register_audit_event(db, action="WORKSHOP_OUTPUT_CREATED", description=f"Se registró la salida de taller '{output.id}' para el material '{item.codigo}'.", account=created_by, user=created_by.usuario, reference=str(output.id), ip_address=ip_address, user_agent=user_agent)
+    sync_workshop_stock_notification(db, item_id=item.id)
     db.commit()
     return get_workshop_output_detail(db, output.id)
 
@@ -519,5 +523,6 @@ def set_workshop_output_status(db: Session, *, output_id: int, is_active: bool, 
         output.estado = False
         output.item.stock += output.cantidad
     register_audit_event(db, action="WORKSHOP_OUTPUT_STATUS_CHANGED", description=f"Se actualizó el estado de la salida de taller '{output.id}' a {'ACTIVA' if is_active else 'INACTIVA'}.", account=changed_by, user=changed_by.usuario, reference=str(output.id), ip_address=ip_address, user_agent=user_agent)
+    sync_workshop_stock_notification(db, item_id=output.item_id)
     db.commit()
     return get_workshop_output_detail(db, output.id)

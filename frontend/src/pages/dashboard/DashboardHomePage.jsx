@@ -2,6 +2,7 @@ import {
   AppstoreOutlined,
   ArrowRightOutlined,
   DollarOutlined,
+  SkinOutlined,
   IdcardOutlined,
   LockOutlined,
   ScissorOutlined,
@@ -58,6 +59,22 @@ export function DashboardHomePage() {
           key: 'sales',
           to: '/app/boutique/ventas',
           label: 'Ir a Ventas Boutique',
+          icon: <ShoppingCartOutlined />,
+        }
+      : null,
+    user?.permissions?.includes('fletes:list')
+      ? {
+          key: 'fletes',
+          to: '/app/fletes',
+          label: 'Vestidos en Flete',
+          icon: <SkinOutlined />,
+        }
+      : null,
+    user?.permissions?.includes('flete_outputs:list')
+      ? {
+          key: 'flete-outputs',
+          to: '/app/fletes/salidas',
+          label: 'Salidas de Flete',
           icon: <ShoppingCartOutlined />,
         }
       : null,
@@ -157,7 +174,7 @@ export function DashboardHomePage() {
           <Card className="glass-panel" variant="borderless" style={{ borderRadius: 24, height: '100%' }}>
             <Typography.Title level={4}>Siguiente paso funcional</Typography.Title>
             <Typography.Paragraph type="secondary">
-              El sistema ya soporta seguridad, clientes, proveedores, inventario boutique, entradas boutique, ventas boutique y operación inicial del taller.
+              El sistema ya soporta seguridad, clientes, proveedores, inventario boutique, ventas, fletes y operación inicial del taller.
             </Typography.Paragraph>
             <Button type="link" icon={<ArrowRightOutlined />} style={{ paddingInline: 0 }}>
               Base lista para crecer hacia pedidos, pagos y finanzas

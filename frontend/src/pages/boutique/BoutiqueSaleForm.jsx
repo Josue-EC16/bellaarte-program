@@ -1,16 +1,23 @@
 /* eslint-disable react/prop-types */
+import { useMemo } from 'react'
 import { Alert, Button, Col, Form, Input, InputNumber, Row, Select, Typography } from 'antd'
 
+import { ReceiptSnapshotFields } from '../../components/receipts/ReceiptSnapshotFields'
 import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/forms/formConfig'
 import { METODO_PAGO_OPTIONS, MOTIVO_DESCUENTO_VENTA_OPTIONS, formatBs } from './boutiqueConstants'
 
 export function BoutiqueSaleForm({ form, items, clients, currencies, exchangeRates, saving, onFinish, canPickClient = true }) {
   const selectedItemId = Form.useWatch('item_id', form)
+  const selectedClientId = Form.useWatch('client_id', form)
   const selectedCurrencyId = Form.useWatch('currency_id', form)
   const quantity = Form.useWatch('quantity', form)
   const discount = Form.useWatch('discount', form)
 
   const selectedItem = items.find((item) => item.id === selectedItemId) || null
+  const selectedClient = useMemo(
+    () => clients.find((client) => client.id === selectedClientId) || null,
+    [clients, selectedClientId],
+  )
   const selectedCurrency = currencies.find((currency) => currency.id === selectedCurrencyId) || null
   const selectedRate = exchangeRates.find((rate) => rate.moneda_id === selectedCurrencyId && rate.activo) || null
 
@@ -36,6 +43,9 @@ export function BoutiqueSaleForm({ form, items, clients, currencies, exchangeRat
         payload.discount_reason = payload.discount ? payload.discount_reason : null
         payload.client_id = payload.client_id || null
         payload.observations = payload.observations || null
+        if (!payload.receipt_customer_snapshot?.full_name && !payload.receipt_customer_snapshot?.ci_nit && !payload.receipt_customer_snapshot?.cellphone) {
+          payload.receipt_customer_snapshot = null
+        }
         onFinish(payload)
       }}
     >
@@ -213,6 +223,8 @@ export function BoutiqueSaleForm({ form, items, clients, currencies, exchangeRat
       <Form.Item label="Observaciones" name="observations" normalize={(value) => (value || '').toUpperCase()}>
         <Input.TextArea rows={3} placeholder="Ej. CLIENTE RETIRA EL PRODUCTO HOY O SOLICITA EMBALAJE ESPECIAL" />
       </Form.Item>
+
+      <ReceiptSnapshotFields selectedClient={selectedClient} title="SNAPSHOT DOCUMENTAL PARA COMPROBANTE" />
 
       <div className="glass-panel" style={{ padding: 16, marginBottom: 16 }}>
         <Typography.Title level={5} style={{ marginTop: 0 }}>

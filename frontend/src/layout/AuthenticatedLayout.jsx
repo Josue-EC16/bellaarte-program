@@ -1,9 +1,16 @@
 import {
   AppstoreOutlined,
+  BellOutlined,
+  CheckOutlined,
   IdcardOutlined,
+  CalendarOutlined,
   DatabaseOutlined,
   DashboardOutlined,
   DollarOutlined,
+  EyeOutlined,
+  FileTextOutlined,
+  LinkOutlined,
+  SkinOutlined,
   LockOutlined,
   LogoutOutlined,
   ScissorOutlined,
@@ -12,12 +19,19 @@ import {
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons'
-import { Avatar, Button, Dropdown, Layout, Menu, Space, Tag, Typography } from 'antd'
-import { useMemo } from 'react'
+import { Avatar, Badge, Button, Dropdown, Layout, Menu, Popover, Space, Tag, Typography } from 'antd'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 
+import { apiClient } from '../api/client'
 import { useAuth } from '../auth/AuthProvider'
 import { FooterBar } from '../components/FooterBar'
+import {
+  buildNotificationOriginPath,
+  notificationPriorityColor,
+  notificationPriorityLabel,
+  notificationPrioritySurface,
+} from '../pages/notificaciones/notificationUtils'
 
 const { Header, Content, Sider } = Layout
 
@@ -25,6 +39,47 @@ export function AuthenticatedLayout() {
   const location = useLocation()
   const navigate = useNavigate()
   const { logout, user } = useAuth()
+  const [notificationSummary, setNotificationSummary] = useState({
+    unread_count: 0,
+    unresolved_count: 0,
+    urgent_count: 0,
+    latest: [],
+  })
+  const [notificationsOpen, setNotificationsOpen] = useState(false)
+  const canUseNotifications = user?.permissions?.includes('notifications:list')
+
+  const loadNotificationSummary = useCallback(async () => {
+    if (!canUseNotifications) return
+    try {
+      const response = await apiClient.get('/notificaciones/resumen')
+      setNotificationSummary(response.data)
+    } catch {
+      setNotificationSummary((current) => ({ ...current, latest: current.latest || [] }))
+    }
+  }, [canUseNotifications])
+
+  useEffect(() => {
+    if (!canUseNotifications) return undefined
+    loadNotificationSummary()
+    const intervalId = window.setInterval(loadNotificationSummary, 60000)
+    const handleFocus = () => {
+      loadNotificationSummary()
+    }
+    window.addEventListener('focus', handleFocus)
+    return () => {
+      window.clearInterval(intervalId)
+      window.removeEventListener('focus', handleFocus)
+    }
+  }, [canUseNotifications, loadNotificationSummary])
+
+  const markNotificationAsRead = useCallback(async (notificationId) => {
+    try {
+      await apiClient.patch(`/notificaciones/${notificationId}/read`)
+      await loadNotificationSummary()
+    } catch {
+      return
+    }
+  }, [loadNotificationSummary])
 
   const items = useMemo(() => {
     const baseItems = [
@@ -112,6 +167,111 @@ export function AuthenticatedLayout() {
                 key: '/app/boutique/ventas',
                 icon: <ShoppingCartOutlined />,
                 label: <Link to="/app/boutique/ventas">Ventas Boutique</Link>,
+              }
+            : null,
+        ].filter(Boolean),
+      })
+    }
+
+    if (
+      user?.permissions?.includes('fletes:list') ||
+      user?.permissions?.includes('flete_outputs:list')
+    ) {
+      baseItems.push({
+        key: 'fletes',
+        icon: <SkinOutlined />,
+        label: 'Fletes',
+        children: [
+          user?.permissions?.includes('fletes:list')
+            ? {
+                key: '/app/fletes',
+                icon: <SkinOutlined />,
+                label: <Link to="/app/fletes">Vestidos en Flete</Link>,
+              }
+            : null,
+          user?.permissions?.includes('flete_outputs:list')
+            ? {
+                key: '/app/fletes/salidas',
+                icon: <ShoppingCartOutlined />,
+                label: <Link to="/app/fletes/salidas">Salidas de Flete</Link>,
+              }
+            : null,
+        ].filter(Boolean),
+      })
+    }
+
+    if (user?.permissions?.includes('notifications:list')) {
+      baseItems.push({
+        key: '/app/notificaciones',
+        icon: <BellOutlined />,
+        label: <Link to="/app/notificaciones">Notificaciones</Link>,
+      })
+    }
+
+    if (
+      user?.permissions?.includes('receipts:list') ||
+      user?.permissions?.includes('receipt_types:list')
+    ) {
+      baseItems.push({
+        key: 'comprobantes',
+        icon: <FileTextOutlined />,
+        label: 'Comprobantes Internos',
+        children: [
+          user?.permissions?.includes('receipts:list')
+            ? {
+                key: '/app/comprobantes',
+                icon: <FileTextOutlined />,
+                label: <Link to="/app/comprobantes">Historial</Link>,
+              }
+            : null,
+          user?.permissions?.includes('receipt_types:list')
+            ? {
+                key: '/app/comprobantes/tipos',
+                icon: <DatabaseOutlined />,
+                label: <Link to="/app/comprobantes/tipos">Tipos de Comprobante</Link>,
+              }
+            : null,
+        ].filter(Boolean),
+      })
+    }
+
+    if (
+      user?.permissions?.includes('orders:list') ||
+      user?.permissions?.includes('order_payments:list') ||
+      user?.permissions?.includes('order_tests:list') ||
+      user?.permissions?.includes('order_reports:view')
+    ) {
+      baseItems.push({
+        key: 'pedidos',
+        icon: <CalendarOutlined />,
+        label: 'Pedidos',
+        children: [
+          user?.permissions?.includes('orders:list')
+            ? {
+                key: '/app/pedidos',
+                icon: <DatabaseOutlined />,
+                label: <Link to="/app/pedidos">Pedidos</Link>,
+              }
+            : null,
+          user?.permissions?.includes('order_payments:list')
+            ? {
+                key: '/app/pedidos/pagos',
+                icon: <DollarOutlined />,
+                label: <Link to="/app/pedidos/pagos">Pagos</Link>,
+              }
+            : null,
+          user?.permissions?.includes('order_tests:list')
+            ? {
+                key: '/app/pedidos/pruebas',
+                icon: <CalendarOutlined />,
+                label: <Link to="/app/pedidos/pruebas">Pruebas</Link>,
+              }
+            : null,
+          user?.permissions?.includes('order_reports:view')
+            ? {
+                key: '/app/pedidos/reportes',
+                icon: <AppstoreOutlined />,
+                label: <Link to="/app/pedidos/reportes">Reportes</Link>,
               }
             : null,
         ].filter(Boolean),
@@ -216,6 +376,99 @@ export function AuthenticatedLayout() {
     },
   ]
 
+  const notificationPopoverContent = canUseNotifications ? (
+    <div style={{ width: 360 }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          marginBottom: 14,
+        }}
+      >
+        <div>
+          <Typography.Title level={5} style={{ margin: 0 }}>
+            NOTIFICACIONES
+          </Typography.Title>
+          <Typography.Text type="secondary">
+            {notificationSummary.unread_count} NO LEÍDAS · {notificationSummary.unresolved_count} PENDIENTES
+          </Typography.Text>
+        </div>
+        <Button type="link" onClick={() => navigate('/app/notificaciones')}>
+          VER TODAS
+        </Button>
+      </div>
+
+      <div style={{ display: 'grid', gap: 10 }}>
+        {notificationSummary.latest?.length ? notificationSummary.latest.map((notification) => (
+          <div
+            key={notification.id}
+            style={{
+              borderRadius: 18,
+              padding: 14,
+              background: notificationPrioritySurface(notification.prioridad),
+              border: `1px solid ${notificationPriorityColor(notification.prioridad)}33`,
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
+              <div style={{ minWidth: 0 }}>
+                <Tag
+                  style={{
+                    borderRadius: 999,
+                    marginBottom: 8,
+                    color: notificationPriorityColor(notification.prioridad),
+                    borderColor: `${notificationPriorityColor(notification.prioridad)}44`,
+                    background: 'rgba(255,255,255,0.55)',
+                  }}
+                >
+                  {notificationPriorityLabel(notification.prioridad)}
+                </Tag>
+                <Typography.Text strong style={{ display: 'block' }}>
+                  {notification.titulo}
+                </Typography.Text>
+                <Typography.Text type="secondary" style={{ display: 'block' }}>
+                  {notification.mensaje}
+                </Typography.Text>
+                <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+                  {new Date(notification.fecha).toLocaleString('es-BO')}
+                </Typography.Text>
+              </div>
+            </div>
+            <Space style={{ marginTop: 10 }} wrap>
+              <Button
+                size="small"
+                icon={<EyeOutlined />}
+                onClick={() => {
+                  setNotificationsOpen(false)
+                  navigate(`/app/notificaciones?notification_id=${notification.id}`)
+                }}
+              >
+                VER
+              </Button>
+              {!notification.leida ? (
+                <Button size="small" icon={<CheckOutlined />} onClick={() => markNotificationAsRead(notification.id)}>
+                  LEÍDA
+                </Button>
+              ) : null}
+              <Button
+                size="small"
+                icon={<LinkOutlined />}
+                onClick={() => {
+                  setNotificationsOpen(false)
+                  navigate(buildNotificationOriginPath(notification))
+                }}
+              >
+                ORIGEN
+              </Button>
+            </Space>
+          </div>
+        )) : (
+          <Typography.Text type="secondary">NO TIENES NOTIFICACIONES RECIENTES.</Typography.Text>
+        )}
+      </div>
+    </div>
+  ) : null
+
   return (
     <Layout className="app-shell" style={{ height: '100vh', overflow: 'hidden' }}>
       <Sider
@@ -251,7 +504,7 @@ export function AuthenticatedLayout() {
           theme="dark"
           mode="inline"
           selectedKeys={[location.pathname]}
-          defaultOpenKeys={['seguridad', 'boutique', 'taller', 'monedas']}
+          defaultOpenKeys={['seguridad', 'boutique', 'fletes', 'comprobantes', 'pedidos', 'taller', 'monedas']}
           items={items}
           style={{ background: 'transparent' }}
         />
@@ -277,6 +530,37 @@ export function AuthenticatedLayout() {
 
           <Space size={16}>
             <Tag color="volcano">{user?.role_name}</Tag>
+            {canUseNotifications ? (
+              <Popover
+                trigger="click"
+                placement="bottomRight"
+                open={notificationsOpen}
+                onOpenChange={(open) => {
+                  setNotificationsOpen(open)
+                  if (open) {
+                    loadNotificationSummary()
+                  }
+                }}
+                content={notificationPopoverContent}
+              >
+                <Badge count={notificationSummary.unread_count} size="small" offset={[-6, 4]}>
+                  <Button
+                    type="text"
+                    aria-label="Abrir notificaciones"
+                    style={{
+                      width: 46,
+                      height: 46,
+                      borderRadius: 18,
+                      background: notificationSummary.urgent_count
+                        ? 'linear-gradient(135deg, rgba(184,71,92,0.18), rgba(255,255,255,0.72))'
+                        : 'rgba(255,255,255,0.72)',
+                      border: '1px solid rgba(143, 61, 46, 0.12)',
+                    }}
+                    icon={<BellOutlined style={{ fontSize: 18, color: '#8f3d2e' }} />}
+                  />
+                </Badge>
+              </Popover>
+            ) : null}
             <Dropdown menu={{ items: dropdownItems }} placement="bottomRight" trigger={['click']}>
               <Button
                 type="text"
@@ -313,6 +597,15 @@ function pageTitle(pathname) {
   if (pathname === '/app/boutique/inventario') return 'Inventario Boutique'
   if (pathname === '/app/boutique/entradas') return 'Entradas Boutique'
   if (pathname === '/app/boutique/ventas') return 'Ventas Boutique'
+  if (pathname === '/app/fletes') return 'Vestidos en Flete'
+  if (pathname === '/app/fletes/salidas') return 'Salidas de Flete'
+  if (pathname === '/app/notificaciones') return 'Notificaciones'
+  if (pathname === '/app/comprobantes') return 'Comprobantes Internos'
+  if (pathname === '/app/comprobantes/tipos') return 'Tipos de Comprobante'
+  if (pathname === '/app/pedidos') return 'Pedidos'
+  if (pathname === '/app/pedidos/pagos') return 'Pagos de Pedidos'
+  if (pathname === '/app/pedidos/pruebas') return 'Pruebas de Pedidos'
+  if (pathname === '/app/pedidos/reportes') return 'Reportes de Pedidos'
   if (pathname === '/app/taller/tipos') return 'Tipos Inventario Taller'
   if (pathname === '/app/taller/inventario') return 'Inventario Taller'
   if (pathname === '/app/taller/entradas') return 'Entradas Taller'

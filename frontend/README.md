@@ -11,6 +11,10 @@ La versión actual ya integra:
 - CRUD de tipos boutique, proveedores e inventario
 - CRUD de monedas y tipos de cambio
 - ventas boutique con resumen en tiempo real y reversión de stock
+- fletes con habilitación de vestidos, salidas, devoluciones y pase a venta
+- comprobantes internos con historial, detalle, impresión y navegación al origen
+- catálogo visual de tipos de comprobante
+- módulo de notificaciones con campana, panel desplegable, filtros y navegación al origen
 
 ## Stack
 
@@ -91,7 +95,17 @@ Protegidas:
 - `/app/boutique/tipos`
 - `/app/boutique/proveedores`
 - `/app/boutique/inventario`
+- `/app/boutique/entradas`
 - `/app/boutique/ventas`
+- `/app/fletes`
+- `/app/fletes/salidas`
+- `/app/comprobantes`
+- `/app/comprobantes/tipos`
+- `/app/notificaciones`
+- `/app/taller/tipos`
+- `/app/taller/inventario`
+- `/app/taller/entradas`
+- `/app/taller/salidas`
 - `/app/monedas`
 - `/app/monedas/tipos-cambio`
 
@@ -108,6 +122,10 @@ Bloques actuales:
 - `Seguridad`
 - `Clientes`
 - `Boutique`
+- `Fletes`
+- `Comprobantes Internos`
+- `Notificaciones`
+- `Taller`
 - `Monedas`
 
 Regla:
@@ -139,6 +157,7 @@ Soporta:
 - `src/pages/boutique/BoutiqueTypesPage.jsx`
 - `src/pages/boutique/ProvidersPage.jsx`
 - `src/pages/boutique/BoutiqueInventoryPage.jsx`
+- `src/pages/boutique/BoutiqueEntriesPage.jsx`
 - `src/pages/boutique/BoutiqueSalesPage.jsx`
 
 Componentes principales:
@@ -155,6 +174,41 @@ Componentes principales:
 - `src/pages/monedas/CurrenciesPage.jsx`
 - `src/pages/monedas/ExchangeRatesPage.jsx`
 
+### Fletes
+
+- `src/pages/fletes/FletesPage.jsx`
+- `src/pages/fletes/FleteOutputsPage.jsx`
+- `src/pages/fletes/fleteConstants.js`
+
+### Comprobantes internos
+
+- `src/pages/comprobantes/ReceiptsPage.jsx`
+- `src/pages/comprobantes/ReceiptTypesPage.jsx`
+- `src/pages/comprobantes/ReceiptTypeForm.jsx`
+- `src/pages/comprobantes/receiptUtils.js`
+- `src/components/receipts/ReceiptSnapshotFields.jsx`
+
+### Notificaciones
+
+- `src/pages/notificaciones/NotificationsPage.jsx`
+- `src/pages/notificaciones/notificationUtils.js`
+- campana integrada en `src/layout/AuthenticatedLayout.jsx`
+
+### Pedidos
+
+- `src/pages/pedidos/OrdersPage.jsx`
+- `src/pages/pedidos/OrderPaymentsPage.jsx`
+- `src/pages/pedidos/OrderTestsPage.jsx`
+- `src/pages/pedidos/OrderReportsPage.jsx`
+- `src/pages/pedidos/orderConstants.js`
+
+### Taller
+
+- `src/pages/taller/WorkshopTypesPage.jsx`
+- `src/pages/taller/WorkshopInventoryPage.jsx`
+- `src/pages/taller/WorkshopEntriesPage.jsx`
+- `src/pages/taller/WorkshopOutputsPage.jsx`
+
 ## Reglas UI/UX que ya sigue el frontend
 
 - formularios con `Row` y `Col` para inputs en la misma fila
@@ -163,6 +217,7 @@ Componentes principales:
 - normalización de texto en frontend donde mejora la captura
 - el detalle de lectura usa `GET` fresco al backend
 - el resumen de venta se recalcula en tiempo real
+- la impresión de documentos usa HTML servida por backend + `window.print()`
 
 ## Contrato funcional actual por módulo
 
@@ -203,6 +258,37 @@ Componentes principales:
 - `INV_BOUTIQUE` solo puede listar y ver
 - la venta exige moneda
 - si la moneda no es base, se usa el tipo de cambio activo
+- si faltan datos documentales del cliente, el formulario exige snapshot para el comprobante
+
+### Fletes
+
+- `ADMIN` y `CAJA` operan el módulo completo
+- el alta de flete solo permite vestidos elegibles
+- las salidas se crean en `RESERVADO`
+- la entrega cambia la salida a `EN_FLETE`
+- la devolución permite retorno normal, con observación o con arreglo
+- pasar a venta exige nuevo precio y crea un item boutique usado con nuevo código
+- la garantía se muestra como bloque de control separado del total comercial
+- si faltan datos documentales del cliente, la salida exige snapshot para el comprobante
+
+### Comprobantes internos
+
+- `ADMIN` y `CAJA` pueden listar, ver e imprimir comprobantes
+- `ADMIN` puede crear, editar y cambiar estado de tipos de comprobante
+- `CAJA` puede consultar el catálogo de tipos
+- no existe alta manual
+- no existe anulación manual desde el módulo
+- el estado se refleja automáticamente desde el origen
+- se puede navegar al movimiento que emitió el comprobante
+
+### Pedidos, pagos y pruebas
+
+- `ADMIN` opera el módulo completo
+- `MODISTA` crea y edita pedidos, registra pruebas y consulta pagos/reportes
+- `CAJA` consulta pedidos, registra/anula pagos y consulta reportes
+- `INV_TALLER` e `INV_BOUTIQUE` no tienen acceso por defecto
+- el calendario usa componentes propios de Ant Design sin dependencia externa nueva
+- el reporte imprimible por cliente usa HTML y `window.print()`
 
 ## Reglas para seguir creciendo
 
@@ -228,3 +314,7 @@ Después conviene probar manualmente:
 - alta de proveedor
 - alta de item boutique
 - venta boutique con moneda base y no base
+- habilitación de vestido a flete
+- flujo de reserva, entrega, devolución y anulación de salida de flete
+- alta de pedido, prueba, pago parcial/final, entrega y reporte imprimible
+- emisión, consulta e impresión de comprobantes internos desde venta, pago y salida de flete

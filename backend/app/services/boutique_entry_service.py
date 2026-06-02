@@ -18,6 +18,7 @@ from app.schemas.boutique import (
     BoutiqueEntryUserSummary,
     ProveedorNested,
 )
+from app.services.notification_service import sync_boutique_stock_notification
 
 
 def _to_float(value):
@@ -192,6 +193,7 @@ def create_boutique_entry(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    sync_boutique_stock_notification(db, item_id=item.id)
     db.commit()
     return get_boutique_entry_detail(db, entry.id)
 
@@ -233,5 +235,6 @@ def set_boutique_entry_status(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    sync_boutique_stock_notification(db, item_id=entry.item_id)
     db.commit()
     return get_boutique_entry_detail(db, entry.id)

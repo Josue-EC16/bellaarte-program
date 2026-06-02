@@ -17,6 +17,7 @@ import {
   Typography,
 } from 'antd'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 import { apiClient } from '../../api/client'
 import { useAuth } from '../../auth/AuthProvider'
@@ -26,6 +27,7 @@ import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
 import { BoutiqueSaleDetailCard } from './BoutiqueSaleDetailCard'
 import { BoutiqueSaleForm } from './BoutiqueSaleForm'
 import { ESTADO_VENTA_OPTIONS, METODO_PAGO_OPTIONS, formatBs, labelFromOptions } from './boutiqueConstants'
+import { openReceiptPrintable } from '../comprobantes/receiptUtils'
 
 const { RangePicker } = DatePicker
 
@@ -56,6 +58,7 @@ export function BoutiqueSalesPage() {
   const [stateAction, setStateAction] = useState(null)
   const [form] = Form.useForm()
   const [reasonForm] = Form.useForm()
+  const [searchParams, setSearchParams] = useSearchParams()
   const { message } = AntdApp.useApp()
   const { user } = useAuth()
 
@@ -64,6 +67,8 @@ export function BoutiqueSalesPage() {
   const canCancel = user?.permissions?.includes('boutique_sales:cancel')
   const canAnnul = user?.permissions?.includes('boutique_sales:annul')
   const canPickClient = user?.permissions?.includes('clients:list')
+  const canViewReceipts = user?.permissions?.includes('receipts:view')
+  const canPrintReceipts = user?.permissions?.includes('receipts:print')
 
   const loadReferenceData = useCallback(async () => {
     const [itemResponse, currencyResponse, rateResponse] = await Promise.all([
@@ -116,6 +121,16 @@ export function BoutiqueSalesPage() {
     loadSales()
   }, [filters.search, filters.item_id, filters.client_id, filters.currency_id, filters.payment_method, filters.state, filters.date_from, filters.date_to])
 
+  useEffect(() => {
+    const saleId = searchParams.get('sale_id')
+    if (!saleId || !canView) return
+    openView({ id: Number(saleId) }).finally(() => {
+      const next = new URLSearchParams(searchParams)
+      next.delete('sale_id')
+      setSearchParams(next, { replace: true })
+    })
+  }, [canView, searchParams, setSearchParams])
+
   const itemOptions = useMemo(
     () => items.map((item) => ({ label: `${item.code} - ${item.name}`, value: item.id })),
     [items],
@@ -149,8 +164,11 @@ export function BoutiqueSalesPage() {
     setSaving(true)
     setFormError(null)
     try {
-      await apiClient.post('/boutique/sales', values)
+      const response = await apiClient.post('/boutique/sales', values)
       message.success('Se registró la venta correctamente.')
+      if (response.data?.receipt?.id && canPrintReceipts) {
+        await openReceiptPrintable(apiClient, response.data.receipt.id, message)
+      }
       setFormOpen(false)
       form.resetFields()
       await Promise.all([loadSales(), loadReferenceData()])
@@ -428,10 +446,20 @@ export function BoutiqueSalesPage() {
         }}
         maskClosable={false}
         footer={[
+          selectedSale?.receipt && canPrintReceipts ? (
+            <Button key="print-receipt" type="primary" onClick={() => openReceiptPrintable(apiClient, selectedSale.receipt.id, message)}>
+              Imprimir comprobante
+            </Button>
+          ) : null,
+          selectedSale?.receipt && canViewReceipts ? (
+            <Button key="view-receipt" onClick={() => window.open(`/app/comprobantes?receipt_id=${selectedSale.receipt.id}`, '_self')}>
+              Ver comprobante
+            </Button>
+          ) : null,
           <Button key="close" onClick={() => { setDetailOpen(false); setSelectedSale(null) }}>
             Cerrar
           </Button>,
-        ]}
+        ].filter(Boolean)}
         width={900}
       >
         <BoutiqueSaleDetailCard sale={selectedSale} />

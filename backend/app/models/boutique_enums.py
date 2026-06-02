@@ -83,3 +83,89 @@ class MotivoEntradaTallerEnum(str, Enum):
     AJUSTE_POSITIVO = "ajuste_positivo"
     REGISTRO_INICIAL = "registro_inicial"
     OTRO = "otro"
+
+
+class EstadoFleteEnum(str, Enum):
+    DISPONIBLE = "disponible"
+    EN_FLETE = "en_flete"
+    EN_REVISION = "en_revision"
+    AGOTADO = "agotado"
+    PASADO_PARA_VENTA = "pasado_para_venta"
+    RETIRADO = "retirado"
+
+
+class MotivoDescFleteEnum(str, Enum):
+    REBAJA = "rebaja"
+    PROMOCION = "promocion"
+    BONIFICACION = "bonificacion"
+    ADMINISTRATIVO = "administrativo"
+
+
+class EstadoSalidaFleteEnum(str, Enum):
+    RESERVADO = "reservado"
+    EN_FLETE = "en_flete"
+    DEVUELTO = "devuelto"
+    DEVUELTO_CON_OBSERVACION = "devuelto_con_observacion"
+    DEVUELTO_CON_ARREGLO = "devuelto_con_arreglo"
+    ANULADO = "anulado"
+
+
+class EstadoFleteEntregaEnum(str, Enum):
+    BUENO = "bueno"
+    REGULAR = "regular"
+    CON_OBSERVACION = "con_observacion"
+
+
+class EstadoFleteDevolucionEnum(str, Enum):
+    BUENO = "bueno"
+    REGULAR = "regular"
+    DANADO = "dañado"
+    INCOMPLETO = "incompleto"
+
+
+class EstadoComprobanteEnum(str, Enum):
+    EMITIDO = "emitido"
+    ANULADO = "anulado"
+
+
+class PrioridadNotificacionEnum(str, Enum):
+    BAJA = "baja"
+    MEDIA = "media"
+    ALTA = "alta"
+    URGENTE = "urgente"
+
+
+class TipoPedidoEnum(str, Enum):
+    VESTIDO = "vestido"
+    VELO = "velo"
+    COLA = "cola"
+    MANGA = "manga"
+    BOUQUET = "bouquet"
+    OTRO = "otro"
+
+
+class MotivoDescuentoPedidoEnum(str, Enum):
+    REBAJA = "rebaja"
+    PROMOCION = "promocion"
+    BONIFICACION = "bonificacion"
+    ADMINISTRATIVO = "administrativo"
+
+
+class EstadoPedidoGeneralEnum(str, Enum):
+    ACTIVO = "activo"
+    INACTIVO = "inactivo"
+    ENTREGADO = "entregado"
+    CANCELADO = "cancelado"
+
+
+class EstadoPagoPedidoEnum(str, Enum):
+    REGISTRADO = "registrado"
+    ANULADO = "anulado"
+
+
+class PruebaEstadoPedidoEnum(str, Enum):
+    LISTO = "listo"
+    COSTURERO_TALLER = "costurero_taller"
+    DECORACION = "decoracion"
+    COSTURERO_EXTERNO = "costurero_externo"
+    OTRO = "otro"

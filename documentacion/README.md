@@ -10,6 +10,16 @@ Este sistema ha evolucionado de un monolito en Streamlit a una Arquitectura Desa
 
 /documentacion: Detalles técnicos y manuales del sistema.
 
+Documentos funcionales vigentes del bloque comercial:
+
+- `MODULO_BOUTIQUE_V1.md`
+- `MODULO_VENTAS_BOUTIQUE.md`
+- `MODULO_TALLER.md`
+- `MODULO_FLETES.md`
+- `MODULO,_PEDIDOS_PAGOS_PRUEBAS.md`
+- `MODULO_COMPROBANTES_INTERNOS.md`
+- `MODULO_NOTIFICACIONES.md`
+
 ### 🛠️ REQUISITOS PREVIOS (Versiones Dic-2025)
 
 Para que el sistema funcione correctamente en Bolivia, asegúrate de tener:

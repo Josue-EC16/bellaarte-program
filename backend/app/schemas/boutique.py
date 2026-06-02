@@ -13,6 +13,7 @@ from app.models.boutique_enums import (
     TipoVestidoEnum,
 )
 from app.schemas.common import ORMBaseModel
+from app.schemas.receipt import ReceiptCustomerSnapshotPayload, ReceiptSummary
 
 
 DetailKind = Literal["VESTIDO", "VELO", "BOUQUET", "BRASIER", "OTRO"]
@@ -242,6 +243,7 @@ class BoutiqueSaleCreateRequest(BaseModel):
     discount_reason: MotivoDescVentaBoutiqueEnum | None = None
     payment_method: MetodoPagoEnum
     observations: str | None = None
+    receipt_customer_snapshot: ReceiptCustomerSnapshotPayload | None = None
 
     @model_validator(mode="after")
     def validate_discount(self) -> "BoutiqueSaleCreateRequest":
@@ -376,3 +378,4 @@ class BoutiqueSaleDetailResponse(ORMBaseModel):
     observations: str | None
     changed_at: datetime | None
     state_change_reason: str | None
+    receipt: ReceiptSummary | None = None

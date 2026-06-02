@@ -107,6 +107,7 @@ class VentaBoutique(Base):
     usuario = relationship("Usuario")
     cliente = relationship("Cliente")
     moneda = relationship("Moneda")
+    comprobante = relationship("ComprobanteInterno", back_populates="venta_boutique", uselist=False)
 
     @validates("observaciones", "motivo_cambio_estado")
     def normalize_text(self, _key: str, value: str | None) -> str | None:

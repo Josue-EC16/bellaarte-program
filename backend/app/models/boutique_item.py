@@ -75,6 +75,7 @@ class ItemBoutique(Base):
         cascade="all, delete-orphan",
     )
     entradas = relationship("EntradaItemBoutique", back_populates="item")
+    flete = relationship("FleteVestido", back_populates="item", uselist=False)
 
     @validates("codigo")
     def normalize_code(self, _key: str, value: str) -> str:

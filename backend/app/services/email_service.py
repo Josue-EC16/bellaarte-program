@@ -8,13 +8,13 @@ from app.core.config import settings
 logger = logging.getLogger(__name__)
 
 
-def send_welcome_email(recipient_email: str, full_name: str, username: str, initial_password: str) -> None:
+def send_welcome_email(recipient_email: str, full_name: str, username: str, initial_password: str) -> tuple[bool, str | None]:
     if not settings.smtp_username or not settings.smtp_password:
         logger.warning(f"SMTP credentials not configured. Email to {recipient_email} aborted.")
         print(f"--- MOCK EMAIL TO: {recipient_email} ---")
         print(f"Username: {username}\nPassword: {initial_password}")
         print("-----------------------------------------")
-        return
+        return True, None
 
     subject = "🎉 ¡BIENVENIDO A BELLAARTE BOUTIQUE! 💖"
     
@@ -92,5 +92,7 @@ def send_welcome_email(recipient_email: str, full_name: str, username: str, init
                 server.login(settings.smtp_username, settings.smtp_password)
                 server.send_message(msg)
         logger.info(f"Welcome email sent successfully to {recipient_email}")
+        return True, None
     except Exception as e:
         logger.error(f"Failed to send email to {recipient_email}: {e}")
+        return False, str(e)

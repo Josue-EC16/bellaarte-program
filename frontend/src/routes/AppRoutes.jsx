@@ -9,9 +9,18 @@ import { ProvidersPage } from '../pages/boutique/ProvidersPage'
 import { BoutiqueSalesPage } from '../pages/boutique/BoutiqueSalesPage'
 import { BoutiqueTypesPage } from '../pages/boutique/BoutiqueTypesPage'
 import { ClientsPage } from '../pages/clients/ClientsPage'
+import { ReceiptsPage } from '../pages/comprobantes/ReceiptsPage'
+import { ReceiptTypesPage } from '../pages/comprobantes/ReceiptTypesPage'
 import { DashboardHomePage } from '../pages/dashboard/DashboardHomePage'
+import { FleteOutputsPage } from '../pages/fletes/FleteOutputsPage'
+import { FletesPage } from '../pages/fletes/FletesPage'
 import { CurrenciesPage } from '../pages/monedas/CurrenciesPage'
 import { ExchangeRatesPage } from '../pages/monedas/ExchangeRatesPage'
+import { NotificationsPage } from '../pages/notificaciones/NotificationsPage'
+import { OrderPaymentsPage } from '../pages/pedidos/OrderPaymentsPage'
+import { OrderReportsPage } from '../pages/pedidos/OrderReportsPage'
+import { OrdersPage } from '../pages/pedidos/OrdersPage'
+import { OrderTestsPage } from '../pages/pedidos/OrderTestsPage'
 import { ForbiddenPage } from '../pages/ForbiddenPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { RolesPage } from '../pages/roles/RolesPage'
@@ -56,6 +65,33 @@ export function AppRoutes() {
           </Route>
           <Route element={<PermissionRoute permission="boutique_sales:list" />}>
             <Route path="boutique/ventas" element={<BoutiqueSalesPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="fletes:list" />}>
+            <Route path="fletes" element={<FletesPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="flete_outputs:list" />}>
+            <Route path="fletes/salidas" element={<FleteOutputsPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="receipts:list" />}>
+            <Route path="comprobantes" element={<ReceiptsPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="notifications:list" />}>
+            <Route path="notificaciones" element={<NotificationsPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="receipt_types:list" />}>
+            <Route path="comprobantes/tipos" element={<ReceiptTypesPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="orders:list" />}>
+            <Route path="pedidos" element={<OrdersPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="order_payments:list" />}>
+            <Route path="pedidos/pagos" element={<OrderPaymentsPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="order_tests:list" />}>
+            <Route path="pedidos/pruebas" element={<OrderTestsPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="order_reports:view" />}>
+            <Route path="pedidos/reportes" element={<OrderReportsPage />} />
           </Route>
           <Route element={<PermissionRoute permission="workshop_types:list" />}>
             <Route path="taller/tipos" element={<WorkshopTypesPage />} />

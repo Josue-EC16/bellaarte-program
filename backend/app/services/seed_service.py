@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from app.core.config import settings
 from app.core.security import hash_password
 from app.models.account import Cuenta
+from app.models.receipt import TipoComprobante
 from app.models.role import Rol
 from app.models.user import Usuario
 from app.services.boutique_service import seed_boutique_types
@@ -72,6 +73,34 @@ def seed_admin_account(db: Session) -> None:
     db.commit()
 
 
+def seed_receipt_types(db: Session) -> None:
+    expected_types = (
+        ("VENTA_BOUTIQUE_INTERNO", "COMPROBANTE INTERNO PARA VENTAS BOUTIQUE"),
+        ("PAGO_PEDIDO_INTERNO", "COMPROBANTE INTERNO PARA PAGOS DE PEDIDO"),
+        ("FLETE_INTERNO", "COMPROBANTE INTERNO PARA OPERACIONES DE FLETE"),
+    )
+    existing = {
+        receipt_type.nombre: receipt_type
+        for receipt_type in db.execute(select(TipoComprobante)).scalars().all()
+    }
+    for name, description in expected_types:
+        current = existing.get(name)
+        if current is None:
+            db.add(
+                TipoComprobante(
+                    nombre=name,
+                    descripcion=description,
+                    es_fiscal=False,
+                    habilitado=True,
+                )
+            )
+            continue
+        current.descripcion = description
+        current.es_fiscal = False
+        current.habilitado = True
+    db.commit()
+
+
 def seed_security(db: Session) -> None:
     seed_roles(db)
     ensure_policy_files()
@@ -81,3 +110,4 @@ def seed_security(db: Session) -> None:
         select(Cuenta).where(Cuenta.username == settings.bootstrap_admin_username)
     ).scalar_one()
     seed_default_currency(db, admin_account=admin_account)
+    seed_receipt_types(db)

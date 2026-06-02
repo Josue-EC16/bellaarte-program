@@ -5,7 +5,7 @@ from sqlalchemy import engine_from_config, pool
 
 from app.core.config import settings
 from app.models import Base
-from app.models import account, audit_log, boutique_details, boutique_item, boutique_sale, boutique_type, client, role, user  # noqa: F401
+from app.models import account, audit_log, boutique_details, boutique_item, boutique_sale, boutique_type, client, notification, role, user  # noqa: F401
 
 
 config = context.config

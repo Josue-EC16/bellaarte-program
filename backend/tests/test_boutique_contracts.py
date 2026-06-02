@@ -3,6 +3,7 @@ from pydantic import ValidationError
 
 from app.core.permissions import build_permissions_for_role
 from app.schemas.boutique import BoutiqueItemCreateRequest, BoutiqueSaleCreateRequest
+from app.schemas.flete import FleteCreateRequest, SalidaFleteCreateRequest, SalidaFleteReturnRequest
 from app.schemas.workshop import TallerEntryCreateRequest, TallerOutputCreateRequest
 
 
@@ -28,6 +29,8 @@ def test_caja_permissions_are_sales_enabled_but_inventory_read_only() -> None:
     assert "exchange_rates:list" in permissions
     assert "boutique_sales:create" in permissions
     assert "boutique_sales:annul" in permissions
+    assert "fletes:create" in permissions
+    assert "flete_outputs:return" in permissions
 
 
 def test_inv_taller_permissions_include_full_workshop_module() -> None:
@@ -198,3 +201,88 @@ def test_workshop_output_request_accepts_valid_payload() -> None:
         }
     )
     assert payload.destination == "PRUEBA DE MUESTRA"
+
+
+def test_admin_permissions_include_full_flete_module() -> None:
+    permissions = build_permissions_for_role("ADMIN")
+    assert "fletes:create" in permissions
+    assert "fletes:pass_to_sale" in permissions
+    assert "flete_outputs:deliver" in permissions
+    assert "flete_outputs:annul" in permissions
+
+
+def test_flete_create_request_accepts_valid_payload() -> None:
+    payload = FleteCreateRequest.model_validate(
+        {
+            "item_id": 10,
+            "precio_flete_ref": 180,
+            "max_salidas": 3,
+            "observaciones": "HABILITACION INICIAL",
+        }
+    )
+    assert payload.max_salidas == 3
+
+
+def test_flete_output_create_requires_discount_reason() -> None:
+    with pytest.raises(ValidationError):
+        SalidaFleteCreateRequest.model_validate(
+            {
+                "flete_id": 2,
+                "client_id": 3,
+                "currency_id": 1,
+                "fecha_salida": "2026-05-15",
+                "fecha_devolucion_prevista": "2026-05-18",
+                "precio": 220,
+                "descuento": 20,
+                "metodo_pago": "efectivo",
+                "garantia": 100,
+                "estado_entrega": "bueno",
+            }
+        )
+
+
+def test_flete_output_create_rejects_invalid_return_date_order() -> None:
+    with pytest.raises(ValidationError):
+        SalidaFleteCreateRequest.model_validate(
+            {
+                "flete_id": 2,
+                "client_id": 3,
+                "currency_id": 1,
+                "fecha_salida": "2026-05-15",
+                "fecha_devolucion_prevista": "2026-05-14",
+                "precio": 220,
+                "metodo_pago": "efectivo",
+                "garantia": 100,
+                "estado_entrega": "regular",
+            }
+        )
+
+
+def test_flete_return_requires_arreglo_description_when_needed() -> None:
+    with pytest.raises(ValidationError):
+        SalidaFleteReturnRequest.model_validate(
+            {
+                "estado_salida": "devuelto_con_arreglo",
+                "estado_devolucion": "dañado",
+                "fecha_devolucion_real": "2026-05-18",
+                "requiere_arreglo": True,
+                "monto_arreglo": 60,
+                "garantia_devuelta": 40,
+            }
+        )
+
+
+def test_flete_return_accepts_complete_arreglo_payload() -> None:
+    payload = SalidaFleteReturnRequest.model_validate(
+        {
+            "estado_salida": "devuelto_con_arreglo",
+            "estado_devolucion": "dañado",
+            "fecha_devolucion_real": "2026-05-18",
+            "requiere_arreglo": True,
+            "monto_arreglo": 60,
+            "descripcion_arreglo": "ROTURA EN LA FALDA",
+            "garantia_devuelta": 40,
+            "observaciones_devolucion": "SE RETIENE PARTE DE GARANTIA",
+        }
+    )
+    assert payload.requiere_arreglo is True

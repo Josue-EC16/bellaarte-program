@@ -10,7 +10,7 @@ from app.models.role import Rol
 from app.models.user import Usuario
 from app.schemas.auth import CreateUserRequest, ResetPasswordRequest, UpdateUserRequest, UserSummary
 from app.schemas.role import RoleCreateRequest, RoleUpdateRequest
-from app.services.email_service import send_welcome_email
+from app.services.notification_service import send_welcome_email_with_tracking
 
 
 def build_user_summary(account: Cuenta) -> UserSummary:
@@ -254,7 +254,8 @@ def create_user(
     db.commit()
 
     background_tasks.add_task(
-        send_welcome_email,
+        send_welcome_email_with_tracking,
+        user_id=usuario.id,
         recipient_email=payload.correo,
         full_name=f"{payload.nombres} {payload.apellido_paterno} {payload.apellido_materno or ''}".strip(),
         username=username,
@@ -316,7 +317,8 @@ def update_user(
 
     if should_resend_welcome:
         background_tasks.add_task(
-            send_welcome_email,
+            send_welcome_email_with_tracking,
+            user_id=account.usuario.id,
             recipient_email=payload.correo,
             full_name=f"{payload.nombres} {payload.apellido_paterno} {payload.apellido_materno or ''}".strip(),
             username=account.username,

@@ -44,11 +44,14 @@ export function BoutiqueSaleDetailCard({ sale }) {
         <Descriptions.Item label="Total en moneda origen">
           {sale.currency?.simbolo || sale.currency?.codigo} {formatBs(sale.total_currency_origin)}
         </Descriptions.Item>
-        <Descriptions.Item label="Fecha cambio estado">
+      <Descriptions.Item label="Fecha cambio estado">
           {sale.changed_at ? new Date(sale.changed_at).toLocaleString() : 'SIN CAMBIO'}
         </Descriptions.Item>
         <Descriptions.Item label="Motivo cambio estado">
           {sale.state_change_reason || 'SIN CAMBIO'}
+        </Descriptions.Item>
+        <Descriptions.Item label="Comprobante interno">
+          {sale.receipt ? `${sale.receipt.codigo} (${sale.receipt.estado.toUpperCase()})` : 'SIN REGISTRO'}
         </Descriptions.Item>
         <Descriptions.Item label="Observaciones" span={2}>
           {sale.observations || 'SIN OBSERVACIONES'}
