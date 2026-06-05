@@ -135,6 +135,47 @@ class PrioridadNotificacionEnum(str, Enum):
     URGENTE = "urgente"
 
 
+class TipoAccionAuditoriaEnum(str, Enum):
+    INSERT = "insert"
+    UPDATE = "update"
+    DELETE = "delete"
+    LOGIN = "login"
+    LOGOUT = "logout"
+    CANCELACION = "cancelacion"
+    ANULACION = "anulacion"
+    CAMBIO_ESTADO = "cambio_estado"
+    OTRO = "otro"
+
+
+class TipoEgresoEnum(str, Enum):
+    ALMUERZO = "almuerzo"
+    MERIENDA = "merienda"
+    ALQUILER = "alquiler"
+    ALIMENTOS_EN_GENERAL = "alimentos_en_general"
+    COSTURA = "costura"
+    DECORADO = "decorado"
+    DEVOLUCION = "devolucion"
+    INVENTARIO_BOUTIQUE = "inventario_boutique"
+    INVENTARIO_TALLER = "inventario_taller"
+    MANTENIMIENTO = "mantenimiento"
+    MARKETING = "marketing"
+    SERVICIO_BASICO = "servicio_basico"
+    SUELDO = "sueldo"
+    TECNOLOGIA = "tecnologia"
+    OTRO = "otro"
+
+
+class EstadoEgresoEnum(str, Enum):
+    REGISTRADO = "registrado"
+    ANULADO = "anulado"
+
+
+class EstadoCorteCajaEnum(str, Enum):
+    ABIERTO = "abierto"
+    CERRADO = "cerrado"
+    CERRADO_OBSERVADO = "cerrado_observado"
+
+
 class TipoPedidoEnum(str, Enum):
     VESTIDO = "vestido"
     VELO = "velo"

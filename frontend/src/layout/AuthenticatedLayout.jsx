@@ -208,6 +208,14 @@ export function AuthenticatedLayout() {
       })
     }
 
+    if (user?.permissions?.includes('audit:list')) {
+      baseItems.push({
+        key: '/app/auditoria',
+        icon: <SafetyOutlined />,
+        label: <Link to="/app/auditoria">Auditoría del Sistema</Link>,
+      })
+    }
+
     if (
       user?.permissions?.includes('receipts:list') ||
       user?.permissions?.includes('receipt_types:list')
@@ -229,6 +237,49 @@ export function AuthenticatedLayout() {
                 key: '/app/comprobantes/tipos',
                 icon: <DatabaseOutlined />,
                 label: <Link to="/app/comprobantes/tipos">Tipos de Comprobante</Link>,
+              }
+            : null,
+        ].filter(Boolean),
+      })
+    }
+
+    if (
+      user?.permissions?.includes('economy_income:view') ||
+      user?.permissions?.includes('economy_expenses:list') ||
+      user?.permissions?.includes('cash_cuts:view_own') ||
+      user?.permissions?.includes('economy_reports:view')
+    ) {
+      baseItems.push({
+        key: 'economia',
+        icon: <DollarOutlined />,
+        label: 'Economía',
+        children: [
+          user?.permissions?.includes('economy_income:view')
+            ? {
+                key: '/app/economia',
+                icon: <DashboardOutlined />,
+                label: <Link to="/app/economia">Resumen</Link>,
+              }
+            : null,
+          user?.permissions?.includes('economy_expenses:list')
+            ? {
+                key: '/app/economia/egresos',
+                icon: <DollarOutlined />,
+                label: <Link to="/app/economia/egresos">Egresos</Link>,
+              }
+            : null,
+          user?.permissions?.includes('cash_cuts:view_own')
+            ? {
+                key: '/app/economia/cortes-caja',
+                icon: <DatabaseOutlined />,
+                label: <Link to="/app/economia/cortes-caja">Cortes de Caja</Link>,
+              }
+            : null,
+          user?.permissions?.includes('economy_reports:view')
+            ? {
+                key: '/app/economia/reportes',
+                icon: <AppstoreOutlined />,
+                label: <Link to="/app/economia/reportes">Reportes</Link>,
               }
             : null,
         ].filter(Boolean),
@@ -504,7 +555,7 @@ export function AuthenticatedLayout() {
           theme="dark"
           mode="inline"
           selectedKeys={[location.pathname]}
-          defaultOpenKeys={['seguridad', 'boutique', 'fletes', 'comprobantes', 'pedidos', 'taller', 'monedas']}
+          defaultOpenKeys={['seguridad', 'boutique', 'fletes', 'comprobantes', 'economia', 'pedidos', 'taller', 'monedas']}
           items={items}
           style={{ background: 'transparent' }}
         />
@@ -600,8 +651,13 @@ function pageTitle(pathname) {
   if (pathname === '/app/fletes') return 'Vestidos en Flete'
   if (pathname === '/app/fletes/salidas') return 'Salidas de Flete'
   if (pathname === '/app/notificaciones') return 'Notificaciones'
+  if (pathname === '/app/auditoria') return 'Auditoría del Sistema'
   if (pathname === '/app/comprobantes') return 'Comprobantes Internos'
   if (pathname === '/app/comprobantes/tipos') return 'Tipos de Comprobante'
+  if (pathname === '/app/economia') return 'Economía'
+  if (pathname === '/app/economia/egresos') return 'Egresos'
+  if (pathname === '/app/economia/cortes-caja') return 'Cortes de Caja'
+  if (pathname === '/app/economia/reportes') return 'Reportes Económicos'
   if (pathname === '/app/pedidos') return 'Pedidos'
   if (pathname === '/app/pedidos/pagos') return 'Pagos de Pedidos'
   if (pathname === '/app/pedidos/pruebas') return 'Pruebas de Pedidos'

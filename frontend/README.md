@@ -15,6 +15,8 @@ La versión actual ya integra:
 - comprobantes internos con historial, detalle, impresión y navegación al origen
 - catálogo visual de tipos de comprobante
 - módulo de notificaciones con campana, panel desplegable, filtros y navegación al origen
+- módulo de economía con ingresos, egresos, devoluciones obligatorias y corte de caja
+- módulo de auditoría administrativa con filtros avanzados, detalle por evento y exportación
 
 ## Stack
 
@@ -23,6 +25,7 @@ La versión actual ya integra:
 - Ant Design
 - React Router
 - Axios
+- Recharts
 - ESLint
 
 ## Variables de entorno
@@ -102,6 +105,11 @@ Protegidas:
 - `/app/comprobantes`
 - `/app/comprobantes/tipos`
 - `/app/notificaciones`
+- `/app/auditoria`
+- `/app/economia`
+- `/app/economia/egresos`
+- `/app/economia/cortes-caja`
+- `/app/economia/reportes`
 - `/app/taller/tipos`
 - `/app/taller/inventario`
 - `/app/taller/entradas`
@@ -125,6 +133,8 @@ Bloques actuales:
 - `Fletes`
 - `Comprobantes Internos`
 - `Notificaciones`
+- `Auditoría del Sistema`
+- `Economía`
 - `Taller`
 - `Monedas`
 
@@ -194,6 +204,22 @@ Componentes principales:
 - `src/pages/notificaciones/notificationUtils.js`
 - campana integrada en `src/layout/AuthenticatedLayout.jsx`
 
+### Auditoría
+
+- `src/pages/auditoria/AuditPage.jsx`
+- `src/pages/auditoria/auditUtils.js`
+
+### Economía
+
+- `src/pages/economia/EconomyDashboardPage.jsx`
+- `src/pages/economia/EconomyExpensesPage.jsx`
+- `src/pages/economia/CashCutsPage.jsx`
+- `src/pages/economia/EconomyReportsPage.jsx`
+- `src/pages/economia/EconomySummaryCard.jsx`
+- `src/pages/economia/EconomyChartCard.jsx`
+- `src/pages/economia/economyConstants.js`
+- `src/pages/economia/economyUtils.js`
+
 ### Pedidos
 
 - `src/pages/pedidos/OrdersPage.jsx`
@@ -259,6 +285,7 @@ Componentes principales:
 - la venta exige moneda
 - si la moneda no es base, se usa el tipo de cambio activo
 - si faltan datos documentales del cliente, el formulario exige snapshot para el comprobante
+- las anulaciones y cancelaciones ya no se cierran directo; la UI redirige al flujo económico obligatorio de devolución
 
 ### Fletes
 
@@ -270,6 +297,7 @@ Componentes principales:
 - pasar a venta exige nuevo precio y crea un item boutique usado con nuevo código
 - la garantía se muestra como bloque de control separado del total comercial
 - si faltan datos documentales del cliente, la salida exige snapshot para el comprobante
+- la anulación de salida se redirige al flujo económico obligatorio de devolución
 
 ### Comprobantes internos
 
@@ -289,6 +317,18 @@ Componentes principales:
 - `INV_TALLER` e `INV_BOUTIQUE` no tienen acceso por defecto
 - el calendario usa componentes propios de Ant Design sin dependencia externa nueva
 - el reporte imprimible por cliente usa HTML y `window.print()`
+- la anulación de pagos redirige al flujo económico obligatorio de devolución
+
+### Economía
+
+- `ADMIN` y `CAJA` son los únicos roles con acceso
+- `ADMIN` ve resumen global, egresos, cortes y reportes completos
+- `CAJA` opera su corte activo y su historial propio
+- los ingresos anulados siguen visibles como histórico bruto
+- la devolución de dinero se registra siempre como `EGRESO`
+- el módulo usa `Recharts` para visualización financiera
+- los filtros principales persisten en `sessionStorage`
+- el historial cerrado del cajero enmascara ingresos y resultados con `***`
 
 ## Reglas para seguir creciendo
 
@@ -318,3 +358,6 @@ Después conviene probar manualmente:
 - flujo de reserva, entrega, devolución y anulación de salida de flete
 - alta de pedido, prueba, pago parcial/final, entrega y reporte imprimible
 - emisión, consulta e impresión de comprobantes internos desde venta, pago y salida de flete
+- apertura y cierre de corte de caja
+- egreso manual y devolución económica obligatoria
+- reportes económicos para admin y caja

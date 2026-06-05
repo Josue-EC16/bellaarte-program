@@ -1,7 +1,7 @@
 import { CloseCircleOutlined, EyeOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import { Alert, App as AntdApp, Button, Col, DatePicker, Descriptions, Drawer, Form, Input, InputNumber, Modal, Row, Select, Table, Tag, Typography } from 'antd'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 
 import { apiClient } from '../../api/client'
 import { useAuth } from '../../auth/AuthProvider'
@@ -10,6 +10,7 @@ import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
 import { ReceiptSnapshotFields } from '../../components/receipts/ReceiptSnapshotFields'
 import { ESTADO_PAGO_OPTIONS, METODO_PAGO_OPTIONS, formatBs, labelFromOptions, paymentStateColor } from './orderConstants'
 import { openReceiptPrintable } from '../comprobantes/receiptUtils'
+import { buildRefundPath } from '../economia/economyUtils'
 
 const { RangePicker } = DatePicker
 
@@ -29,6 +30,8 @@ export function OrderPaymentsPage() {
   const [form] = Form.useForm()
   const [annulForm] = Form.useForm()
   const [searchParams, setSearchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const location = useLocation()
   const { message } = AntdApp.useApp()
   const { user } = useAuth()
 
@@ -142,21 +145,6 @@ export function OrderPaymentsPage() {
     })
   }, [canView, openDetail, searchParams, setSearchParams])
 
-  const submitAnnul = async (values) => {
-    setSaving(true)
-    try {
-      await apiClient.patch(`/pedidos/pagos/${annulPayment.id}/annul`, { reason: values.reason })
-      message.success('Se anuló el pago correctamente.')
-      setAnnulPayment(null)
-      annulForm.resetFields()
-      await Promise.all([loadPayments(), loadReferences()])
-    } catch (requestError) {
-      message.error(requestError.response?.data?.detail || 'No fue posible anular el pago.')
-    } finally {
-      setSaving(false)
-    }
-  }
-
   const columns = [
     { title: 'PEDIDO', dataIndex: 'pedido_codigo' },
     { title: 'CLIENTE', dataIndex: 'client_name' },
@@ -264,9 +252,27 @@ export function OrderPaymentsPage() {
         ) : null}
       </Drawer>
 
-      <Modal title="Anular pago" open={Boolean(annulPayment)} onCancel={() => setAnnulPayment(null)} onOk={() => annulForm.submit()} confirmLoading={saving} okButtonProps={{ danger: true }} maskClosable={false}>
-        <Alert type="warning" showIcon message="Una vez anulado, el pago dejará de contar para el saldo y no se podrá revertir." style={{ marginBottom: 12 }} />
-        <Form form={annulForm} layout="vertical" onFinish={submitAnnul}>
+      <Modal title="Anular pago" open={Boolean(annulPayment)} onCancel={() => setAnnulPayment(null)} onOk={async () => {
+        try {
+          const values = await annulForm.validateFields()
+          setAnnulPayment(null)
+          annulForm.resetFields()
+          navigate(
+            buildRefundPath({
+              originType: 'PAGO_PEDIDO',
+              originId: annulPayment.id,
+              targetState: 'ANULADA',
+              returnTo: `${location.pathname}${location.search}`,
+            }),
+            { state: { refundReason: values.reason } },
+          )
+        } catch (requestError) {
+          if (requestError?.errorFields) return
+          message.error('NO FUE POSIBLE INICIAR EL FLUJO ECONÓMICO DE DEVOLUCIÓN.')
+        }
+      }} confirmLoading={saving} okButtonProps={{ danger: true }} maskClosable={false}>
+        <Alert type="warning" showIcon message="La anulación del pago te redirigirá al flujo económico obligatorio para registrar cuánto dinero se devuelve a la clienta." style={{ marginBottom: 12 }} />
+        <Form form={annulForm} layout="vertical">
           <Form.Item name="reason" label="Motivo de anulación" rules={[{ required: true, message: 'Debe escribir el motivo.' }, { min: 5, message: 'El motivo debe ser más específico.' }]} normalize={(value) => (value || '').toUpperCase()}><Input.TextArea rows={3} placeholder="Describe el motivo de anulación" /></Form.Item>
         </Form>
       </Modal>

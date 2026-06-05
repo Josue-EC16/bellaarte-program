@@ -863,27 +863,26 @@ def return_flete_output(
     return get_flete_output_detail(db, salida.id)
 
 
-def annul_flete_output(
+def _apply_flete_output_annulment(
     db: Session,
     *,
-    salida_id: int,
-    payload: SalidaFleteAnnulRequest,
+    salida: SalidaFlete,
+    motivo: str,
     changed_by: Cuenta,
     ip_address: str | None,
     user_agent: str | None,
-) -> SalidaFleteDetailResponse:
-    salida = _get_output_entity(db, salida_id)
+) -> None:
     if salida.estado_salida == EstadoSalidaFleteEnum.ANULADO:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="La salida de flete ya fue anulada.")
 
     counted_before = salida.estado_salida in COUNTED_OUTPUT_STATES
     salida.estado_salida = EstadoSalidaFleteEnum.ANULADO
     salida.fecha_cambio_estado = datetime.now(timezone.utc)
-    salida.motivo_cambio_estado = payload.motivo
+    salida.motivo_cambio_estado = motivo
     salida.habilitado = False
     if counted_before and salida.flete.salidas_actuales > 0:
         salida.flete.salidas_actuales -= 1
-    annul_receipt(salida.comprobante, reason=payload.motivo)
+    annul_receipt(salida.comprobante, reason=motivo)
     _recalculate_flete_state(salida.flete)
     register_audit_event(
         db,
@@ -907,5 +906,18 @@ def annul_flete_output(
     )
     sync_flete_return_notifications_for_output(db, output_id=salida.id)
     sync_flete_max_outputs_notification(db, flete_id=salida.flete_id)
-    db.commit()
-    return get_flete_output_detail(db, salida.id)
+
+
+def annul_flete_output(
+    db: Session,
+    *,
+    salida_id: int,
+    payload: SalidaFleteAnnulRequest,
+    changed_by: Cuenta,
+    ip_address: str | None,
+    user_agent: str | None,
+) -> SalidaFleteDetailResponse:
+    raise HTTPException(
+        status_code=status.HTTP_409_CONFLICT,
+        detail="Debes registrar la DEVOLUCIÓN desde ECONOMÍA antes de anular la salida de flete.",
+    )

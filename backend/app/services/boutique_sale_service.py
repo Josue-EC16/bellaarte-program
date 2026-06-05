@@ -278,17 +278,16 @@ def create_boutique_sale(
     return get_boutique_sale_detail(db, sale.id)
 
 
-def change_boutique_sale_state(
+def _apply_boutique_sale_state_change(
     db: Session,
     *,
-    sale_id: int,
+    sale: VentaBoutique,
     target_state: EstadoVentaBoutiqueEnum,
     reason: str,
     changed_by: Cuenta,
     ip_address: str | None,
     user_agent: str | None,
-) -> BoutiqueSaleDetailResponse:
-    sale = _get_sale_entity(db, sale_id)
+) -> None:
     if sale.estado != EstadoVentaBoutiqueEnum.ACTIVA:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Solo puedes cambiar el estado de ventas activas.")
     if target_state not in {EstadoVentaBoutiqueEnum.CANCELADA, EstadoVentaBoutiqueEnum.ANULADA}:
@@ -310,5 +309,19 @@ def change_boutique_sale_state(
         user_agent=user_agent,
     )
     sync_boutique_stock_notification(db, item_id=sale.item_id)
-    db.commit()
-    return get_boutique_sale_detail(db, sale.id)
+
+
+def change_boutique_sale_state(
+    db: Session,
+    *,
+    sale_id: int,
+    target_state: EstadoVentaBoutiqueEnum,
+    reason: str,
+    changed_by: Cuenta,
+    ip_address: str | None,
+    user_agent: str | None,
+) -> BoutiqueSaleDetailResponse:
+    raise HTTPException(
+        status_code=status.HTTP_409_CONFLICT,
+        detail="Debes registrar la DEVOLUCIÓN desde ECONOMÍA antes de cancelar o anular la venta.",
+    )

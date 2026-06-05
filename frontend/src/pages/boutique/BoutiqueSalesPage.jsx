@@ -17,7 +17,7 @@ import {
   Typography,
 } from 'antd'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 
 import { apiClient } from '../../api/client'
 import { useAuth } from '../../auth/AuthProvider'
@@ -28,6 +28,7 @@ import { BoutiqueSaleDetailCard } from './BoutiqueSaleDetailCard'
 import { BoutiqueSaleForm } from './BoutiqueSaleForm'
 import { ESTADO_VENTA_OPTIONS, METODO_PAGO_OPTIONS, formatBs, labelFromOptions } from './boutiqueConstants'
 import { openReceiptPrintable } from '../comprobantes/receiptUtils'
+import { buildRefundPath } from '../economia/economyUtils'
 
 const { RangePicker } = DatePicker
 
@@ -59,6 +60,8 @@ export function BoutiqueSalesPage() {
   const [form] = Form.useForm()
   const [reasonForm] = Form.useForm()
   const [searchParams, setSearchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const location = useLocation()
   const { message } = AntdApp.useApp()
   const { user } = useAuth()
 
@@ -199,28 +202,25 @@ export function BoutiqueSalesPage() {
   }
 
   const submitStateChange = async () => {
-    setSaving(true)
-    setReasonFormError(null)
     try {
       const values = await reasonForm.validateFields()
-      const endpoint = stateAction.action === 'cancel' ? 'cancel' : 'annul'
-      await apiClient.patch(`/boutique/sales/${stateAction.sale.id}/${endpoint}`, values)
-      message.success(`Se ${stateAction.action === 'cancel' ? 'canceló' : 'anuló'} la venta correctamente.`)
       setStateAction(null)
       reasonForm.resetFields()
-      if (selectedSale?.id === stateAction.sale.id) {
-        const response = await apiClient.get(`/boutique/sales/${stateAction.sale.id}`)
-        setSelectedSale(response.data)
-      }
-      await Promise.all([loadSales(), loadReferenceData()])
+      navigate(
+        buildRefundPath({
+          originType: 'VENTA_BOUTIQUE',
+          originId: stateAction.sale.id,
+          targetState: stateAction.action === 'cancel' ? 'CANCELADA' : 'ANULADA',
+          returnTo: `${location.pathname}${location.search}`,
+        }),
+        { state: { refundReason: values.reason } },
+      )
     } catch (requestError) {
       if (requestError?.errorFields) return
       const resolved = applyFormApiError(reasonForm, requestError, {
-        fallbackGlobalMessage: 'No fue posible actualizar el estado de la venta.',
+        fallbackGlobalMessage: 'No fue posible iniciar el flujo económico de devolución.',
       })
       setReasonFormError(resolved.globalMessage)
-    } finally {
-      setSaving(false)
     }
   }
 
@@ -485,7 +485,7 @@ export function BoutiqueSalesPage() {
               type={stateAction.action === 'cancel' ? 'warning' : 'error'}
               showIcon
               icon={stateAction.action === 'cancel' ? <CloseCircleOutlined /> : undefined}
-              message={`La venta #${stateAction.sale.id} devolverá la cantidad vendida al stock del producto.`}
+              message={`La venta #${stateAction.sale.id} devolverá la cantidad vendida al stock del producto y te redirigirá al flujo económico obligatorio.`}
               style={{ marginBottom: 16 }}
             />
             <FormProcessAlert

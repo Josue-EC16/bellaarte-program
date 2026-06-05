@@ -14,6 +14,8 @@ La version actual ya consolida:
 - historial de `comprobante_interno` integrado a ventas boutique, pagos de pedido y salidas de flete
 - catálogo administrable de `tipo_comprobante`
 - módulo transversal de `notificacion` con campana, filtros, resolución y chequeos programados
+- módulo `economia` con ingresos derivados, egresos, devoluciones manuales y corte de caja
+- módulo `auditoria` exclusivo para `ADMIN`, con contexto por evento, exportación y trazabilidad híbrida backend + trigger
 
 ## Stack
 
@@ -25,6 +27,7 @@ La version actual ya consolida:
 - Passlib + Bcrypt
 - Python-JOSE
 - Casbin
+- user-agents
 - Pytest
 
 ## Estado actual de base de datos
@@ -54,6 +57,8 @@ Tablas comerciales y boutique refactorizadas en minúscula:
 - `detalle_comprobante`
 - `venta_boutique`
 - `notificacion`
+- `corte_caja`
+- `egreso`
 
 ## Variables de entorno
 
@@ -173,6 +178,8 @@ El flujo correcto es:
 - `20260524_0007_pedidos_pagos_pruebas.py`
 - `20260525_0008_internal_receipts_module.py`
 - `20260529_0009_notifications.py`
+- `20260604_0010_economy_module.py`
+- `20260605_0011_audit_system_module.py`
 
 Estas migraciones ya crean el bloque boutique/comercial con nombres físicos en minúscula.
 
@@ -240,6 +247,7 @@ Ejemplos actuales:
 - `flete_outputs:return`
 - `receipts:view`
 - `receipt_types:update`
+- `economy_refunds:create`
 
 ## Reglas de negocio por módulo
 
@@ -301,6 +309,7 @@ Ejemplos actuales:
 - si la moneda no es base, se usa el tipo de cambio activo vigente
 - `veb_total_moneda_orig` queda congelado al registrar la venta
 - `cancelada` y `anulada` revierten stock, guardan motivo y fecha de cambio de estado
+- la reversión económica ya no se cierra directo desde el endpoint del módulo; debe pasar por `economia/devoluciones`
 
 ### Fletes
 
@@ -314,6 +323,7 @@ Ejemplos actuales:
 - `pasado_para_venta` crea un nuevo `item_boutique` usado con stock `1`
 - la garantía se registra y controla, pero no se trata como ingreso real
 - las salidas generan `comprobante_interno` y `detalle_comprobante`
+- la anulación económica de una salida debe pasar por `economia/devoluciones`
 
 ### Comprobantes internos
 
@@ -324,6 +334,19 @@ Ejemplos actuales:
 - la anulación se dispara automáticamente al anular el origen
 - el snapshot del cliente queda congelado en nombre, CI/NIT y celular
 - el comprobante imprime total Bs, total en moneda origen, tipo de cambio, método de pago y garantía si aplica
+
+### Economía
+
+- tablas físicas: `corte_caja` y `egreso`
+- el módulo consolida ingresos derivados desde `venta_boutique`, `pago_pedido` y `salida_flete`
+- si luego se anula o cancela el origen, el ingreso bruto histórico se conserva en reportes
+- la devolución real de dinero se registra mediante `egreso` de tipo `DEVOLUCION`
+- `ADMIN` puede registrar egresos sin corte
+- `CAJA` solo puede registrar egresos si tiene un corte abierto
+- para devoluciones, `egreso` referencia el origen con `egr_tabla_ref` y `egr_id_ref`
+- la suma de devoluciones activas no puede exceder el monto bruto del ingreso origen
+- `cerrado_observado` exige observación de cierre
+- cortes cerrados son inmutables
 
 ## Routers implementados
 
@@ -336,6 +359,8 @@ Ejemplos actuales:
 - `workshop`
 - `fletes`
 - `comprobantes`
+- `economia`
+- `auditoria`
 
 ## Endpoints actuales
 
@@ -399,6 +424,10 @@ Ejemplos actuales:
 - `PATCH /api/v1/boutique/sales/{id}/cancel`
 - `PATCH /api/v1/boutique/sales/{id}/annul`
 
+Nota:
+
+- `PATCH /api/v1/boutique/sales/{id}/cancel` y `PATCH /api/v1/boutique/sales/{id}/annul` quedan endurecidos para obligar el flujo económico mediante `POST /api/v1/economia/devoluciones`
+
 ### Monedas
 
 - `GET /api/v1/monedas`
@@ -451,6 +480,10 @@ Ejemplos actuales:
 - `PATCH /api/v1/fletes/salidas/{id}/return`
 - `PATCH /api/v1/fletes/salidas/{id}/annul`
 
+Nota:
+
+- `PATCH /api/v1/fletes/salidas/{id}/annul` existe, pero el flujo operativo oficial debe pasar por `POST /api/v1/economia/devoluciones`
+
 ### Pedidos, pagos y pruebas
 
 - `GET /api/v1/pedidos`
@@ -474,6 +507,10 @@ Ejemplos actuales:
 - `GET /api/v1/pedidos/reportes/entregas`
 - `GET /api/v1/pedidos/reportes/clientes/{id}/imprimible`
 
+Nota:
+
+- `PATCH /api/v1/pedidos/pagos/{id}/annul` queda endurecido para obligar el flujo económico mediante `POST /api/v1/economia/devoluciones`
+
 ### Comprobantes internos
 
 - `GET /api/v1/comprobantes/tipos`
@@ -485,12 +522,43 @@ Ejemplos actuales:
 - `GET /api/v1/comprobantes/{id}`
 - `GET /api/v1/comprobantes/{id}/printable`
 
-## Auditoría mínima actual
+### Economía
+
+- `GET /api/v1/economia/ingresos`
+- `GET /api/v1/economia/ingresos/{origin_type}/{origin_id}/refund-context`
+- `POST /api/v1/economia/devoluciones`
+- `GET /api/v1/economia/egresos`
+- `GET /api/v1/economia/egresos/{expense_id}`
+- `POST /api/v1/economia/egresos`
+- `PATCH /api/v1/economia/egresos/{expense_id}/annul`
+- `GET /api/v1/economia/cortes-caja`
+- `GET /api/v1/economia/cortes-caja/{cut_id}`
+- `POST /api/v1/economia/cortes-caja`
+- `PATCH /api/v1/economia/cortes-caja/{cut_id}/close`
+- `GET /api/v1/economia/cortes-caja/me`
+- `GET /api/v1/economia/cortes-caja/me/history`
+- `GET /api/v1/economia/reportes/estado-resultados`
+- `GET /api/v1/economia/reportes/flujo-efectivo`
+- `GET /api/v1/economia/reportes/cajeros/{user_id}`
+- `GET /api/v1/economia/reportes/mi-periodo`
+- `GET /api/v1/economia/reportes/mi-estado-resultados`
+- `GET /api/v1/economia/reportes/mi-historial`
+
+### Auditoría
+
+- `GET /api/v1/auditoria`
+- `GET /api/v1/auditoria/{audit_id}`
+- `GET /api/v1/auditoria/eventos/{event_id}`
+- `GET /api/v1/auditoria/export?format=csv|html`
+
+## Auditoría enriquecida actual
 
 - `LOGIN_SUCCESS`
 - `LOGIN_FAILED`
 - `LOGOUT`
+- `ACCESS_DENIED`
 - `PASSWORD_CHANGED`
+- `PASSWORD_CHANGE_FAILED`
 - `USER_CREATED`
 - `ACCOUNT_STATUS_CHANGED`
 - `CLIENT_CREATED`
@@ -538,6 +606,16 @@ Ejemplos actuales:
 - `ORDER_PAYMENT_ANNULLED`
 - `ORDER_TEST_CREATED`
 - `ORDER_TEST_UPDATED`
+- `ECONOMY_REFUND_RECORDED`
+
+Además, la auditoría actual ya funciona con:
+
+- `aud_id_evento` compartido por request o transacción lógica
+- filas resumen desde backend
+- filas por campo modificado desde trigger en `UPDATE`
+- parseo de `user-agent` para navegador, dispositivo y sistema operativo
+- exportación administrativa `CSV`
+- vista HTML imprimible para `PDF`
 
 ## Convenciones obligatorias para próximos módulos
 

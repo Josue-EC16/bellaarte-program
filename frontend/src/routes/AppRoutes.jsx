@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { AuthenticatedLayout } from '../layout/AuthenticatedLayout'
 import { ChangePasswordPage } from '../pages/auth/ChangePasswordPage'
 import { LoginPage } from '../pages/auth/LoginPage'
+import { AuditPage } from '../pages/auditoria/AuditPage'
 import { BoutiqueEntriesPage } from '../pages/boutique/BoutiqueEntriesPage'
 import { BoutiqueInventoryPage } from '../pages/boutique/BoutiqueInventoryPage'
 import { ProvidersPage } from '../pages/boutique/ProvidersPage'
@@ -12,6 +13,10 @@ import { ClientsPage } from '../pages/clients/ClientsPage'
 import { ReceiptsPage } from '../pages/comprobantes/ReceiptsPage'
 import { ReceiptTypesPage } from '../pages/comprobantes/ReceiptTypesPage'
 import { DashboardHomePage } from '../pages/dashboard/DashboardHomePage'
+import { CashCutsPage } from '../pages/economia/CashCutsPage'
+import { EconomyDashboardPage } from '../pages/economia/EconomyDashboardPage'
+import { EconomyExpensesPage } from '../pages/economia/EconomyExpensesPage'
+import { EconomyReportsPage } from '../pages/economia/EconomyReportsPage'
 import { FleteOutputsPage } from '../pages/fletes/FleteOutputsPage'
 import { FletesPage } from '../pages/fletes/FletesPage'
 import { CurrenciesPage } from '../pages/monedas/CurrenciesPage'
@@ -78,8 +83,23 @@ export function AppRoutes() {
           <Route element={<PermissionRoute permission="notifications:list" />}>
             <Route path="notificaciones" element={<NotificationsPage />} />
           </Route>
+          <Route element={<PermissionRoute permission="audit:list" />}>
+            <Route path="auditoria" element={<AuditPage />} />
+          </Route>
           <Route element={<PermissionRoute permission="receipt_types:list" />}>
             <Route path="comprobantes/tipos" element={<ReceiptTypesPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="economy_income:view" />}>
+            <Route path="economia" element={<EconomyDashboardPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="economy_expenses:list" />}>
+            <Route path="economia/egresos" element={<EconomyExpensesPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="cash_cuts:view_own" />}>
+            <Route path="economia/cortes-caja" element={<CashCutsPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="economy_reports:view" />}>
+            <Route path="economia/reportes" element={<EconomyReportsPage />} />
           </Route>
           <Route element={<PermissionRoute permission="orders:list" />}>
             <Route path="pedidos" element={<OrdersPage />} />

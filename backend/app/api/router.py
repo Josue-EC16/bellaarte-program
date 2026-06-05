@@ -3,7 +3,7 @@ from pathlib import Path
 import casbin
 from fastapi import APIRouter
 
-from app.api.routers import auth, boutique, clients, currencies, fletes, notifications, orders, receipts, roles, users, workshop
+from app.api.routers import auditoria, auth, boutique, clients, currencies, economia, fletes, notifications, orders, receipts, roles, users, workshop
 
 
 security_dir = Path(__file__).resolve().parents[1] / "security"
@@ -21,3 +21,5 @@ api_router.include_router(workshop.router, prefix="/taller", tags=["taller"])
 api_router.include_router(orders.router, prefix="/pedidos", tags=["pedidos"])
 api_router.include_router(receipts.router, prefix="/comprobantes", tags=["comprobantes"])
 api_router.include_router(notifications.router, prefix="/notificaciones", tags=["notificaciones"])
+api_router.include_router(economia.router, prefix="/economia", tags=["economia"])
+api_router.include_router(auditoria.router, prefix="/auditoria", tags=["auditoria"])

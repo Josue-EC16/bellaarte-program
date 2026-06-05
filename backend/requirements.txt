@@ -40,3 +40,4 @@ typing-inspection==0.4.2
 typing_extensions==4.15.0
 tzdata==2026.1
 uvicorn==0.32.1
+user-agents==2.2.0

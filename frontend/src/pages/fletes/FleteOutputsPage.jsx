@@ -19,7 +19,7 @@ import {
   Typography,
 } from 'antd'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 
 import { apiClient } from '../../api/client'
 import { useAuth } from '../../auth/AuthProvider'
@@ -29,6 +29,7 @@ import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
 import { ReceiptSnapshotFields } from '../../components/receipts/ReceiptSnapshotFields'
 import { METODO_PAGO_OPTIONS } from '../boutique/boutiqueConstants'
 import { openReceiptPrintable } from '../comprobantes/receiptUtils'
+import { buildRefundPath } from '../economia/economyUtils'
 import {
   DEVOLUCION_RESULT_OPTIONS,
   ESTADO_DEVOLUCION_OPTIONS,
@@ -68,6 +69,8 @@ export function FleteOutputsPage() {
   const [form] = Form.useForm()
   const [actionForm] = Form.useForm()
   const [searchParams, setSearchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const location = useLocation()
   const { message } = AntdApp.useApp()
   const { user } = useAuth()
 
@@ -271,8 +274,17 @@ export function FleteOutputsPage() {
         message.success('La devolución del flete se registró correctamente.')
       }
       if (type === 'annul') {
-        await apiClient.patch(`/fletes/salidas/${record.id}/annul`, values)
-        message.success('La salida de flete fue anulada correctamente.')
+        closeAction()
+        navigate(
+          buildRefundPath({
+            originType: 'SALIDA_FLETE',
+            originId: record.id,
+            targetState: 'ANULADA',
+            returnTo: `${location.pathname}${location.search}`,
+          }),
+          { state: { refundReason: values.motivo } },
+        )
+        return
       }
       closeAction()
       if (detail?.id === record.id) {
@@ -829,16 +841,26 @@ export function FleteOutputsPage() {
               ) : null}
 
               {actionModal.type === 'annul' ? (
-                <Col span={24}>
-                  <Form.Item
-                    label="Motivo operativo de anulación"
-                    name="motivo"
-                    rules={[{ required: true, message: 'Debe registrar el motivo de anulación.' }]}
-                    normalize={(value) => (value || '').toUpperCase()}
-                  >
-                    <Input.TextArea rows={3} placeholder="Ej. LA RESERVA SE REGISTRÓ POR ERROR O LA CLIENTA CANCELÓ ANTES DE LA ENTREGA" />
-                  </Form.Item>
-                </Col>
+                <>
+                  <Col span={24}>
+                    <Alert
+                      type="warning"
+                      showIcon
+                      message="La anulación continuará con el flujo económico obligatorio para registrar cuánto dinero se devuelve a la clienta."
+                      style={{ marginBottom: 12 }}
+                    />
+                  </Col>
+                  <Col span={24}>
+                    <Form.Item
+                      label="Motivo operativo de anulación"
+                      name="motivo"
+                      rules={[{ required: true, message: 'Debe registrar el motivo de anulación.' }]}
+                      normalize={(value) => (value || '').toUpperCase()}
+                    >
+                      <Input.TextArea rows={3} placeholder="Ej. LA RESERVA SE REGISTRÓ POR ERROR O LA CLIENTA CANCELÓ ANTES DE LA ENTREGA" />
+                    </Form.Item>
+                  </Col>
+                </>
               ) : null}
             </Row>
           </Form>

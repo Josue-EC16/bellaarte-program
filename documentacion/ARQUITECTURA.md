@@ -41,6 +41,17 @@ La base de datos se organiza en bloques lógicos para garantizar la integridad r
 - **Inventario Dual:** Separación entre productos terminados (Boutique) e insumos (Taller - Telas, Guipures, Pedrería).
 - **Finanzas:** Centralización de ingresos y egresos para cálculo de rentabilidad real.
 
+En la implementación actual, el bloque de **Finanzas** ya opera con una separación explícita entre:
+
+- **hecho operativo:** venta boutique, pago de pedido o salida de flete
+- **hecho económico:** egreso manual, devolución y corte de caja
+
+Regla arquitectónica crítica:
+
+- una anulación operativa no elimina el ingreso histórico
+- una devolución real de dinero se modela como `egreso`
+- la trazabilidad se conserva mediante referencias del egreso al origen operativo
+
 ---
 
 ## 5. CAPACIDADES ANALÍTICAS (MÓDULOS DE IA/ML)
@@ -60,6 +71,25 @@ El sistema implementa una arquitectura **Zero-Trust** y auditoría completa[cite
 - **Auditoría (Logs):** Cada acción sobre registros críticos (pedidos, pagos, stock) se registra en una bitácora detallada indicando quién, cuándo y qué cambió[cite: 3].
 - **RBAC:** El personal de taller solo visualiza fichas técnicas, mientras que el personal de ventas gestiona cobros y medidas[cite: 1, 3].
 - **Normalización:** Todas las entradas críticas se procesan en **MAYÚSCULAS** para evitar inconsistencias en las búsquedas[cite: 1, 3].
+
+### 6.1 Estrategia actual de auditoría híbrida
+
+La implementación vigente de auditoría ya no depende de un log mínimo aislado. Ahora usa:
+
+- **captura principal desde backend**, que conoce:
+  - usuario autenticado
+  - método HTTP
+  - IP
+  - user-agent
+  - módulo y submódulo funcional
+  - agrupación por `aud_id_evento`
+- **triggers PostgreSQL de refuerzo**, que capturan cambios mínimos por campo en tablas críticas cuando ocurre un `UPDATE` o una mutación indirecta.
+
+Regla arquitectónica:
+
+- el backend registra la **fila resumen del evento**
+- la base de datos registra las **filas por campo modificado**
+- ambas piezas comparten el mismo `aud_id_evento` cuando la operación nace desde la aplicación
 
 ---
 

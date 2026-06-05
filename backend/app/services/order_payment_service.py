@@ -187,22 +187,21 @@ def create_order_payment(
     return get_payment_detail(db, payment.id)
 
 
-def annul_order_payment(
+def _apply_order_payment_annulment(
     db: Session,
     *,
-    payment_id: int,
-    payload: OrderPaymentAnnulRequest,
+    payment: PagoPedido,
+    reason: str,
     annulled_by: Cuenta,
     ip_address: str | None,
     user_agent: str | None,
-) -> OrderPaymentDetailResponse:
-    payment = _get_payment_entity(db, payment_id)
+) -> None:
     if payment.estado != EstadoPagoPedidoEnum.REGISTRADO:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Solo puedes anular pagos registrados.")
     payment.estado = EstadoPagoPedidoEnum.ANULADO
     payment.fecha_cambio_estado = datetime.now(timezone.utc)
-    payment.motivo_cambio_estado = payload.reason
-    annul_receipt(payment.comprobante, reason=payload.reason)
+    payment.motivo_cambio_estado = reason
+    annul_receipt(payment.comprobante, reason=reason)
     recalculate_order_balance(db, payment.pedido)
     register_audit_event(
         db,
@@ -215,5 +214,18 @@ def annul_order_payment(
         user_agent=user_agent,
     )
     sync_order_delivery_notifications_for_order(db, order_id=payment.pedido_id)
-    db.commit()
-    return get_payment_detail(db, payment.id)
+
+
+def annul_order_payment(
+    db: Session,
+    *,
+    payment_id: int,
+    payload: OrderPaymentAnnulRequest,
+    annulled_by: Cuenta,
+    ip_address: str | None,
+    user_agent: str | None,
+) -> OrderPaymentDetailResponse:
+    raise HTTPException(
+        status_code=status.HTTP_409_CONFLICT,
+        detail="Debes registrar la DEVOLUCIÓN desde ECONOMÍA antes de anular el pago del pedido.",
+    )

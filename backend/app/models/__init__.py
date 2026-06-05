@@ -8,6 +8,7 @@ from app.models.boutique_sale import VentaBoutique
 from app.models.boutique_type import TipoItemBoutique
 from app.models.client import Cliente
 from app.models.currency import Moneda
+from app.models.economy import CorteCaja, Egreso
 from app.models.exchange_rate import TipoCambioMoneda
 from app.models.flete import FleteVestido, SalidaFlete
 from app.models.notification import Notificacion
@@ -23,6 +24,7 @@ __all__ = [
     "Base",
     "Cliente",
     "ComprobanteInterno",
+    "CorteCaja",
     "Cuenta",
     "DetalleBouquetBoutique",
     "DetalleBrassierBoutique",
@@ -31,6 +33,7 @@ __all__ = [
     "DetalleVestidoBoutique",
     "EntradaInventarioTaller",
     "EntradaItemBoutique",
+    "Egreso",
     "FleteVestido",
     "ItemBoutique",
     "InventarioTaller",
