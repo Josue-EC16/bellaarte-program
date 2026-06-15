@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { CloseCircleOutlined, EyeOutlined, PlusOutlined, RollbackOutlined, SearchOutlined, StopOutlined } from '@ant-design/icons'
+import { CloseCircleOutlined, EyeOutlined, PlusOutlined, SearchOutlined, StopOutlined } from '@ant-design/icons'
 import {
   Alert,
   App as AntdApp,
@@ -26,7 +26,7 @@ import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
 import { BoutiqueSaleDetailCard } from './BoutiqueSaleDetailCard'
 import { BoutiqueSaleForm } from './BoutiqueSaleForm'
-import { ESTADO_VENTA_OPTIONS, METODO_PAGO_OPTIONS, formatBs, labelFromOptions } from './boutiqueConstants'
+import { ESTADO_VENTA_OPTIONS, METODO_PAGO_OPTIONS, formatBs, labelFromOptions, paymentMethodColor } from './boutiqueConstants'
 import { openReceiptPrintable } from '../comprobantes/receiptUtils'
 import { buildRefundPath } from '../economia/economyUtils'
 
@@ -67,7 +67,6 @@ export function BoutiqueSalesPage() {
 
   const canCreate = user?.permissions?.includes('boutique_sales:create')
   const canView = user?.permissions?.includes('boutique_sales:view')
-  const canCancel = user?.permissions?.includes('boutique_sales:cancel')
   const canAnnul = user?.permissions?.includes('boutique_sales:annul')
   const canPickClient = user?.permissions?.includes('clients:list')
   const canViewReceipts = user?.permissions?.includes('receipts:view')
@@ -238,14 +237,7 @@ export function BoutiqueSalesPage() {
       key: 'client_name',
       render: (_, record) => record.client_name || 'VENTA SIN CLIENTE',
     },
-    { title: 'Moneda', dataIndex: 'currency_code', key: 'currency_code' },
     { title: 'Cantidad', dataIndex: 'quantity', key: 'quantity' },
-    {
-      title: 'P. Unitario (Bs)',
-      dataIndex: 'unit_price',
-      key: 'unit_price',
-      render: (value) => formatBs(value),
-    },
     {
       title: 'Total (Bs)',
       dataIndex: 'total',
@@ -258,11 +250,12 @@ export function BoutiqueSalesPage() {
       key: 'total_currency_origin',
       render: (value) => formatBs(value),
     },
+    { title: 'Moneda', dataIndex: 'currency_code', key: 'currency_code' },
     {
       title: 'Método',
       dataIndex: 'payment_method',
       key: 'payment_method',
-      render: (value) => <Tag color="gold">{labelFromOptions(METODO_PAGO_OPTIONS, value)}</Tag>,
+      render: (value) => <Tag color={paymentMethodColor(value)}>{labelFromOptions(METODO_PAGO_OPTIONS, value)}</Tag>,
     },
     {
       title: 'Estado',
@@ -274,7 +267,6 @@ export function BoutiqueSalesPage() {
         </Tag>
       ),
     },
-    { title: 'Registrado por', dataIndex: 'registered_by', key: 'registered_by' },
     {
       title: 'Acciones',
       key: 'acciones',
@@ -283,11 +275,6 @@ export function BoutiqueSalesPage() {
           {canView ? (
             <Button icon={<EyeOutlined />} onClick={() => openView(record)}>
               Ver
-            </Button>
-          ) : null}
-          {canCancel && record.estado === 'activa' ? (
-            <Button icon={<RollbackOutlined />} onClick={() => openStateModal(record, 'cancel')}>
-              Cancelar
             </Button>
           ) : null}
           {canAnnul && record.estado === 'activa' ? (

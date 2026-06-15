@@ -102,3 +102,55 @@ export function formatBs(value) {
 export function labelFromOptions(options, value) {
   return options.find((option) => option.value === value)?.label || value || 'SIN REGISTRO'
 }
+
+export function paymentMethodColor(value) {
+  return {
+    efectivo: '#1B4079',
+    qr: '#4D7C8A',
+    transaccion: '#7F9C96',
+    tarjeta: '#8FAD88',
+    ticket_o_vale: '#CBDF90',
+  }[value] || 'gold'
+}
+
+export function getCategoryColor(categoryName) {
+  if (!categoryName) return '#d9d9d9'
+  const name = String(categoryName).trim().toUpperCase()
+  
+  let hash = 0
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash)
+  }
+  
+  // Mezclador (MurmurHash3 finalizer) para destruir patrones en nombres similares
+  hash = hash ^ (hash >>> 16)
+  hash = Math.imul(hash, 0x85ebca6b)
+  hash = hash ^ (hash >>> 13)
+  hash = Math.imul(hash, 0xc2b2ae35)
+  hash = Math.abs(hash ^ (hash >>> 16))
+
+  // 1. Hue: 14 escalones bien separados para maximizar el contraste
+  // Naranjas/Cafés: 20, 30, 40
+  // Cianos/Azules/Púrpuras: 170, 180, 190, 200, 210, 220, 230, 240, 250, 260, 280
+  const allowedHues = [20, 30, 40, 170, 180, 190, 200, 210, 220, 230, 240, 250, 260, 280]
+  const h = allowedHues[hash % allowedHues.length]
+  
+  // 2. Saturación: 3 niveles muy distintos (Vivo, Medio, Opaco)
+  const saturations = [50, 75, 100]
+  const s = saturations[Math.floor(hash / allowedHues.length) % saturations.length]
+  
+  // 3. Luminosidad: 3 niveles muy distintos (Oscuro, Medio, Claro)
+  const lightnesses = [30, 45, 60]
+  const l = lightnesses[Math.floor(hash / (allowedHues.length * saturations.length)) % lightnesses.length]
+
+  // Convertir HSL a HEX
+  const lNorm = l / 100
+  const a = (s / 100) * Math.min(lNorm, 1 - lNorm)
+  const f = n => {
+    const k = (n + h / 30) % 12
+    const color = lNorm - a * Math.max(Math.min(k - 3, 9 - k, 1), -1)
+    return Math.round(255 * color).toString(16).padStart(2, '0')
+  }
+  
+  return `#${f(0)}${f(8)}${f(4)}`.toUpperCase()
+}

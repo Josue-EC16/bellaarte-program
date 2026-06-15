@@ -7,6 +7,7 @@ import { useAuth } from '../../auth/AuthProvider'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
 import { BoutiqueTypeForm } from './BoutiqueTypeForm'
+import { getCategoryColor } from './boutiqueConstants'
 
 export function BoutiqueTypesPage() {
   const [types, setTypes] = useState([])
@@ -97,7 +98,29 @@ export function BoutiqueTypesPage() {
   }
 
   const columns = [
-    { title: 'Nombre', dataIndex: 'nombre', key: 'nombre' },
+    { 
+      title: 'Nombre', 
+      dataIndex: 'nombre', 
+      key: 'nombre',
+      render: (value) => (
+        <Tag color={getCategoryColor(value)}>
+          {value}
+        </Tag>
+      )
+    },
+    {
+      title: 'Color asignado',
+      key: 'color',
+      render: (_, record) => {
+        const hex = getCategoryColor(record.nombre)
+        return (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ width: 24, height: 24, borderRadius: 4, background: hex, border: '1px solid #d9d9d9' }} />
+            <Typography.Text type="secondary" style={{ fontFamily: 'monospace' }}>{hex}</Typography.Text>
+          </div>
+        )
+      }
+    },
     {
       title: 'Descripción',
       dataIndex: 'descripcion',

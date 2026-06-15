@@ -31,6 +31,8 @@ export function BoutiqueItemForm({ form, types, providers, mode = 'create', onFi
             extra={mode === 'edit' ? 'El tipo no se modifica para mantener la integridad del detalle.' : 'Selecciona primero la categoría del producto.'}
           >
             <Select
+              showSearch
+              optionFilterProp="label"
               disabled={mode === 'edit'}
               placeholder="Seleccionar el tipo de producto"
               options={types.map((type) => ({

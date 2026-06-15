@@ -41,7 +41,13 @@ def _provider_nested(provider: Proveedor | None) -> ProveedorNested | None:
 
 
 def _item_summary(item: InventarioTaller) -> TallerItemSummary:
-    return TallerItemSummary(id=item.id, code=item.codigo, name=item.nombre, unit_measure=item.unidad_medida)
+    return TallerItemSummary(
+        id=item.id, 
+        code=item.codigo, 
+        name=item.nombre, 
+        unit_measure=item.unidad_medida,
+        type_name=item.tipo.nombre if getattr(item, "tipo", None) else None
+    )
 
 
 def _type_response(item_type: TipoInventarioTaller) -> TallerTypeResponse:
@@ -87,7 +93,7 @@ def _get_workshop_entry(db: Session, entry_id: int) -> EntradaInventarioTaller:
     entry = db.execute(
         select(EntradaInventarioTaller)
         .options(
-            joinedload(EntradaInventarioTaller.item),
+            joinedload(EntradaInventarioTaller.item).joinedload(InventarioTaller.tipo),
             joinedload(EntradaInventarioTaller.proveedor),
             joinedload(EntradaInventarioTaller.usuario).joinedload(Usuario.cuenta),
         )
@@ -102,7 +108,7 @@ def _get_workshop_output(db: Session, output_id: int) -> SalidaMaterialTaller:
     output = db.execute(
         select(SalidaMaterialTaller)
         .options(
-            joinedload(SalidaMaterialTaller.item),
+            joinedload(SalidaMaterialTaller.item).joinedload(InventarioTaller.tipo),
             joinedload(SalidaMaterialTaller.usuario).joinedload(Usuario.cuenta),
         )
         .where(SalidaMaterialTaller.id == output_id)
@@ -320,7 +326,7 @@ def set_workshop_inventory_status(db: Session, *, item_id: int, is_active: bool,
 def list_workshop_entries(db: Session, *, search: str | None = None, item_id: int | None = None, is_active: bool | None = None) -> list[TallerEntryListItem]:
     stmt = (
         select(EntradaInventarioTaller)
-        .options(joinedload(EntradaInventarioTaller.item), joinedload(EntradaInventarioTaller.proveedor), joinedload(EntradaInventarioTaller.usuario))
+        .options(joinedload(EntradaInventarioTaller.item).joinedload(InventarioTaller.tipo), joinedload(EntradaInventarioTaller.proveedor), joinedload(EntradaInventarioTaller.usuario))
         .order_by(EntradaInventarioTaller.fecha.desc(), EntradaInventarioTaller.id.desc())
     )
     if item_id is not None:
@@ -428,7 +434,7 @@ def set_workshop_entry_status(db: Session, *, entry_id: int, is_active: bool, ch
 def list_workshop_outputs(db: Session, *, search: str | None = None, item_id: int | None = None, is_active: bool | None = None) -> list[TallerOutputListItem]:
     stmt = (
         select(SalidaMaterialTaller)
-        .options(joinedload(SalidaMaterialTaller.item), joinedload(SalidaMaterialTaller.usuario))
+        .options(joinedload(SalidaMaterialTaller.item).joinedload(InventarioTaller.tipo), joinedload(SalidaMaterialTaller.usuario))
         .order_by(SalidaMaterialTaller.fecha.desc(), SalidaMaterialTaller.id.desc())
     )
     if item_id is not None:

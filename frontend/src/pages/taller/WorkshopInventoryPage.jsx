@@ -8,7 +8,7 @@ import { useAuth } from '../../auth/AuthProvider'
 import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/forms/formConfig'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
-import { labelFromOptions, UNIDAD_MEDIDA_OPTIONS } from './workshopConstants'
+import { labelFromOptions, UNIDAD_MEDIDA_OPTIONS, getCategoryColor } from './workshopConstants'
 import { ColorPickerModal, COLOR_MAP } from '../boutique/ColorPickerModal'
 
 export function WorkshopInventoryPage() {
@@ -164,7 +164,7 @@ export function WorkshopInventoryPage() {
   const columns = [
     { title: 'Código', dataIndex: 'code', key: 'code' },
     { title: 'Nombre', dataIndex: 'name', key: 'name' },
-    { title: 'Tipo', dataIndex: 'type_name', key: 'type_name', render: (value) => <Tag color="gold">{value}</Tag> },
+    { title: 'Tipo', dataIndex: 'type_name', key: 'type_name', render: (value) => <Tag color={getCategoryColor(value)}>{value}</Tag> },
     { title: 'Color', dataIndex: 'color', key: 'color' },
     { title: 'Material', dataIndex: 'material', key: 'material', render: (value) => value || 'SIN DATO' },
     { title: 'Proveedor', dataIndex: 'provider_name', key: 'provider_name', render: (value) => value || 'SIN PROVEEDOR' },
@@ -387,7 +387,7 @@ export function WorkshopInventoryPage() {
       >
         {viewingItem ? (
           <Descriptions bordered column={2} size="small" layout="vertical">
-            <Descriptions.Item label="Tipo">{viewingItem.type.nombre}</Descriptions.Item>
+            <Descriptions.Item label="Tipo"><Tag color={getCategoryColor(viewingItem.type.nombre)}>{viewingItem.type.nombre}</Tag></Descriptions.Item>
             <Descriptions.Item label="Código">{viewingItem.code}</Descriptions.Item>
             <Descriptions.Item label="Nombre">{viewingItem.name}</Descriptions.Item>
             <Descriptions.Item label="Color">{viewingItem.color}</Descriptions.Item>
@@ -401,7 +401,7 @@ export function WorkshopInventoryPage() {
             <Descriptions.Item label="Stock">{viewingItem.stock}</Descriptions.Item>
             <Descriptions.Item label="Unidad">{labelFromOptions(UNIDAD_MEDIDA_OPTIONS, viewingItem.unit_measure)}</Descriptions.Item>
             <Descriptions.Item label="Stock mínimo">{viewingItem.stock_min}</Descriptions.Item>
-            <Descriptions.Item label="Estado">{viewingItem.is_active ? 'ACTIVO' : 'INACTIVO'}</Descriptions.Item>
+            <Descriptions.Item label="Estado" span={2}>{viewingItem.is_active ? 'ACTIVO' : 'INACTIVO'}</Descriptions.Item>
             <Descriptions.Item label="Descripción" span={2}>{viewingItem.description || 'SIN DESCRIPCIÓN'}</Descriptions.Item>
             <Descriptions.Item label="Observaciones" span={2}>{viewingItem.observations || 'SIN OBSERVACIONES'}</Descriptions.Item>
           </Descriptions>

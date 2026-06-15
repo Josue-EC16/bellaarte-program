@@ -4,7 +4,7 @@ import { Card, Typography } from 'antd'
 export function EconomySummaryCard({ eyebrow, title, value, accent, helper }) {
   return (
     <Card
-      bodyStyle={{ padding: 18 }}
+      styles={{ body: { padding: 18 } }}
       style={{
         borderRadius: 24,
         border: `1px solid ${accent}2b`,

@@ -8,7 +8,7 @@ import { useAuth } from '../../auth/AuthProvider'
 import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/forms/formConfig'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
-import { labelFromOptions, UNIDAD_MEDIDA_OPTIONS } from './workshopConstants'
+import { labelFromOptions, UNIDAD_MEDIDA_OPTIONS, getCategoryColor } from './workshopConstants'
 
 export function WorkshopOutputsPage() {
   const [outputs, setOutputs] = useState([])
@@ -269,11 +269,12 @@ export function WorkshopOutputsPage() {
             <Descriptions.Item label="Fecha">{new Date(viewingOutput.fecha).toLocaleString()}</Descriptions.Item>
             <Descriptions.Item label="Estado">{viewingOutput.is_active ? 'ACTIVA' : 'INACTIVA'}</Descriptions.Item>
             <Descriptions.Item label="Material">{`${viewingOutput.item.code} - ${viewingOutput.item.name}`}</Descriptions.Item>
+            <Descriptions.Item label="Tipo"><Tag color={getCategoryColor(viewingOutput.item.type_name)}>{viewingOutput.item.type_name || 'SIN TIPO'}</Tag></Descriptions.Item>
             <Descriptions.Item label="Unidad">{labelFromOptions(UNIDAD_MEDIDA_OPTIONS, viewingOutput.item.unit_measure)}</Descriptions.Item>
             <Descriptions.Item label="Cantidad">{viewingOutput.quantity}</Descriptions.Item>
             <Descriptions.Item label="Destino">{viewingOutput.destination}</Descriptions.Item>
             <Descriptions.Item label="Registrado por">{viewingOutput.registered_by?.full_name || 'SIN USUARIO'}</Descriptions.Item>
-            <Descriptions.Item label="Usuario">{viewingOutput.registered_by?.username || 'SIN CUENTA'}</Descriptions.Item>
+            <Descriptions.Item label="Usuario" span={2}>{viewingOutput.registered_by?.username || 'SIN CUENTA'}</Descriptions.Item>
             <Descriptions.Item label="Observación 1" span={2}>{viewingOutput.observations_1 || 'SIN OBSERVACIONES'}</Descriptions.Item>
             <Descriptions.Item label="Observación 2" span={2}>{viewingOutput.observations_2 || 'SIN OBSERVACIONES'}</Descriptions.Item>
           </Descriptions>

@@ -55,7 +55,7 @@ export function CashCutsPage() {
           apiClient.get('/users'),
         ])
         setCuts(cutsResponse.data)
-        setUsers(usersResponse.data.filter((item) => item.role_code === 'CAJA' && item.is_active))
+        setUsers(usersResponse.data.filter((item) => item.role_code === 'CAJA' && item.user_is_active && item.account_is_active))
         setMyCut(null)
         setMyHistory([])
       } else {

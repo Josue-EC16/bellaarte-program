@@ -38,6 +38,9 @@ class CorteCaja(Base):
         ),
         Index("ix_cco_cajero_estado", "usu_id_cajero", "cco_estado"),
         Index("ix_cco_apertura_cierre", "cco_fec_apertura", "cco_fec_cierre"),
+        Index("idx_cco_estado_apertura", "cco_estado", "cco_fec_apertura"),
+        Index("idx_cco_cajero_apertura", "usu_id_cajero", "cco_fec_apertura"),
+        Index("idx_cco_admin_apertura", "usu_id_admin", "cco_fec_apertura"),
     )
 
     id: Mapped[int] = mapped_column("cco_id", BigInteger, Identity(always=True), primary_key=True)
@@ -98,6 +101,8 @@ class Egreso(Base):
         Index("ix_egr_usu_fec", "usu_id", "egr_fec"),
         Index("ix_egr_tipo_fec", "egr_tipo", "egr_fec"),
         Index("ix_egr_ref", "egr_tabla_ref", "egr_id_ref"),
+        Index("idx_egr_estado_fec", "egr_estado", "egr_fec"),
+        Index("idx_egr_cco_fec", "cco_id", "egr_fec"),
     )
 
     id: Mapped[int] = mapped_column("egr_id", BigInteger, Identity(always=True), primary_key=True)

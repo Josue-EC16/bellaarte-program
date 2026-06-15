@@ -9,7 +9,7 @@ import { useAuth } from '../../auth/AuthProvider'
 import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/forms/formConfig'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
-import { MOTIVO_ENTRADA_ITEM_OPTIONS } from './boutiqueConstants'
+import { MOTIVO_ENTRADA_ITEM_OPTIONS, getCategoryColor } from './boutiqueConstants'
 
 export function BoutiqueEntriesPage() {
   const [entries, setEntries] = useState([])
@@ -307,7 +307,7 @@ export function BoutiqueEntriesPage() {
             <Descriptions.Item label="Fecha">{new Date(viewingEntry.fecha).toLocaleString()}</Descriptions.Item>
             <Descriptions.Item label="Estado">{viewingEntry.is_active ? 'ACTIVA' : 'INACTIVA'}</Descriptions.Item>
             <Descriptions.Item label="Producto">{`${viewingEntry.item.code} - ${viewingEntry.item.name}`}</Descriptions.Item>
-            <Descriptions.Item label="Tipo">{viewingEntry.item.type_name}</Descriptions.Item>
+            <Descriptions.Item label="Tipo"><Tag color={getCategoryColor(viewingEntry.item.type_name)}>{viewingEntry.item.type_name}</Tag></Descriptions.Item>
             <Descriptions.Item label="Proveedor">
               {viewingEntry.provider
                 ? viewingEntry.provider.nombre_comercial

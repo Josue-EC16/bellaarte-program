@@ -25,6 +25,7 @@ import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
 import { BoutiqueItemDetailCard } from './BoutiqueItemDetailCard'
 import { BoutiqueItemForm } from './BoutiqueItemForm'
+import { getCategoryColor } from './boutiqueConstants'
 
 export function BoutiqueInventoryPage() {
   const [items, setItems] = useState([])
@@ -204,7 +205,7 @@ export function BoutiqueInventoryPage() {
   const columns = [
     { title: 'Código', dataIndex: 'code', key: 'code' },
     { title: 'Nombre', dataIndex: 'name', key: 'name' },
-    { title: 'Tipo', dataIndex: 'type_name', key: 'type_name', render: (value) => <Tag color="gold">{value}</Tag> },
+    { title: 'Tipo', dataIndex: 'type_name', key: 'type_name', render: (value) => <Tag color={getCategoryColor(value)}>{value}</Tag> },
     {
       title: 'Color',
       key: 'color',
@@ -300,6 +301,8 @@ export function BoutiqueInventoryPage() {
           <Col xs={24} md={6}>
             <Select
               allowClear
+              showSearch
+              optionFilterProp="label"
               placeholder="Filtrar por tipo"
               options={typeOptions}
               value={filters.type_id}

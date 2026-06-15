@@ -1,8 +1,9 @@
 import { EditOutlined, EyeOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import { Alert, App as AntdApp, Button, Col, Descriptions, Drawer, Form, Input, Modal, Row, Select, Switch, Table, Tag, Typography } from 'antd'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { apiClient } from '../../api/client'
+import { TRAVEL_DESTINATIONS } from '../pedidos/orderConstants'
 import { useAuth } from '../../auth/AuthProvider'
 import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/forms/formConfig'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
@@ -25,6 +26,18 @@ export function ProvidersPage() {
   const canCreate = user?.permissions?.includes('boutique_providers:create')
   const canUpdate = user?.permissions?.includes('boutique_providers:update')
   const canChangeStatus = user?.permissions?.includes('boutique_providers:update_status')
+
+  const selectedCountry = Form.useWatch('pais', form)
+
+  const countryOptions = useMemo(
+    () => TRAVEL_DESTINATIONS.map((item) => ({ label: item.country, value: item.country })),
+    [],
+  )
+
+  const cityOptions = useMemo(() => {
+    const selected = TRAVEL_DESTINATIONS.find((item) => item.country === selectedCountry)
+    return (selected?.cities || []).map((city) => ({ label: city, value: city }))
+  }, [selectedCountry])
 
   const loadProviders = useCallback(async () => {
     setLoading(true)
@@ -50,6 +63,7 @@ export function ProvidersPage() {
     setEditingProvider(null)
     setFormError(null)
     form.resetFields()
+    form.setFieldsValue({ correo: '@gmail.com' })
     setDrawerOpen(true)
   }
 
@@ -90,12 +104,16 @@ export function ProvidersPage() {
   const handleSubmit = async (values) => {
     setSaving(true)
     setFormError(null)
+    const payload = { ...values }
+    if (payload.correo === '@gmail.com') {
+      payload.correo = null
+    }
     try {
       if (editingProvider) {
-        await apiClient.patch(`/boutique/proveedores/${editingProvider.id}`, values)
+        await apiClient.patch(`/boutique/proveedores/${editingProvider.id}`, payload)
         message.success('Se guardaron los cambios del proveedor correctamente.')
       } else {
-        await apiClient.post('/boutique/proveedores', values)
+        await apiClient.post('/boutique/proveedores', payload)
         message.success('Se creó el proveedor correctamente.')
       }
       setDrawerOpen(false)
@@ -247,20 +265,45 @@ export function ProvidersPage() {
           </Row>
           <Row gutter={12}>
             <Col span={12}>
-              <Form.Item label="Correo electrónico" name="correo" rules={[{ type: 'email', message: 'Debe ingresar un Correo Electrónico válido.' }]} normalize={(value) => (value || '').replace(/\s/g, '').toLowerCase()}>
+              <Form.Item
+                label="Correo electrónico"
+                name="correo"
+                rules={[
+                  { type: 'email', message: 'Debe ingresar un Correo Electrónico válido.' },
+                  {
+                    pattern: /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
+                    message: 'Solo se permiten correos @gmail.com.',
+                  },
+                ]}
+                extra="Solo se aceptan correos con dominio @gmail.com."
+                normalize={(value) => (value || '').replace(/\s/g, '').toLowerCase()}
+              >
                 <Input placeholder="proveedor@gmail.com" />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="País" name="pais" normalize={(value) => (value || '').toUpperCase()}>
-                <Input placeholder="Ej. BOLIVIA" />
+              <Form.Item label="País" name="pais">
+                <Select
+                  showSearch
+                  allowClear
+                  placeholder="Selecciona el país"
+                  options={countryOptions}
+                  optionFilterProp="label"
+                  onChange={() => form.setFieldValue('ciudad', undefined)}
+                />
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={12}>
             <Col span={12}>
-              <Form.Item label="Ciudad" name="ciudad" normalize={(value) => (value || '').toUpperCase()}>
-                <Input placeholder="Ej. LA PAZ" />
+              <Form.Item label="Ciudad" name="ciudad">
+                <Select
+                  showSearch
+                  allowClear
+                  placeholder="Selecciona la ciudad"
+                  options={cityOptions}
+                  optionFilterProp="label"
+                />
               </Form.Item>
             </Col>
             <Col span={12}>

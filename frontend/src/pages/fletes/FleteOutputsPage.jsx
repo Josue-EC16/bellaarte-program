@@ -182,6 +182,13 @@ export function FleteOutputsPage() {
   const totalBs = Math.max(subtotal - discount, 0)
   const exchangeRateUsed = selectedCurrency?.es_base ? 1 : Number(selectedRate?.valor_bob || 0)
   const totalOrigin = exchangeRateUsed > 0 ? (selectedCurrency?.es_base ? totalBs : totalBs / exchangeRateUsed) : 0
+  const selectedCurrencyWithoutRate = Boolean(selectedCurrency && !selectedCurrency.es_base && !selectedRate)
+
+  useEffect(() => {
+    if (selectedFlete) {
+      form.setFieldValue('precio', selectedFlete.precio_flete_ref)
+    }
+  }, [selectedFlete, form])
 
   const openCreate = () => {
     setFormError(null)
@@ -553,6 +560,7 @@ export function FleteOutputsPage() {
                 label="Precio del flete (Bs)"
                 name="precio"
                 rules={[{ required: true, message: 'Debe registrar el precio del flete.' }]}
+                extra={selectedFlete ? `Precio referencial: Bs. ${selectedFlete.precio_flete_ref}` : null}
               >
                 <InputNumber min={0.01} precision={2} placeholder="Ej. 350.00" style={{ width: '100%' }} />
               </Form.Item>
@@ -632,23 +640,59 @@ export function FleteOutputsPage() {
 
           {selectedCurrency ? (
             <Alert
-              type={selectedCurrency.es_base || selectedRate ? 'success' : 'warning'}
-              showIcon
               style={{ marginBottom: 16 }}
-              message="Resumen de cobro"
+              type={selectedCurrencyWithoutRate ? 'error' : 'info'}
+              showIcon
+              message={selectedCurrencyWithoutRate ? 'La moneda seleccionada no tiene tipo de cambio activo.' : `Tipo de cambio activo: ${exchangeRateUsed}`}
               description={
-                <>
-                  <div>Moneda elegida: {selectedCurrency.codigo}</div>
-                  <div>Tipo de cambio usado: {exchangeRateUsed ? formatMoney(exchangeRateUsed) : 'SIN TIPO DE CAMBIO ACTIVO'}</div>
-                  <div>Subtotal en Bs: {formatMoney(subtotal)}</div>
-                  <div>Descuento en Bs: {formatMoney(discount)}</div>
-                  <div>Total del flete en Bs: {formatMoney(totalBs)}</div>
-                  <div>Total en moneda origen: {formatMoney(totalOrigin)}</div>
-                  <div>Garantía registrada: {formatMoney(watchedGuarantee || 0)}</div>
-                </>
+                selectedCurrency.es_base
+                  ? 'La moneda base usa tipo de cambio 1 automáticamente.'
+                  : selectedCurrencyWithoutRate
+                    ? 'No podrás registrar la salida hasta que exista un tipo de cambio activo para esta moneda.'
+                    : `El total en moneda original se calculará automáticamente con ${exchangeRateUsed} Bs por unidad de moneda.`
               }
             />
           ) : null}
+
+          <div className="glass-panel" style={{ padding: 16, marginBottom: 16 }}>
+            <Typography.Title level={5} style={{ marginTop: 0 }}>
+              Resumen de cobro
+            </Typography.Title>
+            <Row gutter={[12, 12]}>
+              <Col xs={12} md={6}>
+                <Typography.Text type="secondary">Subtotal Bs.</Typography.Text>
+                <Typography.Title level={4} style={{ marginTop: 4, marginBottom: 0 }}>
+                  {formatMoney(subtotal)}
+                </Typography.Title>
+              </Col>
+              <Col xs={12} md={6}>
+                <Typography.Text type="secondary">Descuento Bs.</Typography.Text>
+                <Typography.Title level={4} style={{ marginTop: 4, marginBottom: 0 }}>
+                  {formatMoney(discount)}
+                </Typography.Title>
+              </Col>
+              <Col xs={12} md={6}>
+                <Typography.Text type="secondary">Garantía Bs.</Typography.Text>
+                <Typography.Title level={4} style={{ marginTop: 4, marginBottom: 0 }}>
+                  {formatMoney(watchedGuarantee || 0)}
+                </Typography.Title>
+              </Col>
+              <Col xs={12} md={6}>
+                <Typography.Text type="secondary">Total Flete Bs.</Typography.Text>
+                <Typography.Title level={4} style={{ marginTop: 4, marginBottom: 0, color: '#8f3d2e' }}>
+                  {formatMoney(totalBs)}
+                </Typography.Title>
+              </Col>
+              <Col span={24}>
+                <div style={{ background: 'rgba(255,255,255,0.5)', padding: '8px 12px', borderRadius: 8, display: 'inline-block' }}>
+                  <Typography.Text type="secondary">Total en moneda de cobro ({selectedCurrency?.codigo || ''}): </Typography.Text>
+                  <Typography.Text strong style={{ fontSize: 16, color: '#8f3d2e', marginLeft: 8 }}>
+                    {selectedCurrency?.simbolo || selectedCurrency?.codigo || ''} {formatMoney(totalOrigin)}
+                  </Typography.Text>
+                </div>
+              </Col>
+            </Row>
+          </div>
 
           <ReceiptSnapshotFields selectedClient={selectedClient} title="SNAPSHOT DOCUMENTAL PARA COMPROBANTE" />
 
@@ -656,7 +700,7 @@ export function FleteOutputsPage() {
             type="primary"
             htmlType="submit"
             loading={saving}
-            disabled={selectedCurrency && !selectedCurrency.es_base && !selectedRate}
+            disabled={selectedCurrencyWithoutRate}
             {...FORM_DRAWER_SUBMIT_PROPS}
           >
             Registrar salida de flete

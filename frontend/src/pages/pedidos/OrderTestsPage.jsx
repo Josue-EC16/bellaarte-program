@@ -28,7 +28,7 @@ export function OrderTestsPage() {
   const canUpdate = user?.permissions?.includes('order_tests:update')
 
   const orderOptions = useMemo(
-    () => orders.filter((order) => order.estado_general === 'activo').map((order) => ({ label: `${order.codigo} - ${order.client_name}`, value: order.id })),
+    () => orders.filter((order) => order.estado_general === 'activo').map((order) => ({ label: `${order.codigo} - ${labelFromOptions(TIPO_PEDIDO_OPTIONS, order.tipo)} - ${order.client_name}`, value: order.id })),
     [orders],
   )
 

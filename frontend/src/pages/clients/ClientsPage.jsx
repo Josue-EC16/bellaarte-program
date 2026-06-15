@@ -1,8 +1,10 @@
 import { EditOutlined, EyeOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import { Alert, App as AntdApp, Button, Col, DatePicker, Descriptions, Drawer, Form, Input, Modal, Row, Select, Space, Switch, Table, Tag, Typography } from 'antd'
-import { useCallback, useEffect, useState } from 'react'
+import dayjs from 'dayjs'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { apiClient } from '../../api/client'
+import { TRAVEL_DESTINATIONS } from '../pedidos/orderConstants'
 import { useAuth } from '../../auth/AuthProvider'
 import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/forms/formConfig'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
@@ -25,6 +27,18 @@ export function ClientsPage() {
   const canCreate = user?.permissions?.includes('clients:create')
   const canUpdate = user?.permissions?.includes('clients:update')
   const canChangeStatus = user?.permissions?.includes('clients:update_status')
+
+  const selectedCountry = Form.useWatch('pais', form)
+
+  const countryOptions = useMemo(
+    () => TRAVEL_DESTINATIONS.map((item) => ({ label: item.country, value: item.country })),
+    [],
+  )
+
+  const cityOptions = useMemo(() => {
+    const selected = TRAVEL_DESTINATIONS.find((item) => item.country === selectedCountry)
+    return (selected?.cities || []).map((city) => ({ label: city, value: city }))
+  }, [selectedCountry])
 
   const loadClients = useCallback(async () => {
     setLoading(true)
@@ -50,6 +64,7 @@ export function ClientsPage() {
     setEditingClient(null)
     setFormError(null)
     form.resetFields()
+    form.setFieldsValue({ correo: '@gmail.com' })
     setDrawerOpen(true)
   }
 
@@ -69,7 +84,7 @@ export function ClientsPage() {
         nombre_referencia: item.nombre_referencia,
         correo: item.correo,
         ci: item.ci,
-        fecha_nacimiento: item.fecha_nacimiento || null,
+        fecha_nacimiento: item.fecha_nacimiento ? dayjs(item.fecha_nacimiento) : null,
         pais: item.pais,
         ciudad: item.ciudad,
         zona: item.zona,
@@ -96,6 +111,12 @@ export function ClientsPage() {
     setFormError(null)
     const payload = { ...values }
     if (!payload.codigo) delete payload.codigo
+    if (payload.fecha_nacimiento) {
+      payload.fecha_nacimiento = dayjs(payload.fecha_nacimiento).format('YYYY-MM-DD')
+    }
+    if (payload.correo === '@gmail.com') {
+      payload.correo = null
+    }
     try {
       if (editingClient) {
         await apiClient.patch(`/clientes/${editingClient.id}`, payload)
@@ -287,19 +308,44 @@ export function ClientsPage() {
             </Col>
           </Row>
 
-          <Form.Item label="Correo electrónico" name="correo" rules={[{ type: 'email', message: 'Debe ingresar un Correo Electrónico válido.' }]} normalize={(value) => (value || '').replace(/\s/g, '').toLowerCase()}>
+          <Form.Item
+            label="Correo electrónico"
+            name="correo"
+            rules={[
+              { type: 'email', message: 'Debe ingresar un Correo Electrónico válido.' },
+              {
+                pattern: /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
+                message: 'Solo se permiten correos @gmail.com.',
+              },
+            ]}
+            extra="Solo se aceptan correos con dominio @gmail.com."
+            normalize={(value) => (value || '').replace(/\s/g, '').toLowerCase()}
+          >
             <Input placeholder="cliente@gmail.com" />
           </Form.Item>
 
           <Row gutter={12}>
             <Col span={12}>
-              <Form.Item label="País" name="pais" normalize={(value) => (value || '').toUpperCase()}>
-                <Input placeholder="Ej. BOLIVIA" />
+              <Form.Item label="País" name="pais">
+                <Select
+                  showSearch
+                  allowClear
+                  placeholder="Selecciona el país"
+                  options={countryOptions}
+                  optionFilterProp="label"
+                  onChange={() => form.setFieldValue('ciudad', undefined)}
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item label="Ciudad" name="ciudad" normalize={(value) => (value || '').toUpperCase()}>
-                <Input placeholder="Ej. LA PAZ" />
+              <Form.Item label="Ciudad" name="ciudad">
+                <Select
+                  showSearch
+                  allowClear
+                  placeholder="Selecciona la ciudad"
+                  options={cityOptions}
+                  optionFilterProp="label"
+                />
               </Form.Item>
             </Col>
           </Row>

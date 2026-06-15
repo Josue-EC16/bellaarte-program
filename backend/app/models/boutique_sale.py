@@ -55,6 +55,13 @@ class VentaBoutique(Base):
         Index("ix_veb_cli_id", "cli_id"),
         Index("ix_veb_usu_id", "usu_id"),
         Index("ix_veb_mon_id", "mon_id"),
+        Index("idx_veb_estado_fec", "veb_estado", "veb_fec"),
+        Index("idx_veb_estado_cambio_fec", "veb_estado", "veb_fec_camb_est"),
+        Index("idx_veb_itb_fec", "itb_id", "veb_fec"),
+        Index("idx_veb_usu_fec", "usu_id", "veb_fec"),
+        Index("idx_veb_cli_fec", "cli_id", "veb_fec"),
+        Index("idx_veb_mon_fec", "mon_id", "veb_fec"),
+        Index("idx_veb_metodo_fec", "veb_metodo_pago", "veb_fec"),
     )
 
     id: Mapped[int] = mapped_column("veb_id", BigInteger, Identity(always=True), primary_key=True)

@@ -116,6 +116,7 @@ class TallerItemSummary(ORMBaseModel):
     code: str
     name: str
     unit_measure: UnidadMedidaEnum
+    type_name: str | None = None
 
 
 class TallerUserSummary(ORMBaseModel):

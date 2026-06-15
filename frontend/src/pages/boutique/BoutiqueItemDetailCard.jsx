@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Descriptions, Tag, Typography } from 'antd'
 
-import { COPA_OPTIONS, TALLA_OPTIONS, TIPO_VESTIDO_OPTIONS, labelFromOptions } from './boutiqueConstants'
+import { COPA_OPTIONS, TALLA_OPTIONS, TIPO_VESTIDO_OPTIONS, labelFromOptions, getCategoryColor } from './boutiqueConstants'
 
 const LABEL_MAP = {
   dress_type: 'Tipo de vestido',
@@ -46,7 +46,7 @@ export function BoutiqueItemDetailCard({ item }) {
         Información base
       </Typography.Title>
       <Descriptions bordered column={2} size="small" layout="vertical">
-        <Descriptions.Item label="Tipo">{item.type?.nombre}</Descriptions.Item>
+        <Descriptions.Item label="Tipo"><Tag color={getCategoryColor(item.type?.nombre)}>{item.type?.nombre}</Tag></Descriptions.Item>
         <Descriptions.Item label="Código">{item.code}</Descriptions.Item>
         <Descriptions.Item label="Nombre">{item.name}</Descriptions.Item>
         <Descriptions.Item label="Proveedor">

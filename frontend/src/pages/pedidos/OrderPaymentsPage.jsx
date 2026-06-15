@@ -8,7 +8,7 @@ import { useAuth } from '../../auth/AuthProvider'
 import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/forms/formConfig'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
 import { ReceiptSnapshotFields } from '../../components/receipts/ReceiptSnapshotFields'
-import { ESTADO_PAGO_OPTIONS, METODO_PAGO_OPTIONS, formatBs, labelFromOptions, paymentStateColor } from './orderConstants'
+import { ESTADO_PAGO_OPTIONS, METODO_PAGO_OPTIONS, TIPO_PEDIDO_OPTIONS, formatBs, labelFromOptions, paymentStateColor } from './orderConstants'
 import { openReceiptPrintable } from '../comprobantes/receiptUtils'
 import { buildRefundPath } from '../economia/economyUtils'
 
@@ -19,6 +19,7 @@ export function OrderPaymentsPage() {
   const [orders, setOrders] = useState([])
   const [clients, setClients] = useState([])
   const [currencies, setCurrencies] = useState([])
+  const [exchangeRates, setExchangeRates] = useState([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
@@ -40,6 +41,8 @@ export function OrderPaymentsPage() {
   const canView = user?.permissions?.includes('order_payments:view')
   const canPrintReceipts = user?.permissions?.includes('receipts:print')
   const selectedOrderId = Form.useWatch('order_id', form)
+  const watchedAmount = Form.useWatch('monto', form)
+  const selectedCurrencyId = Form.useWatch('currency_id', form)
 
   const selectedOrder = useMemo(
     () => orders.find((order) => order.id === selectedOrderId) || null,
@@ -49,9 +52,24 @@ export function OrderPaymentsPage() {
     () => clients.find((client) => client.id === selectedOrder?.client_id) || null,
     [clients, selectedOrder],
   )
+  const selectedCurrency = useMemo(
+    () => currencies.find((c) => c.id === selectedCurrencyId) || null,
+    [currencies, selectedCurrencyId]
+  )
+  const selectedRate = useMemo(
+    () => exchangeRates.find((r) => r.moneda_id === selectedCurrencyId && r.activo) || null,
+    [exchangeRates, selectedCurrencyId]
+  )
+
+  const amountOrigin = Number(watchedAmount || 0)
+  const exchangeRateUsed = selectedCurrency?.es_base ? 1 : Number(selectedRate?.valor_bob || 0)
+  const amountBs = amountOrigin * exchangeRateUsed
+  const saldoPrevio = Number(selectedOrder?.saldo || 0)
+  const nuevoSaldo = Math.max(saldoPrevio - amountBs, 0)
+  const selectedCurrencyWithoutRate = Boolean(selectedCurrency && !selectedCurrency.es_base && !selectedRate)
 
   const orderOptions = useMemo(
-    () => orders.filter((order) => order.estado_general === 'activo' && order.saldo > 0).map((order) => ({ label: `${order.codigo} - ${order.client_name} (${formatBs(order.saldo)})`, value: order.id })),
+    () => orders.filter((order) => order.estado_general === 'activo' && order.saldo > 0).map((order) => ({ label: `${order.codigo} - ${labelFromOptions(TIPO_PEDIDO_OPTIONS, order.tipo)} - ${order.client_name} (Saldo: Bs. ${formatBs(order.saldo)})`, value: order.id })),
     [orders],
   )
   const currencyOptions = useMemo(
@@ -60,12 +78,14 @@ export function OrderPaymentsPage() {
   )
 
   const loadReferences = useCallback(async () => {
-    const [orderResponse, currencyResponse] = await Promise.all([
+    const [orderResponse, currencyResponse, rateResponse] = await Promise.all([
       apiClient.get('/pedidos', { params: { state: 'activo' } }),
       apiClient.get('/monedas', { params: { is_active: true } }),
+      apiClient.get('/monedas/tipos-cambio', { params: { is_active: true } }),
     ])
     setOrders(orderResponse.data)
     setCurrencies(currencyResponse.data)
+    setExchangeRates(rateResponse.data)
     const clientResponse = await apiClient.get('/clientes', { params: { is_active: true } })
     setClients(clientResponse.data)
   }, [])
@@ -211,14 +231,58 @@ export function OrderPaymentsPage() {
               type="info"
               showIcon
               style={{ marginBottom: 16 }}
-              message={`Resumen del pedido ${selectedOrder.codigo}`}
-              description={`CLIENTE: ${selectedOrder.client_name}. TOTAL: ${formatBs(selectedOrder.precio_total)}. PAGADO: ${formatBs(selectedOrder.total_pagado)}. SALDO ACTUAL: ${formatBs(selectedOrder.saldo)}.`}
+              message={`Pedido ${selectedOrder.codigo}: ${selectedOrder.client_name}`}
+              description={`El precio total del pedido es de Bs. ${formatBs(selectedOrder.precio_total)} y el cliente ya pagó Bs. ${formatBs(selectedOrder.total_pagado)}.`}
             />
           ) : null}
+
+          {selectedCurrency ? (
+            <Alert
+              style={{ marginBottom: 16 }}
+              type={selectedCurrencyWithoutRate ? 'error' : 'info'}
+              showIcon
+              message={selectedCurrencyWithoutRate ? 'La moneda seleccionada no tiene tipo de cambio activo.' : `Tipo de cambio activo: ${exchangeRateUsed}`}
+            />
+          ) : null}
+
+          <div className="glass-panel" style={{ padding: 16, marginBottom: 16 }}>
+            <Typography.Title level={5} style={{ marginTop: 0 }}>
+              Resumen de cobro
+            </Typography.Title>
+            <Row gutter={[12, 12]}>
+              <Col xs={12} md={8}>
+                <Typography.Text type="secondary">Pago equivalente Bs.</Typography.Text>
+                <Typography.Title level={4} style={{ marginTop: 4, marginBottom: 0 }}>
+                  {formatBs(amountBs)}
+                </Typography.Title>
+              </Col>
+              <Col xs={12} md={8}>
+                <Typography.Text type="secondary">Saldo previo Bs.</Typography.Text>
+                <Typography.Title level={4} style={{ marginTop: 4, marginBottom: 0 }}>
+                  {formatBs(saldoPrevio)}
+                </Typography.Title>
+              </Col>
+              <Col xs={12} md={8}>
+                <Typography.Text type="secondary">Nuevo saldo Bs.</Typography.Text>
+                <Typography.Title level={4} style={{ marginTop: 4, marginBottom: 0, color: '#8f3d2e' }}>
+                  {formatBs(nuevoSaldo)}
+                </Typography.Title>
+              </Col>
+              <Col span={24}>
+                <div style={{ background: 'rgba(255,255,255,0.5)', padding: '8px 12px', borderRadius: 8, display: 'inline-block' }}>
+                  <Typography.Text type="secondary">Monto ingresado ({selectedCurrency?.codigo || ''}): </Typography.Text>
+                  <Typography.Text strong style={{ fontSize: 16, color: '#8f3d2e', marginLeft: 8 }}>
+                    {selectedCurrency?.simbolo || selectedCurrency?.codigo || ''} {formatBs(amountOrigin)}
+                  </Typography.Text>
+                </div>
+              </Col>
+            </Row>
+          </div>
+
           <ReceiptSnapshotFields selectedClient={selectedClient} title="SNAPSHOT DOCUMENTAL PARA COMPROBANTE" />
           <Row justify="end" gutter={12}>
             <Col><Button onClick={() => setDrawerOpen(false)}>Cancelar</Button></Col>
-            <Col><Button type="primary" htmlType="submit" loading={saving} {...FORM_DRAWER_SUBMIT_PROPS}>Registrar</Button></Col>
+            <Col><Button type="primary" htmlType="submit" loading={saving} disabled={selectedCurrencyWithoutRate} {...FORM_DRAWER_SUBMIT_PROPS}>Registrar</Button></Col>
           </Row>
         </Form>
       </Drawer>

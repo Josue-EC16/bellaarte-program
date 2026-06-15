@@ -8,7 +8,7 @@ import { useAuth } from '../../auth/AuthProvider'
 import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/forms/formConfig'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
-import { labelFromOptions, MOTIVO_ENTRADA_TALLER_OPTIONS, UNIDAD_MEDIDA_OPTIONS } from './workshopConstants'
+import { labelFromOptions, MOTIVO_ENTRADA_TALLER_OPTIONS, UNIDAD_MEDIDA_OPTIONS, getCategoryColor } from './workshopConstants'
 
 export function WorkshopEntriesPage() {
   const [entries, setEntries] = useState([])
@@ -309,6 +309,7 @@ export function WorkshopEntriesPage() {
             <Descriptions.Item label="Fecha">{new Date(viewingEntry.fecha).toLocaleString()}</Descriptions.Item>
             <Descriptions.Item label="Estado">{viewingEntry.is_active ? 'ACTIVA' : 'INACTIVA'}</Descriptions.Item>
             <Descriptions.Item label="Material">{`${viewingEntry.item.code} - ${viewingEntry.item.name}`}</Descriptions.Item>
+            <Descriptions.Item label="Tipo"><Tag color={getCategoryColor(viewingEntry.item.type_name)}>{viewingEntry.item.type_name || 'SIN TIPO'}</Tag></Descriptions.Item>
             <Descriptions.Item label="Unidad">{labelFromOptions(UNIDAD_MEDIDA_OPTIONS, viewingEntry.item.unit_measure)}</Descriptions.Item>
             <Descriptions.Item label="Proveedor">
               {viewingEntry.provider
@@ -321,7 +322,7 @@ export function WorkshopEntriesPage() {
             <Descriptions.Item label="Cantidad">{viewingEntry.quantity}</Descriptions.Item>
             <Descriptions.Item label="Costo unitario">Bs. {viewingEntry.unit_cost}</Descriptions.Item>
             <Descriptions.Item label="Motivo">{labelFromOptions(MOTIVO_ENTRADA_TALLER_OPTIONS, viewingEntry.reason) || viewingEntry.reason}</Descriptions.Item>
-            <Descriptions.Item label="Documento de referencia">{viewingEntry.document_reference || 'SIN DOCUMENTO'}</Descriptions.Item>
+            <Descriptions.Item label="Documento de referencia" span={2}>{viewingEntry.document_reference || 'SIN DOCUMENTO'}</Descriptions.Item>
             <Descriptions.Item label="Observaciones" span={2}>{viewingEntry.observations || 'SIN OBSERVACIONES'}</Descriptions.Item>
           </Descriptions>
         ) : null}

@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Descriptions, Tag, Typography } from 'antd'
 
-import { ESTADO_VENTA_OPTIONS, METODO_PAGO_OPTIONS, MOTIVO_DESCUENTO_VENTA_OPTIONS, formatBs, labelFromOptions } from './boutiqueConstants'
+import { ESTADO_VENTA_OPTIONS, METODO_PAGO_OPTIONS, MOTIVO_DESCUENTO_VENTA_OPTIONS, formatBs, labelFromOptions, paymentMethodColor, getCategoryColor } from './boutiqueConstants'
 
 export function BoutiqueSaleDetailCard({ sale }) {
   if (!sale) return null
@@ -12,7 +12,6 @@ export function BoutiqueSaleDetailCard({ sale }) {
         Detalle de la venta
       </Typography.Title>
       <Descriptions bordered column={2} size="small" layout="vertical">
-        <Descriptions.Item label="ID Venta">#{sale.id}</Descriptions.Item>
         <Descriptions.Item label="Fecha">{new Date(sale.fecha).toLocaleString()}</Descriptions.Item>
         <Descriptions.Item label="Estado">
           <Tag color={sale.estado === 'activa' ? 'green' : sale.estado === 'cancelada' ? 'orange' : 'red'}>
@@ -20,10 +19,12 @@ export function BoutiqueSaleDetailCard({ sale }) {
           </Tag>
         </Descriptions.Item>
         <Descriptions.Item label="Método de pago">
-          {labelFromOptions(METODO_PAGO_OPTIONS, sale.payment_method)}
+          <Tag color={paymentMethodColor(sale.payment_method)}>
+            {labelFromOptions(METODO_PAGO_OPTIONS, sale.payment_method)}
+          </Tag>
         </Descriptions.Item>
         <Descriptions.Item label="Producto">{sale.item?.code} - {sale.item?.name}</Descriptions.Item>
-        <Descriptions.Item label="Tipo">{sale.item?.type_name}</Descriptions.Item>
+        <Descriptions.Item label="Tipo"><Tag color={getCategoryColor(sale.item?.type_name)}>{sale.item?.type_name}</Tag></Descriptions.Item>
         <Descriptions.Item label="Cliente">
           {sale.client ? `${sale.client.codigo} - ${sale.client.full_name}` : 'VENTA SIN CLIENTE'}
         </Descriptions.Item>

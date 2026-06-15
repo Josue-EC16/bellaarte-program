@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps, react/prop-types */
-import { CheckCircleOutlined, CloseCircleOutlined, EditOutlined, EyeOutlined, PlusOutlined, SearchOutlined, StopOutlined } from '@ant-design/icons'
+import { BgColorsOutlined, CheckCircleOutlined, CloseCircleOutlined, EditOutlined, EyeOutlined, PlusOutlined, SearchOutlined, StopOutlined } from '@ant-design/icons'
 import { Alert, App as AntdApp, Button, Card, Col, DatePicker, Descriptions, Drawer, Form, Input, InputNumber, Modal, Row, Select, Space, Switch, Table, Tag, Typography } from 'antd'
 import dayjs from 'dayjs'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -9,6 +9,7 @@ import { useAuth } from '../../auth/AuthProvider'
 import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/forms/formConfig'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
+import { ColorPickerModal, COLOR_MAP } from '../boutique/ColorPickerModal'
 import {
   ESTADO_PEDIDO_OPTIONS,
   MOTIVO_DESCUENTO_OPTIONS,
@@ -23,7 +24,6 @@ import {
 
 const uppercaseText = (value) => (value || '').toUpperCase()
 const uppercaseCode = (value) => (value || '').replace(/[^A-Z0-9-]/gi, '').toUpperCase()
-const uppercaseLetters = (value) => (value || '').replace(/[^A-ZÁÉÍÓÚÑ\s]/gi, '').toUpperCase()
 
 export function OrdersPage() {
   const [orders, setOrders] = useState([])
@@ -365,7 +365,7 @@ export function OrdersPage() {
             <Col xs={24}><Form.Item name={['order', 'observaciones']} label="Observaciones" normalize={uppercaseText}><Input.TextArea rows={2} placeholder="Observaciones del pedido" /></Form.Item></Col>
           </Row>
           <Typography.Title level={5}>Detalle especializado</Typography.Title>
-          <DetailFields type={selectedType} />
+          <DetailFields type={selectedType} form={form} />
           <Row justify="end" gutter={12}>
             <Col><Button onClick={closeDrawer}>Cancelar</Button></Col>
             <Col><Button type="primary" htmlType="submit" loading={saving} {...FORM_DRAWER_SUBMIT_PROPS}>Guardar</Button></Col>
@@ -397,13 +397,13 @@ export function OrdersPage() {
   )
 }
 
-function DetailFields({ type }) {
+function DetailFields({ type, form }) {
   if (type === 'vestido') {
     return (
       <Row gutter={16}>
         <Col xs={24} md={8}><Form.Item name={['detail', 'tipo_vestido']} label="Tipo de vestido" rules={[{ required: true, message: 'Debe seleccionar el tipo de vestido.' }]}><Select placeholder="Selecciona tipo de vestido" options={TIPO_VESTIDO_OPTIONS} /></Form.Item></Col>
-        <Col xs={24} md={8}><Form.Item name={['detail', 'color_principal']} label="Color principal" rules={[{ required: true, message: 'Debe ingresar el color principal.' }]} normalize={uppercaseLetters}><Input placeholder="Ej. BLANCO" /></Form.Item></Col>
-        <Col xs={24} md={8}><Form.Item name={['detail', 'color_secundario']} label="Color secundario" normalize={uppercaseLetters}><Input placeholder="Ej. DORADO" /></Form.Item></Col>
+        <Col xs={24} md={8}><ColorPickerItem form={form} namePath={['detail', 'color_principal']} label="Color principal" required /></Col>
+        <Col xs={24} md={8}><ColorPickerItem form={form} namePath={['detail', 'color_secundario']} label="Color secundario" isSecondary /></Col>
         <Col xs={24} md={12}><Form.Item name={['detail', 'descripcion_material']} label="Material" rules={[{ required: true, message: 'Debe describir el material.' }]} normalize={uppercaseText}><Input.TextArea rows={2} placeholder="Materiales principales" /></Form.Item></Col>
         <Col xs={24} md={12}><Form.Item name={['detail', 'descripcion_diseno']} label="Diseño" rules={[{ required: true, message: 'Debe describir el diseño.' }]} normalize={uppercaseText}><Input.TextArea rows={2} placeholder="Diseño solicitado" /></Form.Item></Col>
         <Col xs={24}><Form.Item name={['detail', 'descripcion_adicional']} label="Descripción adicional" normalize={uppercaseText}><Input.TextArea rows={2} placeholder="Detalle adicional del modelo" /></Form.Item></Col>
@@ -435,7 +435,7 @@ function DetailFields({ type }) {
     return (
       <Row gutter={16}>
         <Col xs={24} md={8}><Form.Item name={['detail', 'nombre']} label="Nombre" rules={[{ required: true, message: 'Debe ingresar el nombre.' }]} normalize={uppercaseText}><Input placeholder="Ej. ACCESORIO ESPECIAL" /></Form.Item></Col>
-        <CommonColorAndMeasures />
+        <CommonColorAndMeasures form={form} />
         <Col xs={24}><Form.Item name={['detail', 'descripcion']} label="Descripción" normalize={uppercaseText}><Input.TextArea rows={2} placeholder="Descripción del pedido" /></Form.Item></Col>
         <Col xs={24}><Form.Item name={['detail', 'observaciones']} label="Observaciones" normalize={uppercaseText}><Input.TextArea rows={2} placeholder="Observaciones del detalle" /></Form.Item></Col>
       </Row>
@@ -445,7 +445,7 @@ function DetailFields({ type }) {
   return (
     <Row gutter={16}>
       <Col xs={24} md={8}><Form.Item name={['detail', 'tipo']} label={`Tipo de ${labelFromOptions(TIPO_PEDIDO_OPTIONS, type)}`} rules={[{ required: type === 'bouquet', message: 'Debe ingresar el tipo.' }]} normalize={uppercaseText}><Input placeholder="Ej. CATEDRAL, REDONDO, LARGO" /></Form.Item></Col>
-      <CommonColorAndMeasures lengthField={type === 'manga' ? 'largo_manga' : 'largo'} />
+      <CommonColorAndMeasures lengthField={type === 'manga' ? 'largo_manga' : 'largo'} form={form} />
       {type === 'manga' ? <Col xs={24} md={8}><Form.Item name={['detail', 'brazo']} label="Brazo" rules={[{ required: true, message: 'Debe ingresar la medida del brazo.' }]}><InputNumber min={0} placeholder="0" style={{ width: '100%' }} /></Form.Item></Col> : null}
       {type === 'manga' ? <Col xs={24} md={8}><Form.Item name={['detail', 'puno']} label="Puño" rules={[{ required: true, message: 'Debe ingresar la medida del puño.' }]}><InputNumber min={0} placeholder="0" style={{ width: '100%' }} /></Form.Item></Col> : null}
       {type === 'velo' ? <Col xs={24} md={8}><Form.Item name={['detail', 'capas']} label="Capas"><InputNumber min={1} placeholder="Ej. 2" style={{ width: '100%' }} /></Form.Item></Col> : null}
@@ -458,11 +458,11 @@ function DetailFields({ type }) {
   )
 }
 
-function CommonColorAndMeasures({ lengthField = 'largo' } = {}) {
+function CommonColorAndMeasures({ lengthField = 'largo', form } = {}) {
   return (
     <>
-      <Col xs={24} md={8}><Form.Item name={['detail', 'color_principal']} label="Color principal" rules={[{ required: true, message: 'Debe ingresar el color principal.' }]} normalize={uppercaseLetters}><Input placeholder="Ej. BLANCO" /></Form.Item></Col>
-      <Col xs={24} md={8}><Form.Item name={['detail', 'color_secundario']} label="Color secundario" normalize={uppercaseLetters}><Input placeholder="Ej. DORADO" /></Form.Item></Col>
+      <Col xs={24} md={8}><ColorPickerItem form={form} namePath={['detail', 'color_principal']} label="Color principal" required /></Col>
+      <Col xs={24} md={8}><ColorPickerItem form={form} namePath={['detail', 'color_secundario']} label="Color secundario" isSecondary /></Col>
       <Col xs={24} md={8}><Form.Item name={['detail', lengthField]} label={lengthField === 'largo_manga' ? 'Largo manga' : 'Largo'} rules={[{ required: true, message: 'Debe ingresar el largo.' }]}><InputNumber min={0} placeholder="0" style={{ width: '100%' }} /></Form.Item></Col>
       <Col xs={24} md={8}><Form.Item name={['detail', 'ancho']} label="Ancho"><InputNumber min={0} placeholder="0" style={{ width: '100%' }} /></Form.Item></Col>
     </>
@@ -513,5 +513,109 @@ function OrderDetail({ detail, visualCurrency, visualExchangeRate }) {
         )) : <Alert type="info" showIcon message="Este pedido todavía no tiene pruebas registradas." />}
       </Space>
     </>
+  )
+}
+
+function ColorPickerItem({ form, namePath, label, required = false, isSecondary = false }) {
+  const [modalOpen, setModalOpen] = useState(false)
+  const selectedColor = Form.useWatch(namePath, form)
+  const fieldErrors = form.getFieldError(namePath)
+
+  return (
+    <Form.Item
+      label={label}
+      required={required}
+      validateStatus={fieldErrors.length ? 'error' : undefined}
+      help={fieldErrors[0]}
+    >
+      <>
+        <Form.Item
+          name={namePath}
+          rules={required ? [{ required: true, message: `Debe ingresar el ${label.toLowerCase()}.` }] : undefined}
+          hidden
+          preserve
+        >
+          <Input />
+        </Form.Item>
+        <div
+          onClick={() => setModalOpen(true)}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+            border: `1px solid ${fieldErrors.length ? '#ff4d4f' : '#d9d9d9'}`,
+            borderRadius: 8,
+            padding: '6px 12px',
+            cursor: 'pointer',
+            background: '#fff',
+            transition: 'border-color 0.2s',
+            minHeight: 40,
+          }}
+          onMouseEnter={(e) => {
+            if (!fieldErrors.length) {
+              e.currentTarget.style.borderColor = '#8f3d2e'
+            }
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = fieldErrors.length ? '#ff4d4f' : '#d9d9d9'
+          }}
+        >
+          {selectedColor ? (
+            <>
+              <div
+                style={{
+                  width: 26,
+                  height: 26,
+                  borderRadius: 6,
+                  background: COLOR_MAP[selectedColor] || '#e0e0e0',
+                  border: '1.5px solid rgba(0,0,0,0.15)',
+                  flexShrink: 0,
+                }}
+              />
+              <span style={{ fontWeight: 500 }}>{selectedColor}</span>
+            </>
+          ) : (
+            <span style={{ color: '#aaa' }}>
+              <BgColorsOutlined style={{ marginRight: 6 }} />
+              {isSecondary ? 'Opcional' : 'Seleccionar color'}
+            </span>
+          )}
+          {isSecondary && selectedColor ? (
+            <Button
+              size="small"
+              type="text"
+              danger
+              onClick={(e) => {
+                e.stopPropagation()
+                form.setFieldValue(namePath, null)
+                form.validateFields([namePath])
+              }}
+            >
+              Quitar
+            </Button>
+          ) : null}
+          <Button
+            size="small"
+            type="link"
+            style={{ marginLeft: isSecondary && selectedColor ? '0' : 'auto', fontSize: 12 }}
+            onClick={(e) => {
+              e.stopPropagation()
+              setModalOpen(true)
+            }}
+          >
+            {selectedColor ? 'Cambiar' : 'Seleccionar'}
+          </Button>
+        </div>
+        <ColorPickerModal
+          open={modalOpen}
+          onSelect={(colorName) => {
+            form.setFieldValue(namePath, colorName)
+            form.validateFields([namePath])
+            setModalOpen(false)
+          }}
+          onCancel={() => setModalOpen(false)}
+        />
+      </>
+    </Form.Item>
   )
 }

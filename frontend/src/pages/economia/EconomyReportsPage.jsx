@@ -116,8 +116,8 @@ export function EconomyReportsPage() {
           <Row gutter={[16, 16]}>
             <Col xs={24} xl={14}>
               <EconomyChartCard title="Serie mensual" empty={!incomeStatement?.serie_mensual?.length}>
-                <div style={{ height: 320 }}>
-                  <ResponsiveContainer width="100%" height="100%">
+                <div style={{ width: '100%', minWidth: 0, height: 320 }}>
+                  <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={320}>
                     <LineChart data={incomeStatement?.serie_mensual || []}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#eadbd2" />
                       <XAxis dataKey="period" stroke="#7c6a61" />
@@ -133,8 +133,8 @@ export function EconomyReportsPage() {
             </Col>
             <Col xs={24} xl={10}>
               <EconomyChartCard title="Egresos por tipo" empty={!incomeStatement?.egresos_por_tipo?.length}>
-                <div style={{ height: 320 }}>
-                  <ResponsiveContainer width="100%" height="100%">
+                <div style={{ width: '100%', minWidth: 0, height: 320 }}>
+                  <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={320}>
                     <BarChart data={(incomeStatement?.egresos_por_tipo || []).map((item) => ({ ...item, label: expenseTypeLabel(item.label.toLowerCase()) }))}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#eadbd2" />
                       <XAxis dataKey="label" stroke="#7c6a61" tick={{ fontSize: 11 }} />
@@ -163,8 +163,8 @@ export function EconomyReportsPage() {
           <Row gutter={[16, 16]}>
             <Col xs={24} xl={12}>
               <EconomyChartCard title="Métodos de pago" empty={!cashFlow?.entradas_por_metodo?.length}>
-                <div style={{ height: 320 }}>
-                  <ResponsiveContainer width="100%" height="100%">
+                <div style={{ width: '100%', minWidth: 0, height: 320 }}>
+                  <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={320}>
                     <BarChart data={cashFlow?.entradas_por_metodo || []}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#eadbd2" />
                       <XAxis dataKey="label" stroke="#7c6a61" tick={{ fontSize: 11 }} />
@@ -178,8 +178,8 @@ export function EconomyReportsPage() {
             </Col>
             <Col xs={24} xl={12}>
               <EconomyChartCard title="Fuentes de ingreso" empty={!cashFlow?.entradas_por_fuente?.length}>
-                <div style={{ height: 320 }}>
-                  <ResponsiveContainer width="100%" height="100%">
+                <div style={{ width: '100%', minWidth: 0, height: 320 }}>
+                  <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={320}>
                     <BarChart data={(cashFlow?.entradas_por_fuente || []).map((item) => ({ ...item, label: incomeSourceLabel(item.label) }))}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#eadbd2" />
                       <XAxis dataKey="label" stroke="#7c6a61" tick={{ fontSize: 11 }} />
@@ -344,6 +344,7 @@ export function EconomyReportsPage() {
       )}
 
       <Tabs
+        destroyOnHidden
         items={isAdmin ? adminItems : cajaItems}
       />
 

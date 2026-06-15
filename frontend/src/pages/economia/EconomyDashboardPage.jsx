@@ -118,8 +118,8 @@ export function EconomyDashboardPage() {
           <Row gutter={[16, 16]}>
             <Col xs={24} xl={14}>
               <EconomyChartCard title="Serie mensual" subtitle="Compara ingresos, egresos y resultado neto en BOB." empty={!incomeStatement?.serie_mensual?.length}>
-                <div style={{ height: 320 }}>
-                  <ResponsiveContainer width="100%" height="100%">
+                <div style={{ width: '100%', minWidth: 0, height: 320 }}>
+                  <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={320}>
                     <LineChart data={incomeStatement?.serie_mensual || []}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#eadbd2" />
                       <XAxis dataKey="period" stroke="#7c6a61" />
@@ -135,8 +135,8 @@ export function EconomyDashboardPage() {
             </Col>
             <Col xs={24} xl={10}>
               <EconomyChartCard title="Ingresos por fuente" subtitle="Ventas, pagos y fletes se mantienen como ingresos históricos." empty={!incomeStatement?.ingresos_por_fuente?.length}>
-                <div style={{ height: 320 }}>
-                  <ResponsiveContainer width="100%" height="100%">
+                <div style={{ width: '100%', minWidth: 0, height: 320 }}>
+                  <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={320}>
                     <BarChart data={(incomeStatement?.ingresos_por_fuente || []).map((item) => ({ ...item, label: incomeSourceLabel(item.label) }))}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#eadbd2" />
                       <XAxis dataKey="label" stroke="#7c6a61" tick={{ fontSize: 11 }} />
@@ -150,8 +150,8 @@ export function EconomyDashboardPage() {
             </Col>
             <Col xs={24} xl={10}>
               <EconomyChartCard title="Flujo por método de pago" subtitle="Distribución monetaria del ingreso cobrado." empty={!cashFlow?.entradas_por_metodo?.length}>
-                <div style={{ height: 320 }}>
-                  <ResponsiveContainer width="100%" height="100%">
+                <div style={{ width: '100%', minWidth: 0, height: 320 }}>
+                  <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={320}>
                     <PieChart>
                       <Pie data={cashFlow?.entradas_por_metodo || []} dataKey="total_bob" nameKey="label" innerRadius={62} outerRadius={108} paddingAngle={3}>
                         {(cashFlow?.entradas_por_metodo || []).map((entry, index) => (
@@ -204,8 +204,8 @@ export function EconomyDashboardPage() {
           <Row gutter={[16, 16]}>
             <Col xs={24} xl={12}>
               <EconomyChartCard title="Ingresos por fuente" subtitle="Así se compone tu período actual." empty={!myPeriod?.ingresos_por_fuente?.length}>
-                <div style={{ height: 300 }}>
-                  <ResponsiveContainer width="100%" height="100%">
+                <div style={{ width: '100%', minWidth: 0, height: 300 }}>
+                  <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={300}>
                     <BarChart data={(myPeriod?.ingresos_por_fuente || []).map((item) => ({ ...item, label: incomeSourceLabel(item.label) }))}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#eadbd2" />
                       <XAxis dataKey="label" stroke="#7c6a61" />
@@ -219,8 +219,8 @@ export function EconomyDashboardPage() {
             </Col>
             <Col xs={24} xl={12}>
               <EconomyChartCard title="Egresos por tipo" subtitle="Salidas activas registradas en tu corte actual." empty={!myPeriod?.egresos_por_tipo?.length}>
-                <div style={{ height: 300 }}>
-                  <ResponsiveContainer width="100%" height="100%">
+                <div style={{ width: '100%', minWidth: 0, height: 300 }}>
+                  <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={300}>
                     <BarChart data={(myPeriod?.egresos_por_tipo || []).map((item) => ({ ...item, label: expenseTypeLabel(item.label.toLowerCase()) }))}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#eadbd2" />
                       <XAxis dataKey="label" stroke="#7c6a61" tick={{ fontSize: 11 }} />

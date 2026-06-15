@@ -71,6 +71,11 @@ class ComprobanteInterno(Base):
         Index("ix_coi_cli_id", "cli_id"),
         Index("ix_coi_usu_id", "usu_id"),
         Index("ix_coi_sfl_id", "sfl_id"),
+        Index("idx_coi_tco_fec", "tco_id", "coi_fec"),
+        Index("idx_coi_cli_fec", "cli_id", "coi_fec"),
+        Index("idx_coi_usu_fec", "usu_id", "coi_fec"),
+        Index("idx_coi_mon_fec", "mon_id", "coi_fec"),
+        Index("idx_coi_metodo_fec", "coi_metodo_pago", "coi_fec"),
     )
 
     id: Mapped[int] = mapped_column("coi_id", BigInteger, Identity(always=True), primary_key=True)

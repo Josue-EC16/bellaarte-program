@@ -64,6 +64,13 @@ class Pedido(Base):
         CheckConstraint("(ped_viaje = false) or (ped_pais_destino is not null or ped_ciudad_destino is not null)", name="ck_ped_destino_viaje"),
         Index("ix_pedido_cliente_estado", "cli_id", "ped_estado_general", "ped_hab"),
         Index("ix_pedido_entrega", "ped_fec_de_entrega"),
+        Index("idx_ped_fec_reg", "ped_fec_reg_contrato"),
+        Index("idx_ped_estado_fec_reg", "ped_estado_general", "ped_fec_reg_contrato"),
+        Index("idx_ped_estado_entrega", "ped_estado_general", "ped_fec_de_entrega"),
+        Index("idx_ped_estado_cambio_fec", "ped_estado_general", "ped_fec_camb_est"),
+        Index("idx_ped_tipo_fec_reg", "ped_tipo", "ped_fec_reg_contrato"),
+        Index("idx_ped_usu_estado", "ped_usu_encargado", "ped_estado_general"),
+        Index("idx_ped_viaje_estado", "ped_viaje", "ped_estado_general"),
     )
 
     id: Mapped[int] = mapped_column("ped_id", BigInteger, Identity(always=True), primary_key=True)
@@ -270,6 +277,8 @@ class PruebaPedido(Base):
         CheckConstraint("prp_num > 0", name="ck_prp_num"),
         UniqueConstraint("ped_id", "prp_num", name="uq_prueba_pedido_num"),
         Index("ix_prp_fec_estado", "prp_fec", "prp_estado"),
+        Index("idx_prp_estado_fec", "prp_estado", "prp_fec"),
+        Index("idx_prp_ped_fec", "ped_id", "prp_fec"),
     )
     id: Mapped[int] = mapped_column("prp_id", BigInteger, Identity(always=True), primary_key=True)
     pedido_id: Mapped[int] = mapped_column("ped_id", ForeignKey("pedido.ped_id", onupdate="CASCADE", ondelete="RESTRICT"), nullable=False)
@@ -296,6 +305,13 @@ class PagoPedido(Base):
         CheckConstraint("ppd_monto > 0", name="ck_ppd_monto"),
         CheckConstraint("ppd_tipo_cambio_usado > 0", name="ck_ppd_tipo_cambio"),
         Index("ix_ppd_pedido_estado_fec", "ped_id", "ppd_estado", "ppd_fec"),
+        Index("idx_ppd_fec", "ppd_fec"),
+        Index("idx_ppd_estado_fec", "ppd_estado", "ppd_fec"),
+        Index("idx_ppd_estado_cambio_fec", "ppd_estado", "ppd_fec_camb_est"),
+        Index("idx_ppd_ped_fec", "ped_id", "ppd_fec"),
+        Index("idx_ppd_usu_fec", "usu_id", "ppd_fec"),
+        Index("idx_ppd_mon_fec", "mon_id", "ppd_fec"),
+        Index("idx_ppd_metodo_fec", "ppd_metodo", "ppd_fec"),
     )
     id: Mapped[int] = mapped_column("ppd_id", BigInteger, Identity(always=True), primary_key=True)
     pedido_id: Mapped[int] = mapped_column("ped_id", ForeignKey("pedido.ped_id", onupdate="CASCADE", ondelete="RESTRICT"), nullable=False)

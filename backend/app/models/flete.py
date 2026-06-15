@@ -134,6 +134,16 @@ class SalidaFlete(Base):
         ),
         Index("ix_sfl_estado_fechas", "sfl_estado_salida", "sfl_fec_salida", "sfl_fec_devolucion_prevista"),
         Index("ix_sfl_fle_num", "fle_id", "sfl_num", unique=True),
+        Index("idx_sfl_fec_reg", "sfl_fec_reg"),
+        Index("idx_sfl_estado_fec_reg", "sfl_estado_salida", "sfl_fec_reg"),
+        Index("idx_sfl_estado_cambio_fec", "sfl_estado_salida", "sfl_fec_camb_est"),
+        Index("idx_sfl_fec_salida", "sfl_fec_salida"),
+        Index("idx_sfl_fec_devol_prev", "sfl_fec_devolucion_prevista"),
+        Index("idx_sfl_cli_fec_reg", "cli_id", "sfl_fec_reg"),
+        Index("idx_sfl_fle_fec_reg", "fle_id", "sfl_fec_reg"),
+        Index("idx_sfl_usu_fec_reg", "usu_id", "sfl_fec_reg"),
+        Index("idx_sfl_mon_fec_reg", "mon_id", "sfl_fec_reg"),
+        Index("idx_sfl_metodo_fec_reg", "sfl_metodo_pago", "sfl_fec_reg"),
     )
 
     id: Mapped[int] = mapped_column("sfl_id", BigInteger, Identity(always=True), primary_key=True)

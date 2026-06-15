@@ -4,7 +4,7 @@ import { Card, Empty, Typography } from 'antd'
 export function EconomyChartCard({ title, subtitle, children, empty }) {
   return (
     <Card
-      bodyStyle={{ padding: 20 }}
+      styles={{ body: { padding: 20, height: '100%' } }}
       style={{
         borderRadius: 28,
         border: '1px solid rgba(143, 61, 46, 0.12)',
@@ -13,21 +13,27 @@ export function EconomyChartCard({ title, subtitle, children, empty }) {
         height: '100%',
       }}
     >
-      <Typography.Title level={4} style={{ marginTop: 0, marginBottom: 4 }}>
-        {title}
-      </Typography.Title>
-      {subtitle ? (
-        <Typography.Paragraph type="secondary" style={{ marginTop: 0 }}>
-          {subtitle}
-        </Typography.Paragraph>
-      ) : null}
-      {empty ? (
-        <div style={{ minHeight: 280, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Empty description="NO HAY DATOS PARA MOSTRAR." />
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: 360, minWidth: 0 }}>
+        <div>
+          <Typography.Title level={4} style={{ marginTop: 0, marginBottom: 4 }}>
+            {title}
+          </Typography.Title>
+          {subtitle ? (
+            <Typography.Paragraph type="secondary" style={{ marginTop: 0 }}>
+              {subtitle}
+            </Typography.Paragraph>
+          ) : null}
         </div>
-      ) : (
-        children
-      )}
+        {empty ? (
+          <div style={{ minHeight: 280, display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+            <Empty description="NO HAY DATOS PARA MOSTRAR." />
+          </div>
+        ) : (
+          <div style={{ flex: 1, minHeight: 280, minWidth: 0 }}>
+            {children}
+          </div>
+        )}
+      </div>
     </Card>
   )
 }
