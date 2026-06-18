@@ -20,7 +20,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons'
 import { Avatar, Badge, Button, Dropdown, Layout, Menu, Popover, Space, Tag, Typography } from 'antd'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import { apiClient } from '../api/client'
@@ -46,13 +46,24 @@ export function AuthenticatedLayout() {
     latest: [],
   })
   const [notificationsOpen, setNotificationsOpen] = useState(false)
+  const notifiedIdsRef = useRef(new Set())
   const canUseNotifications = user?.permissions?.includes('notifications:list')
 
   const loadNotificationSummary = useCallback(async () => {
     if (!canUseNotifications) return
     try {
       const response = await apiClient.get('/notificaciones/resumen')
-      setNotificationSummary(response.data)
+      const newData = response.data
+      setNotificationSummary(newData)
+
+      if ('Notification' in window && Notification.permission === 'granted') {
+        newData.latest?.forEach((n) => {
+          if (!n.leida && !notifiedIdsRef.current.has(n.id)) {
+            notifiedIdsRef.current.add(n.id)
+            new Notification(n.titulo, { body: n.mensaje })
+          }
+        })
+      }
     } catch {
       setNotificationSummary((current) => ({ ...current, latest: current.latest || [] }))
     }
@@ -60,6 +71,11 @@ export function AuthenticatedLayout() {
 
   useEffect(() => {
     if (!canUseNotifications) return undefined
+
+    if ('Notification' in window && Notification.permission === 'default') {
+      Notification.requestPermission()
+    }
+
     loadNotificationSummary()
     const intervalId = window.setInterval(loadNotificationSummary, 60000)
     const handleFocus = () => {
@@ -451,7 +467,7 @@ export function AuthenticatedLayout() {
       </div>
 
       <div style={{ display: 'grid', gap: 10 }}>
-        {notificationSummary.latest?.length ? notificationSummary.latest.map((notification) => (
+        {notificationSummary.latest?.filter(n => !n.leida).length ? notificationSummary.latest.filter(n => !n.leida).map((notification) => (
           <div
             key={notification.id}
             style={{

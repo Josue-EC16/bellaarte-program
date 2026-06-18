@@ -572,8 +572,344 @@ def get_receipt_detail(db: Session, receipt_id: int) -> ReceiptDetailResponse:
     )
 
 
+_THERMAL_ORIGIN_TYPES = frozenset({"VENTA_BOUTIQUE", "PAGO_PEDIDO", "SALIDA_FLETE"})
+
+_THERMAL_ORIGIN_LABELS = {
+    "VENTA_BOUTIQUE": "VENTA BOUTIQUE",
+    "PAGO_PEDIDO": "PAGO DE PEDIDO",
+    "SALIDA_FLETE": "SALIDA DE FLETE",
+}
+
+
 def build_receipt_printable_html(db: Session, receipt_id: int) -> str:
+    """Genera el HTML imprimible para un comprobante interno.
+
+    Los comprobantes operativos (venta boutique, pago de pedido y salida de
+    flete) se renderizan en formato ticket térmico de 80 mm.  Cualquier otro
+    tipo de comprobante conserva el diseño A4 estándar.
+    """
     receipt = get_receipt_detail(db, receipt_id)
+    if receipt.origin_type in _THERMAL_ORIGIN_TYPES:
+        return _build_thermal_receipt_html(receipt)
+    return _build_a4_receipt_html(receipt)
+
+
+# ---------------------------------------------------------------------------
+# Plantilla térmica (ticket 80 mm)
+# ---------------------------------------------------------------------------
+
+def _build_thermal_receipt_html(receipt: ReceiptDetailResponse) -> str:
+    """Genera HTML optimizado para impresora térmica de 80 mm."""
+
+    origin_label = _THERMAL_ORIGIN_LABELS.get(receipt.origin_type, receipt.origin_type)
+    currency_symbol = escape(receipt.currency.simbolo or receipt.currency.codigo or "Bs") if receipt.currency else "Bs"
+
+    # --- Líneas de detalle ---------------------------------------------------
+    detail_rows = "".join(
+        f"<tr>"
+        f"<td>{escape(line.concepto)}</td>"
+        f"<td class='r'>{line.cantidad:g}</td>"
+        f"<td class='r'>{line.subtotal:.2f}</td>"
+        f"</tr>"
+        for line in receipt.details
+    )
+
+    # --- Observaciones --------------------------------------------------------
+    observation_lines = "".join(
+        f"<li>{escape(line.observaciones)}</li>"
+        for line in receipt.details
+        if line.observaciones
+    )
+    observations_block = (
+        f"<div class='section'>"
+        f"<div class='section-title'>OBSERVACIONES</div>"
+        f"<ul>{observation_lines}</ul>"
+        f"</div>"
+        if observation_lines else ""
+    )
+
+    # --- Marca de anulado -----------------------------------------------------
+    voided_banner = (
+        "<div class='voided-banner'>■ ANULADO ■</div>"
+        if receipt.estado == EstadoComprobanteEnum.ANULADO
+        else ""
+    )
+    state_note = (
+        f"<div class='voided-reason'>"
+        f"ANULADO EL {receipt.changed_at:%d/%m/%Y %H:%M}<br/>"
+        f"MOTIVO: {escape(receipt.state_change_reason or 'SIN MOTIVO REGISTRADO')}"
+        f"</div>"
+        if receipt.estado == EstadoComprobanteEnum.ANULADO and receipt.changed_at
+        else ""
+    )
+
+    # --- Secciones condicionales de totales -----------------------------------
+    guarantee_row = (
+        f"<tr><td>GARANTÍA</td><td class='r'>Bs {receipt.garantia:.2f}</td></tr>"
+        if receipt.garantia > 0 else ""
+    )
+    saldo_row = (
+        f"<tr><td>SALDO POST.</td><td class='r'>Bs {receipt.saldo_posterior:.2f}</td></tr>"
+        if receipt.saldo_posterior > 0 else ""
+    )
+    original_currency_row = ""
+    if receipt.currency and not (receipt.currency.es_base):
+        original_currency_row = (
+            f"<tr><td>TOTAL {escape(receipt.currency.codigo or '')}</td>"
+            f"<td class='r'>{currency_symbol} {receipt.total_moneda_original:.2f}</td></tr>"
+            f"<tr><td>T/C USADO</td><td class='r'>{receipt.tipo_cambio_usado:.4f}</td></tr>"
+        )
+
+    return f"""\
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<title>Ticket {escape(receipt.codigo)}</title>
+<style>
+/* ── RESET & BASE ─────────────────────────────────────────────── */
+*{{margin:0;padding:0;box-sizing:border-box}}
+html{{width:80mm}}
+body{{
+  width:80mm;
+  font-family:'Segoe UI','Trebuchet MS',Arial,sans-serif;
+  font-size:11px;
+  color:#1a1a1a;
+  background:#f5f5f5;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}}
+
+/* ── TICKET CONTAINER ─────────────────────────────────────────── */
+.ticket{{
+  width:80mm;
+  margin:0 auto;
+  background:#fff;
+  padding:4mm 3mm;
+}}
+
+/* ── HEADER / BRANDING ────────────────────────────────────────── */
+.header{{text-align:center;padding-bottom:3mm;border-bottom:1px dashed #888}}
+.header img{{width:28mm;height:auto;margin:0 auto 2mm}}
+.header h1{{font-size:14px;letter-spacing:.06em;margin-bottom:1px}}
+.header .tagline{{font-size:9px;color:#666;margin-bottom:3px}}
+.header .origin-badge{{
+  display:inline-block;
+  background:#8f3d2e;
+  color:#fff;
+  font-size:10px;
+  font-weight:700;
+  padding:2px 8px;
+  border-radius:3px;
+  letter-spacing:.04em;
+  margin:3px 0;
+}}
+.header .receipt-code{{font-size:13px;font-weight:700;margin-top:2px}}
+.header .receipt-date{{font-size:10px;color:#555;margin-top:1px}}
+
+/* ── VOIDED ───────────────────────────────────────────────────── */
+.voided-banner{{
+  text-align:center;
+  font-size:16px;
+  font-weight:900;
+  color:#c0392b;
+  letter-spacing:.12em;
+  padding:3px 0;
+  border:2px solid #c0392b;
+  margin:3mm 0;
+}}
+.voided-reason{{
+  text-align:center;
+  font-size:9px;
+  color:#c0392b;
+  margin-bottom:2mm;
+}}
+
+/* ── DIVIDERS ─────────────────────────────────────────────────── */
+.div-dash{{border:none;border-top:1px dashed #888;margin:3mm 0}}
+.div-solid{{border:none;border-top:1px solid #ccc;margin:2mm 0}}
+
+/* ── KEY-VALUE ROWS ───────────────────────────────────────────── */
+.kv-row{{
+  display:flex;
+  justify-content:space-between;
+  font-size:10px;
+  padding:1px 0;
+}}
+.kv-row .label{{color:#555;font-weight:600}}
+.kv-row .value{{text-align:right;max-width:55%;word-break:break-word}}
+
+/* ── SECTION TITLES ───────────────────────────────────────────── */
+.section{{margin:2mm 0}}
+.section-title{{
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.06em;
+  color:#8f3d2e;
+  margin-bottom:1.5mm;
+}}
+
+/* ── DETAIL TABLE ─────────────────────────────────────────────── */
+.detail-table{{width:100%;border-collapse:collapse}}
+.detail-table th{{
+  font-size:9px;
+  text-align:left;
+  padding:2px 1px;
+  border-bottom:1px solid #333;
+  font-weight:700;
+}}
+.detail-table td{{
+  font-size:10px;
+  padding:2px 1px;
+  border-bottom:1px dotted #ddd;
+  vertical-align:top;
+}}
+.detail-table .r{{text-align:right}}
+
+/* ── TOTALS TABLE ─────────────────────────────────────────────── */
+.totals-table{{width:100%;border-collapse:collapse;margin-top:1mm}}
+.totals-table td{{
+  font-size:11px;
+  padding:1.5px 0;
+}}
+.totals-table .r{{text-align:right;font-weight:600}}
+.totals-table .grand{{
+  font-size:14px;
+  font-weight:800;
+  border-top:2px solid #333;
+  padding-top:2px;
+}}
+
+/* ── OBSERVATIONS ─────────────────────────────────────────────── */
+ul{{list-style:none;padding:0}}
+ul li{{font-size:9px;color:#444;padding:1px 0}}
+ul li::before{{content:"• ";color:#8f3d2e}}
+
+/* ── FOOTER ───────────────────────────────────────────────────── */
+.footer{{
+  text-align:center;
+  margin-top:3mm;
+  padding-top:2mm;
+  border-top:1px dashed #888;
+}}
+.footer .legal{{font-size:8px;color:#888;line-height:1.4}}
+.footer .thanks{{font-size:10px;font-weight:700;margin-top:2mm;color:#8f3d2e}}
+
+/* ── PRINT BUTTON ─────────────────────────────────────────────── */
+.no-print{{text-align:center;margin:8px 0}}
+.no-print button{{
+  border:0;
+  background:#8f3d2e;
+  color:#fff;
+  padding:8px 16px;
+  border-radius:4px;
+  cursor:pointer;
+  font-weight:700;
+  font-size:12px;
+}}
+
+/* ── PRINT MEDIA ──────────────────────────────────────────────── */
+@media print{{
+  html,body{{width:80mm;background:#fff}}
+  .no-print{{display:none}}
+  .ticket{{padding:2mm 2mm;box-shadow:none}}
+  @page{{size:80mm auto;margin:0}}
+}}
+</style>
+</head>
+<body>
+<div class="no-print">
+  <button onclick="window.print()">IMPRIMIR TICKET</button>
+</div>
+
+<div class="ticket">
+  <!-- HEADER -->
+  <div class="header">
+    <img src="/logo_bellaarte2.png" alt="BELLAARTE"/>
+    <h1>BELLAARTE</h1>
+    <div class="tagline">BOUTIQUE &amp; ATELIER</div>
+    <div class="origin-badge">{escape(origin_label)}</div>
+    <div class="receipt-code">{escape(receipt.codigo)}</div>
+    <div class="receipt-date">{receipt.fecha:%d/%m/%Y %H:%M}</div>
+  </div>
+
+  {voided_banner}
+  {state_note}
+
+  <hr class="div-dash"/>
+
+  <!-- CLIENTE -->
+  <div class="section">
+    <div class="section-title">CLIENTE</div>
+    <div class="kv-row"><span class="label">NOMBRE</span><span class="value">{escape(receipt.client.full_name)}</span></div>
+    <div class="kv-row"><span class="label">CI / NIT</span><span class="value">{escape(receipt.client.ci_nit)}</span></div>
+    <div class="kv-row"><span class="label">CEL</span><span class="value">{escape(receipt.client.cellphone)}</span></div>
+  </div>
+
+  <hr class="div-dash"/>
+
+  <!-- DETALLE -->
+  <div class="section">
+    <div class="section-title">DETALLE</div>
+    <table class="detail-table">
+      <thead>
+        <tr><th>CONCEPTO</th><th class="r">CANT</th><th class="r">TOTAL</th></tr>
+      </thead>
+      <tbody>{detail_rows}</tbody>
+    </table>
+  </div>
+
+  <hr class="div-solid"/>
+
+  <!-- TOTALES -->
+  <table class="totals-table">
+    <tr><td>SUBTOTAL</td><td class="r">Bs {receipt.subtotal:.2f}</td></tr>
+    <tr><td>DESCUENTO</td><td class="r">Bs {receipt.descuento:.2f}</td></tr>
+    {guarantee_row}
+    {saldo_row}
+    {original_currency_row}
+    <tr class="grand"><td>TOTAL</td><td class="r">Bs {receipt.total:.2f}</td></tr>
+  </table>
+
+  <hr class="div-solid"/>
+
+  <!-- MÉTODO DE PAGO -->
+  <div class="kv-row" style="margin:2mm 0">
+    <span class="label">MÉTODO DE PAGO</span>
+    <span class="value" style="font-weight:700">{escape(receipt.payment_method.value.upper() if receipt.payment_method else 'SIN REGISTRO')}</span>
+  </div>
+
+  <hr class="div-dash"/>
+
+  <!-- OPERADOR -->
+  <div class="section">
+    <div class="section-title">OPERADOR</div>
+    <div class="kv-row"><span class="label">ATENDIDO POR</span><span class="value">{escape(receipt.registered_by.full_name)}</span></div>
+  </div>
+
+  {observations_block}
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="legal">
+      COMPROBANTE INTERNO NO FISCAL<br/>
+      NO SUSTITUYE FACTURA<br/>
+      DOCUMENTO DE CONTROL COMERCIAL
+    </div>
+    <div class="thanks">¡GRACIAS POR SU PREFERENCIA!</div>
+  </div>
+</div>
+</body>
+</html>"""
+
+
+# ---------------------------------------------------------------------------
+# Plantilla A4 estándar (diseño original)
+# ---------------------------------------------------------------------------
+
+def _build_a4_receipt_html(receipt: ReceiptDetailResponse) -> str:
+    """Genera HTML en formato A4 para impresión estándar en hoja completa."""
+
     detail_rows = "".join(
         f"<tr>"
         f"<td>{escape(line.concepto)}</td>"

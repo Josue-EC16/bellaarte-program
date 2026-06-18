@@ -395,33 +395,34 @@ Cuando faltan datos documentales:
 
 ## Diseño del comprobante HTML
 
-El documento imprimible incluye:
+El módulo soporta **dos formatos de diseño** que se asignan dinámicamente según el origen del comprobante (tipo SaaS / Impresión térmica vs. Hoja estándar):
 
-- logo
-- nombre `BELLAARTE BOUTIQUE`
-- título `COMPROBANTE INTERNO`
-- subtítulo del tipo
-- código
-- fecha y hora
-- datos del cliente
-- usuario responsable
-- origen operativo
-- tabla de detalle
-- subtotal
-- descuento
-- total en Bs
-- total en moneda origen
-- tipo de cambio
-- método de pago
-- saldo posterior si aplica
-- garantía si aplica
-- pie legal no fiscal
+### 1. Formato Ticket Térmico (80mm)
+Se utiliza exclusivamente para las operaciones comerciales en mostrador:
+- `VENTA_BOUTIQUE`
+- `PAGO_PEDIDO`
+- `SALIDA_FLETE`
 
-Salida:
+**Características del diseño:**
+- Optimizado para impresoras térmicas (ancho 80mm).
+- CSS configurado con `@media print { @page { size: 80mm auto; margin: 0; } }` para corte automático y sin márgenes del navegador.
+- Encabezado centrado con logo compacto, datos comerciales y número de comprobante.
+- Tabla de detalle simplificada (Concepto, Cant, Total).
+- Totales apilados y legibles.
 
-- vista previa HTML
-- impresión por navegador
-- guardado en PDF desde `window.print()`
+### 2. Formato Hoja Estándar (A4 / Carta)
+Se utiliza como formato de respaldo o "fallback" para cualquier otro tipo de comprobante administrativo.
+
+**Características del diseño:**
+- Optimizado para impresoras de inyección/láser o guardado en PDF de escritorio.
+- Diseño de hoja estructurada con márgenes amplios, sombras y contenedores "glass-panel".
+- Tablas detalladas con todas las columnas (Concepto, Cantidad, Precio, Descuento, Subtotal).
+- Marca de agua (Watermark) central visible si el comprobante está anulado.
+
+Ambos formatos incluyen:
+- Vista previa HTML en el navegador.
+- Impresión directa mediante `window.print()`.
+- Pie de página legal indicando: "COMPROBANTE INTERNO NO FISCAL Y NO SUSTITUYE FACTURA".
 
 ## Seguridad y control
 
