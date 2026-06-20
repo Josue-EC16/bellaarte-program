@@ -31,6 +31,15 @@ from app.schemas.boutique import (
     TipoItemBoutiqueStatusUpdate,
     TipoItemBoutiqueUpdate,
 )
+from app.schemas.reporting import AnalyticsReportResponse, ListingSummaryResponse, ReportPeriod
+from app.services.module_report_service import (
+    get_boutique_entries_summary,
+    get_boutique_items_summary,
+    get_boutique_providers_summary,
+    get_boutique_report,
+    get_boutique_sales_summary,
+    get_boutique_types_summary,
+)
 from app.services.boutique_entry_service import create_boutique_entry, get_boutique_entry_detail, list_boutique_entries, set_boutique_entry_status
 from app.services.boutique_sale_service import change_boutique_sale_state, create_boutique_sale, get_boutique_sale_detail, list_boutique_sales
 from app.services.boutique_service import (
@@ -57,6 +66,14 @@ def get_types(
     _account: Cuenta = Depends(require_permission("boutique_types:list")),
 ) -> list[TipoItemBoutiqueResponse]:
     return [TipoItemBoutiqueResponse.model_validate(item) for item in list_boutique_types(db)]
+
+
+@router.get("/types/resumen", response_model=ListingSummaryResponse)
+def get_types_summary(
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("boutique_types:list")),
+) -> ListingSummaryResponse:
+    return get_boutique_types_summary(db)
 
 
 @router.get("/types/{type_id}", response_model=TipoItemBoutiqueResponse)
@@ -133,6 +150,16 @@ def get_providers(
     return list_providers(db, search=search, is_active=is_active)
 
 
+@router.get("/proveedores/resumen", response_model=ListingSummaryResponse)
+def get_providers_summary(
+    search: str | None = Query(default=None, min_length=1),
+    is_active: bool | None = Query(default=None),
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("boutique_providers:list")),
+) -> ListingSummaryResponse:
+    return get_boutique_providers_summary(db, search=search, is_active=is_active)
+
+
 @router.get("/proveedores/{provider_id}", response_model=ProveedorDetailResponse)
 def get_provider_detail(
     provider_id: int,
@@ -205,6 +232,17 @@ def get_entries(
     return list_boutique_entries(db, search=search, item_id=item_id, is_active=is_active)
 
 
+@router.get("/entries/resumen", response_model=ListingSummaryResponse)
+def get_entries_summary(
+    search: str | None = Query(default=None, min_length=1),
+    item_id: int | None = Query(default=None, gt=0),
+    is_active: bool | None = Query(default=None),
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("boutique_entries:list")),
+) -> ListingSummaryResponse:
+    return get_boutique_entries_summary(db, search=search, item_id=item_id, is_active=is_active)
+
+
 @router.get("/entries/{entry_id}", response_model=BoutiqueEntryDetailResponse)
 def get_entry(
     entry_id: int,
@@ -258,6 +296,18 @@ def get_items(
     _account: Cuenta = Depends(require_permission("boutique_items:list")),
 ) -> list[BoutiqueItemListItem]:
     return list_boutique_items(db, type_id=type_id, search=search, is_active=is_active, low_stock=low_stock)
+
+
+@router.get("/items/resumen", response_model=ListingSummaryResponse)
+def get_items_summary(
+    type_id: int | None = Query(default=None, gt=0),
+    search: str | None = Query(default=None, min_length=1),
+    is_active: bool | None = Query(default=None),
+    low_stock: bool | None = Query(default=None),
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("boutique_items:list")),
+) -> ListingSummaryResponse:
+    return get_boutique_items_summary(db, type_id=type_id, search=search, is_active=is_active, low_stock=low_stock)
 
 
 @router.get("/items/{item_id}", response_model=BoutiqueItemDetailResponse)
@@ -345,6 +395,43 @@ def get_sales(
         date_from=date_from,
         date_to=date_to,
     )
+
+
+@router.get("/sales/resumen", response_model=ListingSummaryResponse)
+def get_sales_summary(
+    search: str | None = Query(default=None, min_length=1),
+    item_id: int | None = Query(default=None, gt=0),
+    client_id: int | None = Query(default=None, gt=0),
+    currency_id: int | None = Query(default=None, gt=0),
+    payment_method: MetodoPagoEnum | None = Query(default=None),
+    state: EstadoVentaBoutiqueEnum | None = Query(default=None),
+    date_from: date | None = Query(default=None),
+    date_to: date | None = Query(default=None),
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("boutique_sales:list")),
+) -> ListingSummaryResponse:
+    return get_boutique_sales_summary(
+        db,
+        search=search,
+        item_id=item_id,
+        client_id=client_id,
+        currency_id=currency_id,
+        payment_method=payment_method,
+        state=state,
+        date_from=date_from,
+        date_to=date_to,
+    )
+
+
+@router.get("/reportes/panel", response_model=AnalyticsReportResponse)
+def get_boutique_reports_panel(
+    period: ReportPeriod = Query(default="all"),
+    date_from: date | None = Query(default=None),
+    date_to: date | None = Query(default=None),
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("boutique_reports:view")),
+) -> AnalyticsReportResponse:
+    return get_boutique_report(db, period=period, date_from=date_from, date_to=date_to)
 
 
 @router.get("/sales/{sale_id}", response_model=BoutiqueSaleDetailResponse)

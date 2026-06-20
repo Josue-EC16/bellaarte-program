@@ -1,3 +1,5 @@
+from datetime import date
+
 from fastapi import APIRouter, Depends, Query, Request, status
 from sqlalchemy.orm import Session
 
@@ -14,6 +16,12 @@ from app.schemas.currency import (
     TipoCambioListItem,
     TipoCambioStatusUpdateRequest,
     TipoCambioUpdateRequest,
+)
+from app.schemas.reporting import AnalyticsReportResponse, ListingSummaryResponse, ReportPeriod
+from app.services.module_report_service import (
+    get_currencies_report,
+    get_currencies_summary,
+    get_exchange_rates_summary,
 )
 from app.services.currency_service import (
     create_currency,
@@ -44,6 +52,16 @@ def get_currencies(
     return list_currencies(db, search=search, is_active=is_active)
 
 
+@router.get("/resumen", response_model=ListingSummaryResponse)
+def get_currencies_summary_endpoint(
+    search: str | None = Query(default=None, min_length=1),
+    is_active: bool | None = Query(default=None),
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("currencies:list")),
+) -> ListingSummaryResponse:
+    return get_currencies_summary(db, search=search, is_active=is_active)
+
+
 @router.post("", response_model=MonedaResponse, status_code=status.HTTP_201_CREATED)
 def create_currency_record(
     payload: MonedaCreateRequest,
@@ -70,6 +88,28 @@ def get_exchange_rates(
     _account: Cuenta = Depends(require_permission("exchange_rates:list")),
 ) -> list[TipoCambioListItem]:
     return list_exchange_rates(db, moneda_id=moneda_id, is_active=is_active)
+
+
+@router.get("/tipos-cambio/resumen", response_model=ListingSummaryResponse)
+def get_exchange_rates_summary_endpoint(
+    moneda_id: int | None = Query(default=None, gt=0),
+    is_active: bool | None = Query(default=None),
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("exchange_rates:list")),
+) -> ListingSummaryResponse:
+    return get_exchange_rates_summary(db, moneda_id=moneda_id, is_active=is_active)
+
+
+@router.get("/reportes/panel", response_model=AnalyticsReportResponse)
+def get_currencies_reports_panel(
+    period: ReportPeriod = Query(default="all"),
+    date_from: date | None = Query(default=None),
+    date_to: date | None = Query(default=None),
+    currency_id: int | None = Query(default=None, gt=0),
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("currency_reports:view")),
+) -> AnalyticsReportResponse:
+    return get_currencies_report(db, period=period, date_from=date_from, date_to=date_to, currency_id=currency_id)
 
 
 @router.get("/tipos-cambio/{rate_id}", response_model=TipoCambioDetailResponse)

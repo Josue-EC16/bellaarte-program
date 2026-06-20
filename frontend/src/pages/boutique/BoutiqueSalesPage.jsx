@@ -24,6 +24,8 @@ import { useAuth } from '../../auth/AuthProvider'
 import { FORM_COMMON_PROPS } from '../../components/forms/formConfig'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
+import { ReportSummaryStrip } from '../../components/reports/ReportSummaryStrip'
+import { useListingSummary } from '../../components/reports/useListingSummary'
 import { BoutiqueSaleDetailCard } from './BoutiqueSaleDetailCard'
 import { BoutiqueSaleForm } from './BoutiqueSaleForm'
 import { ESTADO_VENTA_OPTIONS, METODO_PAGO_OPTIONS, formatBs, labelFromOptions, paymentMethodColor } from './boutiqueConstants'
@@ -71,6 +73,7 @@ export function BoutiqueSalesPage() {
   const canPickClient = user?.permissions?.includes('clients:list')
   const canViewReceipts = user?.permissions?.includes('receipts:view')
   const canPrintReceipts = user?.permissions?.includes('receipts:print')
+  const { summary, loading: summaryLoading } = useListingSummary('/boutique/sales/resumen', filters)
 
   const loadReferenceData = useCallback(async () => {
     const [itemResponse, currencyResponse, rateResponse] = await Promise.all([
@@ -387,6 +390,7 @@ export function BoutiqueSalesPage() {
       </div>
 
       {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
+      <ReportSummaryStrip summary={summary} loading={summaryLoading} />
 
       <Table
         className="glass-panel"

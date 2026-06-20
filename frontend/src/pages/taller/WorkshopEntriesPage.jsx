@@ -8,6 +8,8 @@ import { useAuth } from '../../auth/AuthProvider'
 import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/forms/formConfig'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
+import { ReportSummaryStrip } from '../../components/reports/ReportSummaryStrip'
+import { useListingSummary } from '../../components/reports/useListingSummary'
 import { labelFromOptions, MOTIVO_ENTRADA_TALLER_OPTIONS, UNIDAD_MEDIDA_OPTIONS, getCategoryColor } from './workshopConstants'
 
 export function WorkshopEntriesPage() {
@@ -27,6 +29,7 @@ export function WorkshopEntriesPage() {
 
   const canCreate = user?.permissions?.includes('workshop_entries:create')
   const canChangeStatus = user?.permissions?.includes('workshop_entries:update_status')
+  const { summary, loading: summaryLoading } = useListingSummary('/taller/entries/resumen', filters)
 
   const selectedItemId = Form.useWatch('item_id', form)
   const selectedItem = items.find((item) => item.id === selectedItemId)
@@ -200,6 +203,7 @@ export function WorkshopEntriesPage() {
       </div>
 
       {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
+      <ReportSummaryStrip summary={summary} loading={summaryLoading} />
 
       <Table className="glass-panel" rowKey="id" columns={columns} dataSource={entries} loading={loading} pagination={{ pageSize: 8 }} scroll={{ x: 'max-content' }} />
 

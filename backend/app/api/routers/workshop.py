@@ -1,3 +1,5 @@
+from datetime import date
+
 from fastapi import APIRouter, Depends, Query, Request, status
 from sqlalchemy.orm import Session
 
@@ -22,6 +24,14 @@ from app.schemas.workshop import (
     TallerTypeResponse,
     TallerTypeStatusUpdateRequest,
     TallerTypeUpdateRequest,
+)
+from app.schemas.reporting import AnalyticsReportResponse, ListingSummaryResponse, ReportPeriod
+from app.services.module_report_service import (
+    get_workshop_entries_summary,
+    get_workshop_inventory_summary,
+    get_workshop_outputs_summary,
+    get_workshop_report,
+    get_workshop_types_summary,
 )
 from app.services.workshop_service import (
     create_workshop_entry,
@@ -54,6 +64,14 @@ def get_types(
     _account: Cuenta = Depends(require_permission("workshop_types:list")),
 ) -> list[TallerTypeResponse]:
     return list_workshop_types(db)
+
+
+@router.get("/types/resumen", response_model=ListingSummaryResponse)
+def get_types_summary(
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("workshop_types:list")),
+) -> ListingSummaryResponse:
+    return get_workshop_types_summary(db)
 
 
 @router.get("/types/{type_id}", response_model=TallerTypeResponse)
@@ -129,6 +147,18 @@ def get_inventory(
     return list_workshop_inventory(db, type_id=type_id, search=search, is_active=is_active, low_stock=low_stock)
 
 
+@router.get("/inventory/resumen", response_model=ListingSummaryResponse)
+def get_inventory_summary(
+    type_id: int | None = Query(default=None, gt=0),
+    search: str | None = Query(default=None, min_length=1),
+    is_active: bool | None = Query(default=None),
+    low_stock: bool | None = Query(default=None),
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("workshop_inventory:list")),
+) -> ListingSummaryResponse:
+    return get_workshop_inventory_summary(db, type_id=type_id, search=search, is_active=is_active, low_stock=low_stock)
+
+
 @router.get("/inventory/{item_id}", response_model=TallerInventoryDetailResponse)
 def get_inventory_item(
     item_id: int,
@@ -201,6 +231,17 @@ def get_entries(
     return list_workshop_entries(db, search=search, item_id=item_id, is_active=is_active)
 
 
+@router.get("/entries/resumen", response_model=ListingSummaryResponse)
+def get_entries_summary(
+    search: str | None = Query(default=None, min_length=1),
+    item_id: int | None = Query(default=None, gt=0),
+    is_active: bool | None = Query(default=None),
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("workshop_entries:list")),
+) -> ListingSummaryResponse:
+    return get_workshop_entries_summary(db, search=search, item_id=item_id, is_active=is_active)
+
+
 @router.get("/entries/{entry_id}", response_model=TallerEntryDetailResponse)
 def get_entry(
     entry_id: int,
@@ -253,6 +294,28 @@ def get_outputs(
     _account: Cuenta = Depends(require_permission("workshop_outputs:list")),
 ) -> list[TallerOutputListItem]:
     return list_workshop_outputs(db, search=search, item_id=item_id, is_active=is_active)
+
+
+@router.get("/outputs/resumen", response_model=ListingSummaryResponse)
+def get_outputs_summary(
+    search: str | None = Query(default=None, min_length=1),
+    item_id: int | None = Query(default=None, gt=0),
+    is_active: bool | None = Query(default=None),
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("workshop_outputs:list")),
+) -> ListingSummaryResponse:
+    return get_workshop_outputs_summary(db, search=search, item_id=item_id, is_active=is_active)
+
+
+@router.get("/reportes/panel", response_model=AnalyticsReportResponse)
+def get_workshop_reports_panel(
+    period: ReportPeriod = Query(default="all"),
+    date_from: date | None = Query(default=None),
+    date_to: date | None = Query(default=None),
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("workshop_reports:view")),
+) -> AnalyticsReportResponse:
+    return get_workshop_report(db, period=period, date_from=date_from, date_to=date_to)
 
 
 @router.get("/outputs/{output_id}", response_model=TallerOutputDetailResponse)

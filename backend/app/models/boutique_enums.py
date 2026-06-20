@@ -176,6 +176,18 @@ class EstadoCorteCajaEnum(str, Enum):
     CERRADO_OBSERVADO = "cerrado_observado"
 
 
+class TipoBackupBdEnum(str, Enum):
+    LOGICO_COMPLETO = "LOGICO_COMPLETO"
+    SEMANAL = "SEMANAL"
+    MANUAL = "MANUAL"
+
+
+class EstadoBackupBdEnum(str, Enum):
+    EN_PROCESO = "EN_PROCESO"
+    EXITOSO = "EXITOSO"
+    FALLIDO = "FALLIDO"
+
+
 class TipoPedidoEnum(str, Enum):
     VESTIDO = "vestido"
     VELO = "velo"

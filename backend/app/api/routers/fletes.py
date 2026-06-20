@@ -25,6 +25,7 @@ from app.schemas.flete import (
     SalidaFleteListItem,
     SalidaFleteReturnRequest,
 )
+from app.schemas.reporting import AnalyticsReportResponse, ListingSummaryResponse, ReportPeriod
 from app.services.flete_service import (
     annul_flete_output,
     create_flete,
@@ -42,6 +43,7 @@ from app.services.flete_service import (
     return_flete_output,
     update_flete,
 )
+from app.services.module_report_service import get_flete_outputs_summary, get_fletes_report, get_fletes_summary
 
 
 router = APIRouter()
@@ -56,6 +58,17 @@ def get_fletes(
     _account: Cuenta = Depends(require_permission("fletes:list")),
 ) -> list[FleteListItem]:
     return list_fletes(db, search=search, state=state, is_enabled=is_enabled)
+
+
+@router.get("/resumen", response_model=ListingSummaryResponse)
+def get_fletes_summary_endpoint(
+    search: str | None = Query(default=None, min_length=1),
+    state: EstadoFleteEnum | None = Query(default=None),
+    is_enabled: bool | None = Query(default=None),
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("fletes:list")),
+) -> ListingSummaryResponse:
+    return get_fletes_summary(db, search=search, state=state, is_enabled=is_enabled)
 
 
 @router.get("/eligible-items", response_model=list[FleteEligibleItemSummary])
@@ -89,6 +102,41 @@ def get_outputs(
         date_from=date_from,
         date_to=date_to,
     )
+
+
+@router.get("/salidas/resumen", response_model=ListingSummaryResponse)
+def get_outputs_summary(
+    search: str | None = Query(default=None, min_length=1),
+    flete_id: int | None = Query(default=None, gt=0),
+    client_id: int | None = Query(default=None, gt=0),
+    currency_id: int | None = Query(default=None, gt=0),
+    state: EstadoSalidaFleteEnum | None = Query(default=None),
+    date_from: date | None = Query(default=None),
+    date_to: date | None = Query(default=None),
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("flete_outputs:list")),
+) -> ListingSummaryResponse:
+    return get_flete_outputs_summary(
+        db,
+        search=search,
+        flete_id=flete_id,
+        client_id=client_id,
+        currency_id=currency_id,
+        state=state,
+        date_from=date_from,
+        date_to=date_to,
+    )
+
+
+@router.get("/reportes/panel", response_model=AnalyticsReportResponse)
+def get_fletes_reports_panel(
+    period: ReportPeriod = Query(default="all"),
+    date_from: date | None = Query(default=None),
+    date_to: date | None = Query(default=None),
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("flete_reports:view")),
+) -> AnalyticsReportResponse:
+    return get_fletes_report(db, period=period, date_from=date_from, date_to=date_to)
 
 
 @router.get("/salidas/{salida_id}", response_model=SalidaFleteDetailResponse)

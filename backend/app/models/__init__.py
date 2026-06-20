@@ -1,5 +1,6 @@
 from app.models.account import Cuenta
 from app.models.audit_log import AuditoriaSistema
+from app.models.backup import BackupBd
 from app.models.base import Base
 from app.models.boutique_details import DetalleBouquetBoutique, DetalleBrassierBoutique, DetalleVeloBoutique, DetalleVestidoBoutique
 from app.models.boutique_entry import EntradaItemBoutique
@@ -21,6 +22,7 @@ from app.models.workshop import EntradaInventarioTaller, InventarioTaller, Salid
 
 __all__ = [
     "AuditoriaSistema",
+    "BackupBd",
     "Base",
     "Cliente",
     "ComprobanteInterno",

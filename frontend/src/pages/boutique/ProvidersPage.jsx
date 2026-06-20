@@ -8,6 +8,8 @@ import { useAuth } from '../../auth/AuthProvider'
 import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/forms/formConfig'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
+import { ReportSummaryStrip } from '../../components/reports/ReportSummaryStrip'
+import { useListingSummary } from '../../components/reports/useListingSummary'
 
 export function ProvidersPage() {
   const [providers, setProviders] = useState([])
@@ -26,6 +28,7 @@ export function ProvidersPage() {
   const canCreate = user?.permissions?.includes('boutique_providers:create')
   const canUpdate = user?.permissions?.includes('boutique_providers:update')
   const canChangeStatus = user?.permissions?.includes('boutique_providers:update_status')
+  const { summary, loading: summaryLoading } = useListingSummary('/boutique/proveedores/resumen', filters)
 
   const selectedCountry = Form.useWatch('pais', form)
 
@@ -209,6 +212,7 @@ export function ProvidersPage() {
       </div>
 
       {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
+      <ReportSummaryStrip summary={summary} loading={summaryLoading} />
 
       <Table className="glass-panel" rowKey="id" columns={columns} dataSource={providers} loading={loading} pagination={{ pageSize: 8 }} />
 

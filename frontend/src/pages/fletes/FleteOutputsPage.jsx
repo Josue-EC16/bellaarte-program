@@ -26,6 +26,8 @@ import { useAuth } from '../../auth/AuthProvider'
 import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/forms/formConfig'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
+import { ReportSummaryStrip } from '../../components/reports/ReportSummaryStrip'
+import { useListingSummary } from '../../components/reports/useListingSummary'
 import { ReceiptSnapshotFields } from '../../components/receipts/ReceiptSnapshotFields'
 import { METODO_PAGO_OPTIONS } from '../boutique/boutiqueConstants'
 import { openReceiptPrintable } from '../comprobantes/receiptUtils'
@@ -80,6 +82,7 @@ export function FleteOutputsPage() {
   const canReturn = user?.permissions?.includes('flete_outputs:return')
   const canAnnul = user?.permissions?.includes('flete_outputs:annul')
   const canPrintReceipts = user?.permissions?.includes('receipts:print')
+  const { summary, loading: summaryLoading } = useListingSummary('/fletes/salidas/resumen', filters)
 
   const selectedFleteId = Form.useWatch('flete_id', form)
   const selectedClientId = Form.useWatch('client_id', form)
@@ -477,6 +480,7 @@ export function FleteOutputsPage() {
       </div>
 
       {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
+      <ReportSummaryStrip summary={summary} loading={summaryLoading} />
 
       <Table
         className="glass-panel"

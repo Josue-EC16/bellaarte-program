@@ -22,6 +22,8 @@ ADMIN_PERMISSIONS = (
     "clients:create",
     "clients:update",
     "clients:update_status",
+    "clients_reports:view",
+    "clients_reports:print",
     "boutique_types:list",
     "boutique_types:create",
     "boutique_types:update",
@@ -55,6 +57,8 @@ ADMIN_PERMISSIONS = (
     "boutique_sales:create",
     "boutique_sales:cancel",
     "boutique_sales:annul",
+    "boutique_reports:view",
+    "boutique_reports:print",
     "fletes:list",
     "fletes:view",
     "fletes:create",
@@ -69,6 +73,8 @@ ADMIN_PERMISSIONS = (
     "flete_outputs:deliver",
     "flete_outputs:return",
     "flete_outputs:annul",
+    "flete_reports:view",
+    "flete_reports:print",
     "orders:list",
     "orders:view",
     "orders:create",
@@ -120,6 +126,10 @@ ADMIN_PERMISSIONS = (
     "audit:view",
     "audit:view_event",
     "audit:export",
+    "backups:list",
+    "backups:view",
+    "backups:create",
+    "backups:download",
     "workshop_types:list",
     "workshop_types:view",
     "workshop_types:create",
@@ -138,6 +148,10 @@ ADMIN_PERMISSIONS = (
     "workshop_outputs:view",
     "workshop_outputs:create",
     "workshop_outputs:update_status",
+    "workshop_reports:view",
+    "workshop_reports:print",
+    "currency_reports:view",
+    "currency_reports:print",
 )
 
 INV_BOUTIQUE_PERMISSIONS = (
@@ -165,6 +179,12 @@ INV_BOUTIQUE_PERMISSIONS = (
     "exchange_rates:view",
     "boutique_sales:list",
     "boutique_sales:view",
+    "boutique_reports:view",
+    "boutique_reports:print",
+    "flete_reports:view",
+    "flete_reports:print",
+    "currency_reports:view",
+    "currency_reports:print",
     "notifications:list",
     "notifications:view",
     "notifications:mark_read",
@@ -190,6 +210,8 @@ INV_TALLER_PERMISSIONS = (
     "workshop_outputs:view",
     "workshop_outputs:create",
     "workshop_outputs:update_status",
+    "workshop_reports:view",
+    "workshop_reports:print",
     "notifications:list",
     "notifications:view",
     "notifications:mark_read",
@@ -208,6 +230,8 @@ CAJA_PERMISSIONS = (
     "currencies:view",
     "exchange_rates:list",
     "exchange_rates:view",
+    "clients_reports:view",
+    "clients_reports:print",
     "boutique_sales:list",
     "boutique_sales:view",
     "boutique_sales:create",
@@ -227,6 +251,12 @@ CAJA_PERMISSIONS = (
     "flete_outputs:deliver",
     "flete_outputs:return",
     "flete_outputs:annul",
+    "boutique_reports:view",
+    "boutique_reports:print",
+    "flete_reports:view",
+    "flete_reports:print",
+    "currency_reports:view",
+    "currency_reports:print",
     "orders:list",
     "orders:view",
     "order_payments:list",
@@ -261,6 +291,8 @@ MODISTA_PERMISSIONS = (
     "clients:create",
     "clients:update",
     "clients:update_status",
+    "clients_reports:view",
+    "clients_reports:print",
     "workshop_inventory:list",
     "workshop_inventory:view",
     "workshop_outputs:list",
@@ -301,3 +333,14 @@ def build_permissions_for_role(role_code: str) -> list[str]:
     if role_code == "MODISTA":
         permissions.extend(MODISTA_PERMISSIONS)
     return sorted(set(permissions))
+
+
+def build_policy_lines() -> list[str]:
+    role_codes = ("ADMIN", "INV_TALLER", "INV_BOUTIQUE", "CAJA", "MODISTA")
+    lines: list[str] = []
+    for role_code in role_codes:
+        for permission in build_permissions_for_role(role_code):
+            lines.append(f"p, {role_code}, {permission}, use")
+    for role_code in role_codes:
+        lines.append(f"g, {role_code}, {role_code}")
+    return lines

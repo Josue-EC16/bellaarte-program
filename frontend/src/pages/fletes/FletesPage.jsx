@@ -24,6 +24,8 @@ import { useAuth } from '../../auth/AuthProvider'
 import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/forms/formConfig'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
+import { ReportSummaryStrip } from '../../components/reports/ReportSummaryStrip'
+import { useListingSummary } from '../../components/reports/useListingSummary'
 import { ESTADO_FLETE_OPTIONS, REVIEW_RESOLUTION_OPTIONS, fleteStateColor, formatMoney, labelFromOptions } from './fleteConstants'
 
 function inferUsedCodePreview(baseCode, allCodes) {
@@ -64,6 +66,7 @@ export function FletesPage() {
   const canPassToSale = user?.permissions?.includes('fletes:pass_to_sale')
   const canRetire = user?.permissions?.includes('fletes:retire')
   const canView = user?.permissions?.includes('fletes:view')
+  const { summary, loading: summaryLoading } = useListingSummary('/fletes/resumen', filters)
 
   const loadReferences = useCallback(async () => {
     const [eligibleResponse, itemsResponse] = await Promise.all([
@@ -366,6 +369,7 @@ export function FletesPage() {
       </div>
 
       {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
+      <ReportSummaryStrip summary={summary} loading={summaryLoading} />
 
       <Table
         className="glass-panel"

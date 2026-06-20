@@ -4,6 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
+from app.core.permissions import build_policy_lines
 from app.core.security import hash_password
 from app.models.account import Cuenta
 from app.models.receipt import TipoComprobante
@@ -37,6 +38,16 @@ def ensure_policy_files() -> None:
     policy_path = base_path / "policy.csv"
     if not model_path.exists() or not policy_path.exists():
         raise RuntimeError("No se encontraron los archivos base de Casbin.")
+
+
+def sync_policy_file() -> None:
+    base_path = Path(__file__).resolve().parents[1] / "security"
+    policy_path = base_path / "policy.csv"
+    lines = build_policy_lines()
+    content = "\n".join(lines) + "\n"
+    current_content = policy_path.read_text(encoding="utf-8") if policy_path.exists() else None
+    if current_content != content:
+        policy_path.write_text(content, encoding="utf-8")
 
 
 def seed_admin_account(db: Session) -> None:
@@ -104,6 +115,7 @@ def seed_receipt_types(db: Session) -> None:
 def seed_security(db: Session) -> None:
     seed_roles(db)
     ensure_policy_files()
+    sync_policy_file()
     seed_admin_account(db)
     seed_boutique_types(db)
     admin_account = db.execute(

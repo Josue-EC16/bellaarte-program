@@ -21,6 +21,8 @@ Documentos funcionales vigentes del bloque comercial:
 - `MODULO_NOTIFICACIONES.md`
 - `MODULO_INGRESOS_EGRESOS_CORTE_CAJA.md`
 - `MODULO_AUDITORIA_SISTEMA.md`
+- `MODULO_REPORTES.md`
+- `MODULO_BACKUP.md`
 
 ### 🛠️ REQUISITOS PREVIOS (Versiones Dic-2025)
 
@@ -72,7 +74,7 @@ Seeds (roles/admin/políticas):
 PowerShell
 python scripts/seed_security.py
 
-- Automatización: Configura el Programador de Tareas para ejecutar backup_manager.py cada noche a las 11:00 PM.
+- Automatización de backups: Configura `python scripts/run_backup_job.py --mode weekly` cada domingo a las 02:00 a. m. hora `America/La_Paz`.
 
 Ejecución de Scripts Globales
 Para ejecutar herramientas de soporte desde la raíz del backend, usa siempre el parámetro -m para respetar los módulos:

@@ -1,3 +1,5 @@
+from datetime import date
+
 from fastapi import APIRouter, Depends, Query, Request, status
 from sqlalchemy.orm import Session
 
@@ -11,6 +13,8 @@ from app.schemas.client import (
     ClienteStatusUpdateRequest,
     ClienteUpdateRequest,
 )
+from app.schemas.reporting import AnalyticsReportResponse, ListingSummaryResponse, ReportPeriod
+from app.services.module_report_service import get_clients_report, get_clients_summary
 from app.services.client_service import create_client, get_client, list_clients, set_client_status, update_client
 
 
@@ -25,6 +29,27 @@ def get_clients(
     _account: Cuenta = Depends(require_permission("clients:list")),
 ) -> list[ClienteListItem]:
     return list_clients(db, search=search, is_active=is_active)
+
+
+@router.get("/resumen", response_model=ListingSummaryResponse)
+def get_clients_summary_endpoint(
+    search: str | None = Query(default=None, min_length=1),
+    is_active: bool | None = Query(default=None),
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("clients:list")),
+) -> ListingSummaryResponse:
+    return get_clients_summary(db, search=search, is_active=is_active)
+
+
+@router.get("/reportes/panel", response_model=AnalyticsReportResponse)
+def get_clients_reports_panel(
+    period: ReportPeriod = Query(default="all"),
+    date_from: date | None = Query(default=None),
+    date_to: date | None = Query(default=None),
+    db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("clients_reports:view")),
+) -> AnalyticsReportResponse:
+    return get_clients_report(db, period=period, date_from=date_from, date_to=date_to)
 
 
 @router.get("/{client_id}", response_model=ClienteDetailResponse)

@@ -7,6 +7,8 @@ import { useAuth } from '../../auth/AuthProvider'
 import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/forms/formConfig'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
+import { ReportSummaryStrip } from '../../components/reports/ReportSummaryStrip'
+import { useListingSummary } from '../../components/reports/useListingSummary'
 
 export function ExchangeRatesPage() {
   const [rates, setRates] = useState([])
@@ -25,6 +27,7 @@ export function ExchangeRatesPage() {
   const canCreate = user?.permissions?.includes('exchange_rates:create')
   const canUpdate = user?.permissions?.includes('exchange_rates:update')
   const canChangeStatus = user?.permissions?.includes('exchange_rates:update_status')
+  const { summary, loading: summaryLoading } = useListingSummary('/monedas/tipos-cambio/resumen', filters)
 
   const loadCurrencies = useCallback(async () => {
     const response = await apiClient.get('/monedas')
@@ -191,6 +194,7 @@ export function ExchangeRatesPage() {
       </div>
 
       {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
+      <ReportSummaryStrip summary={summary} loading={summaryLoading} />
 
       <Table className="glass-panel" rowKey="id" columns={columns} dataSource={rates} loading={loading} pagination={{ pageSize: 8 }} />
 

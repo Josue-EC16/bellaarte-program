@@ -8,6 +8,8 @@ import { useAuth } from '../../auth/AuthProvider'
 import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/forms/formConfig'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
+import { ReportSummaryStrip } from '../../components/reports/ReportSummaryStrip'
+import { useListingSummary } from '../../components/reports/useListingSummary'
 import { labelFromOptions, UNIDAD_MEDIDA_OPTIONS, getCategoryColor } from './workshopConstants'
 
 export function WorkshopOutputsPage() {
@@ -26,6 +28,7 @@ export function WorkshopOutputsPage() {
 
   const canCreate = user?.permissions?.includes('workshop_outputs:create')
   const canChangeStatus = user?.permissions?.includes('workshop_outputs:update_status')
+  const { summary, loading: summaryLoading } = useListingSummary('/taller/outputs/resumen', filters)
 
   const selectedItemId = Form.useWatch('item_id', form)
   const selectedItem = items.find((item) => item.id === selectedItemId)
@@ -178,6 +181,7 @@ export function WorkshopOutputsPage() {
       </div>
 
       {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
+      <ReportSummaryStrip summary={summary} loading={summaryLoading} />
 
       <Table className="glass-panel" rowKey="id" columns={columns} dataSource={outputs} loading={loading} pagination={{ pageSize: 8 }} scroll={{ x: 'max-content' }} />
 

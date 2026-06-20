@@ -132,9 +132,23 @@ export function AuthenticatedLayout() {
 
     if (user?.permissions?.includes('clients:list')) {
       baseItems.push({
-        key: '/app/clientes',
+        key: 'clientes',
         icon: <IdcardOutlined />,
-        label: <Link to="/app/clientes">Clientes</Link>,
+        label: 'Clientes',
+        children: [
+          {
+            key: '/app/clientes',
+            icon: <IdcardOutlined />,
+            label: <Link to="/app/clientes">Clientes</Link>,
+          },
+          user?.permissions?.includes('clients_reports:view')
+            ? {
+                key: '/app/clientes/reportes',
+                icon: <AppstoreOutlined />,
+                label: <Link to="/app/clientes/reportes">Reportes</Link>,
+              }
+            : null,
+        ].filter(Boolean),
       })
     }
 
@@ -185,6 +199,13 @@ export function AuthenticatedLayout() {
                 label: <Link to="/app/boutique/ventas">Ventas Boutique</Link>,
               }
             : null,
+          user?.permissions?.includes('boutique_reports:view')
+            ? {
+                key: '/app/boutique/reportes',
+                icon: <AppstoreOutlined />,
+                label: <Link to="/app/boutique/reportes">Reportes</Link>,
+              }
+            : null,
         ].filter(Boolean),
       })
     }
@@ -212,6 +233,13 @@ export function AuthenticatedLayout() {
                 label: <Link to="/app/fletes/salidas">Salidas de Flete</Link>,
               }
             : null,
+          user?.permissions?.includes('flete_reports:view')
+            ? {
+                key: '/app/fletes/reportes',
+                icon: <AppstoreOutlined />,
+                label: <Link to="/app/fletes/reportes">Reportes</Link>,
+              }
+            : null,
         ].filter(Boolean),
       })
     }
@@ -229,6 +257,14 @@ export function AuthenticatedLayout() {
         key: '/app/auditoria',
         icon: <SafetyOutlined />,
         label: <Link to="/app/auditoria">Auditoría del Sistema</Link>,
+      })
+    }
+
+    if (user?.permissions?.includes('backups:list')) {
+      baseItems.push({
+        key: '/app/backups',
+        icon: <DatabaseOutlined />,
+        label: <Link to="/app/backups">Backups BD</Link>,
       })
     }
 
@@ -384,6 +420,13 @@ export function AuthenticatedLayout() {
                 label: <Link to="/app/taller/salidas">Salidas Taller</Link>,
               }
             : null,
+          user?.permissions?.includes('workshop_reports:view')
+            ? {
+                key: '/app/taller/reportes',
+                icon: <AppstoreOutlined />,
+                label: <Link to="/app/taller/reportes">Reportes</Link>,
+              }
+            : null,
         ].filter(Boolean),
       })
     }
@@ -409,6 +452,13 @@ export function AuthenticatedLayout() {
                 key: '/app/monedas/tipos-cambio',
                 icon: <DatabaseOutlined />,
                 label: <Link to="/app/monedas/tipos-cambio">Tipos de Cambio</Link>,
+              }
+            : null,
+          user?.permissions?.includes('currency_reports:view')
+            ? {
+                key: '/app/monedas/reportes',
+                icon: <AppstoreOutlined />,
+                label: <Link to="/app/monedas/reportes">Reportes</Link>,
               }
             : null,
         ].filter(Boolean),
@@ -659,13 +709,16 @@ function pageTitle(pathname) {
   if (pathname === '/app/seguridad/roles') return 'Roles'
   if (pathname === '/app/seguridad/usuarios') return 'Usuarios'
   if (pathname === '/app/clientes') return 'Clientes'
+  if (pathname === '/app/clientes/reportes') return 'Reportes de Clientes'
   if (pathname === '/app/boutique/tipos') return 'Categorías de Productos'
   if (pathname === '/app/boutique/proveedores') return 'Proveedores'
   if (pathname === '/app/boutique/inventario') return 'Inventario de la Boutique'
   if (pathname === '/app/boutique/entradas') return 'Entradas de stock del Inventario'
   if (pathname === '/app/boutique/ventas') return 'Ventas de la Boutique'
+  if (pathname === '/app/boutique/reportes') return 'Reportes de Boutique'
   if (pathname === '/app/fletes') return 'Vestidos Habilitados para Flete'
   if (pathname === '/app/fletes/salidas') return 'Control de Salidas de los Vestidos Habilitados para Flete'
+  if (pathname === '/app/fletes/reportes') return 'Reportes de Fletes'
   if (pathname === '/app/notificaciones') return 'Notificaciones'
   if (pathname === '/app/auditoria') return 'Auditoría del Sistema'
   if (pathname === '/app/comprobantes') return 'Comprobantes Internos'
@@ -682,8 +735,10 @@ function pageTitle(pathname) {
   if (pathname === '/app/taller/inventario') return 'Inventario del Taller'
   if (pathname === '/app/taller/entradas') return 'Entradas de Stock del Taller'
   if (pathname === '/app/taller/salidas') return 'Salidas del Taller'
+  if (pathname === '/app/taller/reportes') return 'Reportes de Taller'
   if (pathname === '/app/monedas') return 'Tipos de Monedas'
   if (pathname === '/app/monedas/tipos-cambio') return 'Tipos de Cambio'
+  if (pathname === '/app/monedas/reportes') return 'Reportes de Monedas'
   if (pathname === '/app/cambiar-clave') return 'Cambiar contraseña'
   return 'Panel principal'
 }

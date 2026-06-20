@@ -7,6 +7,8 @@ import { useAuth } from '../../auth/AuthProvider'
 import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/forms/formConfig'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
+import { ReportSummaryStrip } from '../../components/reports/ReportSummaryStrip'
+import { useListingSummary } from '../../components/reports/useListingSummary'
 import { getCategoryColor } from './workshopConstants'
 
 export function WorkshopTypesPage() {
@@ -24,6 +26,7 @@ export function WorkshopTypesPage() {
   const canCreate = user?.permissions?.includes('workshop_types:create')
   const canUpdate = user?.permissions?.includes('workshop_types:update')
   const canChangeStatus = user?.permissions?.includes('workshop_types:update_status')
+  const { summary, loading: summaryLoading } = useListingSummary('/taller/types/resumen')
 
   const loadTypes = useCallback(async () => {
     setLoading(true)
@@ -152,6 +155,7 @@ export function WorkshopTypesPage() {
       </div>
 
       {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
+      <ReportSummaryStrip summary={summary} loading={summaryLoading} />
 
       <Table className="glass-panel" rowKey="id" columns={columns} dataSource={types} loading={loading} pagination={{ pageSize: 8 }} />
 

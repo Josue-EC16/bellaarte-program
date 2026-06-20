@@ -23,6 +23,8 @@ import { apiClient } from '../../api/client'
 import { useAuth } from '../../auth/AuthProvider'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
+import { ReportSummaryStrip } from '../../components/reports/ReportSummaryStrip'
+import { useListingSummary } from '../../components/reports/useListingSummary'
 import { BoutiqueItemDetailCard } from './BoutiqueItemDetailCard'
 import { BoutiqueItemForm } from './BoutiqueItemForm'
 import { getCategoryColor } from './boutiqueConstants'
@@ -54,6 +56,7 @@ export function BoutiqueInventoryPage() {
   const canUpdate = user?.permissions?.includes('boutique_items:update')
   const canUpdateStatus = user?.permissions?.includes('boutique_items:update_status')
   const canCreateEntry = user?.permissions?.includes('boutique_entries:create')
+  const { summary, loading: summaryLoading } = useListingSummary('/boutique/items/resumen', filters)
 
   const loadReferences = useCallback(async () => {
     const [typesResponse, providersResponse] = await Promise.all([
@@ -335,6 +338,7 @@ export function BoutiqueInventoryPage() {
       </div>
 
       {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
+      <ReportSummaryStrip summary={summary} loading={summaryLoading} />
 
       <Table
         className="glass-panel"

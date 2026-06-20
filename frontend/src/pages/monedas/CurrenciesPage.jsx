@@ -7,6 +7,8 @@ import { useAuth } from '../../auth/AuthProvider'
 import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/forms/formConfig'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
+import { ReportSummaryStrip } from '../../components/reports/ReportSummaryStrip'
+import { useListingSummary } from '../../components/reports/useListingSummary'
 
 export function CurrenciesPage() {
   const [currencies, setCurrencies] = useState([])
@@ -23,6 +25,7 @@ export function CurrenciesPage() {
   const canCreate = user?.permissions?.includes('currencies:create')
   const canUpdate = user?.permissions?.includes('currencies:update')
   const canChangeStatus = user?.permissions?.includes('currencies:update_status')
+  const { summary, loading: summaryLoading } = useListingSummary('/monedas/resumen')
 
   const loadCurrencies = useCallback(async () => {
     setLoading(true)
@@ -139,6 +142,7 @@ export function CurrenciesPage() {
       </div>
 
       {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
+      <ReportSummaryStrip summary={summary} loading={summaryLoading} />
 
       <Table className="glass-panel" rowKey="id" columns={columns} dataSource={currencies} loading={loading} pagination={{ pageSize: 8 }} />
 

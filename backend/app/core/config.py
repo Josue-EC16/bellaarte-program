@@ -44,6 +44,11 @@ class Settings(BaseSettings):
     smtp_username: str | None = None
     smtp_password: str | None = None
 
+    backup_dir: str = "./storage/backups"
+    pg_dump_path: str | None = None
+    backup_timezone: str = "America/La_Paz"
+    backup_filename_prefix: str = "bellaarte_backup"
+
     @computed_field
     @property
     def effective_database_url(self) -> str:
@@ -72,4 +77,3 @@ def get_settings() -> Settings:
 
 
 settings = get_settings()
-

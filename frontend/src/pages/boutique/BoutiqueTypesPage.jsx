@@ -6,6 +6,8 @@ import { apiClient } from '../../api/client'
 import { useAuth } from '../../auth/AuthProvider'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
+import { ReportSummaryStrip } from '../../components/reports/ReportSummaryStrip'
+import { useListingSummary } from '../../components/reports/useListingSummary'
 import { BoutiqueTypeForm } from './BoutiqueTypeForm'
 import { getCategoryColor } from './boutiqueConstants'
 
@@ -24,6 +26,7 @@ export function BoutiqueTypesPage() {
   const canEdit = user?.permissions?.includes('boutique_types:update')
   const canCreate = user?.permissions?.includes('boutique_types:create')
   const canChangeStatus = user?.permissions?.includes('boutique_types:update_status')
+  const { summary, loading: summaryLoading } = useListingSummary('/boutique/types/resumen')
 
   const loadTypes = async () => {
     setLoading(true)
@@ -182,6 +185,7 @@ export function BoutiqueTypesPage() {
       </div>
 
       {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
+      <ReportSummaryStrip summary={summary} loading={summaryLoading} />
 
       <Table
         className="glass-panel"

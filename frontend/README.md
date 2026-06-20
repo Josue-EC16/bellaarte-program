@@ -17,6 +17,7 @@ La versión actual ya integra:
 - módulo de notificaciones con campana, panel desplegable, filtros y navegación al origen
 - módulo de economía con ingresos, egresos, devoluciones obligatorias y corte de caja
 - módulo de auditoría administrativa con filtros avanzados, detalle por evento y exportación
+- módulo de backups de base de datos con generación manual, verificación y descarga segura
 
 ## Stack
 
@@ -95,17 +96,24 @@ Protegidas:
 - `/app/seguridad/roles`
 - `/app/seguridad/usuarios`
 - `/app/clientes`
+- `/app/clientes/reportes`
+- `/app/clientes/reportes/imprimir`
 - `/app/boutique/tipos`
 - `/app/boutique/proveedores`
 - `/app/boutique/inventario`
 - `/app/boutique/entradas`
 - `/app/boutique/ventas`
+- `/app/boutique/reportes`
+- `/app/boutique/reportes/imprimir`
 - `/app/fletes`
 - `/app/fletes/salidas`
+- `/app/fletes/reportes`
+- `/app/fletes/reportes/imprimir`
 - `/app/comprobantes`
 - `/app/comprobantes/tipos`
 - `/app/notificaciones`
 - `/app/auditoria`
+- `/app/backups`
 - `/app/economia`
 - `/app/economia/egresos`
 - `/app/economia/cortes-caja`
@@ -114,8 +122,12 @@ Protegidas:
 - `/app/taller/inventario`
 - `/app/taller/entradas`
 - `/app/taller/salidas`
+- `/app/taller/reportes`
+- `/app/taller/reportes/imprimir`
 - `/app/monedas`
 - `/app/monedas/tipos-cambio`
+- `/app/monedas/reportes`
+- `/app/monedas/reportes/imprimir`
 
 Auxiliares:
 
@@ -134,6 +146,7 @@ Bloques actuales:
 - `Comprobantes Internos`
 - `Notificaciones`
 - `Auditoría del Sistema`
+- `Backups BD`
 - `Economía`
 - `Taller`
 - `Monedas`
@@ -153,6 +166,7 @@ Regla:
 ### Clientes
 
 - `src/pages/clients/ClientsPage.jsx`
+- `src/pages/clients/ClientReportsPage.jsx`
 
 Soporta:
 
@@ -169,6 +183,7 @@ Soporta:
 - `src/pages/boutique/BoutiqueInventoryPage.jsx`
 - `src/pages/boutique/BoutiqueEntriesPage.jsx`
 - `src/pages/boutique/BoutiqueSalesPage.jsx`
+- `src/pages/boutique/BoutiqueReportsPage.jsx`
 
 Componentes principales:
 
@@ -183,12 +198,14 @@ Componentes principales:
 
 - `src/pages/monedas/CurrenciesPage.jsx`
 - `src/pages/monedas/ExchangeRatesPage.jsx`
+- `src/pages/monedas/CurrencyReportsPage.jsx`
 
 ### Fletes
 
 - `src/pages/fletes/FletesPage.jsx`
 - `src/pages/fletes/FleteOutputsPage.jsx`
 - `src/pages/fletes/fleteConstants.js`
+- `src/pages/fletes/FleteReportsPage.jsx`
 
 ### Comprobantes internos
 
@@ -203,6 +220,13 @@ Componentes principales:
 - `src/pages/notificaciones/NotificationsPage.jsx`
 - `src/pages/notificaciones/notificationUtils.js`
 - campana integrada en `src/layout/AuthenticatedLayout.jsx`
+
+### Backups
+
+- `src/pages/backups/BackupsPage.jsx`
+- `src/pages/backups/backupUtils.js`
+- generación manual exclusiva para `ADMIN`
+- descarga directa del archivo `.dump`
 
 ### Auditoría
 
@@ -234,6 +258,8 @@ Componentes principales:
 - `src/pages/taller/WorkshopInventoryPage.jsx`
 - `src/pages/taller/WorkshopEntriesPage.jsx`
 - `src/pages/taller/WorkshopOutputsPage.jsx`
+- `src/pages/taller/WorkshopReportsPage.jsx`
+- `src/components/reports/*`
 
 ## Reglas UI/UX que ya sigue el frontend
 
@@ -244,6 +270,7 @@ Componentes principales:
 - el detalle de lectura usa `GET` fresco al backend
 - el resumen de venta se recalcula en tiempo real
 - la impresión de documentos usa HTML servida por backend + `window.print()`
+- los nuevos reportes operativos usan vistas imprimibles frontend con `window.print()`
 
 ## Contrato funcional actual por módulo
 

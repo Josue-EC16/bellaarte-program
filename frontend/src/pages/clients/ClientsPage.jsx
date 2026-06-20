@@ -9,6 +9,8 @@ import { useAuth } from '../../auth/AuthProvider'
 import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/forms/formConfig'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
+import { ReportSummaryStrip } from '../../components/reports/ReportSummaryStrip'
+import { useListingSummary } from '../../components/reports/useListingSummary'
 
 export function ClientsPage() {
   const [clients, setClients] = useState([])
@@ -27,6 +29,7 @@ export function ClientsPage() {
   const canCreate = user?.permissions?.includes('clients:create')
   const canUpdate = user?.permissions?.includes('clients:update')
   const canChangeStatus = user?.permissions?.includes('clients:update_status')
+  const { summary, loading: summaryLoading } = useListingSummary('/clientes/resumen', filters)
 
   const selectedCountry = Form.useWatch('pais', form)
 
@@ -220,6 +223,7 @@ export function ClientsPage() {
       </div>
 
       {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
+      <ReportSummaryStrip summary={summary} loading={summaryLoading} />
 
       <Table className="glass-panel" rowKey="id" columns={columns} dataSource={clients} loading={loading} pagination={{ pageSize: 8 }} />
 

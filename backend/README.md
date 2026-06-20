@@ -16,6 +16,8 @@ La version actual ya consolida:
 - módulo transversal de `notificacion` con campana, filtros, resolución y chequeos programados
 - módulo `economia` con ingresos derivados, egresos, devoluciones manuales y corte de caja
 - módulo `auditoria` exclusivo para `ADMIN`, con contexto por evento, exportación y trazabilidad híbrida backend + trigger
+- módulo `backups` exclusivo para `ADMIN`, con `pg_dump`, historial, descarga segura y bloqueo temporal del sistema
+- capa transversal de reportes operativos y analíticos con resúmenes por listado y paneles por módulo
 
 ## Stack
 
@@ -59,6 +61,7 @@ Tablas comerciales y boutique refactorizadas en minúscula:
 - `notificacion`
 - `corte_caja`
 - `egreso`
+- `backup_bd`
 
 ## Variables de entorno
 
@@ -78,6 +81,10 @@ Variables principales:
 - `REFRESH_TOKEN_DAYS`
 - `FRONTEND_URL`
 - `ENVIRONMENT`
+- `BACKUP_DIR`
+- `PG_DUMP_PATH`
+- `BACKUP_TIMEZONE`
+- `BACKUP_FILENAME_PREFIX`
 - `BOOTSTRAP_ADMIN_USERNAME`
 - `BOOTSTRAP_ADMIN_PASSWORD`
 - `BOOTSTRAP_ADMIN_EMAIL`
@@ -180,6 +187,8 @@ El flujo correcto es:
 - `20260529_0009_notifications.py`
 - `20260604_0010_economy_module.py`
 - `20260605_0011_audit_system_module.py`
+- `20260615_0012_phase1_report_indexes.py`
+- `20260620_0013_backup_module.py`
 
 Estas migraciones ya crean el bloque boutique/comercial con nombres físicos en minúscula.
 
@@ -218,6 +227,17 @@ Reintento técnico de correos fallidos:
 ```powershell
 python scripts/run_notification_checks.py --mode retry-emails
 ```
+
+Job semanal de backups:
+
+```powershell
+python scripts/run_backup_job.py --mode weekly
+```
+
+Automatización oficial recomendada:
+
+- programar el job cada domingo a las `02:00` hora `America/La_Paz`
+- asegurar `pg_dump` disponible en `PATH` o mediante `PG_DUMP_PATH`
 
 ## Seguridad y permisos
 
@@ -393,6 +413,8 @@ Ejemplos actuales:
 
 - `GET /api/v1/clientes`
 - `GET /api/v1/clientes/{id}`
+- `GET /api/v1/clientes/resumen`
+- `GET /api/v1/clientes/reportes/panel`
 - `POST /api/v1/clientes`
 - `PATCH /api/v1/clientes/{id}`
 - `PATCH /api/v1/clientes/{id}/status`
@@ -400,29 +422,35 @@ Ejemplos actuales:
 ### Boutique
 
 - `GET /api/v1/boutique/types`
+- `GET /api/v1/boutique/types/resumen`
 - `GET /api/v1/boutique/types/{id}`
 - `POST /api/v1/boutique/types`
 - `PATCH /api/v1/boutique/types/{id}`
 - `PATCH /api/v1/boutique/types/{id}/status`
 - `GET /api/v1/boutique/proveedores`
+- `GET /api/v1/boutique/proveedores/resumen`
 - `GET /api/v1/boutique/proveedores/{id}`
 - `POST /api/v1/boutique/proveedores`
 - `PATCH /api/v1/boutique/proveedores/{id}`
 - `PATCH /api/v1/boutique/proveedores/{id}/status`
 - `GET /api/v1/boutique/items`
+- `GET /api/v1/boutique/items/resumen`
 - `GET /api/v1/boutique/items/{id}`
 - `POST /api/v1/boutique/items`
 - `PATCH /api/v1/boutique/items/{id}`
 - `PATCH /api/v1/boutique/items/{id}/status`
 - `GET /api/v1/boutique/entries`
+- `GET /api/v1/boutique/entries/resumen`
 - `GET /api/v1/boutique/entries/{id}`
 - `POST /api/v1/boutique/entries`
 - `PATCH /api/v1/boutique/entries/{id}/status`
 - `GET /api/v1/boutique/sales`
+- `GET /api/v1/boutique/sales/resumen`
 - `GET /api/v1/boutique/sales/{id}`
 - `POST /api/v1/boutique/sales`
 - `PATCH /api/v1/boutique/sales/{id}/cancel`
 - `PATCH /api/v1/boutique/sales/{id}/annul`
+- `GET /api/v1/boutique/reportes/panel`
 
 Nota:
 
@@ -431,40 +459,49 @@ Nota:
 ### Monedas
 
 - `GET /api/v1/monedas`
+- `GET /api/v1/monedas/resumen`
 - `GET /api/v1/monedas/{id}`
 - `POST /api/v1/monedas`
 - `PATCH /api/v1/monedas/{id}`
 - `PATCH /api/v1/monedas/{id}/status`
 - `GET /api/v1/monedas/tipos-cambio`
+- `GET /api/v1/monedas/tipos-cambio/resumen`
 - `GET /api/v1/monedas/tipos-cambio/{id}`
 - `POST /api/v1/monedas/tipos-cambio`
 - `PATCH /api/v1/monedas/tipos-cambio/{id}`
 - `PATCH /api/v1/monedas/tipos-cambio/{id}/status`
+- `GET /api/v1/monedas/reportes/panel`
 
 ### Taller
 
 - `GET /api/v1/taller/types`
+- `GET /api/v1/taller/types/resumen`
 - `GET /api/v1/taller/types/{id}`
 - `POST /api/v1/taller/types`
 - `PATCH /api/v1/taller/types/{id}`
 - `PATCH /api/v1/taller/types/{id}/status`
 - `GET /api/v1/taller/inventory`
+- `GET /api/v1/taller/inventory/resumen`
 - `GET /api/v1/taller/inventory/{id}`
 - `POST /api/v1/taller/inventory`
 - `PATCH /api/v1/taller/inventory/{id}`
 - `PATCH /api/v1/taller/inventory/{id}/status`
 - `GET /api/v1/taller/entries`
+- `GET /api/v1/taller/entries/resumen`
 - `GET /api/v1/taller/entries/{id}`
 - `POST /api/v1/taller/entries`
 - `PATCH /api/v1/taller/entries/{id}/status`
 - `GET /api/v1/taller/outputs`
+- `GET /api/v1/taller/outputs/resumen`
 - `GET /api/v1/taller/outputs/{id}`
 - `POST /api/v1/taller/outputs`
 - `PATCH /api/v1/taller/outputs/{id}/status`
+- `GET /api/v1/taller/reportes/panel`
 
 ### Fletes
 
 - `GET /api/v1/fletes`
+- `GET /api/v1/fletes/resumen`
 - `GET /api/v1/fletes/eligible-items`
 - `GET /api/v1/fletes/{id}`
 - `POST /api/v1/fletes`
@@ -474,11 +511,13 @@ Nota:
 - `PATCH /api/v1/fletes/{id}/pass-to-sale`
 - `PATCH /api/v1/fletes/{id}/retire`
 - `GET /api/v1/fletes/salidas`
+- `GET /api/v1/fletes/salidas/resumen`
 - `GET /api/v1/fletes/salidas/{id}`
 - `POST /api/v1/fletes/salidas`
 - `PATCH /api/v1/fletes/salidas/{id}/deliver`
 - `PATCH /api/v1/fletes/salidas/{id}/return`
 - `PATCH /api/v1/fletes/salidas/{id}/annul`
+- `GET /api/v1/fletes/reportes/panel`
 
 Nota:
 

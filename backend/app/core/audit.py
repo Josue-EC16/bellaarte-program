@@ -114,6 +114,13 @@ ACTION_DESCRIPTOR_MAP: dict[str, AuditDescriptor] = {
     "CASH_CUT_CLOSED": AuditDescriptor("CORTE_CAJA", "CIERRE", "corte_caja", TipoAccionAuditoriaEnum.CAMBIO_ESTADO, "CIERRE DE CORTE DE CAJA"),
     "NOTIFICATION_RESOLVED": AuditDescriptor("NOTIFICACIONES", "RESOLUCION", "notificacion", TipoAccionAuditoriaEnum.CAMBIO_ESTADO, "RESOLUCION DE NOTIFICACION"),
     "NOTIFICATION_EMAIL_RETRIED": AuditDescriptor("NOTIFICACIONES", "REINTENTO_CORREO", "notificacion", TipoAccionAuditoriaEnum.OTRO, "REINTENTO DE ENVIO DE CORREO"),
+    "BACKUP_MANUAL_STARTED": AuditDescriptor("BACKUPS", "GENERACION", "backup_bd", TipoAccionAuditoriaEnum.INSERT, "INICIO DE BACKUP MANUAL"),
+    "BACKUP_MANUAL_COMPLETED": AuditDescriptor("BACKUPS", "GENERACION", "backup_bd", TipoAccionAuditoriaEnum.OTRO, "BACKUP MANUAL EXITOSO"),
+    "BACKUP_AUTOMATIC_STARTED": AuditDescriptor("BACKUPS", "GENERACION", "backup_bd", TipoAccionAuditoriaEnum.INSERT, "INICIO DE BACKUP AUTOMATICO"),
+    "BACKUP_AUTOMATIC_COMPLETED": AuditDescriptor("BACKUPS", "GENERACION", "backup_bd", TipoAccionAuditoriaEnum.OTRO, "BACKUP AUTOMATICO EXITOSO"),
+    "BACKUP_FAILED": AuditDescriptor("BACKUPS", "GENERACION", "backup_bd", TipoAccionAuditoriaEnum.OTRO, "BACKUP FALLIDO"),
+    "BACKUP_DOWNLOADED": AuditDescriptor("BACKUPS", "DESCARGA", "backup_bd", TipoAccionAuditoriaEnum.OTRO, "DESCARGA DE BACKUP"),
+    "BACKUP_DOWNLOAD_FAILED": AuditDescriptor("BACKUPS", "DESCARGA", "backup_bd", TipoAccionAuditoriaEnum.OTRO, "DESCARGA FALLIDA DE BACKUP"),
 }
 
 
