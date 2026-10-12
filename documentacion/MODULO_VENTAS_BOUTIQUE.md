@@ -2,51 +2,64 @@
 
 ## Objetivo
 
-Esta entrega implementa el submodulo `VENTA_BOUTIQUE` para registrar ventas directas de productos de la boutique, respetando el SQL documental, la arquitectura vigente del sistema y los lineamientos de UI/UX ya definidos para formularios y CRUD.
+Esta versión implementa `venta_boutique` sobre el nuevo bloque boutique normalizado, incorporando moneda, tipo de cambio congelado y reversión de stock.
 
 ## Modelo de datos implementado
 
 ### Enums
 
-- `METODO_PAGO`
-- `MOTIVO_DESC_VENTA_BOUTIQUE`
-- `ESTADO_VENTA_BOUTIQUE`
+- `metodo_pago`
+- `motivo_desc_venta_boutique`
+- `estado_venta_boutique`
 
-### Tabla
+### Tablas relacionadas
 
-- `VENTA_BOUTIQUE`
+- `venta_boutique`
+- `item_boutique`
+- `cliente`
+- `moneda`
+- `tipo_cambio_moneda`
+- `usuarios`
 
-### Columnas fisicas respetadas
+### Columnas clave de `venta_boutique`
 
-- `VEB_ID`
-- `ITB_ID`
-- `USU_ID`
-- `CLI_ID`
-- `VEB_FEC`
-- `VEB_CANT`
-- `VEB_PRE_UNI`
-- `VEB_DESCUENTO`
-- `VEB_MOTIVO_DESC`
-- `VEB_TOT`
-- `VEB_METODO_PAGO`
-- `VEB_OBS`
-- `VEB_ESTADO`
+- `veb_id`
+- `itb_id`
+- `usu_id`
+- `cli_id`
+- `mon_id`
+- `veb_fec`
+- `veb_cant`
+- `veb_pre_uni`
+- `veb_descuento`
+- `veb_motivo_desc`
+- `veb_tot`
+- `veb_tipo_cambio_usado`
+- `veb_total_moneda_orig`
+- `veb_metodo_pago`
+- `veb_obs`
+- `veb_estado`
+- `veb_fec_camb_est`
+- `veb_motivo_camb_est`
 
 ## Reglas de negocio
 
-- `VEB_TOT` se calcula desde la BD
-- el precio unitario se toma automaticamente desde `ITEM_BOUTIQUE.ITB_PRECIO_VENTA`
-- no se permite editar una venta despues de crearla
-- `ACTIVA` es el unico estado inicial permitido
-- `CANCELADA` y `ANULADA` revierten stock y no cuentan como ingreso real
-- no se permite vender un item inactivo
-- no se permite vender un item cuyo tipo boutique este inactivo
-- no se permite vender sin stock suficiente
-- si hay descuento, el motivo es obligatorio
-- si no hay descuento, el motivo debe quedar nulo
-- `MIXTO` existe en enum pero queda bloqueado hasta tener una estructura de desglose real
-- el cliente es opcional
-- `USU_ID` conserva nombre documental, pero referencia a la tabla real `usuarios`
+- `veb_pre_uni` se toma automáticamente de `item_boutique.itb_precio_venta`
+- `veb_cant` es entero y debe ser mayor a cero
+- `veb_tot` se calcula en base de datos
+- `veb_descuento` no puede ser mayor al subtotal
+- si hay descuento, `veb_motivo_desc` es obligatorio
+- si no hay descuento, `veb_motivo_desc` debe quedar nulo
+- si la moneda es base, `veb_tipo_cambio_usado = 1`
+- si la moneda no es base, se usa el tipo de cambio activo vigente
+- `veb_total_moneda_orig` se calcula y queda congelado en la venta
+- no se vende stock insuficiente
+- no se vende un item inactivo o con tipo deshabilitado
+- el cliente es opcional, pero si se envía debe estar habilitado
+- la venta no se edita después de creada
+- solo se permite `activa -> cancelada` o `activa -> anulada`
+- cancelar o anular devuelve stock exactamente una vez
+- al revertir se registra fecha y motivo de cambio de estado
 
 ## API
 
@@ -56,11 +69,12 @@ Esta entrega implementa el submodulo `VENTA_BOUTIQUE` para registrar ventas dire
 - `PATCH /api/v1/boutique/sales/{id}/cancel`
 - `PATCH /api/v1/boutique/sales/{id}/annul`
 
-### Filtros
+Filtros:
 
 - `search`
 - `item_id`
 - `client_id`
+- `currency_id`
 - `payment_method`
 - `state`
 - `date_from`
@@ -70,25 +84,24 @@ Esta entrega implementa el submodulo `VENTA_BOUTIQUE` para registrar ventas dire
 
 `ADMIN`:
 
-- listar ventas boutique
-- ver detalle de venta
-- registrar venta
-- cancelar venta
-- anular venta
+- listar
+- ver
+- crear
+- cancelar
+- anular
 
 `CAJA`:
 
-- listar ventas boutique
-- ver detalle de venta
-- registrar venta
-- cancelar venta
-- anular venta
-- lectura de clientes como referencia de venta
+- listar
+- ver
+- crear
+- cancelar
+- anular
 
 `INV_BOUTIQUE`:
 
-- listar ventas boutique
-- ver detalle de venta
+- listar
+- ver
 
 ## Frontend
 
@@ -96,37 +109,28 @@ Esta entrega implementa el submodulo `VENTA_BOUTIQUE` para registrar ventas dire
 
 - `/app/boutique/ventas`
 
-### Componentes principales
+### Comportamiento
 
-- `BoutiqueSalesPage`
-- `BoutiqueSaleForm`
-- `BoutiqueSaleDetailCard`
+- filtro por producto, cliente, moneda, método, estado y fechas
+- drawer de nueva venta con `maskClosable={false}`
+- resumen en tiempo real:
+  - subtotal en Bs
+  - descuento
+  - total en Bs
+  - total en moneda origen
+- si la moneda no tiene tipo de cambio activo, la venta se bloquea
+- el detalle se consulta siempre con `GET` fresco
+- cancelar y anular exigen motivo operativo
 
-### Comportamiento de UI
-
-- tabla historica con filtros
-- drawer para nueva venta
-- modal de detalle con consulta fresca al backend
-- modal de cancelacion o anulacion con motivo operativo obligatorio
-- resumen de subtotal, descuento y total en tiempo real
-- selector de producto con stock y precio visible
-- selector opcional de cliente
-- metodo de pago sin opcion operativa `MIXTO`
-
-## Auditoria
-
-Eventos registrados:
+## Auditoría
 
 - `BOUTIQUE_SALE_CREATED`
 - `BOUTIQUE_SALE_CANCELLED`
 - `BOUTIQUE_SALE_ANNULLED`
 
-## Validacion realizada
+## Validación objetivo del módulo
 
-- `pytest` backend pasando
-- `alembic upgrade head` ejecutado correctamente
-- smoke test real de venta con rol `CAJA`
-- smoke test real de lectura con rol `INV_BOUTIQUE`
-- smoke test real de cancelacion y anulacion con reversión de stock
-- `pnpm lint` frontend pasando
-- `pnpm build` frontend pasando
+- venta con `BOB` usa tipo de cambio `1`
+- venta con moneda no base toma el tipo de cambio activo
+- cancelación y anulación restauran stock
+- `CAJA` puede vender y `INV_BOUTIQUE` solo leer

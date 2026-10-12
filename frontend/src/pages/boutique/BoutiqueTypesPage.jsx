@@ -6,7 +6,10 @@ import { apiClient } from '../../api/client'
 import { useAuth } from '../../auth/AuthProvider'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
+import { ReportSummaryStrip } from '../../components/reports/ReportSummaryStrip'
+import { useListingSummary } from '../../components/reports/useListingSummary'
 import { BoutiqueTypeForm } from './BoutiqueTypeForm'
+import { getCategoryColor } from './boutiqueConstants'
 
 export function BoutiqueTypesPage() {
   const [types, setTypes] = useState([])
@@ -23,6 +26,7 @@ export function BoutiqueTypesPage() {
   const canEdit = user?.permissions?.includes('boutique_types:update')
   const canCreate = user?.permissions?.includes('boutique_types:create')
   const canChangeStatus = user?.permissions?.includes('boutique_types:update_status')
+  const { summary, loading: summaryLoading } = useListingSummary('/boutique/types/resumen')
 
   const loadTypes = async () => {
     setLoading(true)
@@ -97,7 +101,29 @@ export function BoutiqueTypesPage() {
   }
 
   const columns = [
-    { title: 'Nombre', dataIndex: 'nombre', key: 'nombre' },
+    { 
+      title: 'Nombre', 
+      dataIndex: 'nombre', 
+      key: 'nombre',
+      render: (value) => (
+        <Tag color={getCategoryColor(value)}>
+          {value}
+        </Tag>
+      )
+    },
+    {
+      title: 'Color asignado',
+      key: 'color',
+      render: (_, record) => {
+        const hex = getCategoryColor(record.nombre)
+        return (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ width: 24, height: 24, borderRadius: 4, background: hex, border: '1px solid #d9d9d9' }} />
+            <Typography.Text type="secondary" style={{ fontFamily: 'monospace' }}>{hex}</Typography.Text>
+          </div>
+        )
+      }
+    },
     {
       title: 'Descripción',
       dataIndex: 'descripcion',
@@ -159,6 +185,7 @@ export function BoutiqueTypesPage() {
       </div>
 
       {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
+      <ReportSummaryStrip summary={summary} loading={summaryLoading} />
 
       <Table
         className="glass-panel"

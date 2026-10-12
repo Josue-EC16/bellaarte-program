@@ -1,4 +1,14 @@
-import { ArrowRightOutlined, LockOutlined, ShoppingCartOutlined, TeamOutlined } from '@ant-design/icons'
+import {
+  AppstoreOutlined,
+  ArrowRightOutlined,
+  DollarOutlined,
+  SkinOutlined,
+  IdcardOutlined,
+  LockOutlined,
+  ScissorOutlined,
+  ShoppingCartOutlined,
+  TeamOutlined,
+} from '@ant-design/icons'
 import { Button, Card, Col, Row, Space, Tag, Typography } from 'antd'
 import { Link } from 'react-router-dom'
 
@@ -11,6 +21,88 @@ export function DashboardHomePage() {
     month: '2-digit',
     year: 'numeric',
   }).format(new Date())
+  const quickLinks = [
+    user?.permissions?.includes('users:list')
+      ? {
+          key: 'users',
+          to: '/app/seguridad/usuarios',
+          label: 'Gestionar Usuarios',
+          icon: <TeamOutlined />,
+        }
+      : null,
+    user?.permissions?.includes('clients:list')
+      ? {
+          key: 'clients',
+          to: '/app/clientes',
+          label: 'Ir a Clientes',
+          icon: <IdcardOutlined />,
+        }
+      : null,
+    user?.permissions?.includes('boutique_items:list')
+      ? {
+          key: 'inventory',
+          to: '/app/boutique/inventario',
+          label: 'Inventario Boutique',
+          icon: <AppstoreOutlined />,
+        }
+      : null,
+    user?.permissions?.includes('boutique_entries:list')
+      ? {
+          key: 'boutique-entries',
+          to: '/app/boutique/entradas',
+          label: 'Entradas Boutique',
+          icon: <AppstoreOutlined />,
+        }
+      : null,
+    user?.permissions?.includes('boutique_sales:list')
+      ? {
+          key: 'sales',
+          to: '/app/boutique/ventas',
+          label: 'Ir a Ventas Boutique',
+          icon: <ShoppingCartOutlined />,
+        }
+      : null,
+    user?.permissions?.includes('fletes:list')
+      ? {
+          key: 'fletes',
+          to: '/app/fletes',
+          label: 'Vestidos en Flete',
+          icon: <SkinOutlined />,
+        }
+      : null,
+    user?.permissions?.includes('flete_outputs:list')
+      ? {
+          key: 'flete-outputs',
+          to: '/app/fletes/salidas',
+          label: 'Salidas de Flete',
+          icon: <ShoppingCartOutlined />,
+        }
+      : null,
+    user?.permissions?.includes('workshop_inventory:list')
+      ? {
+          key: 'workshop-inventory',
+          to: '/app/taller/inventario',
+          label: 'Inventario Taller',
+          icon: <ScissorOutlined />,
+        }
+      : null,
+    user?.permissions?.includes('workshop_outputs:list')
+      ? {
+          key: 'workshop-outputs',
+          to: '/app/taller/salidas',
+          label: 'Salidas Taller',
+          icon: <ScissorOutlined />,
+        }
+      : null,
+    user?.permissions?.includes('currencies:list')
+      ? {
+          key: 'currencies',
+          to: '/app/monedas',
+          label: 'Catalogo de Monedas',
+          icon: <DollarOutlined />,
+        }
+      : null,
+  ].filter(Boolean)
 
   return (
     <div className="dashboard-grid">
@@ -61,20 +153,17 @@ export function DashboardHomePage() {
               Accesos rápidos
             </Typography.Title>
             <Typography.Paragraph type="secondary">
-              En esta primera fase tienes disponible el módulo base de seguridad y la navegación principal.
+              El home ya refleja los módulos operativos habilitados para tu rol actual.
             </Typography.Paragraph>
-            {user?.permissions?.includes('users:list') ? (
-              <Button icon={<TeamOutlined />} type="default">
-                <Link to="/app/seguridad/usuarios">Gestionar Usuarios</Link>
+            {quickLinks.map((link) => (
+              <Button key={link.key} icon={link.icon} type="default">
+                <Link to={link.to}>{link.label}</Link>
               </Button>
-            ) : null}
-            {user?.permissions?.includes('boutique_sales:list') ? (
-              <Button icon={<ShoppingCartOutlined />} type="default">
-                <Link to="/app/boutique/ventas">Ir a Ventas Boutique</Link>
-              </Button>
-            ) : null}
-            {!user?.permissions?.includes('users:list') && !user?.permissions?.includes('boutique_sales:list') ? (
-              <Typography.Text type="secondary">Tu rol no administra Usuarios en esta etapa.</Typography.Text>
+            ))}
+            {quickLinks.length === 0 ? (
+              <Typography.Text type="secondary">
+                Tu rol no tiene accesos operativos directos adicionales en esta etapa.
+              </Typography.Text>
             ) : null}
           </Space>
         </Card>
@@ -85,10 +174,10 @@ export function DashboardHomePage() {
           <Card className="glass-panel" variant="borderless" style={{ borderRadius: 24, height: '100%' }}>
             <Typography.Title level={4}>Siguiente paso funcional</Typography.Title>
             <Typography.Paragraph type="secondary">
-              El sistema ya soporta autenticación, cambio obligatorio de clave, control de roles y alta interna de usuarios.
+              El sistema ya soporta seguridad, clientes, proveedores, inventario boutique, ventas, fletes y operación inicial del taller.
             </Typography.Paragraph>
             <Button type="link" icon={<ArrowRightOutlined />} style={{ paddingInline: 0 }}>
-              Módulo listo para crecer a inventarios, pedidos y finanzas
+              Base lista para crecer hacia pedidos, pagos y finanzas
             </Button>
           </Card>
         </Col>

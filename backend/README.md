@@ -2,42 +2,22 @@
 
 Backend del sistema `bellaarte-program`, construido con FastAPI, SQLAlchemy, Alembic, JWT y Casbin.
 
-Esta primera fase ya implementa el modulo base de seguridad del sistema:
+La version actual ya consolida:
 
-- login interno
-- sesiones con `access token` + `refresh token`
-- cambio obligatorio de contrasena
-- roles base del negocio
-- control de permisos con Casbin
-- creacion interna de usuarios por `ADMIN`
-- auditoria de eventos de seguridad
-
-Y ahora tambien incorpora la segunda fase inicial del modulo Boutique:
-
-- CRUD de `TIPO_ITEM_BOUTIQUE`
-- CRUD de `ITEM_BOUTIQUE`
-- detalle especializado para `VESTIDO`, `VELO` y `BOUQUET`
-- control logico de activacion y desactivacion
-- permisos por rol para operacion boutique
-- seed base de tipos boutique
-
-Y ahora tambien incorpora el submodulo de ventas directas de Boutique:
-
-- registro de `VENTA_BOUTIQUE`
-- control de stock al vender y al revertir
-- reversión por `CANCELADA` y `ANULADA`
-- permisos de venta para `ADMIN` y `CAJA`
-- lectura de ventas para `INV_BOUTIQUE`
-- bloqueo de `MIXTO` hasta tener desglose real
-
-Y ahora tambien incorpora la evolucion completa del modulo de seguridad y el nuevo modulo Cliente:
-
-- CRUD operativo de roles
-- CRUD operativo de usuarios y cuentas
-- reset administrativo de contrasena temporal
-- CRUD de `CLIENTE`
-- permisos de `MODISTA` para clientes
-- migracion documental para `CLIENTE`
+- seguridad interna con login, refresh, roles, cuentas y auditoria
+- CRUD operativo de usuarios y roles
+- CRUD de `cliente`
+- CRUD de `tipo_item_boutique`, `proveedor`, `item_boutique` y sus detalles
+- CRUD de `moneda` y `tipo_cambio_moneda`
+- ventas directas de `venta_boutique` con descuento de stock y reversión
+- fletes de vestidos con comprobante interno, devolución, revisión, pase a venta y retiro
+- historial de `comprobante_interno` integrado a ventas boutique, pagos de pedido y salidas de flete
+- catálogo administrable de `tipo_comprobante`
+- módulo transversal de `notificacion` con campana, filtros, resolución y chequeos programados
+- módulo `economia` con ingresos derivados, egresos, devoluciones manuales y corte de caja
+- módulo `auditoria` exclusivo para `ADMIN`, con contexto por evento, exportación y trazabilidad híbrida backend + trigger
+- módulo `backups` exclusivo para `ADMIN`, con `pg_dump`, historial, descarga segura y bloqueo temporal del sistema
+- capa transversal de reportes operativos y analíticos con resúmenes por listado y paneles por módulo
 
 ## Stack
 
@@ -49,52 +29,45 @@ Y ahora tambien incorpora la evolucion completa del modulo de seguridad y el nue
 - Passlib + Bcrypt
 - Python-JOSE
 - Casbin
+- user-agents
 - Pytest
 
-## Estado actual del modulo
+## Estado actual de base de datos
 
-Entidades implementadas:
+Tablas de seguridad:
 
 - `roles`
 - `usuarios`
 - `cuentas`
 - `auditoria_sistema`
-- `CLIENTE`
-- `TIPO_ITEM_BOUTIQUE`
-- `ITEM_BOUTIQUE`
-- `DETALLE_VESTIDO_BOUTIQUE`
-- `DETALLE_VELO_BOUTIQUE`
-- `DETALLE_BOUQUET_BOUTIQUE`
-- `VENTA_BOUTIQUE`
 
-Routers implementados:
+Tablas comerciales y boutique refactorizadas en minúscula:
 
-- `auth`
-- `roles`
-- `users`
-- `clientes`
-- `boutique`
-
-Politicas implementadas:
-
-- acceso autenticado al dashboard
-- lectura de sesion actual
-- cambio de contrasena
-- cierre de sesion
-- gestion de usuarios solo para `ADMIN`
-- gestion completa de roles solo para `ADMIN`
-- gestion completa de clientes para `ADMIN`
-- gestion completa de clientes para `MODISTA`
-- CRUD boutique para `ADMIN` e `INV_BOUTIQUE`
-- lectura boutique para `CAJA`
-- ventas boutique para `ADMIN` y `CAJA`
-- lectura de ventas boutique para `INV_BOUTIQUE`
+- `cliente`
+- `proveedor`
+- `moneda`
+- `tipo_cambio_moneda`
+- `tipo_item_boutique`
+- `item_boutique`
+- `detalle_vestido_boutique`
+- `detalle_velo_boutique`
+- `detalle_bouquet_boutique`
+- `flete_vestido`
+- `salida_flete`
+- `tipo_comprobante`
+- `comprobante_interno`
+- `detalle_comprobante`
+- `venta_boutique`
+- `notificacion`
+- `corte_caja`
+- `egreso`
+- `backup_bd`
 
 ## Variables de entorno
 
 Crear `.env` en `backend/` a partir de `.env.example`.
 
-Variables soportadas:
+Variables principales:
 
 - `DATABASE_URL`
 - `DB_HOST`
@@ -108,6 +81,10 @@ Variables soportadas:
 - `REFRESH_TOKEN_DAYS`
 - `FRONTEND_URL`
 - `ENVIRONMENT`
+- `BACKUP_DIR`
+- `PG_DUMP_PATH`
+- `BACKUP_TIMEZONE`
+- `BACKUP_FILENAME_PREFIX`
 - `BOOTSTRAP_ADMIN_USERNAME`
 - `BOOTSTRAP_ADMIN_PASSWORD`
 - `BOOTSTRAP_ADMIN_EMAIL`
@@ -118,28 +95,21 @@ Variables soportadas:
 - `BOOTSTRAP_ADMIN_CELLPHONE`
 - `BOOTSTRAP_ADMIN_ZONE`
 - `BOOTSTRAP_ADMIN_ADDRESS`
+- `BOOTSTRAP_ADMIN2_USERNAME`
+- `BOOTSTRAP_ADMIN2_PASSWORD`
+- `BOOTSTRAP_ADMIN2_EMAIL`
+- `BOOTSTRAP_ADMIN2_NAMES`
+- `BOOTSTRAP_ADMIN2_LAST_NAME`
+- `BOOTSTRAP_ADMIN2_MOTHER_LAST_NAME`
+- `BOOTSTRAP_ADMIN2_CI`
+- `BOOTSTRAP_ADMIN2_CELLPHONE`
+- `BOOTSTRAP_ADMIN2_ZONE`
+- `BOOTSTRAP_ADMIN2_ADDRESS`
 
-### Regla importante
+Regla:
 
-Si existe `DATABASE_URL`, el backend usa esa URL como fuente principal.
-
-Si no existe, arma la conexion con:
-
-- `DB_HOST`
-- `DB_NAME`
-- `DB_USER`
-- `DB_PASS`
-- `DB_PORT`
-
-### Nota del entorno local actual
-
-En la implementacion validada localmente se uso:
-
-```env
-DATABASE_URL=postgresql://MARCELO@localhost:5432/bellaarte_db
-```
-
-porque en el PostgreSQL local de Laragon no existia el rol `postgres`.
+- si existe `DATABASE_URL`, esa es la fuente principal
+- si no existe, la conexión se arma con `DB_*`
 
 ## Comandos
 
@@ -157,22 +127,28 @@ Levantar API:
 uvicorn main:app --reload
 ```
 
-Ejecutar pruebas:
-
-```powershell
-pytest
-```
-
 Aplicar migraciones:
 
 ```powershell
 python -m alembic -c alembic.ini upgrade head
 ```
 
-Ejecutar seed de seguridad:
+Ejecutar seed base:
 
 ```powershell
 python scripts/seed_security.py
+```
+
+Ejecutar seed de rescate para `ADMIN2`:
+
+```powershell
+python scripts/seed_admin2.py
+```
+
+Ejecutar pruebas:
+
+```powershell
+pytest
 ```
 
 ## Estructura oficial
@@ -202,363 +178,225 @@ backend/
 └─ README.md
 ```
 
-## Responsabilidad por carpeta
-
-### `app/main.py`
-
-Factory principal de FastAPI.
-
-Aqui se define:
-
-- metadata de la app
-- CORS
-- healthcheck
-- inclusion del router `/api/v1`
-
-### `app/api/routers/`
-
-Un router por dominio funcional.
-
-Regla:
-
-- no poner logica de negocio pesada aqui
-- solo orquestacion HTTP, dependencias y respuestas
-
-### `app/core/`
-
-Infraestructura y piezas transversales:
-
-- config
-- database
-- seguridad JWT
-- permisos
-- auditoria
-
-### `app/deps/`
-
-Dependencias reutilizables para FastAPI.
-
-Ejemplo actual:
-
-- autenticacion por bearer token
-- validacion de permisos con Casbin
-
-### `app/models/`
-
-Modelos ORM de SQLAlchemy.
-
-Reglas:
-
-- una entidad por archivo
-- `snake_case` fisico en tablas y columnas
-- sin acentos en nombres tecnicos
-- relaciones claras
-
-### `app/schemas/`
-
-Contratos de entrada y salida con Pydantic.
-
-Regla:
-
-- no exponer modelos ORM directamente en respuestas HTTP
-
-### `app/services/`
-
-Logica de negocio por dominio.
-
-Regla:
-
-- si una regla no es puramente HTTP ni puramente ORM, va aqui
-
-### `app/security/`
-
-Definicion base de Casbin:
-
-- `model.conf`
-- `policy.csv`
-
-### `scripts/`
-
-Scripts operativos.
-
-Regla:
-
-- deben ser idempotentes cuando sea posible
-- no deben duplicar logica que ya vive en `services/`
-
-### `tests/`
-
-Pruebas automatizadas.
-
 ## Flujo oficial de base de datos
 
-Este proyecto ya no debe crear tablas con `create_all()` como mecanismo principal de evolucion.
+No usar `create_all()` como mecanismo de evolución.
 
 El flujo correcto es:
 
-1. definir o modificar modelos SQLAlchemy
-2. crear migracion Alembic
-3. revisar migracion
-4. aplicar migracion con `upgrade head`
-5. correr seeds si corresponde
+1. cambiar modelos ORM
+2. crear o ajustar migración Alembic
+3. revisar SQL y constraints
+4. aplicar `upgrade head`
+5. correr seeds
 
-## Primera migracion actual
+## Migraciones vigentes
 
-Archivo:
+- `20260408_0001_initial_security.py`
+- `20260413_0002_boutique_inventory.py`
+- `20260413_0003_clientes.py`
+- `20260427_0004_venta_boutique.py`
+- `20260511_0005_boutique_entries_workshop.py`
+- `20260515_0006_fletes_receipts.py`
+- `20260524_0007_pedidos_pagos_pruebas.py`
+- `20260525_0008_internal_receipts_module.py`
+- `20260529_0009_notifications.py`
+- `20260604_0010_economy_module.py`
+- `20260605_0011_audit_system_module.py`
+- `20260615_0012_phase1_report_indexes.py`
+- `20260620_0013_backup_module.py`
 
-- `alembic/versions/20260408_0001_initial_security.py`
+Estas migraciones ya crean el bloque boutique/comercial con nombres físicos en minúscula.
 
-Contenido:
+## Seeds oficiales
 
-- tabla `roles`
-- tabla `usuarios`
-- tabla `cuentas`
-- tabla `auditoria_sistema`
-
-## Seed oficial
-
-El seed base vive en:
+El seed principal vive en:
 
 - `scripts/seed_security.py`
 - `app/services/seed_service.py`
 
-Sembrado actual:
+Actualmente garantiza:
 
-- `ADMIN`
-- `INV_TALLER`
-- `INV_BOUTIQUE`
-- `CAJA`
-- `MODISTA`
-- tipos boutique iniciales: `VESTIDO`, `VELO`, `BOUQUET`, `OTRO`
+- roles base: `ADMIN`, `INV_TALLER`, `INV_BOUTIQUE`, `CAJA`, `MODISTA`
+- admin inicial usando `BOOTSTRAP_ADMIN_*`
+- tipos boutique base: `VESTIDO`, `VELO`, `BOUQUET`, `OTRO`
+- moneda base `BOB`
+- tipo de cambio activo de `BOB = 1`
+- tipos de comprobante: `VENTA_BOUTIQUE_INTERNO`, `PAGO_PEDIDO_INTERNO`, `FLETE_INTERNO`
 
-Tambien crea el primer admin usando variables `BOOTSTRAP_ADMIN_*`.
+Reglas del seed:
 
-### Regla para futuros seeds
+- debe ser idempotente
+- no debe hardcodear credenciales sensibles
+- no debe asumir datos previos del bloque boutique
 
-- no poner contrasenas hardcodeadas en el codigo
-- usar variables de entorno
-- hacer el seed idempotente
-- si un seed depende de tablas nuevas, ejecutar primero `alembic upgrade head`
+## Scripts operativos nuevos
 
-## Seguridad y autenticacion
+Chequeos diarios de notificaciones:
 
-### Tokens
+```powershell
+python scripts/run_notification_checks.py --mode daily
+```
 
-Se usan dos tokens:
+Reintento técnico de correos fallidos:
 
-- `access token`
-- `refresh token`
+```powershell
+python scripts/run_notification_checks.py --mode retry-emails
+```
 
-El `access token` viaja en header `Authorization: Bearer`.
+Job semanal de backups:
 
-El `refresh token` viaja en cookie `HttpOnly`.
+```powershell
+python scripts/run_backup_job.py --mode weekly
+```
 
-### Reglas
+Automatización oficial recomendada:
 
-- no guardar refresh token en base de datos en esta fase
-- no devolver password hash bajo ninguna circunstancia
-- toda cuenta nueva debe nacer con `must_change_password = true`
+- programar el job cada domingo a las `02:00` hora `America/La_Paz`
+- asegurar `pg_dump` disponible en `PATH` o mediante `PG_DUMP_PATH`
 
-### Auditoria actual
+## Seguridad y permisos
 
-Eventos auditados:
+Autenticación:
 
-- `LOGIN_SUCCESS`
-- `LOGIN_FAILED`
-- `LOGOUT`
-- `PASSWORD_CHANGED`
-- `USER_CREATED`
-- `ACCOUNT_STATUS_CHANGED`
+- `access token` en header `Authorization`
+- `refresh token` en cookie `HttpOnly`
+- toda cuenta nueva nace con `must_change_password = true`
 
-## Casbin y permisos
-
-Casbin se inicializa en:
-
-- `app/api/router.py`
-
-La politica actual usa como sujeto:
+Casbin usa como sujeto:
 
 - `rol.codigo`
 
-No usa el nombre visible del rol.
+Formato obligatorio de permisos:
 
-### Regla para futuros modulos
+- `<modulo>:<accion>`
 
-Cada nuevo modulo debe definir permisos con formato:
+Ejemplos actuales:
 
-```text
-<modulo>:<accion>
-```
+- `users:create`
+- `clients:update`
+- `boutique_items:list`
+- `currencies:update`
+- `exchange_rates:view`
+- `boutique_sales:annul`
+- `fletes:pass_to_sale`
+- `flete_outputs:return`
+- `receipts:view`
+- `receipt_types:update`
+- `economy_refunds:create`
 
-Ejemplos:
+## Reglas de negocio por módulo
 
-- `inventario_boutique:view`
-- `inventario_boutique:create`
-- `pedidos:update`
-- `finanzas:read`
+### Seguridad
 
-### Donde actualizar permisos
+- `USUARIO` y `CUENTA` se administran juntos desde UI, pero siguen separados en backend
+- no se puede desactivar un rol con cuentas activas asociadas
+- reset de contraseña administrativo vuelve a marcar `must_change_password = true`
 
-Si agregas un modulo nuevo, debes tocar estas piezas:
+### Cliente
 
-1. `app/security/policy.csv`
-2. `app/core/permissions.py`
-3. dependencias de proteccion en routers
-4. frontend para mostrar u ocultar menu
+- tabla física: `cliente`
+- `cli_cod` es único
+- si no se envía `cli_cod`, backend autogenera uno con patrón `CLI-00001`
+- `cli_cor` y `cli_ci` son únicos cuando existen
+- campos nuevos soportados:
+  - `cli_fecha_nac`
+  - `cli_pais`
+  - `cli_ciudad`
+- textos de negocio se normalizan en mayúsculas y correo en minúsculas
 
-## Modulo Boutique
+### Proveedor
 
-### Migracion del modulo
+- tabla física: `proveedor`
+- `pro_cel` y `pro_cor` son únicos cuando existen
+- no se puede desactivar un proveedor con items activos asociados
 
-Archivo:
+### Moneda
 
-- `alembic/versions/20260413_0002_boutique_inventory.py`
+- tabla física: `moneda`
+- `mon_cod` es único
+- solo puede existir una moneda base activa
+- la moneda base no puede quedar deshabilitada
 
-Contenido:
+### Tipo de cambio
 
-- enums `TAMANO`, `TIPO_VESTIDO`, `COPA_TALLA_VESTIDO_BOUTIQUE`, `TALLA_VESTIDO_BOUTIQUE`
-- tabla `TIPO_ITEM_BOUTIQUE`
-- tabla `ITEM_BOUTIQUE`
-- tabla `DETALLE_VESTIDO_BOUTIQUE`
-- tabla `DETALLE_VELO_BOUTIQUE`
-- tabla `DETALLE_BOUQUET_BOUTIQUE`
+- tabla física: `tipo_cambio_moneda`
+- `tcm_valor_bob > 0`
+- solo puede existir un tipo de cambio activo por moneda
+- si la moneda es base, el valor activo debe ser `1`
 
-### Migracion del modulo Cliente
+### Inventario boutique
 
-Archivo:
-
-- `alembic/versions/20260413_0003_clientes.py`
-
-Contenido:
-
-- tabla `CLIENTE`
-
-### Migracion del submodulo Ventas Boutique
-
-Archivo:
-
-- `alembic/versions/20260427_0004_venta_boutique.py`
-
-Contenido:
-
-- enums `METODO_PAGO`, `MOTIVO_DESC_VENTA_BOUTIQUE`, `ESTADO_VENTA_BOUTIQUE`
-- tabla `VENTA_BOUTIQUE`
-
-### Regla de naming para Boutique
-
-El backend en seguridad usa tablas tecnicas en minuscula heredadas de la primera entrega.
-
-El modulo Boutique se implemento respetando el SQL documental, por eso sus nombres fisicos estan en mayuscula:
-
-- `TIPO_ITEM_BOUTIQUE`
-- `ITEM_BOUTIQUE`
-- `DETALLE_VESTIDO_BOUTIQUE`
-- `DETALLE_VELO_BOUTIQUE`
-- `DETALLE_BOUQUET_BOUTIQUE`
-
-Regla:
-
-- no renombrar estas tablas a `snake_case` porque el objetivo aqui fue respetar el contrato documental
-- los siguientes modulos que dependan del SQL historico deben seguir el mismo criterio si el documento oficial ya define nombres fisicos cerrados
-
-### Reglas de negocio del modulo Boutique
-
-- `TIPO_ITEM_BOUTIQUE.TIB_NOM` es unico
-- `ITEM_BOUTIQUE.ITB_COD` es unico
-- no se aceptan precios ni stock negativos
-- un item solo puede tener un detalle especializado
-- el detalle depende del tipo boutique
-- `VESTIDO` exige detalle de vestido
-- `VELO` exige detalle de velo
-- `BOUQUET` exige detalle de bouquet
+- `item_boutique.itb_cod` es único
+- `itb_stock` e `itb_stock_min` son enteros y no negativos
+- `pro_id` es opcional, pero si existe debe referenciar un proveedor habilitado
+- `VESTIDO`, `VELO` y `BOUQUET` exigen detalle especializado
 - `OTRO` no admite detalle especializado
-- no se puede activar un item si su tipo esta deshabilitado
-- no se puede desactivar un tipo con items activos asociados
+- no se activa un item si su tipo o proveedor están deshabilitados
 
-### Endpoints del modulo Boutique
+### Ventas boutique
 
-Tipos:
+- tabla física: `venta_boutique`
+- `veb_pre_uni` siempre sale de `item_boutique.itb_precio_venta`
+- `veb_cant` es entero y debe ser mayor a cero
+- si hay descuento, `veb_motivo_desc` es obligatorio
+- `veb_tot` se calcula en base de datos
+- si la moneda es base, `veb_tipo_cambio_usado = 1`
+- si la moneda no es base, se usa el tipo de cambio activo vigente
+- `veb_total_moneda_orig` queda congelado al registrar la venta
+- `cancelada` y `anulada` revierten stock, guardan motivo y fecha de cambio de estado
+- la reversión económica ya no se cierra directo desde el endpoint del módulo; debe pasar por `economia/devoluciones`
 
-- `GET /api/v1/boutique/types`
-- `GET /api/v1/boutique/types/{id}`
-- `POST /api/v1/boutique/types`
-- `PATCH /api/v1/boutique/types/{id}`
-- `PATCH /api/v1/boutique/types/{id}/status`
+### Fletes
 
-Inventario:
+- tablas físicas: `flete_vestido` y `salida_flete`
+- solo operan sobre `item_boutique` de tipo `VESTIDO`
+- al habilitar un vestido para flete se descuenta `1` unidad del stock original
+- una salida nueva nace en `reservado`
+- `fle_salidas_actuales` solo cuenta devoluciones válidas
+- `devuelto`, `devuelto_con_observacion` y `devuelto_con_arreglo` incrementan contador
+- `anulado` revierte contador si la salida ya había sido contada
+- `pasado_para_venta` crea un nuevo `item_boutique` usado con stock `1`
+- la garantía se registra y controla, pero no se trata como ingreso real
+- las salidas generan `comprobante_interno` y `detalle_comprobante`
+- la anulación económica de una salida debe pasar por `economia/devoluciones`
 
-- `GET /api/v1/boutique/items`
-- `GET /api/v1/boutique/items/{id}`
-- `POST /api/v1/boutique/items`
-- `PATCH /api/v1/boutique/items/{id}`
-- `PATCH /api/v1/boutique/items/{id}/status`
+### Comprobantes internos
 
-Ventas:
+- tablas físicas: `tipo_comprobante`, `comprobante_interno`, `detalle_comprobante`
+- cada comprobante tiene un solo origen entre venta boutique, pago pedido o salida de flete
+- no existe creación manual desde API
+- la emisión se hace dentro de la misma transacción del origen
+- la anulación se dispara automáticamente al anular el origen
+- el snapshot del cliente queda congelado en nombre, CI/NIT y celular
+- el comprobante imprime total Bs, total en moneda origen, tipo de cambio, método de pago y garantía si aplica
 
-- `GET /api/v1/boutique/sales`
-- `GET /api/v1/boutique/sales/{id}`
-- `POST /api/v1/boutique/sales`
-- `PATCH /api/v1/boutique/sales/{id}/cancel`
-- `PATCH /api/v1/boutique/sales/{id}/annul`
+### Economía
 
-### Filtros soportados en inventario boutique
+- tablas físicas: `corte_caja` y `egreso`
+- el módulo consolida ingresos derivados desde `venta_boutique`, `pago_pedido` y `salida_flete`
+- si luego se anula o cancela el origen, el ingreso bruto histórico se conserva en reportes
+- la devolución real de dinero se registra mediante `egreso` de tipo `DEVOLUCION`
+- `ADMIN` puede registrar egresos sin corte
+- `CAJA` solo puede registrar egresos si tiene un corte abierto
+- para devoluciones, `egreso` referencia el origen con `egr_tabla_ref` y `egr_id_ref`
+- la suma de devoluciones activas no puede exceder el monto bruto del ingreso origen
+- `cerrado_observado` exige observación de cierre
+- cortes cerrados son inmutables
 
-- `type_id`
-- `search`
-- `is_active`
-- `low_stock`
+## Routers implementados
 
-### Permisos del modulo Boutique
-
-`ADMIN`:
-
-- CRUD completo de tipos boutique
-- CRUD completo de inventario boutique
-
-`INV_BOUTIQUE`:
-
-- CRUD completo de tipos boutique
-- CRUD completo de inventario boutique
-
-`CAJA`:
-
-- lectura de tipos boutique
-- lectura de inventario boutique
-- lectura de clientes como referencia de venta
-- registro y reversión de ventas boutique
-
-### Reglas de negocio del submodulo Ventas Boutique
-
-- `VENTA_BOUTIQUE` respeta nombres fisicos documentales en mayuscula
-- el precio unitario se toma automaticamente desde `ITEM_BOUTIQUE.ITB_PRECIO_VENTA`
-- el total se calcula en BD mediante `VEB_TOT`
-- no se vende stock insuficiente
-- no se vende un item inactivo o con tipo inactivo
-- `MIXTO` existe en enum pero queda bloqueado en esta version
-- si hay descuento, el motivo es obligatorio
-- si no hay descuento, el motivo debe quedar nulo
-- las ventas no se editan despues de creadas
-- `CANCELADA` y `ANULADA` revierten stock y dejan ingreso real en `0`
-- `USU_ID` conserva nombre documental, pero referencia internamente a `usuarios.id`
-
-### Auditoria del submodulo Ventas Boutique
-
-Eventos auditados:
-
-- `BOUTIQUE_SALE_CREATED`
-- `BOUTIQUE_SALE_CANCELLED`
-- `BOUTIQUE_SALE_ANNULLED`
-
-### Auditoria del modulo Boutique
-
-Eventos auditados:
-
-- `BOUTIQUE_TYPE_CREATED`
-- `BOUTIQUE_TYPE_UPDATED`
-- `BOUTIQUE_TYPE_STATUS_CHANGED`
-- `BOUTIQUE_ITEM_CREATED`
-- `BOUTIQUE_ITEM_UPDATED`
-- `BOUTIQUE_ITEM_STATUS_CHANGED`
+- `auth`
+- `roles`
+- `users`
+- `clientes`
+- `boutique`
+- `monedas`
+- `workshop`
+- `fletes`
+- `comprobantes`
+- `economia`
+- `auditoria`
 
 ## Endpoints actuales
 
@@ -591,6 +429,8 @@ Eventos auditados:
 
 - `GET /api/v1/clientes`
 - `GET /api/v1/clientes/{id}`
+- `GET /api/v1/clientes/resumen`
+- `GET /api/v1/clientes/reportes/panel`
 - `POST /api/v1/clientes`
 - `PATCH /api/v1/clientes/{id}`
 - `PATCH /api/v1/clientes/{id}/status`
@@ -598,134 +438,256 @@ Eventos auditados:
 ### Boutique
 
 - `GET /api/v1/boutique/types`
+- `GET /api/v1/boutique/types/resumen`
 - `GET /api/v1/boutique/types/{id}`
 - `POST /api/v1/boutique/types`
 - `PATCH /api/v1/boutique/types/{id}`
 - `PATCH /api/v1/boutique/types/{id}/status`
+- `GET /api/v1/boutique/proveedores`
+- `GET /api/v1/boutique/proveedores/resumen`
+- `GET /api/v1/boutique/proveedores/{id}`
+- `POST /api/v1/boutique/proveedores`
+- `PATCH /api/v1/boutique/proveedores/{id}`
+- `PATCH /api/v1/boutique/proveedores/{id}/status`
 - `GET /api/v1/boutique/items`
+- `GET /api/v1/boutique/items/resumen`
 - `GET /api/v1/boutique/items/{id}`
 - `POST /api/v1/boutique/items`
 - `PATCH /api/v1/boutique/items/{id}`
 - `PATCH /api/v1/boutique/items/{id}/status`
+- `GET /api/v1/boutique/entries`
+- `GET /api/v1/boutique/entries/resumen`
+- `GET /api/v1/boutique/entries/{id}`
+- `POST /api/v1/boutique/entries`
+- `PATCH /api/v1/boutique/entries/{id}/status`
 - `GET /api/v1/boutique/sales`
+- `GET /api/v1/boutique/sales/resumen`
 - `GET /api/v1/boutique/sales/{id}`
 - `POST /api/v1/boutique/sales`
 - `PATCH /api/v1/boutique/sales/{id}/cancel`
 - `PATCH /api/v1/boutique/sales/{id}/annul`
+- `GET /api/v1/boutique/reportes/panel`
 
-## Contratos clave
+Nota:
 
-### Login request
+- `PATCH /api/v1/boutique/sales/{id}/cancel` y `PATCH /api/v1/boutique/sales/{id}/annul` quedan endurecidos para obligar el flujo económico mediante `POST /api/v1/economia/devoluciones`
 
-```json
-{
-  "username": "admin",
-  "password": "Admin12345!"
-}
-```
+### Monedas
 
-### Login response
+- `GET /api/v1/monedas`
+- `GET /api/v1/monedas/resumen`
+- `GET /api/v1/monedas/{id}`
+- `POST /api/v1/monedas`
+- `PATCH /api/v1/monedas/{id}`
+- `PATCH /api/v1/monedas/{id}/status`
+- `GET /api/v1/monedas/tipos-cambio`
+- `GET /api/v1/monedas/tipos-cambio/resumen`
+- `GET /api/v1/monedas/tipos-cambio/{id}`
+- `POST /api/v1/monedas/tipos-cambio`
+- `PATCH /api/v1/monedas/tipos-cambio/{id}`
+- `PATCH /api/v1/monedas/tipos-cambio/{id}/status`
+- `GET /api/v1/monedas/reportes/panel`
 
-```json
-{
-  "access_token": "token",
-  "token_type": "bearer",
-  "user": {
-    "id": 1,
-    "full_name": "ADMIN BELLAARTE SISTEMA",
-    "role_code": "ADMIN",
-    "role_name": "ADMIN",
-    "username": "admin",
-    "must_change_password": true,
-    "permissions": [
-      "dashboard:view",
-      "auth:me",
-      "auth:change_password",
-      "auth:logout"
-    ]
-  }
-}
-```
+### Taller
 
-## Convenciones obligatorias para futuros modulos
+- `GET /api/v1/taller/types`
+- `GET /api/v1/taller/types/resumen`
+- `GET /api/v1/taller/types/{id}`
+- `POST /api/v1/taller/types`
+- `PATCH /api/v1/taller/types/{id}`
+- `PATCH /api/v1/taller/types/{id}/status`
+- `GET /api/v1/taller/inventory`
+- `GET /api/v1/taller/inventory/resumen`
+- `GET /api/v1/taller/inventory/{id}`
+- `POST /api/v1/taller/inventory`
+- `PATCH /api/v1/taller/inventory/{id}`
+- `PATCH /api/v1/taller/inventory/{id}/status`
+- `GET /api/v1/taller/entries`
+- `GET /api/v1/taller/entries/resumen`
+- `GET /api/v1/taller/entries/{id}`
+- `POST /api/v1/taller/entries`
+- `PATCH /api/v1/taller/entries/{id}/status`
+- `GET /api/v1/taller/outputs`
+- `GET /api/v1/taller/outputs/resumen`
+- `GET /api/v1/taller/outputs/{id}`
+- `POST /api/v1/taller/outputs`
+- `PATCH /api/v1/taller/outputs/{id}/status`
+- `GET /api/v1/taller/reportes/panel`
 
-### 1. Un dominio, un router, un servicio
+### Fletes
 
-Si agregas `pedidos`, debes crear como minimo:
+- `GET /api/v1/fletes`
+- `GET /api/v1/fletes/resumen`
+- `GET /api/v1/fletes/eligible-items`
+- `GET /api/v1/fletes/{id}`
+- `POST /api/v1/fletes`
+- `PATCH /api/v1/fletes/{id}`
+- `PATCH /api/v1/fletes/{id}/disable`
+- `PATCH /api/v1/fletes/{id}/resolve-review`
+- `PATCH /api/v1/fletes/{id}/pass-to-sale`
+- `PATCH /api/v1/fletes/{id}/retire`
+- `GET /api/v1/fletes/salidas`
+- `GET /api/v1/fletes/salidas/resumen`
+- `GET /api/v1/fletes/salidas/{id}`
+- `POST /api/v1/fletes/salidas`
+- `PATCH /api/v1/fletes/salidas/{id}/deliver`
+- `PATCH /api/v1/fletes/salidas/{id}/return`
+- `PATCH /api/v1/fletes/salidas/{id}/annul`
+- `GET /api/v1/fletes/reportes/panel`
 
-- `app/api/routers/pedidos.py`
-- `app/services/pedidos_service.py`
-- `app/schemas/pedidos.py`
+Nota:
 
-Y si aplica:
+- `PATCH /api/v1/fletes/salidas/{id}/annul` existe, pero el flujo operativo oficial debe pasar por `POST /api/v1/economia/devoluciones`
 
-- `app/models/pedido.py`
+### Pedidos, pagos y pruebas
 
-### 2. No mezclar logica
+- `GET /api/v1/pedidos`
+- `GET /api/v1/pedidos/{id}`
+- `POST /api/v1/pedidos`
+- `PATCH /api/v1/pedidos/{id}`
+- `PATCH /api/v1/pedidos/{id}/status`
+- `PATCH /api/v1/pedidos/{id}/deliver`
+- `GET /api/v1/pedidos/pagos`
+- `GET /api/v1/pedidos/pagos/{id}`
+- `POST /api/v1/pedidos/{id}/pagos`
+- `PATCH /api/v1/pedidos/pagos/{id}/annul`
+- `GET /api/v1/pedidos/pruebas`
+- `GET /api/v1/pedidos/pruebas/{id}`
+- `POST /api/v1/pedidos/{id}/pruebas`
+- `PATCH /api/v1/pedidos/pruebas/{id}`
+- `GET /api/v1/pedidos/reportes/clientes/{id}/resumen`
+- `GET /api/v1/pedidos/reportes/saldos`
+- `GET /api/v1/pedidos/reportes/pagos`
+- `GET /api/v1/pedidos/reportes/pruebas`
+- `GET /api/v1/pedidos/reportes/entregas`
+- `GET /api/v1/pedidos/reportes/clientes/{id}/imprimible`
 
-- routers: HTTP
-- services: negocio
-- models: persistencia
-- schemas: contrato
+Nota:
 
-### 3. No leer `request` dentro de servicios salvo datos explicitamente necesarios
+- `PATCH /api/v1/pedidos/pagos/{id}/annul` queda endurecido para obligar el flujo económico mediante `POST /api/v1/economia/devoluciones`
 
-Los servicios deben recibir datos claros, no depender del contexto web completo.
+### Comprobantes internos
 
-### 4. Toda ruta protegida debe usar dependencia de permiso
+- `GET /api/v1/comprobantes/tipos`
+- `GET /api/v1/comprobantes/tipos/{id}`
+- `POST /api/v1/comprobantes/tipos`
+- `PATCH /api/v1/comprobantes/tipos/{id}`
+- `PATCH /api/v1/comprobantes/tipos/{id}/status`
+- `GET /api/v1/comprobantes`
+- `GET /api/v1/comprobantes/{id}`
+- `GET /api/v1/comprobantes/{id}/printable`
 
-Ejemplo esperado:
+### Economía
 
-```python
-account: Cuenta = Depends(require_permission("pedidos:create"))
-```
+- `GET /api/v1/economia/ingresos`
+- `GET /api/v1/economia/ingresos/{origin_type}/{origin_id}/refund-context`
+- `POST /api/v1/economia/devoluciones`
+- `GET /api/v1/economia/egresos`
+- `GET /api/v1/economia/egresos/{expense_id}`
+- `POST /api/v1/economia/egresos`
+- `PATCH /api/v1/economia/egresos/{expense_id}/annul`
+- `GET /api/v1/economia/cortes-caja`
+- `GET /api/v1/economia/cortes-caja/{cut_id}`
+- `POST /api/v1/economia/cortes-caja`
+- `PATCH /api/v1/economia/cortes-caja/{cut_id}/close`
+- `GET /api/v1/economia/cortes-caja/me`
+- `GET /api/v1/economia/cortes-caja/me/history`
+- `GET /api/v1/economia/reportes/estado-resultados`
+- `GET /api/v1/economia/reportes/flujo-efectivo`
+- `GET /api/v1/economia/reportes/cajeros/{user_id}`
+- `GET /api/v1/economia/reportes/mi-periodo`
+- `GET /api/v1/economia/reportes/mi-estado-resultados`
+- `GET /api/v1/economia/reportes/mi-historial`
 
-### 5. Toda mutacion sensible debe auditarse
+### Auditoría
 
-Si un modulo crea, modifica, cancela o anula informacion critica, debe registrar auditoria.
+- `GET /api/v1/auditoria`
+- `GET /api/v1/auditoria/{audit_id}`
+- `GET /api/v1/auditoria/eventos/{event_id}`
+- `GET /api/v1/auditoria/export?format=csv|html`
 
-### 6. No saltarse Alembic
+## Auditoría enriquecida actual
 
-No usar cambios manuales en PostgreSQL como flujo normal de evolucion.
+- `LOGIN_SUCCESS`
+- `LOGIN_FAILED`
+- `LOGOUT`
+- `ACCESS_DENIED`
+- `PASSWORD_CHANGED`
+- `PASSWORD_CHANGE_FAILED`
+- `USER_CREATED`
+- `ACCOUNT_STATUS_CHANGED`
+- `CLIENT_CREATED`
+- `CLIENT_UPDATED`
+- `CLIENT_STATUS_CHANGED`
+- `BOUTIQUE_PROVIDER_CREATED`
+- `BOUTIQUE_PROVIDER_UPDATED`
+- `BOUTIQUE_PROVIDER_STATUS_CHANGED`
+- `BOUTIQUE_TYPE_CREATED`
+- `BOUTIQUE_TYPE_UPDATED`
+- `BOUTIQUE_TYPE_STATUS_CHANGED`
+- `BOUTIQUE_ITEM_CREATED`
+- `BOUTIQUE_ITEM_UPDATED`
+- `BOUTIQUE_ITEM_STATUS_CHANGED`
+- `CURRENCY_CREATED`
+- `CURRENCY_UPDATED`
+- `CURRENCY_STATUS_CHANGED`
+- `EXCHANGE_RATE_CREATED`
+- `EXCHANGE_RATE_UPDATED`
+- `EXCHANGE_RATE_STATUS_CHANGED`
+- `BOUTIQUE_SALE_CREATED`
+- `BOUTIQUE_SALE_CANCELLED`
+- `BOUTIQUE_SALE_ANNULLED`
+- `FLETE_CREATED`
+- `FLETE_UPDATED`
+- `FLETE_STATUS_CHANGED`
+- `FLETE_PASSED_TO_SALE`
+- `FLETE_RETIRED`
+- `FLETE_OUTPUT_CREATED`
+- `FLETE_OUTPUT_DELIVERED`
+- `FLETE_OUTPUT_RETURNED`
+- `FLETE_OUTPUT_ANNULLED`
+- `FLETE_RECEIPT_CREATED`
+- `FLETE_RECEIPT_ANNULLED`
+- `RECEIPT_TYPE_CREATED`
+- `RECEIPT_TYPE_UPDATED`
+- `RECEIPT_TYPE_STATUS_CHANGED`
+- la anulación y emisión de comprobantes de venta/pago quedan auditadas por el flujo del origen
+- `ORDER_CREATED`
+- `ORDER_UPDATED`
+- `ORDER_STATUS_CHANGED`
+- `ORDER_DELIVERED`
+- `ORDER_CANCELLED`
+- `ORDER_PAYMENT_CREATED`
+- `ORDER_PAYMENT_ANNULLED`
+- `ORDER_TEST_CREATED`
+- `ORDER_TEST_UPDATED`
+- `ECONOMY_REFUND_RECORDED`
 
-### 7. Mantener naming consistente
+Además, la auditoría actual ya funciona con:
 
-- tablas: `snake_case`
-- columnas: `snake_case`
-- clases Python: `PascalCase`
-- funciones: `snake_case`
-- permisos: `modulo:accion`
+- `aud_id_evento` compartido por request o transacción lógica
+- filas resumen desde backend
+- filas por campo modificado desde trigger en `UPDATE`
+- parseo de `user-agent` para navegador, dispositivo y sistema operativo
+- exportación administrativa `CSV`
+- vista HTML imprimible para `PDF`
 
-Excepcion vigente:
+## Convenciones obligatorias para próximos módulos
 
-- los modulos ya cerrados por SQL documental oficial pueden mantener sus nombres fisicos historicos en mayuscula si ese contrato ya fue aceptado, como sucede con Boutique
-- `CLIENTE` sigue este mismo criterio documental y por eso conserva nombre fisico en mayuscula
+1. un dominio nuevo debe tener modelo, schema, service, router, migración y permisos
+2. no mezclar lógica HTTP con reglas de negocio
+3. toda mutación sensible debe auditarse
+4. toda ruta protegida debe usar `require_permission(...)`
+5. los módulos nuevos de base de datos deben usar nombres físicos en minúscula
+6. no modificar la base manualmente como flujo oficial
 
-## Problemas conocidos
+## Validación recomendada después de cambios grandes
 
-### Warning de Passlib con bcrypt
+1. `python -m alembic -c alembic.ini upgrade head`
+2. `python scripts/seed_security.py`
+3. `pytest`
+4. smoke tests manuales de login, inventario, ventas, fletes, pedidos, pagos, pruebas y comprobantes internos
 
-Puede aparecer este mensaje:
+## Problema conocido
 
-```text
-(trapped) error reading bcrypt version
-```
-
-La autenticacion sigue funcionando, pero conviene revisar a futuro el pin de versiones de `passlib` y `bcrypt`.
-
-### Diferencia entre documentacion historica y entorno real
-
-La documentacion historica menciona Python 3.14, pero la implementacion actual fue validada localmente con el `venv` existente en Python 3.10.6.
-
-## Checklist para agregar un nuevo modulo
-
-1. crear modelos ORM
-2. crear schemas
-3. crear servicio
-4. crear router
-5. registrar router en `app/api/router.py`
-6. agregar permisos en Casbin
-7. crear migracion Alembic
-8. agregar pruebas
-9. documentar el modulo
-10. conectar el frontend
+Puede aparecer el warning de `passlib` con `bcrypt`. La autenticación sigue funcionando, pero conviene revisar el pin de versiones más adelante.

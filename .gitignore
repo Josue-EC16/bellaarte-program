@@ -25,6 +25,7 @@
 **/*.bak
 **/*.sqlite*
 **/*.pgpass
+storage/backups/
 
 # Python (entornos y cache)
 **/__pycache__/
@@ -61,4 +62,4 @@
 # Temporales comunes
 *.tmp
 *.swp
-*.swo
+*.swo

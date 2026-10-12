@@ -1,45 +1,35 @@
-# Modulo Boutique v1
+# Modulo Boutique
 
 ## Objetivo
 
-Esta entrega implementa el inventario base de boutique del sistema BellaArte, respetando la logica documental de `BASE_DE_DATOS.postgres` y conectandola con la arquitectura ya creada para seguridad.
+Esta versión consolida el bloque Boutique ya refactorizado a nombres físicos en minúscula y lo deja listo para operar con proveedores, inventario especializado y ventas.
 
-El modulo cubre:
+El módulo cubre:
 
-- catalogo de tipos boutique
-- inventario boutique
-- detalle especializado por tipo
-- permisos por rol
-- auditoria
-- integracion frontend/backend
-
-No cubre todavia:
-
-- `VENTA_BOUTIQUE` en este documento de inventario
-- ingresos automaticos
-- recibos
-- movimientos financieros del modulo
-
-La implementacion de ventas directas ahora vive en un documento separado:
-
-- `documentacion/MODULO_VENTAS_BOUTIQUE_V1.md`
+- catálogo `tipo_item_boutique`
+- catálogo `proveedor`
+- inventario `item_boutique`
+- detalles especializados:
+  - `detalle_vestido_boutique`
+  - `detalle_velo_boutique`
+  - `detalle_bouquet_boutique`
 
 ## Modelo de datos implementado
 
 ### Tablas
 
-- `TIPO_ITEM_BOUTIQUE`
-- `ITEM_BOUTIQUE`
-- `DETALLE_VESTIDO_BOUTIQUE`
-- `DETALLE_VELO_BOUTIQUE`
-- `DETALLE_BOUQUET_BOUTIQUE`
+- `tipo_item_boutique`
+- `proveedor`
+- `item_boutique`
+- `detalle_vestido_boutique`
+- `detalle_velo_boutique`
+- `detalle_bouquet_boutique`
 
 ### Enums
 
-- `TAMANO`
-- `TIPO_VESTIDO`
-- `COPA_TALLA_VESTIDO_BOUTIQUE`
-- `TALLA_VESTIDO_BOUTIQUE`
+- `tipo_vestido`
+- `copa_talla_vestido_boutique`
+- `talla_vestido_boutique`
 
 ### Seed inicial
 
@@ -48,39 +38,62 @@ La implementacion de ventas directas ahora vive en un documento separado:
 - `BOUQUET`
 - `OTRO`
 
+## Estructura de `item_boutique`
+
+Campos relevantes:
+
+- `tib_id`
+- `pro_id`
+- `itb_cod`
+- `itb_nom`
+- `itb_color_prim`
+- `itb_color_secun`
+- `itb_material`
+- `itb_largo`
+- `itb_ancho`
+- `itb_precio_compra`
+- `itb_precio_venta`
+- `itb_stock`
+- `itb_stock_min`
+- `itb_detalle`
+- `itb_estado`
+
 ## Reglas de negocio
 
-- el backend crea las tablas desde ORM + Alembic
-- los nombres fisicos de Boutique se mantienen en mayuscula para respetar el SQL documental
-- `TIPO_ITEM_BOUTIQUE.TIB_NOM` es unico
-- `ITEM_BOUTIQUE.ITB_COD` es unico
-- los valores monetarios y stock no aceptan negativos
+- `tipo_item_boutique.tib_nom` es único
+- `item_boutique.itb_cod` es único
+- `itb_stock` e `itb_stock_min` son enteros y no negativos
+- `itb_largo` e `itb_ancho` aceptan `null` o valores `>= 0`
 - un item tiene cero o un detalle especializado
-- `VESTIDO` requiere detalle de vestido
-- `VELO` requiere detalle de velo
-- `BOUQUET` requiere detalle de bouquet
-- `OTRO` no admite detalle
-- no se permite desactivar un tipo con items activos
-- no se permite activar un item si su tipo esta deshabilitado
-- el tipo del item no se cambia desde UI una vez creado
-- el precio de venta no puede ser menor o igual al precio de compra
+- `VESTIDO` exige detalle de vestido
+- `VELO` exige detalle de velo
+- `BOUQUET` exige detalle de bouquet
+- `OTRO` no admite detalle especializado
+- no se permite activar un item si su tipo está deshabilitado
+- no se permite activar un item si su proveedor está deshabilitado
+- no se permite desactivar un tipo con items activos asociados
+- no se permite desactivar un proveedor con items activos asociados
+- si un item ya tuvo ventas, el stock no se edita libremente desde este CRUD
 
 ## Permisos
 
 `ADMIN`:
 
 - CRUD de tipos boutique
+- CRUD de proveedores
 - CRUD de inventario boutique
 
 `INV_BOUTIQUE`:
 
 - CRUD de tipos boutique
+- CRUD de proveedores
 - CRUD de inventario boutique
 
 `CAJA`:
 
-- lectura de tipos boutique
-- lectura de inventario boutique
+- lectura de tipos
+- lectura de proveedores
+- lectura de inventario
 
 ## API
 
@@ -92,6 +105,14 @@ La implementacion de ventas directas ahora vive en un documento separado:
 - `PATCH /api/v1/boutique/types/{id}`
 - `PATCH /api/v1/boutique/types/{id}/status`
 
+### Proveedores
+
+- `GET /api/v1/boutique/proveedores`
+- `GET /api/v1/boutique/proveedores/{id}`
+- `POST /api/v1/boutique/proveedores`
+- `PATCH /api/v1/boutique/proveedores/{id}`
+- `PATCH /api/v1/boutique/proveedores/{id}/status`
+
 ### Inventario boutique
 
 - `GET /api/v1/boutique/items`
@@ -100,7 +121,7 @@ La implementacion de ventas directas ahora vive en un documento separado:
 - `PATCH /api/v1/boutique/items/{id}`
 - `PATCH /api/v1/boutique/items/{id}/status`
 
-### Filtros
+Filtros:
 
 - `type_id`
 - `search`
@@ -112,57 +133,45 @@ La implementacion de ventas directas ahora vive en un documento separado:
 ### Rutas
 
 - `/app/boutique/tipos`
+- `/app/boutique/proveedores`
 - `/app/boutique/inventario`
 
-### Componentes principales
+### Contrato de formulario de item
 
-- `BoutiqueTypesPage`
-- `BoutiqueInventoryPage`
-- `BoutiqueTypeForm`
-- `BoutiqueItemForm`
-- `BoutiqueItemDetailCard`
+Campos base:
 
-### Comportamiento de UI
+- `code`
+- `name`
+- `color_primary`
+- `color_secondary`
+- `material`
+- `length`
+- `width`
+- `provider_id`
+- `purchase_price`
+- `sale_price`
+- `stock`
+- `stock_min`
+- `detail`
 
-- drawer para crear y editar tipos
-- drawer para crear y editar items
-- drawer de visualizacion de detalle
-- filtros de listado
-- alerta visual de stock bajo
-- formulario dinamico por tipo
+El detalle especializado cambia según `detail_kind`.
 
-## Auditoria
-
-Eventos registrados:
+## Auditoría
 
 - `BOUTIQUE_TYPE_CREATED`
 - `BOUTIQUE_TYPE_UPDATED`
 - `BOUTIQUE_TYPE_STATUS_CHANGED`
+- `BOUTIQUE_PROVIDER_CREATED`
+- `BOUTIQUE_PROVIDER_UPDATED`
+- `BOUTIQUE_PROVIDER_STATUS_CHANGED`
 - `BOUTIQUE_ITEM_CREATED`
 - `BOUTIQUE_ITEM_UPDATED`
 - `BOUTIQUE_ITEM_STATUS_CHANGED`
 
-## Flujo de trabajo recomendado para modulos siguientes
+## Validación objetivo del módulo
 
-Si el siguiente submodulo boutique es `VENTA_BOUTIQUE`, la secuencia correcta debe ser:
-
-1. leer `ITEM_BOUTIQUE`
-2. validar estado activo
-3. validar stock suficiente
-4. registrar venta
-5. descontar stock
-6. generar ingreso automaticamente
-7. generar recibo automaticamente
-8. auditar la operacion
-
-## Validacion realizada en esta entrega
-
-- `pytest` backend pasando
-- `alembic upgrade head` ejecutado correctamente
-- seed ejecutado correctamente
-- prueba real de lectura de tipos boutique
-- prueba real de alta de tipo boutique
-- prueba real de alta de item vestido
-- prueba real de lectura restringida con rol `CAJA`
-- `pnpm lint` frontend pasando
-- `pnpm build` frontend pasando
+- migración boutique crea todas las tablas en minúsculas
+- seed de tipos boutique es idempotente
+- proveedor no puede desactivarse con items activos
+- item no puede crearse con proveedor deshabilitado
+- el formulario frontend usa el contrato nuevo sin campos legacy

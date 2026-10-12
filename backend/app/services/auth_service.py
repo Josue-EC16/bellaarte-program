@@ -4,7 +4,7 @@ from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
 
-from app.core.audit import register_audit_event
+from app.core.audit import register_audit_event, register_audit_failure
 from app.core.security import create_access_token, create_refresh_token, hash_password, verify_password
 from app.models.account import Cuenta
 from app.services.user_service import build_user_summary
@@ -88,6 +88,17 @@ def change_password(
     user_agent: str | None,
 ) -> Cuenta:
     if not verify_password(current_password, account.password_hash):
+        register_audit_failure(
+            db,
+            action="PASSWORD_CHANGE_FAILED",
+            description="Intento fallido de cambio de contrasena por contrasena actual invalida.",
+            account=account,
+            user=account.usuario,
+            reference=account.username,
+            ip_address=ip_address,
+            user_agent=user_agent,
+        )
+        db.commit()
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="La contrasena actual no es valida.")
     if current_password == new_password:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="La nueva contrasena no puede ser igual a la actual.")

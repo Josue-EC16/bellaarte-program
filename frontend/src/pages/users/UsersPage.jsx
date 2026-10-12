@@ -259,7 +259,7 @@ export function UsersPage() {
       <div className="page-header">
         <div>
           <Typography.Title level={2} style={{ margin: 0 }}>
-            Usuarios internos
+            Colaboradores
           </Typography.Title>
           <Typography.Paragraph type="secondary" style={{ marginBottom: 0 }}>
             Administra datos personales, cuenta, rol operativo y credenciales temporales del personal.

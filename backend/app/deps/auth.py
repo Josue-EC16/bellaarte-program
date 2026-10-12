@@ -1,9 +1,10 @@
 from collections.abc import Callable
 
 import casbin
-from fastapi import Depends, Header, HTTPException, status
+from fastapi import Depends, Header, HTTPException, Request, status
 from sqlalchemy.orm import Session
 
+from app.core.audit import register_audit_failure
 from app.core.database import get_db
 from app.core.security import ACCESS_TOKEN_TYPE, decode_token
 from app.models.account import Cuenta
@@ -40,11 +41,28 @@ def get_enforcer() -> casbin.Enforcer:
 
 def require_permission(permission: str) -> Callable:
     def dependency(
+        request: Request,
+        db: Session = Depends(get_db),
         account: Cuenta = Depends(get_current_account),
         enforcer_instance: casbin.Enforcer = Depends(get_enforcer),
     ) -> Cuenta:
         allowed = enforcer_instance.enforce(account.rol.codigo, permission, "use")
         if not allowed:
+            try:
+                register_audit_failure(
+                    db,
+                    action="ACCESS_DENIED",
+                    description=f"Acceso denegado al permiso '{permission}'.",
+                    account=account,
+                    user=account.usuario,
+                    reference=permission,
+                    ip_address=request.client.host if request.client else None,
+                    user_agent=request.headers.get("user-agent"),
+                    http_method=request.method,
+                )
+                db.commit()
+            except Exception:
+                db.rollback()
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No tienes permisos para realizar esta accion.")
         return account
 

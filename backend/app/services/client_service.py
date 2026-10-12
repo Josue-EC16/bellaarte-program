@@ -13,8 +13,6 @@ from app.schemas.client import ClienteCreateRequest, ClienteDetailResponse, Clie
 CLIENT_CODE_PATTERN = re.compile(r"^CLI-\d{5}$")
 
 
-
-
 def _to_list_item(cliente: Cliente) -> ClienteListItem:
     return ClienteListItem(
         id=cliente.id,
@@ -23,6 +21,7 @@ def _to_list_item(cliente: Cliente) -> ClienteListItem:
         celular=cliente.celular,
         correo=cliente.correo,
         ci=cliente.ci,
+        ciudad=cliente.ciudad,
         zona=cliente.zona,
         is_active=cliente.habilitado,
         created_at=cliente.fecha_registro,
@@ -42,7 +41,9 @@ def _to_detail(cliente: Cliente) -> ClienteDetailResponse:
         nombre_referencia=cliente.nombre_referencia,
         correo=cliente.correo,
         ci=cliente.ci,
-        nacionalidad=cliente.nacionalidad,
+        fecha_nacimiento=cliente.fecha_nacimiento,
+        pais=cliente.pais,
+        ciudad=cliente.ciudad,
         zona=cliente.zona,
         calle=cliente.calle,
         observaciones=cliente.observaciones,
@@ -55,9 +56,8 @@ def _ensure_unique_client_code(db: Session, codigo: str, *, exclude_id: int | No
     stmt = select(Cliente).where(func.upper(Cliente.codigo) == codigo.strip().upper())
     if exclude_id is not None:
         stmt = stmt.where(Cliente.id != exclude_id)
-    duplicate = db.execute(stmt).scalar_one_or_none()
-    if duplicate is not None:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Ya existe un cliente con ese codigo.")
+    if db.execute(stmt).scalar_one_or_none() is not None:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Ya existe un cliente con ese código.")
 
 
 def _ensure_unique_client_ci(db: Session, ci: str | None, *, exclude_id: int | None = None) -> None:
@@ -66,10 +66,18 @@ def _ensure_unique_client_ci(db: Session, ci: str | None, *, exclude_id: int | N
     stmt = select(Cliente).where(Cliente.ci == ci.strip())
     if exclude_id is not None:
         stmt = stmt.where(Cliente.id != exclude_id)
-    duplicate = db.execute(stmt).scalar_one_or_none()
-    if duplicate is not None:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Ya existe un cliente con esa Cédula de Identidad.")
+    if db.execute(stmt).scalar_one_or_none() is not None:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="La Cédula de Identidad ya está en uso.")
 
+
+def _ensure_unique_client_email(db: Session, correo: str | None, *, exclude_id: int | None = None) -> None:
+    if not correo:
+        return
+    stmt = select(Cliente).where(func.lower(Cliente.correo) == correo.strip().lower())
+    if exclude_id is not None:
+        stmt = stmt.where(Cliente.id != exclude_id)
+    if db.execute(stmt).scalar_one_or_none() is not None:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="El Correo Electrónico ya está en uso.")
 
 
 def _generate_client_code(db: Session) -> str:
@@ -108,6 +116,7 @@ def list_clients(db: Session, *, search: str | None = None, is_active: bool | No
                 func.upper(func.coalesce(Cliente.apellido_materno, "")).like(term),
                 func.upper(func.coalesce(Cliente.ci, "")).like(term),
                 func.upper(Cliente.celular).like(term),
+                func.upper(func.coalesce(Cliente.ciudad, "")).like(term),
             )
         )
     return [_to_list_item(cliente) for cliente in db.execute(stmt).scalars().all()]
@@ -134,6 +143,7 @@ def create_client(
 ) -> ClienteDetailResponse:
     codigo = _resolve_client_code(db, payload.codigo)
     _ensure_unique_client_ci(db, payload.ci)
+    _ensure_unique_client_email(db, payload.correo)
     cliente = Cliente(
         codigo=codigo,
         nombres=payload.nombres,
@@ -144,7 +154,9 @@ def create_client(
         nombre_referencia=payload.nombre_referencia,
         correo=payload.correo,
         ci=payload.ci,
-        nacionalidad=payload.nacionalidad,
+        fecha_nacimiento=payload.fecha_nacimiento,
+        pais=payload.pais,
+        ciudad=payload.ciudad,
         zona=payload.zona,
         calle=payload.calle,
         observaciones=payload.observaciones,
@@ -155,7 +167,7 @@ def create_client(
     register_audit_event(
         db,
         action="CLIENT_CREATED",
-        description=f"Se creo el cliente '{cliente.codigo}'.",
+        description=f"Se creó el cliente '{cliente.codigo}'.",
         account=created_by,
         user=created_by.usuario,
         reference=cliente.codigo,
@@ -178,6 +190,7 @@ def update_client(
     cliente = get_client_entity(db, client_id)
     cliente.codigo = _resolve_client_code(db, payload.codigo, exclude_id=cliente.id)
     _ensure_unique_client_ci(db, payload.ci, exclude_id=cliente.id)
+    _ensure_unique_client_email(db, payload.correo, exclude_id=cliente.id)
     cliente.nombres = payload.nombres
     cliente.apellido_paterno = payload.apellido_paterno
     cliente.apellido_materno = payload.apellido_materno
@@ -186,14 +199,16 @@ def update_client(
     cliente.nombre_referencia = payload.nombre_referencia
     cliente.correo = payload.correo
     cliente.ci = payload.ci
-    cliente.nacionalidad = payload.nacionalidad
+    cliente.fecha_nacimiento = payload.fecha_nacimiento
+    cliente.pais = payload.pais
+    cliente.ciudad = payload.ciudad
     cliente.zona = payload.zona
     cliente.calle = payload.calle
     cliente.observaciones = payload.observaciones
     register_audit_event(
         db,
         action="CLIENT_UPDATED",
-        description=f"Se actualizo el cliente '{cliente.codigo}'.",
+        description=f"Se actualizó el cliente '{cliente.codigo}'.",
         account=updated_by,
         user=updated_by.usuario,
         reference=cliente.codigo,
@@ -218,7 +233,7 @@ def set_client_status(
     register_audit_event(
         db,
         action="CLIENT_STATUS_CHANGED",
-        description=f"Se actualizo el estado del cliente '{cliente.codigo}' a {'ACTIVO' if habilitado else 'INACTIVO'}.",
+        description=f"Se actualizó el estado del cliente '{cliente.codigo}' a {'ACTIVO' if habilitado else 'INACTIVO'}.",
         account=changed_by,
         user=changed_by.usuario,
         reference=cliente.codigo,

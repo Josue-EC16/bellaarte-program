@@ -1,10 +1,10 @@
 # Guia de Desarrollo del Proyecto
 
-Guia transversal para construir los siguientes modulos sin romper la base ya implementada.
+Guía transversal para seguir creciendo sin romper la base ya implementada.
 
-## Fuente de verdad actual
+## Documentación vigente
 
-Para el estado implementado del proyecto, la referencia principal ya no es la documentacion historica sino:
+Las referencias principales del estado actual son:
 
 - `backend/README.md`
 - `frontend/README.md`
@@ -12,56 +12,44 @@ Para el estado implementado del proyecto, la referencia principal ya no es la do
 - `documentacion/MODULO_SEGURIDAD_V2.md`
 - `documentacion/MODULO_CLIENTE_V1.md`
 - `documentacion/MODULO_BOUTIQUE_V1.md`
-- `documentacion/MODULO_VENTAS_BOUTIQUE_V1.md`
+- `documentacion/MODULO_PROVEEDOR.md`
+- `documentacion/MODULO_MONEDA.md`
+- `documentacion/MODULO_TIPO_CAMBIO_MONEDA.md`
+- `documentacion/MODULO_VENTAS_BOUTIQUE.md`
+- `documentacion/MODULO_TALLER.md`
+- `documentacion/MODULO_FLETES.md`
 
 ## Regla madre del proyecto
 
-Todo modulo nuevo debe crecer siguiendo dominios claros y respetando separacion de responsabilidades.
+Cada módulo nuevo debe crecer como dominio claro, con backend, frontend, permisos, migración, auditoría y documentación.
 
-## Backend: contrato de crecimiento
+## Contrato de crecimiento backend
 
-Por cada modulo nuevo se espera:
+Por cada módulo nuevo se espera:
 
 1. modelo ORM si aplica
-2. schema Pydantic
+2. schemas Pydantic
 3. service
 4. router
-5. migracion Alembic
+5. migración Alembic
 6. permisos Casbin
 7. pruebas
-8. documentacion
+8. documentación
 
-## Frontend: contrato de crecimiento
+## Contrato de crecimiento frontend
 
-Por cada modulo nuevo se espera:
+Por cada módulo nuevo se espera:
 
 1. carpeta en `src/pages/<modulo>/`
-2. pagina principal
-3. integracion con API oficial
-4. ruta protegida si aplica
-5. entrada de menu segun permisos
-6. validacion visual del flujo
-
-## Permisos
-
-Formato obligatorio:
-
-```text
-modulo:accion
-```
-
-Ejemplos:
-
-- `inventario_boutique:view`
-- `inventario_taller:update`
-- `pedidos:create`
-- `finanzas:read`
+2. página principal
+3. integración con la API oficial
+4. ruta protegida
+5. entrada de menú según permisos
+6. validación visual y flujo de lectura/edición
 
 ## Variables y entorno
 
 ### Backend
-
-Nunca leer variables de entorno dispersas en cualquier archivo.
 
 Toda variable debe centralizarse en:
 
@@ -77,53 +65,78 @@ Toda variable visible para Vite debe salir de:
 
 Toda API debe exponerse bajo:
 
-```text
-/api/v1
-```
-
-No crear endpoints fuera de ese prefijo.
+- `/api/v1`
 
 ## Base de datos
 
-Nunca usar SQL manual como flujo principal de evolucion.
+Flujo oficial:
 
-El camino oficial es:
+1. cambiar modelos
+2. crear o revisar migración
+3. aplicar `upgrade head`
+4. correr seeds
 
-1. cambiar modelo
-2. crear migracion
-3. revisar migracion
-4. aplicar migracion
+Regla vigente:
 
-## Auditoria
+- los módulos nuevos y los módulos reescritos de base de datos deben usar nombres físicos en minúscula
 
-Toda accion critica nueva debe auditarse.
+## Permisos
 
-Minimo recomendado:
+Formato obligatorio:
 
-- creacion
-- actualizacion sensible
-- anulacion
-- cancelacion
+- `modulo:accion`
+
+Ejemplos:
+
+- `clients:update`
+- `boutique_items:list`
+- `currencies:update`
+- `exchange_rates:view`
+- `boutique_sales:annul`
+
+## Auditoría
+
+Toda acción crítica nueva debe auditarse.
+
+Mínimo recomendado:
+
+- creación
+- actualización sensible
 - cambio de estado
+- cancelación
+- anulación
 
-## Orden sugerido de trabajo futuro
+## Estándar actual de dominios ya implementados
 
-1. inventario taller / movimiento de inventario
-2. pedidos
-3. pagos de pedido
-4. egresos
-5. logs del sistema
+- seguridad
+- clientes
+- boutique
+- proveedores
+- monedas
+- tipos de cambio
+- ventas boutique
+- taller
+- fletes
+- pedidos, pagos y pruebas
 
-## Convencion de tablas documentales
+## Orden sugerido de crecimiento
 
-Si un modulo ya tiene contrato fisico cerrado en la documentacion oficial SQL, se puede respetar ese nombre fisico en mayuscula dentro del ORM y Alembic.
+1. inventario taller
+2. movimientos de stock
+3. ingresos y egresos
+4. comprobantes internos generales
+5. notificaciones automáticas
+6. reportes avanzados
 
-Casos vigentes:
+## Checklist para agregar un módulo
 
-- `TIPO_ITEM_BOUTIQUE`
-- `ITEM_BOUTIQUE`
-- `DETALLE_VESTIDO_BOUTIQUE`
-- `DETALLE_VELO_BOUTIQUE`
-- `DETALLE_BOUQUET_BOUTIQUE`
-- `VENTA_BOUTIQUE`
-- `CLIENTE`
+1. crear modelos ORM
+2. crear schemas
+3. crear service
+4. crear router
+5. registrar router en `app/api/router.py`
+6. agregar permisos en Casbin
+7. crear migración Alembic
+8. escribir pruebas
+9. documentar el módulo
+10. integrar el frontend

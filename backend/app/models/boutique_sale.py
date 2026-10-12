@@ -1,104 +1,122 @@
 from datetime import datetime
 
-from sqlalchemy import BigInteger, CheckConstraint, Computed, DateTime, ForeignKey, Identity, Index, Numeric, String, Text, func
-from sqlalchemy.dialects.postgresql import ENUM
+from sqlalchemy import BigInteger, CheckConstraint, Computed, DateTime, Enum as SqlEnum, ForeignKey, Identity, Index, Integer, Numeric, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 
 from app.models.base import Base
 from app.models.boutique_enums import EstadoVentaBoutiqueEnum, MetodoPagoEnum, MotivoDescVentaBoutiqueEnum
 
 
-metodo_pago_enum = ENUM(
+metodo_pago_enum = SqlEnum(
     MetodoPagoEnum,
-    name="METODO_PAGO",
+    name="metodo_pago",
     values_callable=lambda enum_cls: [item.value for item in enum_cls],
     create_type=False,
 )
-motivo_desc_venta_boutique_enum = ENUM(
+motivo_desc_venta_boutique_enum = SqlEnum(
     MotivoDescVentaBoutiqueEnum,
-    name="MOTIVO_DESC_VENTA_BOUTIQUE",
+    name="motivo_desc_venta_boutique",
     values_callable=lambda enum_cls: [item.value for item in enum_cls],
     create_type=False,
 )
-estado_venta_boutique_enum = ENUM(
+estado_venta_boutique_enum = SqlEnum(
     EstadoVentaBoutiqueEnum,
-    name="ESTADO_VENTA_BOUTIQUE",
+    name="estado_venta_boutique",
     values_callable=lambda enum_cls: [item.value for item in enum_cls],
     create_type=False,
 )
 
 
 class VentaBoutique(Base):
-    __tablename__ = "VENTA_BOUTIQUE"
+    __tablename__ = "venta_boutique"
     __table_args__ = (
-        CheckConstraint('"VEB_CANT" > 0', name="CK_VEB_CANT"),
-        CheckConstraint('"VEB_PRE_UNI" >= 0', name="CK_VEB_PRE_UNI"),
         CheckConstraint(
-            '"VEB_DESCUENTO" IS NULL OR ("VEB_DESCUENTO" >= 0 AND "VEB_DESCUENTO" <= ("VEB_CANT" * "VEB_PRE_UNI"))',
-            name="CK_VEB_DESCUENTO",
+            "(veb_estado = 'activa' and veb_fec_camb_est IS NULL and veb_motivo_camb_est IS NULL) OR "
+            "(veb_estado in ('cancelada', 'anulada') and veb_fec_camb_est IS NOT NULL and veb_motivo_camb_est IS NOT NULL)",
+            name="ck_veb_cambio_estado",
+        ),
+        CheckConstraint("veb_cant > 0", name="ck_veb_cant"),
+        CheckConstraint("veb_pre_uni > 0", name="ck_veb_pre_uni"),
+        CheckConstraint(
+            "veb_descuento IS NULL OR (veb_descuento >= 0 AND veb_descuento <= (veb_cant * veb_pre_uni))",
+            name="ck_veb_descuento",
         ),
         CheckConstraint(
-            '("VEB_DESCUENTO" IS NULL AND "VEB_MOTIVO_DESC" IS NULL) OR ("VEB_DESCUENTO" IS NOT NULL AND "VEB_MOTIVO_DESC" IS NOT NULL)',
-            name="CK_VEB_DESC_MOTIVO",
+            "(veb_descuento IS NULL AND veb_motivo_desc IS NULL) OR "
+            "(veb_descuento IS NOT NULL AND veb_motivo_desc IS NOT NULL)",
+            name="ck_veb_desc_motivo",
         ),
-        Index("IX_VEB_FEC", "VEB_FEC"),
-        Index("IX_VEB_ESTADO", "VEB_ESTADO"),
-        Index("IX_VEB_METODO_PAGO", "VEB_METODO_PAGO"),
-        Index("IX_VEB_ITB_ID", "ITB_ID"),
-        Index("IX_VEB_CLI_ID", "CLI_ID"),
-        Index("IX_VEB_USU_ID", "USU_ID"),
+        CheckConstraint("veb_tipo_cambio_usado > 0", name="ck_veb_tipo_cambio"),
+        CheckConstraint("veb_total_moneda_orig > 0", name="ck_veb_total_moneda_orig"),
+        Index("ix_veb_fec", "veb_fec"),
+        Index("ix_veb_estado", "veb_estado"),
+        Index("ix_veb_metodo_pago", "veb_metodo_pago"),
+        Index("ix_veb_itb_id", "itb_id"),
+        Index("ix_veb_cli_id", "cli_id"),
+        Index("ix_veb_usu_id", "usu_id"),
+        Index("ix_veb_mon_id", "mon_id"),
+        Index("idx_veb_estado_fec", "veb_estado", "veb_fec"),
+        Index("idx_veb_estado_cambio_fec", "veb_estado", "veb_fec_camb_est"),
+        Index("idx_veb_itb_fec", "itb_id", "veb_fec"),
+        Index("idx_veb_usu_fec", "usu_id", "veb_fec"),
+        Index("idx_veb_cli_fec", "cli_id", "veb_fec"),
+        Index("idx_veb_mon_fec", "mon_id", "veb_fec"),
+        Index("idx_veb_metodo_fec", "veb_metodo_pago", "veb_fec"),
     )
 
-    id: Mapped[int] = mapped_column("VEB_ID", BigInteger, Identity(always=True), primary_key=True)
+    id: Mapped[int] = mapped_column("veb_id", BigInteger, Identity(always=True), primary_key=True)
     item_id: Mapped[int] = mapped_column(
-        "ITB_ID",
-        ForeignKey("ITEM_BOUTIQUE.ITB_ID", onupdate="CASCADE", ondelete="RESTRICT"),
+        "itb_id",
+        ForeignKey("item_boutique.itb_id", onupdate="CASCADE", ondelete="RESTRICT"),
         nullable=False,
     )
     usuario_id: Mapped[int] = mapped_column(
-        "USU_ID",
+        "usu_id",
         ForeignKey("usuarios.id", onupdate="CASCADE", ondelete="RESTRICT"),
         nullable=False,
     )
     cliente_id: Mapped[int | None] = mapped_column(
-        "CLI_ID",
-        ForeignKey("CLIENTE.CLI_ID", onupdate="CASCADE", ondelete="RESTRICT"),
+        "cli_id",
+        ForeignKey("cliente.cli_id", onupdate="CASCADE", ondelete="RESTRICT"),
         nullable=True,
     )
-    fecha: Mapped[datetime] = mapped_column(
-        "VEB_FEC",
-        DateTime(timezone=True),
-        server_default=func.now(),
+    moneda_id: Mapped[int] = mapped_column(
+        "mon_id",
+        ForeignKey("moneda.mon_id", onupdate="CASCADE", ondelete="RESTRICT"),
         nullable=False,
     )
-    cantidad: Mapped[float] = mapped_column("VEB_CANT", Numeric(12, 2), nullable=False)
-    precio_unitario: Mapped[float] = mapped_column("VEB_PRE_UNI", Numeric(12, 2), nullable=False)
-    descuento: Mapped[float | None] = mapped_column("VEB_DESCUENTO", Numeric(12, 2))
-    motivo_descuento: Mapped[MotivoDescVentaBoutiqueEnum | None] = mapped_column(
-        "VEB_MOTIVO_DESC",
-        motivo_desc_venta_boutique_enum,
-    )
+    fecha: Mapped[datetime] = mapped_column("veb_fec", DateTime(timezone=True), server_default=func.now(), nullable=False)
+    cantidad: Mapped[int] = mapped_column("veb_cant", Integer, nullable=False)
+    precio_unitario: Mapped[float] = mapped_column("veb_pre_uni", Numeric(12, 2), nullable=False)
+    descuento: Mapped[float | None] = mapped_column("veb_descuento", Numeric(12, 2))
+    motivo_descuento: Mapped[MotivoDescVentaBoutiqueEnum | None] = mapped_column("veb_motivo_desc", motivo_desc_venta_boutique_enum)
     total: Mapped[float] = mapped_column(
-        "VEB_TOT",
+        "veb_tot",
         Numeric(12, 2),
-        Computed('ROUND("VEB_CANT" * "VEB_PRE_UNI" - COALESCE("VEB_DESCUENTO", 0), 2)', persisted=True),
+        Computed("round(veb_cant * veb_pre_uni - coalesce(veb_descuento, 0), 2)", persisted=True),
         nullable=False,
     )
-    metodo_pago: Mapped[MetodoPagoEnum] = mapped_column("VEB_METODO_PAGO", metodo_pago_enum, nullable=False)
-    observaciones: Mapped[str | None] = mapped_column("VEB_OBS", Text)
+    tipo_cambio_usado: Mapped[float] = mapped_column("veb_tipo_cambio_usado", Numeric(12, 4), nullable=False, default=1)
+    total_moneda_original: Mapped[float] = mapped_column("veb_total_moneda_orig", Numeric(12, 2), nullable=False)
+    metodo_pago: Mapped[MetodoPagoEnum] = mapped_column("veb_metodo_pago", metodo_pago_enum, nullable=False)
+    observaciones: Mapped[str | None] = mapped_column("veb_obs", Text)
     estado: Mapped[EstadoVentaBoutiqueEnum] = mapped_column(
-        "VEB_ESTADO",
+        "veb_estado",
         estado_venta_boutique_enum,
         nullable=False,
         default=EstadoVentaBoutiqueEnum.ACTIVA,
         server_default=EstadoVentaBoutiqueEnum.ACTIVA.value,
     )
+    fecha_cambio_estado: Mapped[datetime | None] = mapped_column("veb_fec_camb_est", DateTime(timezone=True))
+    motivo_cambio_estado: Mapped[str | None] = mapped_column("veb_motivo_camb_est", Text)
 
     item = relationship("ItemBoutique")
     usuario = relationship("Usuario")
     cliente = relationship("Cliente")
+    moneda = relationship("Moneda")
+    comprobante = relationship("ComprobanteInterno", back_populates="venta_boutique", uselist=False)
 
-    @validates("observaciones")
+    @validates("observaciones", "motivo_cambio_estado")
     def normalize_text(self, _key: str, value: str | None) -> str | None:
         if value is None:
             return None
