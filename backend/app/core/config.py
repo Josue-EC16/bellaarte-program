@@ -38,6 +38,16 @@ class Settings(BaseSettings):
     bootstrap_admin_cellphone: str = "70000000"
     bootstrap_admin_zone: str = "CENTRAL"
     bootstrap_admin_address: str = "OFICINA PRINCIPAL"
+    bootstrap_admin2_username: str = "admin2"
+    bootstrap_admin2_password: str = "Admin22345!"
+    bootstrap_admin2_email: str = "admin2@bellaarte.local"
+    bootstrap_admin2_names: str = "ADMIN DOS"
+    bootstrap_admin2_last_name: str = "BELLAARTE"
+    bootstrap_admin2_mother_last_name: str = "SISTEMA"
+    bootstrap_admin2_ci: str = "1000001"
+    bootstrap_admin2_cellphone: str = "70000001"
+    bootstrap_admin2_zone: str = "CENTRAL"
+    bootstrap_admin2_address: str = "OFICINA PRINCIPAL"
 
     smtp_server: str = "smtp.gmail.com"
     smtp_port: int = 465

@@ -12,7 +12,7 @@ Cada campo debe interceptar la entrada del usuario para garantizar que los datos
 
 - **Forzar Mayúsculas:** Todo texto (nombres, direcciones, zonas) debe convertirse automáticamente a MAYÚSCULAS.
 - **Restricción de Caracteres:**
-  - Campos de nombre: Solo letras y espacios.
+  - Campos de nombre, apellido paterno o materno: Solo letras y espacios.
   - Campos numéricos: Solo números (sin puntos, comas ni espacios).
   - Campos de identidad (CI): Letras y números, sin espacios.
   - Campos de correo: Forzar minúsculas y sin espacios.

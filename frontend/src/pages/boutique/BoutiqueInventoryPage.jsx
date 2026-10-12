@@ -27,7 +27,7 @@ import { ReportSummaryStrip } from '../../components/reports/ReportSummaryStrip'
 import { useListingSummary } from '../../components/reports/useListingSummary'
 import { BoutiqueItemDetailCard } from './BoutiqueItemDetailCard'
 import { BoutiqueItemForm } from './BoutiqueItemForm'
-import { getCategoryColor } from './boutiqueConstants'
+import { getCategoryColor, inferDetailKindFromTypeName } from './boutiqueConstants'
 
 export function BoutiqueInventoryPage() {
   const [items, setItems] = useState([])
@@ -157,7 +157,7 @@ export function BoutiqueInventoryPage() {
     setFormError(null)
     try {
       const selectedType = types.find((type) => type.id === values.type_id)
-      const detailKind = selectedType?.nombre?.toUpperCase() || 'OTRO'
+      const detailKind = inferDetailKindFromTypeName(selectedType?.nombre)
 
       if (editingItem) {
         await apiClient.patch(`/boutique/items/${editingItem.id}`, {

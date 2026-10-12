@@ -310,50 +310,54 @@ def _validate_item_detail(detail_kind: str, detail_payload: dict | None) -> None
 
 
 def _sync_detail(item: ItemBoutique, detail_kind: str, detail_payload: dict | None) -> None:
-    item.detalle_vestido = None
-    item.detalle_velo = None
-    item.detalle_bouquet = None
-    item.detalle_brassier = None
+    if detail_kind != "VESTIDO":
+        item.detalle_vestido = None
+    if detail_kind != "VELO":
+        item.detalle_velo = None
+    if detail_kind != "BOUQUET":
+        item.detalle_bouquet = None
+    if detail_kind != "BRASIER":
+        item.detalle_brassier = None
     if detail_kind == "OTRO":
         return
     if detail_payload is None:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Debe enviar el detalle especializado.")
     if detail_kind == "VESTIDO":
-        item.detalle_vestido = DetalleVestidoBoutique(
-            tipo_vestido=detail_payload["dress_type"],
-            corte_falda=detail_payload.get("skirt_cut"),
-            tipo_escote=detail_payload.get("neckline_type"),
-            tiene_cola=detail_payload.get("has_train", False),
-            tiene_manga=detail_payload.get("has_sleeves", False),
-            tiene_pedreria=detail_payload.get("has_stoning", False),
-            copa_talla=detail_payload.get("cup_size"),
-            talla=detail_payload["dress_size"],
-            largo_falda=detail_payload.get("skirt_length"),
-            observaciones=detail_payload.get("notes"),
-        )
+        detail = item.detalle_vestido or DetalleVestidoBoutique()
+        detail.tipo_vestido = detail_payload["dress_type"]
+        detail.corte_falda = detail_payload.get("skirt_cut")
+        detail.tipo_escote = detail_payload.get("neckline_type")
+        detail.tiene_cola = detail_payload.get("has_train", False)
+        detail.tiene_manga = detail_payload.get("has_sleeves", False)
+        detail.tiene_pedreria = detail_payload.get("has_stoning", False)
+        detail.copa_talla = detail_payload.get("cup_size")
+        detail.talla = detail_payload["dress_size"]
+        detail.largo_falda = detail_payload.get("skirt_length")
+        detail.observaciones = detail_payload.get("notes")
+        item.detalle_vestido = detail
     elif detail_kind == "VELO":
-        item.detalle_velo = DetalleVeloBoutique(
-            tipo_velo=detail_payload["veil_type"],
-            capas=detail_payload.get("layers"),
-            borde=detail_payload.get("edge"),
-            decoracion=detail_payload.get("decoration"),
-            observaciones=detail_payload.get("notes"),
-        )
+        detail = item.detalle_velo or DetalleVeloBoutique()
+        detail.tipo_velo = detail_payload["veil_type"]
+        detail.capas = detail_payload.get("layers")
+        detail.borde = detail_payload.get("edge")
+        detail.decoracion = detail_payload.get("decoration")
+        detail.observaciones = detail_payload.get("notes")
+        item.detalle_velo = detail
     elif detail_kind == "BOUQUET":
-        item.detalle_bouquet = DetalleBouquetBoutique(
-            tipo_bouquet=detail_payload.get("bouquet_type"),
-            forma=detail_payload.get("shape"),
-            tipo_flor=detail_payload.get("flower_type"),
-            decoracion=detail_payload.get("decoration"),
-            observaciones=detail_payload.get("notes"),
-        )
+        detail = item.detalle_bouquet or DetalleBouquetBoutique()
+        detail.tipo_bouquet = detail_payload.get("bouquet_type")
+        detail.forma = detail_payload.get("shape")
+        detail.tipo_flor = detail_payload.get("flower_type")
+        detail.decoracion = detail_payload.get("decoration")
+        detail.observaciones = detail_payload.get("notes")
+        item.detalle_bouquet = detail
     elif detail_kind == "BRASIER":
-        item.detalle_brassier = DetalleBrassierBoutique(
-            copa_talla=detail_payload["cup_size"],
-            tiene_encaje=detail_payload.get("has_lace", True),
-            marca=detail_payload.get("brand"),
-            observaciones=detail_payload.get("notes"),
-        )
+        detail = item.detalle_brassier or DetalleBrassierBoutique()
+        detail.copa_talla = detail_payload["cup_size"]
+        detail.tiene_encaje = detail_payload.get("has_lace", True)
+        detail.marca = detail_payload.get("brand")
+        detail.observaciones = detail_payload.get("notes")
+        item.detalle_brassier = detail
 
 
 def list_boutique_items(

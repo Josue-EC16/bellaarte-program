@@ -95,6 +95,16 @@ Variables principales:
 - `BOOTSTRAP_ADMIN_CELLPHONE`
 - `BOOTSTRAP_ADMIN_ZONE`
 - `BOOTSTRAP_ADMIN_ADDRESS`
+- `BOOTSTRAP_ADMIN2_USERNAME`
+- `BOOTSTRAP_ADMIN2_PASSWORD`
+- `BOOTSTRAP_ADMIN2_EMAIL`
+- `BOOTSTRAP_ADMIN2_NAMES`
+- `BOOTSTRAP_ADMIN2_LAST_NAME`
+- `BOOTSTRAP_ADMIN2_MOTHER_LAST_NAME`
+- `BOOTSTRAP_ADMIN2_CI`
+- `BOOTSTRAP_ADMIN2_CELLPHONE`
+- `BOOTSTRAP_ADMIN2_ZONE`
+- `BOOTSTRAP_ADMIN2_ADDRESS`
 
 Regla:
 
@@ -127,6 +137,12 @@ Ejecutar seed base:
 
 ```powershell
 python scripts/seed_security.py
+```
+
+Ejecutar seed de rescate para `ADMIN2`:
+
+```powershell
+python scripts/seed_admin2.py
 ```
 
 Ejecutar pruebas:
