@@ -62,6 +62,36 @@ pnpm install
 pnpm run dev
 El sistema será visible en: http://localhost:5173.
 
+### 🔑 CREDENCIALES DE ACCESO (Primer Uso)
+
+Una vez ejecutados los seeds iniciales (`python scripts/seed_security.py`), el sistema cuenta con el siguiente usuario administrador por defecto para iniciar sesión:
+
+| Campo          | Credencial por Defecto        | Variable de Entorno (`.env`) |
+| :------------- | :---------------------------- | :--------------------------- |
+| **Usuario**    | `admin`                       | `BOOTSTRAP_ADMIN_USERNAME`   |
+| **Contraseña** | `Admin12345!`                 | `BOOTSTRAP_ADMIN_PASSWORD`   |
+| **Rol**        | `ADMIN` (Administrador Total) | -                            |
+| **Correo**     | `admin@bellaarte.local`       | `BOOTSTRAP_ADMIN_EMAIL`      |
+
+> [!IMPORTANT]
+> **Cambio Obligatorio de Contraseña:**
+> Al ser el primer uso, la cuenta nace configurada con `must_change_password = true`. El sistema redirigirá inmediatamente a la pantalla de cambio obligatorio de clave antes de permitir la navegación regular. La nueva contraseña debe tener al menos 8 caracteres (incluyendo mayúscula, minúscula, número y carácter especial).
+
+#### Credenciales de Rescate (`ADMIN2`):
+
+Si se ejecuta el script de emergencia `python scripts/seed_admin2.py`:
+
+- **Usuario:** `admin2` (`BOOTSTRAP_ADMIN2_USERNAME`)
+- **Contraseña:** `Admin22345!` (`BOOTSTRAP_ADMIN2_PASSWORD`)
+
+#### Credenciales para Nuevos Colaboradores / Empleados:
+
+Para cualquier usuario nuevo dado de alta desde el módulo de personal:
+
+- **Usuario:** Inicial del nombre + inicial del apellido paterno + CI en mayúsculas (Ej: `ME12345678`).
+- **Contraseña Temporal:** Número de Cédula de Identidad (`CI`).
+- **Primer Inicio:** También requiere cambio obligatorio de contraseña.
+
 ### 🔧 MANTENIMIENTO E INGENIERÍA
 
 Sincronización de Base de Datos (flujo oficial)
