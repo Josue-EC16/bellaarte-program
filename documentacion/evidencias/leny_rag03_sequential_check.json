@@ -1,0 +1,151 @@
+{
+  "time_utc": "2026-10-20T05:07:18.935417+00:00",
+  "scope": "isolated PostgreSQL55432 / synthetic content / real OCR and CPU Ollama / TestClient HTTP",
+  "results": {
+    "real_formats": 4,
+    "idempotent_admission": true,
+    "cpu_embeddings_1024": true,
+    "publication_blocked": false,
+    "cancel_preserves_valid_index": true,
+    "http_authentication": true,
+    "admin_publication_and_caja_real_chat": true,
+    "known_document_injection_not_obeyed": true,
+    "general_unavailable_and_no_evidence": true,
+    "real_backup_restore_vectors_and_originals": true
+  },
+  "native_extraction": {
+    "scan.pdf": {
+      "ocr_pages": 1,
+      "known_number_preserved": true,
+      "warnings": []
+    },
+    "rotated.png": {
+      "ocr_pages": 1,
+      "known_number_preserved": true,
+      "warnings": []
+    },
+    "too-many.pdf": "RAG_OCR_PAGE_LIMIT",
+    "blank.png": "RAG_NO_TEXT",
+    "parser_cancel": "confirmed"
+  },
+  "documents": [
+    {
+      "format": "pdf",
+      "elapsed_seconds": 4.344,
+      "chunk_count": 1,
+      "warnings": [],
+      "status": "completed"
+    },
+    {
+      "format": "docx",
+      "elapsed_seconds": 6.047,
+      "chunk_count": 3,
+      "warnings": [],
+      "status": "completed"
+    },
+    {
+      "format": "png",
+      "elapsed_seconds": 5.89,
+      "chunk_count": 1,
+      "warnings": [],
+      "status": "completed"
+    },
+    {
+      "format": "jpg",
+      "elapsed_seconds": 6.046,
+      "chunk_count": 1,
+      "warnings": [],
+      "status": "completed"
+    }
+  ],
+  "profile": {
+    "keep_alive": "0",
+    "cold_ram_floor_bytes": 2147483648,
+    "resident_ram_floor_bytes": 1073741824,
+    "business_configuration_changed": false
+  },
+  "timings": [
+    {
+      "embedding_and_release_seconds": 5.797,
+      "search_seconds": 0.016,
+      "context_seconds": 0.0,
+      "first_content_seconds": 12.282,
+      "total_seconds": 12.313
+    },
+    {
+      "embedding_and_release_seconds": 3.89,
+      "search_seconds": 0.0,
+      "context_seconds": 0.0,
+      "first_content_seconds": 15.594,
+      "total_seconds": 15.625
+    },
+    {
+      "embedding_and_release_seconds": 3.438,
+      "search_seconds": 0.0,
+      "context_seconds": 0.0,
+      "first_content_seconds": 13.875,
+      "total_seconds": 13.891
+    },
+    {
+      "embedding_and_release_seconds": 4.063,
+      "search_seconds": 0.0,
+      "context_seconds": 0.0,
+      "first_content_seconds": 14.703,
+      "total_seconds": 14.734
+    },
+    {
+      "embedding_and_release_seconds": 4.61,
+      "search_seconds": 0.015,
+      "context_seconds": 0.0,
+      "total_seconds": 10.437
+    }
+  ],
+  "real_documental_chat": [
+    {
+      "format": "pdf",
+      "elapsed_seconds": 12.391,
+      "source_type": "PDF_TEXT",
+      "answer_contains_known_price": true,
+      "original_download_verified": true
+    },
+    {
+      "format": "docx",
+      "elapsed_seconds": 15.719,
+      "source_type": "DOCX_PARAGRAPH",
+      "answer_contains_known_price": true,
+      "original_download_verified": true
+    },
+    {
+      "format": "png",
+      "elapsed_seconds": 13.968,
+      "source_type": "IMAGE_OCR",
+      "answer_contains_known_price": true,
+      "original_download_verified": true
+    },
+    {
+      "format": "jpg",
+      "elapsed_seconds": 14.813,
+      "source_type": "IMAGE_OCR",
+      "answer_contains_known_price": true,
+      "original_download_verified": true
+    }
+  ],
+  "backup_counts": {
+    "rag_embeddings": 6,
+    "rag_fragmentos": 6,
+    "rag_indexaciones": 4,
+    "rag_trabajos": 5
+  },
+  "resources": {
+    "scope": "System-wide sample; other applications included, not per-process peak attribution",
+    "samples": 423,
+    "interval_seconds": 0.25,
+    "available_ram_before_bytes": 2764382208,
+    "minimum_available_ram_bytes": 1508397056,
+    "system_cpu_busy_percent": 31.25,
+    "embeddings_gpu_bytes": 0,
+    "embeddings_gpu_check": "verified per real batch by provider",
+    "parser_job_memory_limit_mb": 1536,
+    "acceptance_job_timeout_seconds": 1800
+  }
+}

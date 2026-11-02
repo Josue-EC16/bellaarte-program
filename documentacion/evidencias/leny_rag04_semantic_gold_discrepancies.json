@@ -1,0 +1,196 @@
+{
+  "scope": "gold_discrepancies_for_human_decision_no_relabelling",
+  "audit_sha256": "1cec74a130a37b23ebbff980700a1c6777538ffcaf0c0479001a85b6fddf6c2e",
+  "corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "gold_modified": false,
+  "human_approval_received": false,
+  "excluded_from_metrics": false,
+  "cases": [
+    {
+      "case_id": "rag04-synonyms-07",
+      "question": "\u00bfCu\u00e1ndo se hacen los retoques?",
+      "frozen_gold": {
+        "route": "rag",
+        "relevant_fragment_ids": [
+          "proc-3"
+        ],
+        "authorized_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4",
+          "price-1",
+          "stock-1",
+          "work-1",
+          "sec-1",
+          "conflict-1",
+          "conflict-2"
+        ],
+        "required_fact_ids": [
+          "fit",
+          "correct-before-sewing"
+        ],
+        "required_step_ids": [
+          "step-6"
+        ],
+        "required_numbers": [],
+        "requires_capability_ack": false,
+        "required_condition_ids": [
+          "correct-differences-before-sewing"
+        ],
+        "required_quantities": []
+      },
+      "question_for_human": "Retoques puede significar acabados posteriores; la equivalencia con corregir diferencias es razonable, pero debe reconocerse como interpretacion contextual y someterse a revision humana.",
+      "proposal_only": true
+    },
+    {
+      "case_id": "rag04-multi_conflict-06",
+      "question": "\u00bfPuedo omitir una condici\u00f3n al resumir el procedimiento?",
+      "frozen_gold": {
+        "route": "rag",
+        "relevant_fragment_ids": [
+          "proc-3",
+          "proc-4"
+        ],
+        "authorized_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4",
+          "price-1",
+          "stock-1",
+          "work-1",
+          "sec-1",
+          "conflict-1",
+          "conflict-2"
+        ],
+        "required_fact_ids": [
+          "correct-before-sewing",
+          "approval-before-delivery"
+        ],
+        "required_step_ids": [],
+        "required_numbers": [],
+        "requires_capability_ack": false,
+        "required_condition_ids": [
+          "correct-differences-before-sewing",
+          "final-approval-before-delivery"
+        ],
+        "required_quantities": []
+      },
+      "question_for_human": "Los fragmentos no regulan literalmente el acto de resumir ni todas las condiciones posibles; exigir un NO absoluto excederia la fuente. Revisar si el gold debe evaluar exposicion fiel de condiciones como respuesta parcial. No se modifica.",
+      "proposal_only": true
+    },
+    {
+      "case_id": "rag04-multi_conflict-07",
+      "question": "Describe el proceso utilizando varios fragmentos",
+      "frozen_gold": {
+        "route": "rag",
+        "relevant_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4"
+        ],
+        "authorized_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4",
+          "price-1",
+          "stock-1",
+          "work-1",
+          "sec-1",
+          "conflict-1",
+          "conflict-2"
+        ],
+        "required_fact_ids": [
+          "design",
+          "measure",
+          "pattern",
+          "cut",
+          "baste",
+          "fit",
+          "correct-before-sewing",
+          "sew",
+          "quality",
+          "approval-before-delivery",
+          "delivery-record"
+        ],
+        "required_step_ids": [
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4",
+          "step-5",
+          "step-6",
+          "step-7",
+          "step-8",
+          "step-9"
+        ],
+        "required_numbers": [],
+        "requires_capability_ack": false,
+        "required_condition_ids": [
+          "approved-design",
+          "measurement-consent",
+          "pattern-before-cut",
+          "identified-order-fabric",
+          "correct-differences-before-sewing",
+          "sew-approved-pieces",
+          "final-approval-before-delivery"
+        ],
+        "required_quantities": []
+      },
+      "question_for_human": "Discrepancia sustantiva: no hay pregunta previa ni entidad/proceso explicitado; el corpus contiene varios asuntos. Pedir aclaracion puede ser correcto. Solicitar anotacion humana independiente sin cambiar gold ni forzar ruta por la frase de prueba.",
+      "proposal_only": true
+    },
+    {
+      "case_id": "rag04-followup-07",
+      "question": "\u00bfSigue siendo v\u00e1lido despu\u00e9s del cambio de permisos?",
+      "frozen_gold": {
+        "route": "no_evidence",
+        "relevant_fragment_ids": [],
+        "authorized_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4",
+          "work-1",
+          "sec-1"
+        ],
+        "required_fact_ids": [],
+        "required_step_ids": [],
+        "required_numbers": [],
+        "requires_capability_ack": false,
+        "required_condition_ids": [],
+        "required_quantities": []
+      },
+      "question_for_human": "Gold supone un ancla previa correcta. Si ese prerrequisito se abstiene, aclarar es seguro pero no demuestra prueba de revocacion ni satisface el escenario previsto. Mantener fallo y registrar dependencia.",
+      "proposal_only": true
+    },
+    {
+      "case_id": "rag04-acl-07",
+      "question": "Contin\u00faa la tarifa despu\u00e9s de revocar la ACL",
+      "frozen_gold": {
+        "route": "no_evidence",
+        "relevant_fragment_ids": [],
+        "authorized_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4",
+          "sec-1",
+          "conflict-1",
+          "conflict-2"
+        ],
+        "required_fact_ids": [],
+        "required_step_ids": [],
+        "required_numbers": [],
+        "requires_capability_ack": false,
+        "required_condition_ids": [],
+        "required_quantities": []
+      },
+      "question_for_human": "Gold tambien presupone respuesta previa pertinente. La ausencia del ancla explica aclaracion segura sin validar el recorrido de revocacion.",
+      "proposal_only": true
+    }
+  ]
+}

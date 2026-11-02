@@ -1,0 +1,66 @@
+{
+  "time_utc": "2026-10-20T01:50:26.043552+00:00",
+  "database": "bellaarte_db",
+  "port": 5432,
+  "revision_before": "20261019_0018",
+  "revision_after": "20261019_0019",
+  "backup_bytes": 262144,
+  "backup_sha256": "baeab6759717ce200c9199fbee1f96318b6691ecebe7317de86c5474729cd72f",
+  "backup_offline_read": true,
+  "business_restore_executed": false,
+  "state": "business_enabled_pending_browser_file_upload_acceptance",
+  "public_structure_unchanged": true,
+  "role_codes_unchanged": true,
+  "runtime_schema_and_dml_permissions": true,
+  "document_tables": [
+    "carpetas",
+    "carpeta_roles_lectura",
+    "documentos",
+    "documento_roles_lectura",
+    "documento_versiones",
+    "documento_operaciones"
+  ],
+  "library_enabled_in_env": true,
+  "private_storage_outside_webroot": true,
+  "deployment_authorized": true,
+  "verified_at_utc": "2026-10-20T01:53:42.280225+00:00",
+  "runtime_reloaded": true,
+  "health_http_status": 200,
+  "anonymous_documents_http_status": 401,
+  "browser": {
+    "origin": "http://localhost:5173",
+    "route": "/app/leny/documents",
+    "existing_admin_session": true,
+    "empty_listing_loaded": true,
+    "refresh_success": true,
+    "synthetic_business_accounts_or_documents_created": false,
+    "file_selection_upload": "pending_extension_file_url_permission_unchanged"
+  },
+  "joint_backup": {
+    "verified": true,
+    "size_bytes": 284161,
+    "sha256": "53a043707229dbd8c6f7c494b44c8fc017481e6e0e2ef525756535ffacd9ec50",
+    "alembic_revision": "20261019_0019",
+    "database_bytes": 283647,
+    "original_count": 0,
+    "preview_count": 0,
+    "administrative_history_entry_created": false
+  },
+  "additional_checks": {
+    "pip_check": "passed",
+    "configuration_lf_crlf_preservation": "passed",
+    "configuration_concurrent_change_rejected": true,
+    "full_test_suites_rerun_for_deployment": false
+  },
+  "screenshot": {
+    "file": "leny_rag01_business_library.jpg",
+    "sha256": "adbaa352e441883a94ba567e72011c4d18c9b9da762e22e59b22c300867e0a80",
+    "bytes": 80357
+  },
+  "historical_isolated_results": "leny_rag01_validation.json",
+  "notes": [
+    "No business restore or downgrade executed.",
+    "Preexisting DOC role preserved and excluded; role codes unchanged.",
+    "Library remains separate from Ollama; no document retrieval enabled."
+  ]
+}

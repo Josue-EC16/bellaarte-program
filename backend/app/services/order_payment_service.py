@@ -16,6 +16,8 @@ from app.schemas.order import OrderCurrencySummary, OrderPaymentAnnulRequest, Or
 from app.services.currency_service import get_active_exchange_rate_for_currency
 from app.services.notification_service import sync_order_delivery_notifications_for_order
 from app.services.order_service import recalculate_order_balance
+from app.services.financial_source_service import money, rate, _lock, rollback_on_error, refund_totals
+from app.services.economic_ledger_service import lock_active_cut, record_income
 from app.services.receipt_service import _to_receipt_summary, annul_receipt, create_order_payment_receipt
 
 
@@ -47,7 +49,8 @@ def _get_payment_entity(db: Session, payment_id: int) -> PagoPedido:
     return payment
 
 
-def _to_list_item(payment: PagoPedido) -> OrderPaymentListItem:
+def _to_list_item(payment: PagoPedido, db=None) -> OrderPaymentListItem:
+    refunded = refund_totals(db, "PAGO_PEDIDO", payment.id) if db is not None else Decimal("0")
     return OrderPaymentListItem(
         id=payment.id,
         pedido_id=payment.pedido_id,
@@ -58,14 +61,17 @@ def _to_list_item(payment: PagoPedido) -> OrderPaymentListItem:
         monto=_to_float(payment.monto),
         tipo_cambio_usado=_to_float(payment.tipo_cambio_usado),
         monto_bob=_to_float(payment.monto_bob),
+        gross_amount_bob=_to_float(payment.monto_bob),
+        refunded_amount_bob=float(refunded),
+        effective_amount_bob=float(money(payment.monto_bob) - refunded),
         metodo_pago=payment.metodo_pago,
         estado=payment.estado,
         registered_by=payment.usuario.nombre_completo,
     )
 
 
-def _to_detail_response(payment: PagoPedido) -> OrderPaymentDetailResponse:
-    base = _to_list_item(payment).model_dump()
+def _to_detail_response(payment: PagoPedido, db=None) -> OrderPaymentDetailResponse:
+    base = _to_list_item(payment, db).model_dump()
     return OrderPaymentDetailResponse(
         **base,
         observaciones=payment.observaciones,
@@ -119,13 +125,14 @@ def list_order_payments(
                 func.upper(Cliente.apellido_paterno).like(term),
             )
         )
-    return [_to_list_item(payment) for payment in db.execute(stmt).unique().scalars().all()]
+    return [_to_list_item(payment, db) for payment in db.execute(stmt).unique().scalars().all()]
 
 
 def get_payment_detail(db: Session, payment_id: int) -> OrderPaymentDetailResponse:
-    return _to_detail_response(_get_payment_entity(db, payment_id))
+    return _to_detail_response(_get_payment_entity(db, payment_id), db)
 
 
+@rollback_on_error
 def create_order_payment(
     db: Session,
     *,
@@ -134,12 +141,16 @@ def create_order_payment(
     created_by: Cuenta,
     ip_address: str | None,
     user_agent: str | None,
+    commit: bool = True,
 ) -> OrderPaymentDetailResponse:
+    cut = lock_active_cut(db, created_by)
+    _lock(db, Pedido, order_id)
     order = db.execute(select(Pedido).options(joinedload(Pedido.cliente)).where(Pedido.id == order_id)).scalar_one_or_none()
     if order is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Pedido no encontrado.")
     if order.estado_general != EstadoPedidoGeneralEnum.ACTIVO or not order.habilitado:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Solo puedes registrar pagos sobre pedidos activos y habilitados.")
+    recalculate_order_balance(db, order)
     currency = db.execute(select(Moneda).where(Moneda.id == payload.currency_id)).scalar_one_or_none()
     if currency is None or not currency.habilitado:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Moneda no encontrada o inactiva.")
@@ -148,15 +159,19 @@ def create_order_payment(
         active_rate = get_active_exchange_rate_for_currency(db, currency.id)
         if active_rate is None:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="La moneda seleccionada no tiene tipo de cambio activo.")
-        exchange_rate = _money(active_rate.valor_bob)
-    amount_bob = (_money(payload.monto) * exchange_rate).quantize(Decimal("0.01"))
+        exchange_rate = rate(active_rate.valor_bob)
+    amount = money(payload.monto)
+    if amount <= 0:
+        raise HTTPException(status_code=422, detail="El pago debe ser al menos 0.01.")
+    amount_bob = money(amount * exchange_rate)
     if amount_bob > _money(order.saldo):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="El pago no puede ser mayor al saldo pendiente del pedido.")
     payment = PagoPedido(
         pedido_id=order.id,
         usuario_id=created_by.usuario_id,
+        corte_id=cut.id if cut else None,
         moneda_id=currency.id,
-        monto=payload.monto,
+        monto=amount,
         tipo_cambio_usado=exchange_rate,
         metodo_pago=payload.metodo_pago,
         observaciones=payload.observaciones,
@@ -165,6 +180,9 @@ def create_order_payment(
     db.add(payment)
     db.flush()
     db.refresh(payment)
+    record_income(db, account=created_by, cut=cut, origin_type="pago_pedido", source=payment,
+                  amount_bob=payment.monto_bob, amount_original=payment.monto,
+                  currency_code=currency.codigo, payment_method=payment.metodo_pago)
     recalculate_order_balance(db, order)
     create_order_payment_receipt(
         db,
@@ -183,7 +201,8 @@ def create_order_payment(
         user_agent=user_agent,
     )
     sync_order_delivery_notifications_for_order(db, order_id=order.id)
-    db.commit()
+    if commit:
+        db.commit()
     return get_payment_detail(db, payment.id)
 
 
@@ -224,8 +243,12 @@ def annul_order_payment(
     annulled_by: Cuenta,
     ip_address: str | None,
     user_agent: str | None,
+    commit: bool = True,
 ) -> OrderPaymentDetailResponse:
-    raise HTTPException(
-        status_code=status.HTTP_409_CONFLICT,
-        detail="Debes registrar la DEVOLUCIÓN desde ECONOMÍA antes de anular el pago del pedido.",
-    )
+    from app.schemas.economy import OperativeCancellationRequest
+    from app.services.refund_flow_service import apply_operative_cancellation
+    apply_operative_cancellation(db, payload=OperativeCancellationRequest(
+        origin_type="PAGO_PEDIDO", origin_id=payment_id, target_state="ANULADA",
+        reason=payload.reason), account=annulled_by, ip_address=ip_address,
+        user_agent=user_agent, commit=commit)
+    return get_payment_detail(db, payment_id)

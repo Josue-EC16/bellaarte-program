@@ -8,7 +8,8 @@ import {
 } from './economyConstants'
 
 export function formatBs(value) {
-  return `Bs ${Number(value || 0).toFixed(2)}`
+  if (value === null || value === undefined) return 'NO COMPARABLE / SIN DATO'
+  return `Bs ${Number(value).toFixed(2)}`
 }
 
 export function formatOriginAmount(value, currencyCode, symbol) {
@@ -59,12 +60,11 @@ export function incomeStateColor(value) {
   return 'default'
 }
 
-export function buildRefundPath({ originType, originId, targetState, returnTo }) {
+export function buildRefundPath({ originType, originId, returnTo }) {
   const params = new URLSearchParams({
     mode: 'refund',
     origin_type: originType,
     origin_id: String(originId),
-    target_status: targetState,
   })
   if (returnTo) {
     params.set('return_to', returnTo)

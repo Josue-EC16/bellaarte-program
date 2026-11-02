@@ -1,0 +1,170 @@
+{
+  "time_utc": "2026-10-20T11:53:12.032190+00:00",
+  "status": "DEPLOYED; ordinary ERP publication, Qwen documental answer and source verified; SPEC04 global evaluation pending",
+  "activation_ready": true,
+  "validated_keep_alive": "0",
+  "business_database_migrated": true,
+  "business_configuration_changed": true,
+  "usual_worker_stopped": false,
+  "new_dependencies": [],
+  "automated": {
+    "backend_base": {
+      "passed": 572,
+      "skipped": 1,
+      "seconds": 10.9,
+      "warning": "Existing pypdf add_js deprecation; native parser case uses separate launcher",
+      "command": "backend/venv/Scripts/python.exe -B backend/scripts/run_base_tests.py"
+    },
+    "postgresql_integration": {
+      "passed": 175,
+      "seconds": 39.69,
+      "host": "127.0.0.1",
+      "port": 55432,
+      "database": "bab_vdos_testing",
+      "command": "backend/scripts/provision_notification_test_postgres.ps1 -RunTests -Rag",
+      "migration_roundtrip": true,
+      "public_structure_preserved": true,
+      "rolling_0020_insert": true,
+      "published_index_state_fk": true,
+      "revocation_after_retrieval": true,
+      "downgrade_refuses_publications": true
+    },
+    "frontend": {
+      "passed": 116,
+      "test_files": 18,
+      "lint": "changed files passed",
+      "build": "passed fresh temporary output",
+      "build_js_kb": 2691.57,
+      "build_gzip_kb": 805.37,
+      "warning": "Existing large bundle warning",
+      "seconds": 25.51
+    },
+    "pip_check": "passed",
+    "python_ast_files": 42,
+    "git_diff_check": "passed with line-ending warnings on existing files",
+    "stream_revocation": "simulated; future output stopped; no done/sources; lease released"
+  },
+  "real_provider": {
+    "historical_four_format_evidence": "leny_rag03_real_check.json; predates final adversarial checks",
+    "final_isolated_profile": "leny_rag03_sequential_check.json",
+    "profile_keep_alive": "0; isolated-tested and now authorized in ordinary ERP",
+    "results": {
+      "real_formats": 4,
+      "idempotent_admission": true,
+      "cpu_embeddings_1024": true,
+      "publication_blocked": false,
+      "cancel_preserves_valid_index": true,
+      "http_authentication": true,
+      "admin_publication_and_caja_real_chat": true,
+      "known_document_injection_not_obeyed": true,
+      "general_unavailable_and_no_evidence": true,
+      "real_backup_restore_vectors_and_originals": true
+    },
+    "resources": {
+      "scope": "System-wide sample; other applications included, not per-process peak attribution",
+      "samples": 423,
+      "interval_seconds": 0.25,
+      "available_ram_before_bytes": 2764382208,
+      "minimum_available_ram_bytes": 1508397056,
+      "system_cpu_busy_percent": 31.25,
+      "embeddings_gpu_bytes": 0,
+      "embeddings_gpu_check": "verified per real batch by provider",
+      "parser_job_memory_limit_mb": 1536,
+      "acceptance_job_timeout_seconds": 1800
+    },
+    "documental_response_seconds": [
+      12.391,
+      15.719,
+      13.968,
+      14.813
+    ],
+    "statistical_quality_evaluation": false,
+    "sustained_load_validation": false,
+    "usual_5m_profile": {
+      "status": "Not adopted; replaced with authorized isolated-tested profile0",
+      "observed_safe_rejection": "RAG_MEMORY",
+      "available_bytes_at_rejection": 812208128,
+      "resident_floor_bytes": 1073741824,
+      "guards_lowered": false
+    }
+  },
+  "browser": {
+    "environment": "isolated ERP 127.0.0.1:5174, API8001, synthetic account/document",
+    "login_navigation": true,
+    "history_sources": true,
+    "fragment_opened": true,
+    "new_question_sent_from_react": true,
+    "real_qwen_answer_received": "known synthetic price250 with S1",
+    "screenshots": [
+      "leny_rag03_chat_sources.png",
+      "leny_rag03_source_fragment.png"
+    ],
+    "usual_erp_checked": true,
+    "admin_publication_ui_manually_exercised": true,
+    "usual_general_chat": true,
+    "usual_documental_chat": true,
+    "usual_source_opened": true,
+    "private_document_text_saved": false,
+    "usual_backend_keep_alive_verified": "0",
+    "publication_badge_verified": true
+  },
+  "cleanup": {
+    "owned_api8001_stopped": true,
+    "owned_ipv4_preview_stopped": true,
+    "isolated_postgresql55432_stopped": true,
+    "synthetic_credentials_removed": true,
+    "temporary_browser_tab_closed": true,
+    "usual_ports8000_5173_listening": true,
+    "unrelated_ipv6_vite_on5174_preserved": true
+  },
+  "pending": [
+    "SPEC04: fidelity, Recall, broader attacks, classifier false positives and sustained load",
+    "Existing additional DOC role is preserved; no LENY policy granted; any role cleanup requires separate review"
+  ],
+  "residual_risks": [
+    "OCR and semantic review can err",
+    "Already delivered text and originals cannot be retracted",
+    "Authorization revalidation has a small check/send window",
+    "External Ollama clients do not share the ERP lease",
+    "Classifier produced an unnecessary mixed-scope preface in a legitimate business question with a formatting request"
+  ],
+  "source_sha256": {
+    "backend/app/services/leny_service.py": "df49f114e4407297eef6d94830533ef093d6354be7490c1727b69900aca2b0e4",
+    "backend/app/services/leny_rag_retrieval.py": "41f0a45630f4adb49fd55245104a7e0a7a7e08443de7c081d992043547794746",
+    "backend/app/services/leny_inference_state.py": "be19d08287f260971b8941d4bbe7e0e3c30a2c29445e2fe1f8a2a5c5b7a66d3d",
+    "backend/alembic/versions/20261020_0021_leny_publication_sources.py": "fc9d4ec79f41880b838c99e5539f3dfe454e3e58bdc9ce770842a5a92a85a4aa",
+    "backend/app/services/leny_rag_publication.py": "13137d3aca1ab3ea8e77810bcc5b21b734bb2aacd652a80efa188473842e5717",
+    "backend/app/services/leny_rag_sources.py": "2895fff0d04a6efbeab1e7222a6e683a9dc18e67bab7e198299e3de91534d19c",
+    "backend/app/api/routers/leny_sources.py": "94542a0b11bca33fd1fbbb873323363bf63ca5a0353ec6cfb4b768216bbe6570",
+    "frontend/src/pages/leny/LenySources.jsx": "dbc782c57a1f4849d39ed4a79f6ed442d4faad6cd60f1520bbcf82e1827a9a73",
+    "frontend/src/pages/leny/documents/PublicationPanel.jsx": "adee793c07b4543345b07d412154956996ac44e02c746039e713d5225cb09b70",
+    "backend/scripts/deploy_leny_rag_chat.py": "00c0f9cfe84f8a01dedd1d6b7e03c3a43bc9ad788c9dd3a529905bb4a4adfbf0",
+    "frontend/src/pages/leny/documents/contextualizationUtils.js": "618fcbca257c00c9172484a8073fd3bf0a70f89bc94d9c3dab688940d84210a7",
+    "frontend/src/pages/leny/documents/DocumentDetailDrawer.jsx": "4a74e950d1de3bfd76c2d92a161872e69de3448292f3e879af92ebf85c33dc03",
+    "frontend/src/pages/leny/documents/LenyDocumentsPage.jsx": "49bd357d4e97d2ed3a57c1f718a434d962e5b70472608305ce25213aeec40a70"
+  },
+  "artifact_sha256": {
+    "leny_rag03_real_check.json": "df4448e9f5395208496805b27b9cef4d5f6bb4090825d07aa314a29e95aed8d9",
+    "leny_rag03_sequential_check.json": "26922216db09ba4b1a83ca18c1b912aaab23e65a0acd5d8c16e8a6b554be2939",
+    "leny_rag03_ui_setup.json": "37658a94ee2cdea27bc132bf6603a1aba69bfe9c12d91121267c556ba8594024",
+    "leny_rag03_chat_sources.png": "3de9a3e7458deec08e4a392acb2a937e9632ab0f8721dc5548bff59522cbc608",
+    "leny_rag03_source_fragment.png": "0985f67a165688119d55b0e9ed878679f63df9873c9a6405d2f32cd663e264b5",
+    "leny_rag03_business_chat.png": "850515616d8ab4188c90cbd659c26ad4683484d25737ce5e17aa20683a35d81b",
+    "leny_rag03_business_deployment.json": "d1f910aaf05f2e96870e3d1eaf34299c0037ed250b8d0549353129405886f4a5",
+    "leny_rag03_business_publication_review.png": "23dc0f918a4946cb0f9ed3664b41e0f3306235b6bc1e60ce9124e6c98e087b8f",
+    "leny_rag03_business_publication.png": "355501187b31da36036203955dcffd8d6d1ccaedcb56655452e8f910f2c6c5df",
+    "leny_rag03_business_library.png": "d5134c95f32399550d3ceda17297870351436c84884766d0faea0788698682a4"
+  },
+  "deployment_authorization": {
+    "user_instruction": "APLICA TIENES MI PERMISO PARA PROSEGUIR",
+    "target": "bellaarte_db:5432",
+    "migration": "20261020_0021",
+    "profile_adopted": "keep_alive=0; no memory threshold reduction; no forced model unload"
+  },
+  "deployment_checks": {
+    "passed": 26,
+    "seconds": 0.62,
+    "scope": "RAG chat contracts and stronger deployment gate",
+    "shared_backend_configuration_fixed": true
+  }
+}

@@ -322,7 +322,10 @@ MODISTA_PERMISSIONS = (
 
 def build_permissions_for_role(role_code: str) -> list[str]:
     permissions = list(AUTHENTICATED_PERMISSIONS)
+    if role_code in {"ADMIN", "INV_BOUTIQUE", "INV_TALLER", "CAJA", "MODISTA"}:
+        permissions.append("leny:chat")
     if role_code == "ADMIN":
+        permissions.append("leny:admin")
         permissions.extend(ADMIN_PERMISSIONS)
     if role_code == "INV_BOUTIQUE":
         permissions.extend(INV_BOUTIQUE_PERMISSIONS)

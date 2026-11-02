@@ -1,0 +1,189 @@
+{
+  "scope": "spec04_resumed_real_local_development_evaluation_not_acceptance_or_deployment",
+  "timestamp_utc": "2026-10-21T01:21:25.459009+00:00",
+  "data_classification": "synthetic",
+  "candidate_profile": "rag4_v1",
+  "candidate_activated": false,
+  "business_configuration_modified": false,
+  "business_documents_read": false,
+  "business_services_restarted": false,
+  "migrations_executed": false,
+  "new_dependencies": [],
+  "functional_source_changed_this_resumption": false,
+  "source_snapshot_files_checked": 366,
+  "source_snapshot_mismatches": [],
+  "runner_source_hashes_verified": true,
+  "model_identity_verified": true,
+  "cleanup_confirmed": true,
+  "corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "model_identity": {
+    "chat_digest": "d8b0f5e9760cd1682034f292d7ef72ec46f432149be0df7574bf2d6e92e38c04",
+    "embedding_digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d"
+  },
+  "component_versions": {
+    "policy": "rag4-v2",
+    "documentary_output": "document-excerpts-v2",
+    "retrieval": "sql-acl-current-publication",
+    "ranking": "hybrid"
+  },
+  "settings": {
+    "leny_enabled": true,
+    "leny_documents_enabled": true,
+    "leny_rag_enabled": true,
+    "leny_rag_chat_enabled": true,
+    "leny_keep_alive": "0",
+    "leny_num_ctx": 4096,
+    "leny_num_predict": 768,
+    "leny_temperature": 0.0,
+    "leny_rate_limit": 5,
+    "leny_rate_window_seconds": 60,
+    "leny_rag_min_ram_bytes": 2147483648,
+    "leny_rag_min_resident_ram_bytes": 1073741824,
+    "leny_rag_cpu_threads": 4,
+    "leny_rag_batch_size": 2,
+    "leny_rag_top_k": 5,
+    "leny_rag_candidates": 20,
+    "leny_rag_profile": "rag4_v1",
+    "leny_rag_evidence_mode": "adaptive",
+    "leny_rag_max_context_bytes": 2048,
+    "leny_rag_ranking": "hybrid",
+    "leny_rag_adaptive_token_probe": true,
+    "leny_rag_neighbor_chunks": false
+  },
+  "configuration_sha256": "6b09c48deb82b8f418f447348e652abae76cf484b1a0a584130944f33c1acb31",
+  "snapshot_manifest_sha256": "9041fa1ae8cbfcc3d96a91caa9a259860fd83defbcc1ff70154bf5d09a01b0f0",
+  "comparison_contract_sha256": "6ed167daf5aaaf6dafff1fa4cb9d3f64b1a2e08af769c5eb034b4c6af3c24429",
+  "source_files_sha256": {
+    "backend/app/core/config.py": "255d9f75fc82305d7d226840f2b42a5069168e8d285f728082a2b4bae28736c1",
+    "backend/app/services/leny_coordination.py": "b171770ebd63b568aa58b5c2279b2bc5bca8bc24abe771cdcc9a9127139958b5",
+    "backend/app/services/leny_document_backup.py": "d9e1c6017f88bcbb56332f43425308b2f5ed48dded95e89a59dedf0e21dba841",
+    "backend/app/services/leny_document_maintenance.py": "5641fdc19b799973ed1a1cf1ddbfb82fcb14fb6e67c1243fd3a0ee635aecec82",
+    "backend/app/services/leny_document_service.py": "4d4a92270425f73f7f2bed4c576f980584e86f363d1c0370a94188fe69a5b248",
+    "backend/app/services/leny_document_storage.py": "223508eb4132df2eaad9278ea03091a745051a051c2f5b38d0c95af92b96fe58",
+    "backend/app/services/leny_document_validation.py": "f308f43588151c2a7486fb084c812edc1243625954dcc3775fac1b7f790f0397",
+    "backend/app/services/leny_guard.py": "646aedcf45d6b84c50a170ce1ea19c0b8af517e1bfd6bdab0dbaccfb2db58749",
+    "backend/app/services/leny_inference_state.py": "851fcef019370000a372c9841120412cd49ab7489c2207924bdb2530336f4fb2",
+    "backend/app/services/leny_ollama.py": "d03765e1b1ec83d33333122100807366207fbeb334dba8c73adffadbf65a2d85",
+    "backend/app/services/leny_policy.py": "c2fb1eda757aa9d35c1902c026cd0769b759dd65ffa0a844043471f44b6a0fbd",
+    "backend/app/services/leny_rag_chunking.py": "02860cd76bc90608cd8dd86a9157e837995a527cab8169b4ad429c107f4e8ad5",
+    "backend/app/services/leny_rag_common.py": "bd7489fa48291c2de77cf507a2755514317eec6ffeed1436cf3cf928795d66cc",
+    "backend/app/services/leny_rag_diagnostics.py": "0de0e8cdd2cd9b7f44a8a5ee5c95807f39261ac440720bffe5d3cb06023d0f85",
+    "backend/app/services/leny_rag_embeddings.py": "00f9b633c68afc0ecbde6df74fa8aa6c6b941c3068c78b26456ed4e0b7b38db1",
+    "backend/app/services/leny_rag_evaluation.py": "362571be57fe57a4b2c490c18a3e97d7187673603fd1ca382d28b92250806f1d",
+    "backend/app/services/leny_rag_extraction.py": "aa50c998a24e83267323c2ad750d4060a7260a7a66620b67dfa5ee4113f2fa54",
+    "backend/app/services/leny_rag_followup.py": "0709ae9e659c244aae6b0741227ca70236f2ae5af28a2a6590bb8cfba52643c9",
+    "backend/app/services/leny_rag_grounding.py": "6d53a4368e6db94817eb636dbbaac3ab60744662897680912a4c56b42245ac14",
+    "backend/app/services/leny_rag_publication.py": "13137d3aca1ab3ea8e77810bcc5b21b734bb2aacd652a80efa188473842e5717",
+    "backend/app/services/leny_rag_retrieval.py": "0147d35ad84fbb2e670d33f44d596e48bb4cc7bb9ab5c2cc6e0f2512c3116b84",
+    "backend/app/services/leny_rag_routing.py": "1c62eb8bf677dc187e9a007edcaf06de54f912e159e0f2579a74058ed832752e",
+    "backend/app/services/leny_rag_service.py": "01c320001d8fdb679c2636c3bb404d11b6a812fa9a1e0f4244d874a52f9f2dd1",
+    "backend/app/services/leny_rag_sources.py": "2895fff0d04a6efbeab1e7222a6e683a9dc18e67bab7e198299e3de91534d19c",
+    "backend/app/services/leny_rag_worker.py": "d0588f175ea57ced1874b9cb69aa437808a06f8643e694a78095f1042e17ab80",
+    "backend/app/services/leny_rate_limit.py": "7c4a0c01c3219f7243d27e27b404e095974b76c0c8b0ee8a4af5d4521d96f4ef",
+    "backend/app/services/leny_service.py": "426e215bfc6eabfdaf28ba8bea648d37a05e92d8c4861a61628c6ca76663936b",
+    "backend/app/services/leny_store.py": "d6053c9ee5d36bcad0c608ff793df8b35011de84509dae5cdc0cdf5c48f97201",
+    "backend/scripts/run_leny_rag_quality.py": "c6be74588c5ce5e2bd9011d40c127d52d7e19820c8d88c3d9c63ed95930a3a8a"
+  },
+  "runtime": {
+    "python": "3.10.6",
+    "packages": {
+      "fastapi": "0.115.6",
+      "sqlalchemy": "2.0.46",
+      "pydantic": "2.12.5",
+      "psycopg2-binary": "2.9.11",
+      "pytest": "8.4.2",
+      "httpx": "0.28.1"
+    }
+  },
+  "development_records": 84,
+  "target_executed": 83,
+  "missing_role_target_not_executed": [
+    "rag04-acl-06"
+  ],
+  "raw_status_counts": {
+    "completed": 78,
+    "rejected": 1,
+    "failed": 5
+  },
+  "natural_route_correct": {
+    "numerator": 14,
+    "denominator": 14
+  },
+  "natural_sent_hit_at_5": {
+    "numerator": 14,
+    "denominator": 14
+  },
+  "natural_macro_sent_recall_at_5": 1.0,
+  "acceptance": "not_accepted",
+  "acceptance_failures": [
+    "human_review_incomplete",
+    "critical_failure",
+    "unsuccessful_attempts",
+    "threshold_hit_at_5",
+    "threshold_recall_at_5",
+    "threshold_grounding",
+    "threshold_no_evidence_abstention",
+    "threshold_capabilities_acknowledged",
+    "acl_route_accuracy"
+  ],
+  "automatic_critical_case_count": 2,
+  "human_review_complete": false,
+  "holdout_executed": false,
+  "business_e2e_executed": false,
+  "automatic_tests_from_same_unchanged_snapshot_not_rerun_this_resumption": {
+    "base": {
+      "passed": 788,
+      "skipped": 1,
+      "warnings": 1,
+      "seconds": 14.53
+    },
+    "postgresql_existing_schema": {
+      "passed": 100,
+      "deselected_migration_tests": 5,
+      "seconds": 47.55,
+      "ddl_attempts": 0,
+      "source_freeze_verified": true
+    },
+    "frontend": {
+      "passed": 117,
+      "files": 18,
+      "seconds": 45.81
+    },
+    "lint": "passed",
+    "temporary_build": {
+      "passed": true,
+      "seconds": 39.8,
+      "bundle_js_kb": 2692.24,
+      "gzip_kb": 805.59,
+      "existing_large_bundle_warning": true
+    }
+  },
+  "evidence_sha256": {
+    "leny_rag04_quality_resumed_development.json": "432a97466f4c87f572828bd6dd5a91c303a732befa075be6216b7fcce97dfd56",
+    "leny_rag04_quality_resumed_development.json.jsonl": "1a6f4cfeb0d229e62ec5ac19a92d9276a61cdae8f195cbc2384e378e77e3c7a2",
+    "leny_rag04_quality_resumed_metrics.json": "6ef2659be894de2123fae50c91da1547ba7fc21d310b930b03a00f4a85d846d6",
+    "leny_rag04_quality_resumed_comparison.json": "53855a63d3e8022e28371821fe65b2acd7068131a920300d440c5e73630016cd",
+    "leny_rag04_quality_resumed_diagnostic.json": "a6195195dd32809962ae256e492fa120ce09b43775a5b9bc79c06e76664e29ce",
+    "leny_rag04_quality_resumed_diagnostic_metrics.json": "044c26c684bcd3b6887c5fe716e3b5456059735a105cdcc42743ffda79266141",
+    "leny_rag04_quality_resumed_diagnostic_comparison.json": "4482d9656f25155de8f68d6ec72726173212bb1b68392c60eab92e66a2bd195c",
+    "leny_rag04_resumed_diagnostic_literal_check.json": "38c56ffc3fe3f2e2e8629f05340b6113e777323656de926ad900cccca306ae0c",
+    "leny_rag04_resumed_development_literal_check.json": "2f7ad455e35c4d7e0cc2580bfbce0546533b99491377c956690a0ac105163d3a",
+    "leny_rag04_resumed_resource_samples.jsonl": "8a12f6feb9f93b81dc0d5ef2d6ef84b20a8ed99f9381c4c1b43bb26ab5760a07",
+    "leny_rag04_resumed_resource_samples.summary.json": "7431b495206dd78a320f0f2eab1b02b167f94c15335b2f58e09110577792aab9",
+    "leny_rag04_resumed_revision_humana.md": "82663d53f73072a8dfb797e738a8b7b93fb5e0d46b1cc92b301f456f9e8ccc10",
+    "leny_rag04_resumed_revision_clave.json": "c280e523b62f0ee849fca0b62205d7633e5dab771689eea59abe6d81a76878e6",
+    "leny_rag04_resumed_revision_plantilla.json": "7629d906fd4da976229be4a3e52a3e9bfbcdf1e8749f735ceb3e9f7e790d3281"
+  },
+  "end_state": {
+    "isolated_55432_listening": false,
+    "usual_5432_listening": true,
+    "usual_8000_listening": true,
+    "vite_5173_to_5180_listening": [],
+    "ollama_resident_models_at_end": 0,
+    "usual_profile_default": "legacy",
+    "usual_dotenv_profile_assignment_found": false,
+    "usual_process_environment_certified": false,
+    "inference_window_completed": true
+  },
+  "next_step": "human_review_of_frozen_development_evidence_and_quality_repair_before_any_holdout_or_activation"
+}

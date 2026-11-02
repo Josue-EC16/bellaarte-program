@@ -10,7 +10,7 @@ from app.models.role import Rol
 from app.models.user import Usuario
 from app.schemas.auth import CreateUserRequest, ResetPasswordRequest, UpdateUserRequest, UserSummary
 from app.schemas.role import RoleCreateRequest, RoleUpdateRequest
-from app.services.notification_service import send_welcome_email_with_tracking
+from app.services.notification_service import queue_welcome_email, reconcile_user_notification_eligibility, send_welcome_email_with_tracking
 
 
 def build_user_summary(account: Cuenta) -> UserSummary:
@@ -115,6 +115,9 @@ def update_role(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    db.flush()
+    affected_users = db.execute(select(Cuenta.usuario_id).where(Cuenta.rol_id == role.id)).scalars().all()
+    reconcile_user_notification_eligibility(db, user_ids=affected_users)
     db.commit()
     return get_role(db, role.id)
 
@@ -149,6 +152,9 @@ def set_role_status(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    db.flush()
+    affected_users = db.execute(select(Cuenta.usuario_id).where(Cuenta.rol_id == role.id)).scalars().all()
+    reconcile_user_notification_eligibility(db, user_ids=affected_users)
     db.commit()
     return get_role(db, role.id)
 
@@ -251,15 +257,12 @@ def create_user(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    queue_welcome_email(db, account=cuenta)
     db.commit()
 
     background_tasks.add_task(
         send_welcome_email_with_tracking,
         user_id=usuario.id,
-        recipient_email=payload.correo,
-        full_name=f"{payload.nombres} {payload.apellido_paterno} {payload.apellido_materno or ''}".strip(),
-        username=username,
-        initial_password=password_temporal,
     )
 
     return get_account(db, cuenta.id)
@@ -276,6 +279,10 @@ def update_user(
     user_agent: str | None,
 ) -> Cuenta:
     account = get_account(db, account_id)
+    db.execute(select(Usuario).where(Usuario.id == account.usuario_id).with_for_update())
+    db.execute(select(Cuenta).where(Cuenta.id == account_id).with_for_update())
+    db.refresh(account)
+    db.refresh(account.usuario)
     role = get_role_by_code(db, payload.role_code)
     if not role.activo:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="El rol asignado esta deshabilitado.")
@@ -301,6 +308,7 @@ def update_user(
     account.usuario.direccion = payload.direccion
     account.usuario.activo = payload.user_is_active
     account.rol_id = role.id
+    account.rol = role
     account.is_active = payload.account_is_active
 
     register_audit_event(
@@ -313,16 +321,15 @@ def update_user(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    reconcile_user_notification_eligibility(db, user_ids=(account.usuario_id,))
+    if should_resend_welcome:
+        queue_welcome_email(db, account=account)
     db.commit()
 
     if should_resend_welcome:
         background_tasks.add_task(
             send_welcome_email_with_tracking,
             user_id=account.usuario.id,
-            recipient_email=payload.correo,
-            full_name=f"{payload.nombres} {payload.apellido_paterno} {payload.apellido_materno or ''}".strip(),
-            username=account.username,
-            initial_password=payload.ci.upper(),
         )
 
     return get_account(db, account.id)
@@ -338,6 +345,10 @@ def set_account_status(
     user_agent: str | None,
 ) -> Cuenta:
     account = get_account(db, account_id)
+    db.execute(select(Usuario).where(Usuario.id == account.usuario_id).with_for_update())
+    db.execute(select(Cuenta).where(Cuenta.id == account_id).with_for_update())
+    db.refresh(account)
+    db.refresh(account.usuario)
     account.is_active = is_active
     account.usuario.activo = is_active
     register_audit_event(
@@ -350,6 +361,7 @@ def set_account_status(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    reconcile_user_notification_eligibility(db, user_ids=(account.usuario_id,))
     db.commit()
     return get_account(db, account.id)
 
@@ -364,6 +376,10 @@ def reset_account_password(
     user_agent: str | None,
 ) -> Cuenta:
     account = get_account(db, account_id)
+    db.execute(select(Usuario).where(Usuario.id == account.usuario_id).with_for_update())
+    db.execute(select(Cuenta).where(Cuenta.id == account_id).with_for_update())
+    db.refresh(account)
+    db.refresh(account.usuario)
     new_temporary_password = account.usuario.ci.upper()
     account.password_hash = hash_password(new_temporary_password)
     account.must_change_password = True

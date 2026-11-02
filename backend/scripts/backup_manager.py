@@ -5,7 +5,7 @@ import os
 import shutil
 import socket
 import subprocess
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -50,6 +50,7 @@ def get_pg_dump_version(pg_dump_path: str) -> str:
         check=False,
         capture_output=True,
         text=True,
+        errors='replace',
     )
     version = (process.stdout or process.stderr or "").strip()
     if process.returncode != 0 or not version:
@@ -91,10 +92,10 @@ def _database_connection_parts() -> tuple[str | None, str | None, str | None, st
     )
 
 
-def generate_backup() -> BackupResult:
+def _generate_database_backup(*, private_path: Path | None = None) -> BackupResult:
     now = _timezone_now()
     file_name = build_backup_filename(now)
-    file_path = build_backup_file_path(file_name, now)
+    file_path = private_path if private_path is not None else build_backup_file_path(file_name, now)
     try:
         pg_dump_path = resolve_pg_dump_path()
         pg_dump_version = get_pg_dump_version(pg_dump_path)
@@ -118,6 +119,7 @@ def generate_backup() -> BackupResult:
             check=False,
             capture_output=True,
             text=True,
+            errors='replace',
             env=environment,
         )
         if process.returncode != 0:
@@ -146,6 +148,45 @@ def generate_backup() -> BackupResult:
             finished_at=_timezone_now(),
             error=str(exc).strip().upper(),
         )
+
+
+def generate_backup() -> BackupResult:
+    if not settings.leny_documents_enabled:
+        return _generate_database_backup()
+    # No partial database-only success once the private library is enabled.
+    from app.core.database import SessionLocal
+    from app.services.leny_document_service import DocumentService
+    from app.services.leny_document_backup import build_bundle, freeze_library
+    from uuid import uuid4
+    service = DocumentService(settings, SessionLocal)
+    dump = destination = None
+    try:
+        with freeze_library(settings) as lease:
+            service.storage.initialize()
+            service.initialized = True
+            service.recover()
+            dump = service.storage.root / 'backups' / ('.database-' + uuid4().hex + '.dump')
+            lease.check()
+            result = _generate_database_backup(private_path=dump)
+            if not result.success:
+                raise RuntimeError('database backup failed')
+            destination = service.storage.root / 'backups' / (Path(result.file_name).stem + '_' + uuid4().hex[:8] + '.zip')
+            lease.check()
+            build_bundle(dump, destination, SessionLocal, service.storage)
+            lease.check()
+            return replace(result, file_name=destination.name, file_path=str(destination),
+                           file_size_bytes=destination.stat().st_size, sha256_hash=calculate_file_sha256(destination),
+                           finished_at=_timezone_now())
+    except Exception:
+        if destination is not None:
+            destination.unlink(missing_ok=True)
+        # Parser/filesystem/DB exception details never become public backup logs.
+        return BackupResult(False, 'document_backup_failed.zip', '', finished_at=_timezone_now(),
+                            error='DOCUMENT_BACKUP_FAILED: NO SE GENERÓ UN RESPALDO COMPLETO VERIFICADO.')
+    finally:
+        if dump is not None:
+            dump.unlink(missing_ok=True)
+        service.engine.dispose()
 
 
 if __name__ == "__main__":

@@ -170,6 +170,9 @@ def set_workshop_type_status(db: Session, *, type_id: int, enabled: bool, change
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="No puedes deshabilitar un tipo con materiales activos asociados.")
     entity.habilitado = enabled
     register_audit_event(db, action="WORKSHOP_TYPE_STATUS_CHANGED", description=f"Se actualizó el estado del tipo de taller '{entity.nombre}' a {'ACTIVO' if enabled else 'INACTIVO'}.", account=changed_by, user=changed_by.usuario, reference=str(entity.id), ip_address=ip_address, user_agent=user_agent)
+    db.flush()
+    for item_id in db.execute(select(InventarioTaller.id).where(InventarioTaller.tipo_id == entity.id).order_by(InventarioTaller.id)).scalars():
+        sync_workshop_stock_notification(db, item_id=item_id)
     db.commit()
     return _type_response(entity)
 
@@ -271,6 +274,7 @@ def create_workshop_inventory(db: Session, *, payload: TallerInventoryCreateRequ
     db.add(item)
     db.flush()
     register_audit_event(db, action="WORKSHOP_ITEM_CREATED", description=f"Se creó el material de taller '{item.codigo}'.", account=created_by, user=created_by.usuario, reference=item.codigo, ip_address=ip_address, user_agent=user_agent)
+    sync_workshop_stock_notification(db, item_id=item.id)
     db.commit()
     return get_workshop_inventory_detail(db, item.id)
 
@@ -307,6 +311,7 @@ def update_workshop_inventory(db: Session, *, item_id: int, payload: TallerInven
     item.stock_minimo = payload.stock_min
     item.observaciones = payload.observations
     register_audit_event(db, action="WORKSHOP_ITEM_UPDATED", description=f"Se actualizó el material de taller '{item.codigo}'.", account=updated_by, user=updated_by.usuario, reference=item.codigo, ip_address=ip_address, user_agent=user_agent)
+    sync_workshop_stock_notification(db, item_id=item.id)
     db.commit()
     return get_workshop_inventory_detail(db, item.id)
 
@@ -319,6 +324,7 @@ def set_workshop_inventory_status(db: Session, *, item_id: int, is_active: bool,
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="No puedes activar un material con proveedor deshabilitado.")
     item.estado = is_active
     register_audit_event(db, action="WORKSHOP_ITEM_STATUS_CHANGED", description=f"Se actualizó el estado del material de taller '{item.codigo}' a {'ACTIVO' if is_active else 'INACTIVO'}.", account=changed_by, user=changed_by.usuario, reference=item.codigo, ip_address=ip_address, user_agent=user_agent)
+    sync_workshop_stock_notification(db, item_id=item.id)
     db.commit()
     return get_workshop_inventory_detail(db, item.id)
 

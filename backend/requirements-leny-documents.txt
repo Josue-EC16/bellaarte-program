@@ -1,0 +1,5 @@
+# Additions only. Install with -c requirements.txt; do not upgrade existing pins.
+pypdf==6.21.1
+defusedxml==0.7.1
+pyvips==3.2.0
+pyvips-binary==8.18.7

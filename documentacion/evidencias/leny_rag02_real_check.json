@@ -1,0 +1,75 @@
+{
+  "scope": "isolated PostgreSQL55432 / synthetic content / real OCR and CPU Ollama / TestClient HTTP",
+  "results": {
+    "real_formats": 4,
+    "idempotent_admission": true,
+    "cpu_embeddings_1024": true,
+    "publication_blocked": true,
+    "cancel_preserves_valid_index": true,
+    "http_authentication": true,
+    "real_backup_restore_vectors_and_originals": true
+  },
+  "native_extraction": {
+    "scan.pdf": {
+      "ocr_pages": 1,
+      "known_number_preserved": true,
+      "warnings": []
+    },
+    "rotated.png": {
+      "ocr_pages": 1,
+      "known_number_preserved": true,
+      "warnings": []
+    },
+    "too-many.pdf": "RAG_OCR_PAGE_LIMIT",
+    "blank.png": "RAG_NO_TEXT",
+    "parser_cancel": "confirmed"
+  },
+  "documents": [
+    {
+      "format": "pdf",
+      "elapsed_seconds": 6.985,
+      "chunk_count": 1,
+      "warnings": [],
+      "status": "completed"
+    },
+    {
+      "format": "docx",
+      "elapsed_seconds": 4.703,
+      "chunk_count": 2,
+      "warnings": [],
+      "status": "completed"
+    },
+    {
+      "format": "png",
+      "elapsed_seconds": 5.078,
+      "chunk_count": 1,
+      "warnings": [],
+      "status": "completed"
+    },
+    {
+      "format": "jpg",
+      "elapsed_seconds": 5.641,
+      "chunk_count": 1,
+      "warnings": [],
+      "status": "completed"
+    }
+  ],
+  "backup_counts": {
+    "rag_embeddings": 5,
+    "rag_fragmentos": 5,
+    "rag_indexaciones": 4,
+    "rag_trabajos": 5
+  },
+  "resources": {
+    "scope": "System-wide sample; other applications included, not per-process peak attribution",
+    "samples": 131,
+    "interval_seconds": 0.25,
+    "available_ram_before_bytes": 3224788992,
+    "minimum_available_ram_bytes": 1817980928,
+    "system_cpu_busy_percent": 29.81,
+    "embeddings_gpu_bytes": 0,
+    "embeddings_gpu_check": "verified per real batch by provider",
+    "parser_job_memory_limit_mb": 1536,
+    "acceptance_job_timeout_seconds": 1800
+  }
+}

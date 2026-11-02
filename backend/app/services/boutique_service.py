@@ -5,6 +5,8 @@ from sqlalchemy import exists, func, or_, select
 from sqlalchemy.orm import Session, joinedload
 
 from app.core.audit import register_audit_event
+from app.services.financial_source_service import _lock
+from app.services.notification_service import sync_boutique_stock_notification
 from app.models.account import Cuenta
 from app.models.boutique_details import DetalleBouquetBoutique, DetalleBrassierBoutique, DetalleVeloBoutique, DetalleVestidoBoutique
 from app.models.boutique_item import ItemBoutique
@@ -290,6 +292,9 @@ def set_boutique_type_status(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    db.flush()
+    for item_id in db.execute(select(ItemBoutique.id).where(ItemBoutique.tipo_item_id == boutique_type.id).order_by(ItemBoutique.id)).scalars():
+        sync_boutique_stock_notification(db, item_id=item_id)
     db.commit()
     db.refresh(boutique_type)
     return boutique_type
@@ -465,6 +470,7 @@ def create_boutique_item(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    sync_boutique_stock_notification(db, item_id=item.id)
     db.commit()
     return get_boutique_item_detail(db, item.id)
 
@@ -478,6 +484,7 @@ def update_boutique_item(
     ip_address: str | None,
     user_agent: str | None,
 ) -> BoutiqueItemDetailResponse:
+    _lock(db,ItemBoutique,item_id)
     item = _get_item_entity(db, item_id)
     _ensure_provider_available(db, payload.item.provider_id)
     _ensure_unique_item_code(db, payload.item.code, exclude_id=item.id)
@@ -515,6 +522,7 @@ def update_boutique_item(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    sync_boutique_stock_notification(db, item_id=item.id)
     db.commit()
     return get_boutique_item_detail(db, item.id)
 
@@ -528,6 +536,7 @@ def set_boutique_item_status(
     ip_address: str | None,
     user_agent: str | None,
 ) -> BoutiqueItemDetailResponse:
+    _lock(db,ItemBoutique,item_id)
     item = _get_item_entity(db, item_id)
     if is_active and not item.tipo_item.habilitado:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="No puedes activar un item cuyo tipo está deshabilitado.")
@@ -544,5 +553,6 @@ def set_boutique_item_status(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    sync_boutique_stock_notification(db, item_id=item.id)
     db.commit()
     return get_boutique_item_detail(db, item.id)

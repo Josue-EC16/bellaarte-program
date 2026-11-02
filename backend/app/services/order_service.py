@@ -31,7 +31,8 @@ from app.schemas.order import (
     PedidoVeloPayload,
     PedidoVestidoPayload,
 )
-from app.services.notification_service import sync_order_delivery_notifications_for_order
+from app.services.notification_service import sync_order_delivery_notifications_for_order, sync_order_test_notifications_for_order
+from app.services.financial_source_service import recalculate_order_amounts, _lock, order_financial_summary
 
 
 DETAIL_MODEL_BY_TYPE = {
@@ -168,8 +169,12 @@ def _to_user_summary(user: Usuario) -> OrderUserSummary:
     return OrderUserSummary(id=user.id, full_name=user.nombre_completo, username=username)
 
 
-def _to_payment_summary(payment: PagoPedido) -> OrderPaymentSummary:
+def _to_payment_summary(payment: PagoPedido, db=None) -> OrderPaymentSummary:
+    from app.services.financial_source_service import refund_totals
+    refunded=refund_totals(db,"PAGO_PEDIDO",payment.id) if db else Decimal(0)
     return OrderPaymentSummary(
+        gross_amount_bob=payment.monto_bob,refunded_amount_bob=refunded,
+        effective_amount_bob=Decimal(str(payment.monto_bob))-refunded,
         id=payment.id,
         fecha=payment.fecha,
         monto=_to_float(payment.monto) or 0,
@@ -183,7 +188,8 @@ def _to_test_summary(test: PruebaPedido) -> OrderTestSummary:
     return OrderTestSummary(id=test.id, numero=test.numero, fecha=test.fecha, hora=test.hora, estado=test.estado)
 
 
-def _to_list_item(order: Pedido) -> OrderListItem:
+def _to_list_item(order: Pedido, db=None) -> OrderListItem:
+    financial = order_financial_summary(db, order) if db is not None else {}
     return OrderListItem(
         id=order.id,
         codigo=order.codigo,
@@ -192,15 +198,20 @@ def _to_list_item(order: Pedido) -> OrderListItem:
         client_name=order.cliente.nombre_completo,
         fecha_entrega=order.fecha_entrega,
         precio_total=_to_float(order.precio_total) or 0,
-        total_pagado=_to_float(order.total_pagado) or 0,
-        saldo=_to_float(order.saldo) or 0,
+        total_pagado=_to_float(financial.get("total_pagado", order.total_pagado)) or 0,
+        saldo=_to_float(financial.get("saldo_exigible_bob", order.saldo)) or 0,
+        total_cobrado_bruto_bob=financial.get("total_cobrado_bruto_bob"),
+        total_devuelto_bob=financial.get("total_devuelto_bob"),
+        saldo_exigible_bob=financial.get("saldo_exigible_bob"),
+        devolucion_pendiente_bob=financial.get("devolucion_pendiente_bob"),
         estado_general=order.estado_general,
         habilitado=order.habilitado,
         viaje=order.viaje,
     )
 
 
-def _to_detail_response(order: Pedido) -> OrderDetailResponse:
+def _to_detail_response(order: Pedido, db=None) -> OrderDetailResponse:
+    financial = order_financial_summary(db, order) if db is not None else {}
     return OrderDetailResponse(
         id=order.id,
         codigo=order.codigo,
@@ -217,31 +228,25 @@ def _to_detail_response(order: Pedido) -> OrderDetailResponse:
         descuento=_to_float(order.descuento),
         motivo_descuento=order.motivo_descuento,
         precio_total=_to_float(order.precio_total) or 0,
-        total_pagado=_to_float(order.total_pagado) or 0,
-        saldo=_to_float(order.saldo) or 0,
+        total_pagado=_to_float(financial.get("total_pagado", order.total_pagado)) or 0,
+        saldo=_to_float(financial.get("saldo_exigible_bob", order.saldo)) or 0,
+        total_cobrado_bruto_bob=financial.get("total_cobrado_bruto_bob"),
+        total_devuelto_bob=financial.get("total_devuelto_bob"),
+        saldo_exigible_bob=financial.get("saldo_exigible_bob"),
+        devolucion_pendiente_bob=financial.get("devolucion_pendiente_bob"),
         observaciones=order.observaciones,
         estado_general=order.estado_general,
         fecha_cambio_estado=order.fecha_cambio_estado,
         motivo_cambio_estado=order.motivo_cambio_estado,
         habilitado=order.habilitado,
         detail=_detail_dict(order),
-        pagos=sorted([_to_payment_summary(payment) for payment in order.pagos], key=lambda item: item.fecha, reverse=True),
+        pagos=sorted([_to_payment_summary(payment,db) for payment in order.pagos], key=lambda item: item.fecha, reverse=True),
         pruebas=sorted([_to_test_summary(test) for test in order.pruebas], key=lambda item: (item.fecha, item.numero)),
     )
 
 
 def recalculate_order_balance(db: Session, order: Pedido) -> None:
-    db.flush()
-    db.refresh(order)
-    paid = db.execute(
-        select(func.coalesce(func.sum(PagoPedido.monto_bob), 0)).where(
-            PagoPedido.pedido_id == order.id,
-            PagoPedido.estado == EstadoPagoPedidoEnum.REGISTRADO,
-        )
-    ).scalar_one()
-    order.total_pagado = paid
-    order.saldo = max(Decimal("0"), _money(order.precio_total) - _money(paid))
-    db.flush()
+    recalculate_order_amounts(db, order)
 
 
 def list_orders(
@@ -273,11 +278,11 @@ def list_orders(
                 func.upper(func.coalesce(Cliente.ci, "")).like(term),
             )
         )
-    return [_to_list_item(order) for order in db.execute(stmt).unique().scalars().all()]
+    return [_to_list_item(order, db) for order in db.execute(stmt).unique().scalars().all()]
 
 
 def get_order_detail(db: Session, order_id: int) -> OrderDetailResponse:
-    return _to_detail_response(_get_order_entity(db, order_id))
+    return _to_detail_response(_get_order_entity(db, order_id), db)
 
 
 def create_order(
@@ -339,6 +344,7 @@ def update_order(
     user_agent: str | None,
 ) -> OrderDetailResponse:
     _ensure_operating_account(updated_by)
+    _lock(db, Pedido, order_id)
     order = _get_order_entity(db, order_id)
     if order.estado_general != EstadoPedidoGeneralEnum.ACTIVO or not order.habilitado:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Solo puedes editar pedidos activos y habilitados.")
@@ -380,6 +386,7 @@ def update_order(
         user_agent=user_agent,
     )
     sync_order_delivery_notifications_for_order(db, order_id=order.id)
+    sync_order_test_notifications_for_order(db, order_id=order.id)
     db.commit()
     return get_order_detail(db, order.id)
 
@@ -393,6 +400,7 @@ def change_order_status(
     ip_address: str | None,
     user_agent: str | None,
 ) -> OrderDetailResponse:
+    _lock(db, Pedido, order_id)
     order = _get_order_entity(db, order_id)
     if payload.target_state == EstadoPedidoGeneralEnum.ENTREGADO:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Usa el flujo de entrega para marcar pedidos como entregados.")
@@ -419,6 +427,7 @@ def change_order_status(
     if payload.target_state != EstadoPedidoGeneralEnum.ACTIVO:
         order.fecha_cambio_estado = datetime.now(timezone.utc)
         order.motivo_cambio_estado = payload.reason
+    recalculate_order_balance(db, order)
     register_audit_event(
         db,
         action="ORDER_CANCELLED" if order.estado_general == EstadoPedidoGeneralEnum.CANCELADO else "ORDER_STATUS_CHANGED",
@@ -430,6 +439,7 @@ def change_order_status(
         user_agent=user_agent,
     )
     sync_order_delivery_notifications_for_order(db, order_id=order.id)
+    sync_order_test_notifications_for_order(db, order_id=order.id)
     db.commit()
     return get_order_detail(db, order.id)
 
@@ -443,9 +453,11 @@ def deliver_order(
     ip_address: str | None,
     user_agent: str | None,
 ) -> OrderDetailResponse:
+    _lock(db, Pedido, order_id)
     order = _get_order_entity(db, order_id)
     if order.estado_general != EstadoPedidoGeneralEnum.ACTIVO or not order.habilitado:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Solo puedes entregar pedidos activos y habilitados.")
+    recalculate_order_balance(db, order)
     if payload.fecha_entrega_final < order.fecha_contrato.date():
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="La fecha final de entrega no puede ser anterior a la fecha de contrato.")
     if payload.fecha_entrega_final < order.fecha_entrega:
@@ -466,5 +478,6 @@ def deliver_order(
         user_agent=user_agent,
     )
     sync_order_delivery_notifications_for_order(db, order_id=order.id)
+    sync_order_test_notifications_for_order(db, order_id=order.id)
     db.commit()
     return get_order_detail(db, order.id)

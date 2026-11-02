@@ -1,0 +1,28 @@
+{
+  "scope": "synthetic_offline_comparison",
+  "corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "metric_deltas": {
+    "business_false_rejection": -0.180327868852459,
+    "candidate_hit_at_5": 0.33333333333333337,
+    "candidate_mrr_at_5": 0.23260869565217412,
+    "candidate_precision_at_5": 0.3492753623188404,
+    "candidate_recall_at_5": 0.6974637681159419,
+    "latency_ms": 3398.542168674323,
+    "no_evidence_abstention": 0.3333333333333333,
+    "rag_activation": 0.5737704918032787,
+    "selected_hit_at_5": 0.0,
+    "selected_mrr_at_5": -0.05124999999999991,
+    "selected_precision_at_5": 0.5654166666666667,
+    "selected_recall_at_5": 0.5625,
+    "sent_hit_at_5": 0.5737704918032788,
+    "sent_mrr_at_5": 0.5401639344262296,
+    "sent_precision_at_5": 0.5645299145299145,
+    "sent_recall_at_5": 0.6106557377049181,
+    "route_accuracy": 0.4523809523809524,
+    "latency_sample_count": 0,
+    "latency_p95_ms": 3796.0000000020955
+  },
+  "candidate_acceptance": "not_accepted",
+  "holdout_executed": false,
+  "business_e2e_executed": false
+}

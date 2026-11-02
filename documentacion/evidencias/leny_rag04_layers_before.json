@@ -1,0 +1,12 @@
+{
+  "scope": "layered_correction_before_source_hashes",
+  "files": {
+    "backend/app/services/leny_service.py": "426e215bfc6eabfdaf28ba8bea648d37a05e92d8c4861a61628c6ca76663936b",
+    "backend/app/services/leny_rag_grounding.py": "6d53a4368e6db94817eb636dbbaac3ab60744662897680912a4c56b42245ac14",
+    "backend/app/services/leny_rag_retrieval.py": "0147d35ad84fbb2e670d33f44d596e48bb4cc7bb9ab5c2cc6e0f2512c3116b84",
+    "backend/app/services/leny_rag_evaluation.py": "362571be57fe57a4b2c490c18a3e97d7187673603fd1ca382d28b92250806f1d",
+    "backend/scripts/run_leny_rag_quality.py": "c6be74588c5ce5e2bd9011d40c127d52d7e19820c8d88c3d9c63ed95930a3a8a",
+    "backend/scripts/run_leny_rag_quality.ps1": "043516ab595d91f8c6931dfc8e602bddc19571b57b343253c95961f493a099e5",
+    "backend/tests/fixtures/leny_rag04_development.json": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "scope": "summary_of_completed_tool_runs_not_reexecution_or_full_stdout",
+  "backend_base": {
+    "passed": 845,
+    "skipped": 1,
+    "warnings": 1,
+    "seconds": 13.17,
+    "command": ".\\backend\\venv\\Scripts\\python.exe -B backend/scripts/run_base_tests.py"
+  },
+  "targeted_before_base": {
+    "passed": 135,
+    "seconds": 1.02
+  },
+  "postgresql_contracts": {
+    "passed": 102,
+    "deselected_migration_tests": 5,
+    "seconds": 43.17,
+    "artifact": "leny_rag04_semantic_pg.json",
+    "models_invoked": false,
+    "migrations_executed": false
+  },
+  "frontend_changed_this_round": false,
+  "frontend_reexecuted_this_round": false,
+  "real_models_evaluation": "leny_rag04_semantic_focused.json"
+}

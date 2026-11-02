@@ -18,7 +18,7 @@ import {
   Tag,
   Typography,
 } from 'antd'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 
 import { apiClient } from '../../api/client'
@@ -32,6 +32,7 @@ import { ReceiptSnapshotFields } from '../../components/receipts/ReceiptSnapshot
 import { METODO_PAGO_OPTIONS } from '../boutique/boutiqueConstants'
 import { openReceiptPrintable } from '../comprobantes/receiptUtils'
 import { buildRefundPath } from '../economia/economyUtils'
+import { GuaranteeMovementDrawer } from '../economia/GuaranteeMovementDrawer'
 import {
   DEVOLUCION_RESULT_OPTIONS,
   ESTADO_DEVOLUCION_OPTIONS,
@@ -47,12 +48,15 @@ const { RangePicker } = DatePicker
 
 export function FleteOutputsPage() {
   const [outputs, setOutputs] = useState([])
+  const [guaranteeOutputId, setGuaranteeOutputId] = useState(null)
+  const openGuarantee = (id) => setGuaranteeOutputId(id)
   const [fletes, setFletes] = useState([])
   const [clients, setClients] = useState([])
   const [currencies, setCurrencies] = useState([])
   const [exchangeRates, setExchangeRates] = useState([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const mutationPending = useRef(false)
   const [error, setError] = useState(null)
   const [formError, setFormError] = useState(null)
   const [detail, setDetail] = useState(null)
@@ -218,7 +222,7 @@ export function FleteOutputsPage() {
         estado_salida: 'devuelto',
         requiere_arreglo: false,
         monto_arreglo: 0,
-        garantia_devuelta: Number(record.garantia || 0),
+
       })
     }
   }
@@ -235,6 +239,8 @@ export function FleteOutputsPage() {
   }
 
   const submitCreate = async (values) => {
+    if (mutationPending.current) return
+    mutationPending.current = true
     setSaving(true)
     setFormError(null)
     try {
@@ -263,11 +269,14 @@ export function FleteOutputsPage() {
       })
       setFormError(resolved.globalMessage)
     } finally {
+      mutationPending.current = false
       setSaving(false)
     }
   }
 
   const submitAction = async () => {
+    if (mutationPending.current) return
+    mutationPending.current = true
     setSaving(true)
     try {
       const values = await actionForm.validateFields()
@@ -278,23 +287,16 @@ export function FleteOutputsPage() {
       }
       if (type === 'return') {
         await apiClient.patch(`/fletes/salidas/${record.id}/return`, {
-          ...values,
+          ...Object.fromEntries(Object.entries(values).filter(([key]) => key !== 'garantia_devuelta')),
           fecha_devolucion_real: values.fecha_devolucion_real.format('YYYY-MM-DD'),
         })
         message.success('La devolución del flete se registró correctamente.')
       }
       if (type === 'annul') {
-        closeAction()
-        navigate(
-          buildRefundPath({
-            originType: 'SALIDA_FLETE',
-            originId: record.id,
-            targetState: 'ANULADA',
-            returnTo: `${location.pathname}${location.search}`,
-          }),
-          { state: { refundReason: values.motivo } },
-        )
-        return
+        await apiClient.post('/economia/anulaciones-operativas', {
+          origin_type: 'SALIDA_FLETE', origin_id: record.id, target_state: 'ANULADA', reason: values.motivo,
+        })
+        message.success('SALIDA ANULADA. NO SE HA DEVUELTO DINERO NI GARANT?A.')
       }
       closeAction()
       if (detail?.id === record.id) {
@@ -312,6 +314,7 @@ export function FleteOutputsPage() {
       })
       message.error(resolved.globalMessage)
     } finally {
+      mutationPending.current = false
       setSaving(false)
     }
   }
@@ -365,6 +368,8 @@ export function FleteOutputsPage() {
       key: 'acciones',
       render: (_, record) => (
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          {user?.permissions?.includes('economy_refunds:create') ? <Button onClick={() => navigate(buildRefundPath({ originType: 'SALIDA_FLETE', originId: record.id, returnTo: `${location.pathname}${location.search}` }))}>DEVOLVER DINERO</Button> : null}
+          {user?.permissions?.includes('economy_refunds:create') ? <Button onClick={() => openGuarantee(record.id)}>GARANTÍA</Button> : null}
           {canView ? (
             <Button icon={<EyeOutlined />} onClick={() => openDetail(record)}>
               Ver
@@ -611,7 +616,7 @@ export function FleteOutputsPage() {
               </Form.Item>
             </Col>
             <Col xs={24} md={8}>
-              <Form.Item label="Garantía recibida" name="garantia">
+              <Form.Item label="Garantía pactada (la recepción de dinero se registra por separado)" name="garantia">
                 <InputNumber min={0} precision={2} placeholder="Ej. 200.00" style={{ width: '100%' }} />
               </Form.Item>
             </Col>
@@ -833,15 +838,7 @@ export function FleteOutputsPage() {
                       <DatePicker format="DD/MM/YYYY" placeholder="Selecciona la fecha real" style={{ width: '100%' }} />
                     </Form.Item>
                   </Col>
-                  <Col xs={24} md={12}>
-                    <Form.Item
-                      label="Garantía devuelta"
-                      name="garantia_devuelta"
-                      rules={[{ required: true, message: 'Debe indicar cuánto de la garantía se devolvió.' }]}
-                    >
-                      <InputNumber min={0} precision={2} placeholder="Ej. 150.00" style={{ width: '100%' }} />
-                    </Form.Item>
-                  </Col>
+                  <Col span={24}><Alert type="info" showIcon message="LA GARANTÍA SE DEVUELVE POR SEPARADO MEDIANTE LA ACCIÓN GARANTÍA." style={{ marginBottom: 12 }} /></Col>
                   <Col xs={24} md={12}>
                     <Form.Item label="Requiere arreglo" name="requiere_arreglo" initialValue={false}>
                       <Select
@@ -914,6 +911,7 @@ export function FleteOutputsPage() {
           </Form>
         ) : null}
       </Modal>
+      <GuaranteeMovementDrawer outputId={guaranteeOutputId} isAdmin={user?.role_code === 'ADMIN'} onClose={() => setGuaranteeOutputId(null)} onSaved={loadOutputs} />
     </div>
   )
 }

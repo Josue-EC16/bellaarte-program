@@ -40,6 +40,9 @@ class AuditDescriptor:
 
 
 ACTION_DESCRIPTOR_MAP: dict[str, AuditDescriptor] = {
+    "BOUTIQUE_SALE_ANNULLED": AuditDescriptor("VENTAS_BOUTIQUE", "ANULAR_VENTA", "venta_boutique", TipoAccionAuditoriaEnum.ANULACION, "ANULACION DE VENTA BOUTIQUE"),
+    "ECONOMY_EXPENSE_ADJUSTED": AuditDescriptor("EGRESOS", "AJUSTES", "movimiento_economico", TipoAccionAuditoriaEnum.INSERT, "AJUSTE ECONOMICO VINCULADO"),
+    "ECONOMY_GUARANTEE_MOVED": AuditDescriptor("FLETES", "CUSTODIA", "movimiento_economico", TipoAccionAuditoriaEnum.INSERT, "MOVIMIENTO DE GARANTIA EN CUSTODIA"),
     "ACCESS_DENIED": AuditDescriptor("SEGURIDAD", "CONTROL_ACCESO", "cuentas", TipoAccionAuditoriaEnum.OTRO, "ACCESO DENEGADO"),
     "LOGIN_FAILED": AuditDescriptor("SEGURIDAD", "LOGIN", "cuentas", TipoAccionAuditoriaEnum.LOGIN, "LOGIN FALLIDO"),
     "LOGIN_SUCCESS": AuditDescriptor("SEGURIDAD", "LOGIN", "cuentas", TipoAccionAuditoriaEnum.LOGIN, "LOGIN EXITOSO"),

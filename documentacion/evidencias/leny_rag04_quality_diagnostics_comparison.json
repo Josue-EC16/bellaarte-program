@@ -1,0 +1,556 @@
+{
+  "scope": "paired_seen_development_quality_diagnostics_not_final_candidate",
+  "corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "semantic_review_complete": false,
+  "holdout_executed": false,
+  "final_implementation_model_evaluation_executed": false,
+  "experiments": [
+    {
+      "artifact": "leny_rag04_repair_selection_diagnostic.json",
+      "artifact_sha256": "a4de0c34ffaafa62cdacdf1bca9fb08ee4f4d84a7fd5a79e581c5946a40aa2b6",
+      "before_artifact": "leny_rag04_candidate_final_development.json",
+      "before_sha256": "809fb811631dffc5f6119ea70168dfdf26b58b0edc15d0fb8039f587e4c3919a",
+      "execution_flags": {
+        "cleanup_confirmed": true,
+        "source_freeze_verified": true,
+        "model_identity_verified": true
+      },
+      "results": [
+        {
+          "label": "before",
+          "cases": 12,
+          "target_executed": 11,
+          "route_correct": 4,
+          "rag_sent_hit_at_5": 0.2857142857142857,
+          "rag_sent_hit_denominator": 7,
+          "no_evidence_abstention": 0.3333333333333333,
+          "no_evidence_denominator": 3,
+          "status_counts": {
+            "completed": 11,
+            "failed": 1
+          },
+          "per_case": [
+            {
+              "id": "rag04-natural-01",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "proc-2",
+                "proc-3",
+                "proc-4",
+                "proc-1"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-multi_conflict-06",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "proc-1"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-formats-07",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "conflict-2"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-01",
+              "status": "completed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-03",
+              "status": "completed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-07",
+              "status": "failed",
+              "route_correct": false,
+              "target_executed": false,
+              "selected_fragment_ids": [
+                "price-1"
+              ],
+              "error_code": "LENY_RAG_CITATION_MISSING"
+            },
+            {
+              "id": "rag04-acl-08",
+              "status": "completed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "work-1",
+                "stock-1"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-09",
+              "status": "completed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-10",
+              "status": "completed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": null
+            },
+            {
+              "id": "rag04-no_evidence-01",
+              "status": "completed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "proc-1",
+                "stock-1"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-no_evidence-02",
+              "status": "completed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "proc-3",
+                "proc-2",
+                "proc-1"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-no_evidence-03",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": null
+            }
+          ]
+        },
+        {
+          "label": "after",
+          "cases": 12,
+          "target_executed": 11,
+          "route_correct": 9,
+          "rag_sent_hit_at_5": 0.5714285714285714,
+          "rag_sent_hit_denominator": 7,
+          "no_evidence_abstention": 1.0,
+          "no_evidence_denominator": 3,
+          "status_counts": {
+            "completed": 10,
+            "failed": 2
+          },
+          "per_case": [
+            {
+              "id": "rag04-natural-01",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "proc-1",
+                "price-1",
+                "conflict-2",
+                "conflict-1"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-multi_conflict-06",
+              "status": "completed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": null
+            },
+            {
+              "id": "rag04-formats-07",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "conflict-2",
+                "price-1",
+                "proc-1"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-01",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "price-1",
+                "conflict-2",
+                "proc-4"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-03",
+              "status": "completed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-07",
+              "status": "failed",
+              "route_correct": false,
+              "target_executed": false,
+              "selected_fragment_ids": null,
+              "error_code": "LENY_RAG_REVIEW_INVALID"
+            },
+            {
+              "id": "rag04-acl-08",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-09",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "price-1",
+                "conflict-2",
+                "conflict-1"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-10",
+              "status": "failed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": "LENY_RAG_REVIEW_INVALID"
+            },
+            {
+              "id": "rag04-no_evidence-01",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": null
+            },
+            {
+              "id": "rag04-no_evidence-02",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": null
+            },
+            {
+              "id": "rag04-no_evidence-03",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "artifact": "leny_rag04_repair_grounding_diagnostic.json",
+      "artifact_sha256": "dabda62b4e2e7feb545ab487c05aad0dc3f25194a850d9843d91964afd547de9",
+      "before_artifact": "leny_rag04_candidate_final_development.json",
+      "before_sha256": "809fb811631dffc5f6119ea70168dfdf26b58b0edc15d0fb8039f587e4c3919a",
+      "execution_flags": {
+        "cleanup_confirmed": true,
+        "source_freeze_verified": true,
+        "model_identity_verified": true
+      },
+      "results": [
+        {
+          "label": "before",
+          "cases": 12,
+          "target_executed": 11,
+          "route_correct": 4,
+          "rag_sent_hit_at_5": 0.2857142857142857,
+          "rag_sent_hit_denominator": 7,
+          "no_evidence_abstention": 0.3333333333333333,
+          "no_evidence_denominator": 3,
+          "status_counts": {
+            "completed": 11,
+            "failed": 1
+          },
+          "per_case": [
+            {
+              "id": "rag04-natural-01",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "proc-2",
+                "proc-3",
+                "proc-4",
+                "proc-1"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-multi_conflict-06",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "proc-1"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-formats-07",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "conflict-2"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-01",
+              "status": "completed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-03",
+              "status": "completed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-07",
+              "status": "failed",
+              "route_correct": false,
+              "target_executed": false,
+              "selected_fragment_ids": [
+                "price-1"
+              ],
+              "error_code": "LENY_RAG_CITATION_MISSING"
+            },
+            {
+              "id": "rag04-acl-08",
+              "status": "completed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "work-1",
+                "stock-1"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-09",
+              "status": "completed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-10",
+              "status": "completed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": null
+            },
+            {
+              "id": "rag04-no_evidence-01",
+              "status": "completed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "proc-1",
+                "stock-1"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-no_evidence-02",
+              "status": "completed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "proc-3",
+                "proc-2",
+                "proc-1"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-no_evidence-03",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": null
+            }
+          ]
+        },
+        {
+          "label": "after",
+          "cases": 12,
+          "target_executed": 12,
+          "route_correct": 6,
+          "rag_sent_hit_at_5": 0.7142857142857143,
+          "rag_sent_hit_denominator": 7,
+          "no_evidence_abstention": 0.3333333333333333,
+          "no_evidence_denominator": 3,
+          "status_counts": {
+            "completed": 10,
+            "failed": 2
+          },
+          "per_case": [
+            {
+              "id": "rag04-natural-01",
+              "status": "completed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": null
+            },
+            {
+              "id": "rag04-multi_conflict-06",
+              "status": "completed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": null
+            },
+            {
+              "id": "rag04-formats-07",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "conflict-2",
+                "conflict-1"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-01",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "price-1"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-03",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "stock-1"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-07",
+              "status": "completed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "conflict-2",
+                "conflict-1"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-08",
+              "status": "completed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-09",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "price-1"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-acl-10",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": [
+                "stock-1"
+              ],
+              "error_code": null
+            },
+            {
+              "id": "rag04-no_evidence-01",
+              "status": "completed",
+              "route_correct": true,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": null
+            },
+            {
+              "id": "rag04-no_evidence-02",
+              "status": "failed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": "LENY_RAG_MEMORY"
+            },
+            {
+              "id": "rag04-no_evidence-03",
+              "status": "failed",
+              "route_correct": false,
+              "target_executed": true,
+              "selected_fragment_ids": null,
+              "error_code": "LENY_RAG_MEMORY"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

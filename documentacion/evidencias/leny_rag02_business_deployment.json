@@ -1,0 +1,60 @@
+{
+  "time_utc": "2026-10-20T03:38:19.767342+00:00",
+  "database": "bellaarte_db",
+  "port": 5432,
+  "revision_before": "20261019_0019",
+  "revision_after": "20261019_0020",
+  "backup_bytes": 4393173,
+  "backup_sha256": "EC6EAA7A3C0B947EC172588816199313E9069FB1995AC70F65F2E1AA021D606E",
+  "backup_verified": true,
+  "backup_originals": 1,
+  "state": "enabled_business_contextualization_verified",
+  "business_restore_executed": false,
+  "public_structure_unchanged": true,
+  "role_codes_unchanged": true,
+  "runtime_permissions_verified": true,
+  "pgvector_version": "0.8.7",
+  "extension_schema": "leny",
+  "rag_enabled_in_env": true,
+  "isolated_native_verified": true,
+  "manual_selector_validated_by_owner": true,
+  "worker_startup": "manual",
+  "embedding_execution": "CPU",
+  "model": "qwen3-embedding:0.6b",
+  "dimension": 1024,
+  "verified_at_utc": "2026-10-20T03:49:45.779349+00:00",
+  "worker_running": true,
+  "browser_contextualization_completed": true,
+  "validated_indices": [
+    {
+      "status": "validated",
+      "chunk_count": 4,
+      "fragments": 4,
+      "embeddings": 4
+    }
+  ],
+  "publication_still_disabled": true,
+  "real_qwen_chat_after_processing": true,
+  "manual_selector_validation": {
+    "source": "owner confirmation in chat",
+    "passed": true
+  },
+  "mobile": {
+    "requested_width": 390,
+    "observed_layout_width": 434,
+    "document_scroll_width": 434,
+    "viewport_reset": true
+  },
+  "post_validation_backup": {
+    "verified": true,
+    "bytes": 4440507,
+    "sha256": "A59F9AB5D987ABB863B3A3A594560758888F162B47A70F93152BBE1DF78F966E",
+    "schema_version": 2,
+    "counts": {
+      "rag_embeddings": 4,
+      "rag_fragmentos": 8,
+      "rag_indexaciones": 2,
+      "rag_trabajos": 2
+    }
+  }
+}

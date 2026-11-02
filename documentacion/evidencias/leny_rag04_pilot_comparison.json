@@ -1,0 +1,17 @@
+{
+  "scope": "synthetic_offline_comparison",
+  "corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "metric_deltas": {
+    "business_false_rejection": -0.42857142857142855,
+    "latency_ms": 8236.222222219416,
+    "rag_activation": 1.0,
+    "sent_hit_at_5": 1.0,
+    "sent_mrr_at_5": 1.0,
+    "sent_recall_at_5": 1.0,
+    "route_accuracy": 0.7777777777777778,
+    "latency_sample_count": 0
+  },
+  "candidate_acceptance": "not_accepted",
+  "holdout_executed": false,
+  "business_e2e_executed": false
+}

@@ -1,0 +1,987 @@
+# Revision humana pendiente: vocabulario y siete manifiestos
+
+Borradores propuestos por el agente. Ninguna aprobacion humana recibida. No usar como metadatos aprobados del ERP.
+
+El hash original es virtual/sintetico, no un archivo empresarial. Revisar cobertura positiva, alias ambiguos, condiciones, especialidades y completitud. Los spans completos mantienen todo el fragmento, no prueban por si solos pertinencia.
+
+SHA256 del paquete: `b49001815d859d76cbcf25d293f235e48e9b4b35f13e1de21adadf22d7c026f4`
+
+Las condiciones literales deben permanecer unidas a sus pasos. El vocabulario es limitado y puede pedir aclaraciones indebidas; esas limitaciones se mediran sin ajustar las preguntas. No afirmar exactitud global.
+
+```json
+{
+  "schema_version": "coverage-draft-package-v1",
+  "data_classification": "synthetic",
+  "human_review_complete": false,
+  "approval_required": true,
+  "annotation_basis": "agent_proposals_from_frozen_synthetic_source_content_not_human_annotations",
+  "original_file_hash_available": false,
+  "source_hash_note": "Hash of virtual document fragment identities/text, not an uploaded original file.",
+  "baseline_sha256": "fb19faf3b67b23cfc90adf7b0c2b7891ba2e9f531c6a9398e1d992fa2dca35c3",
+  "corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "vocabulary": {
+    "version": "business-coverage-draft-v1",
+    "approval": {
+      "state": "draft",
+      "human_reviewed": false
+    },
+    "concepts": [
+      {
+        "id": "garment",
+        "kind": "topic",
+        "aliases": [
+          "vestido",
+          "vestidos",
+          "prenda",
+          "prendas",
+          "falda",
+          "faldas",
+          "confeccion",
+          "confeccionar",
+          "confecciona",
+          "confeccionan",
+          "costura"
+        ],
+        "parents": []
+      },
+      {
+        "id": "design",
+        "kind": "topic",
+        "aliases": [
+          "diseno",
+          "disenos",
+          "confirmar el diseno",
+          "confirmar diseno"
+        ],
+        "parents": [
+          "garment"
+        ]
+      },
+      {
+        "id": "measurements",
+        "kind": "topic",
+        "aliases": [
+          "medidas",
+          "tomar medidas",
+          "toma de medidas"
+        ],
+        "parents": [
+          "garment"
+        ]
+      },
+      {
+        "id": "pattern",
+        "kind": "topic",
+        "aliases": [
+          "patron",
+          "patrones",
+          "patronaje",
+          "trazar el patron"
+        ],
+        "parents": [
+          "garment"
+        ]
+      },
+      {
+        "id": "cutting",
+        "kind": "topic",
+        "aliases": [
+          "corte",
+          "cortar",
+          "cortar la tela"
+        ],
+        "parents": [
+          "garment"
+        ]
+      },
+      {
+        "id": "basting",
+        "kind": "topic",
+        "aliases": [
+          "hilvanar",
+          "hilvanado",
+          "hilvan",
+          "hilvanar las piezas"
+        ],
+        "parents": [
+          "garment"
+        ]
+      },
+      {
+        "id": "fitting",
+        "kind": "topic",
+        "aliases": [
+          "prueba",
+          "pruebas",
+          "ajuste",
+          "ajustes",
+          "retoques",
+          "correcciones",
+          "prueba de ajuste"
+        ],
+        "parents": [
+          "garment"
+        ]
+      },
+      {
+        "id": "sewing",
+        "kind": "topic",
+        "aliases": [
+          "coser",
+          "costuras",
+          "costura definitiva"
+        ],
+        "parents": [
+          "garment"
+        ]
+      },
+      {
+        "id": "quality",
+        "kind": "topic",
+        "aliases": [
+          "calidad",
+          "revision final",
+          "revisar costuras",
+          "limpieza",
+          "cierre"
+        ],
+        "parents": [
+          "garment"
+        ]
+      },
+      {
+        "id": "delivery",
+        "kind": "topic",
+        "aliases": [
+          "entrega",
+          "entregar",
+          "entregarlo",
+          "entrega del vestido",
+          "entrega final"
+        ],
+        "parents": [
+          "garment"
+        ]
+      },
+      {
+        "id": "alteration_price",
+        "kind": "topic",
+        "aliases": [
+          "tarifa",
+          "tarifas",
+          "precio",
+          "precios",
+          "anticipo",
+          "saldo"
+        ],
+        "parents": []
+      },
+      {
+        "id": "alterations",
+        "kind": "topic",
+        "aliases": [
+          "arreglo",
+          "arreglos",
+          "arreglo simple"
+        ],
+        "parents": []
+      },
+      {
+        "id": "inventory",
+        "kind": "topic",
+        "aliases": [
+          "inventario",
+          "inventarios",
+          "existencias",
+          "stock",
+          "reposicion",
+          "umbral de reposicion",
+          "unidades fisicas"
+        ],
+        "parents": []
+      },
+      {
+        "id": "workshop",
+        "kind": "topic",
+        "aliases": [
+          "taller",
+          "organizacion del taller",
+          "organizar el taller",
+          "paquetes",
+          "materiales",
+          "disponibilidad del material"
+        ],
+        "parents": []
+      },
+      {
+        "id": "security",
+        "kind": "topic",
+        "aliases": [
+          "cuentas individuales",
+          "autenticacion",
+          "seguridad",
+          "permisos",
+          "contrasenas"
+        ],
+        "parents": []
+      },
+      {
+        "id": "reservation",
+        "kind": "topic",
+        "aliases": [
+          "reserva",
+          "reservas",
+          "circulares",
+          "circular"
+        ],
+        "parents": []
+      },
+      {
+        "id": "embroidery",
+        "kind": "topic",
+        "aliases": [
+          "bordado",
+          "bordados",
+          "bordar",
+          "tecnica de bordado"
+        ],
+        "parents": [
+          "garment"
+        ]
+      },
+      {
+        "id": "gold_thread",
+        "kind": "qualifier",
+        "aliases": [
+          "hilo de oro",
+          "hilos de oro"
+        ],
+        "parents": []
+      },
+      {
+        "id": "lace",
+        "kind": "qualifier",
+        "aliases": [
+          "encaje",
+          "encajes"
+        ],
+        "parents": []
+      },
+      {
+        "id": "procedure",
+        "kind": "aspect",
+        "aliases": [
+          "procedimiento",
+          "procedimientos",
+          "proceso",
+          "procesos",
+          "pasos",
+          "etapas",
+          "como"
+        ],
+        "parents": []
+      },
+      {
+        "id": "timing",
+        "kind": "aspect",
+        "aliases": [
+          "cuando",
+          "momento",
+          "antes",
+          "despues",
+          "luego",
+          "siguiente"
+        ],
+        "parents": []
+      },
+      {
+        "id": "duration",
+        "kind": "aspect",
+        "aliases": [
+          "duracion",
+          "plazo",
+          "plazo exacto",
+          "cuanto tiempo"
+        ],
+        "parents": []
+      },
+      {
+        "id": "quantity",
+        "kind": "aspect",
+        "aliases": [
+          "cuantos",
+          "cuantas",
+          "cantidad",
+          "numero",
+          "minimo",
+          "umbral"
+        ],
+        "parents": []
+      },
+      {
+        "id": "condition",
+        "kind": "aspect",
+        "aliases": [
+          "condicion",
+          "condiciones",
+          "requisito",
+          "requisitos",
+          "aprobacion",
+          "consentimiento"
+        ],
+        "parents": []
+      },
+      {
+        "id": "price",
+        "kind": "aspect",
+        "aliases": [
+          "importe",
+          "costo",
+          "importe exacto",
+          "cifras exactas"
+        ],
+        "parents": []
+      },
+      {
+        "id": "comparison",
+        "kind": "aspect",
+        "aliases": [
+          "compara",
+          "comparar",
+          "contradiccion",
+          "contradicen",
+          "ambas"
+        ],
+        "parents": []
+      }
+    ],
+    "grammar_words": [
+      "a",
+      "al",
+      "ante",
+      "bajo",
+      "con",
+      "contra",
+      "de",
+      "del",
+      "desde",
+      "durante",
+      "en",
+      "entre",
+      "hacia",
+      "hasta",
+      "para",
+      "por",
+      "segun",
+      "sobre",
+      "tras",
+      "y",
+      "e",
+      "u",
+      "el",
+      "la",
+      "los",
+      "las",
+      "un",
+      "una",
+      "unos",
+      "unas",
+      "se",
+      "su",
+      "sus",
+      "este",
+      "esta",
+      "ese",
+      "esa",
+      "eso",
+      "esto",
+      "estos",
+      "estas",
+      "ese",
+      "que",
+      "quien",
+      "cual",
+      "cuales",
+      "cuyo",
+      "cuanto",
+      "como",
+      "donde",
+      "cuando",
+      "yo",
+      "tu",
+      "nosotros",
+      "mi",
+      "mis",
+      "me",
+      "te",
+      "nos",
+      "le",
+      "les",
+      "lo",
+      "ha",
+      "hay",
+      "han",
+      "hacer",
+      "hace",
+      "hacen",
+      "hacerlos",
+      "hacerse",
+      "realiza",
+      "realizar",
+      "realizan",
+      "realizan",
+      "realizarlo",
+      "hacen",
+      "hacemos",
+      "viene",
+      "va",
+      "pasa",
+      "pasan",
+      "paso",
+      "pasa",
+      "convertir",
+      "convierte",
+      "prepara",
+      "preparar",
+      "prepara",
+      "preparar",
+      "se",
+      "debe",
+      "deben",
+      "deber",
+      "deberia",
+      "puedo",
+      "puede",
+      "pueden",
+      "deberia",
+      "indica",
+      "indican",
+      "establece",
+      "establecen",
+      "usa",
+      "usan",
+      "regir",
+      "regula",
+      "regulan",
+      "explica",
+      "explicame",
+      "explicar",
+      "describe",
+      "describir",
+      "dime",
+      "consulta",
+      "consultar",
+      "leer",
+      "muestra",
+      "muestra",
+      "listado",
+      "antes",
+      "final",
+      "general",
+      "autorizado",
+      "autorizada",
+      "documento",
+      "documentos",
+      "guia",
+      "guias",
+      "manual",
+      "manuales",
+      "publicado",
+      "publicados",
+      "publicada",
+      "publicadas",
+      "fuente",
+      "fuentes",
+      "informacion",
+      "contenido",
+      "vigente",
+      "vigentes",
+      "real",
+      "reales",
+      "ficticio",
+      "ficticia",
+      "evaluacion",
+      "especifico",
+      "especifica",
+      "exacto",
+      "exacta",
+      "detallado",
+      "detallada",
+      "completo",
+      "completa",
+      "todos",
+      "todas",
+      "partes",
+      "solo",
+      "conservando",
+      "conservar",
+      "omitir",
+      "omision",
+      "diferencia",
+      "diferencias",
+      "corregir",
+      "corregirlas",
+      "identificar",
+      "pedido",
+      "pedidos",
+      "identificado",
+      "tela",
+      "telas",
+      "piezas",
+      "aprobadas",
+      "aprobado",
+      "registro",
+      "registrar",
+      "entrega",
+      "entregarlo",
+      "hacer",
+      "confeccionan",
+      "confecciona",
+      "llega",
+      "llegar",
+      "termina",
+      "terminado",
+      "empezamos",
+      "empieza",
+      "comenzar",
+      "comenzar",
+      "se",
+      "prepara",
+      "prepara",
+      "prepara",
+      "obtiene",
+      "obtener",
+      "durante",
+      "mismo",
+      "misma",
+      "da",
+      "dice",
+      "dan",
+      "tengo",
+      "necesitamos",
+      "necesitamos",
+      "hacer"
+    ],
+    "presentation_phrases": [
+      "con fuentes",
+      "con sus fuentes",
+      "cita la fuente",
+      "con cifras exactas",
+      "en cinco pasos",
+      "en 5 pasos",
+      "responde brevemente",
+      "brevemente",
+      "en una tabla",
+      "con citas"
+    ],
+    "complete_phrases": [
+      "completo",
+      "completa",
+      "todos los pasos",
+      "todas las etapas",
+      "como se hacen",
+      "como se confecciona",
+      "proceso de confeccion"
+    ],
+    "comparison_phrases": [
+      "compara",
+      "comparar",
+      "contradicen",
+      "contradiccion",
+      "ambas"
+    ],
+    "followup_phrases": [
+      "y despues",
+      "explicame la siguiente etapa",
+      "resumelo en cinco pasos",
+      "continua con ese procedimiento",
+      "y el siguiente paso"
+    ]
+  },
+  "manifests": [
+    {
+      "schema_version": "coverage-manifest-v1",
+      "revision": 1,
+      "document_id": "2553e98e-f9ae-474d-b439-8a8b06190291",
+      "version_id": "26bb84e9-cb1a-466e-b224-77b022e236c6",
+      "indexation_id": "3a25f22a-add5-4caa-98a2-677c963d6907",
+      "source_sha256": "9fe3aa0c0209d56c95ce618ba90903f505a6a45255e69c667780b90a9f267a11",
+      "source_hash_basis": "synthetic_virtual_document",
+      "vocabulary_version": "business-coverage-draft-v1",
+      "approval": {
+        "state": "draft",
+        "human_reviewed": false
+      },
+      "units": [
+        {
+          "fragment_id": "proc-1",
+          "text_sha256": "b32ea09aa05bb26b32e311066993487d2e96cc4d9bdde0fe8ab3b3715a9bccb2",
+          "spans": [
+            {
+              "start": 0,
+              "end": 140,
+              "sha256": "b32ea09aa05bb26b32e311066993487d2e96cc4d9bdde0fe8ab3b3715a9bccb2"
+            }
+          ],
+          "topics": [
+            "garment",
+            "design",
+            "measurements",
+            "pattern"
+          ],
+          "aspects": [
+            "procedure",
+            "timing",
+            "condition"
+          ],
+          "qualifiers": [],
+          "required_fragment_ids": [],
+          "assertions": []
+        },
+        {
+          "fragment_id": "proc-2",
+          "text_sha256": "6c5010d07aea043e2c22e3a693b1b8e23f99955c8e5dc7c83e95e61e12e82faf",
+          "spans": [
+            {
+              "start": 0,
+              "end": 134,
+              "sha256": "6c5010d07aea043e2c22e3a693b1b8e23f99955c8e5dc7c83e95e61e12e82faf"
+            }
+          ],
+          "topics": [
+            "garment",
+            "cutting",
+            "basting"
+          ],
+          "aspects": [
+            "procedure",
+            "timing",
+            "condition"
+          ],
+          "qualifiers": [],
+          "required_fragment_ids": [],
+          "assertions": []
+        },
+        {
+          "fragment_id": "proc-3",
+          "text_sha256": "d339b46b445a6094f8fd54b824ce473a011e35d57adfcf9632e5f090ebdab263",
+          "spans": [
+            {
+              "start": 0,
+              "end": 142,
+              "sha256": "d339b46b445a6094f8fd54b824ce473a011e35d57adfcf9632e5f090ebdab263"
+            }
+          ],
+          "topics": [
+            "garment",
+            "fitting",
+            "sewing"
+          ],
+          "aspects": [
+            "procedure",
+            "timing",
+            "condition"
+          ],
+          "qualifiers": [],
+          "required_fragment_ids": [],
+          "assertions": []
+        },
+        {
+          "fragment_id": "proc-4",
+          "text_sha256": "7b6e89f917dabd06118a525995683ab04cf303c6231c18b0c0d9a5314b981755",
+          "spans": [
+            {
+              "start": 0,
+              "end": 144,
+              "sha256": "7b6e89f917dabd06118a525995683ab04cf303c6231c18b0c0d9a5314b981755"
+            }
+          ],
+          "topics": [
+            "garment",
+            "quality",
+            "delivery"
+          ],
+          "aspects": [
+            "procedure",
+            "timing",
+            "condition"
+          ],
+          "qualifiers": [],
+          "required_fragment_ids": [],
+          "assertions": []
+        }
+      ],
+      "procedures": [
+        {
+          "topic": "garment",
+          "fragments": [
+            "proc-1",
+            "proc-2",
+            "proc-3",
+            "proc-4"
+          ]
+        }
+      ]
+    },
+    {
+      "schema_version": "coverage-manifest-v1",
+      "revision": 1,
+      "document_id": "33d81170-02c4-4757-abda-385ab379ea40",
+      "version_id": "acf11095-ea65-4d61-8590-4a4c65773dda",
+      "indexation_id": "57dc6fc8-b112-4ee2-86b0-a54b84b43d0b",
+      "source_sha256": "e666c4533fb6b23f47f92ed58236de4f315e08b767da70a551fcef026a36c3f3",
+      "source_hash_basis": "synthetic_virtual_document",
+      "vocabulary_version": "business-coverage-draft-v1",
+      "approval": {
+        "state": "draft",
+        "human_reviewed": false
+      },
+      "units": [
+        {
+          "fragment_id": "price-1",
+          "text_sha256": "7f22ac1ec2b44b4dff059b081795f52227f956b78d46df66adb6ee79f6cd1700",
+          "spans": [
+            {
+              "start": 0,
+              "end": 125,
+              "sha256": "7f22ac1ec2b44b4dff059b081795f52227f956b78d46df66adb6ee79f6cd1700"
+            }
+          ],
+          "topics": [
+            "alteration_price",
+            "alterations"
+          ],
+          "aspects": [
+            "price",
+            "condition"
+          ],
+          "qualifiers": [],
+          "required_fragment_ids": [],
+          "assertions": []
+        }
+      ],
+      "procedures": []
+    },
+    {
+      "schema_version": "coverage-manifest-v1",
+      "revision": 1,
+      "document_id": "dc2665e3-52ba-4c91-b9db-452072df106f",
+      "version_id": "cab8410f-b6d3-418e-b864-26e2d3f7099a",
+      "indexation_id": "a2d72748-00d9-4e11-8d30-5066c9af9f26",
+      "source_sha256": "032fc4aeb2a9b3c68ab80299dddf72687f1de66d30f8294dd92d49004ce7e8e6",
+      "source_hash_basis": "synthetic_virtual_document",
+      "vocabulary_version": "business-coverage-draft-v1",
+      "approval": {
+        "state": "draft",
+        "human_reviewed": false
+      },
+      "units": [
+        {
+          "fragment_id": "stock-1",
+          "text_sha256": "821def6d7e626ea37794356b10801b090f5ae60b3e0d0b521074e4606c8b4ceb",
+          "spans": [
+            {
+              "start": 0,
+              "end": 143,
+              "sha256": "821def6d7e626ea37794356b10801b090f5ae60b3e0d0b521074e4606c8b4ceb"
+            }
+          ],
+          "topics": [
+            "inventory"
+          ],
+          "aspects": [
+            "procedure",
+            "quantity",
+            "condition"
+          ],
+          "qualifiers": [],
+          "required_fragment_ids": [],
+          "assertions": []
+        }
+      ],
+      "procedures": []
+    },
+    {
+      "schema_version": "coverage-manifest-v1",
+      "revision": 1,
+      "document_id": "6202fa39-f23b-4cbb-9bb4-8d070be453e4",
+      "version_id": "9ffde4c7-88ba-459c-81d9-f1edcf33cc4f",
+      "indexation_id": "0efc3e6c-868d-4352-8729-ec4e23369bc9",
+      "source_sha256": "36bf4b781f3d2bfadbf58d44ea4c83fa663435a881c9134ff9fae981cb8a04e2",
+      "source_hash_basis": "synthetic_virtual_document",
+      "vocabulary_version": "business-coverage-draft-v1",
+      "approval": {
+        "state": "draft",
+        "human_reviewed": false
+      },
+      "units": [
+        {
+          "fragment_id": "work-1",
+          "text_sha256": "36a56b7daf34263306dcae93bdb03a5b4d3dc41fff8f78ee89fd5f5cdea5e806",
+          "spans": [
+            {
+              "start": 0,
+              "end": 144,
+              "sha256": "36a56b7daf34263306dcae93bdb03a5b4d3dc41fff8f78ee89fd5f5cdea5e806"
+            }
+          ],
+          "topics": [
+            "workshop"
+          ],
+          "aspects": [
+            "procedure",
+            "timing",
+            "condition"
+          ],
+          "qualifiers": [],
+          "required_fragment_ids": [],
+          "assertions": []
+        }
+      ],
+      "procedures": []
+    },
+    {
+      "schema_version": "coverage-manifest-v1",
+      "revision": 1,
+      "document_id": "0a26d5d5-14d0-4e8e-8939-481c8266542c",
+      "version_id": "3a630209-69ae-45a8-b193-1969cca6e562",
+      "indexation_id": "1b1a7fdd-b32b-45a7-8857-f5fcc299520f",
+      "source_sha256": "ca79fa743f91b98c731d8f9d716972a07ca2d9b2cfa1b77b664a2f79587ac285",
+      "source_hash_basis": "synthetic_virtual_document",
+      "vocabulary_version": "business-coverage-draft-v1",
+      "approval": {
+        "state": "draft",
+        "human_reviewed": false
+      },
+      "units": [
+        {
+          "fragment_id": "sec-1",
+          "text_sha256": "0011f056c28b5592c9c8b2e6bf875c5b7e06907650304428d52504a3f579862b",
+          "spans": [
+            {
+              "start": 0,
+              "end": 132,
+              "sha256": "0011f056c28b5592c9c8b2e6bf875c5b7e06907650304428d52504a3f579862b"
+            }
+          ],
+          "topics": [
+            "security"
+          ],
+          "aspects": [
+            "procedure",
+            "condition"
+          ],
+          "qualifiers": [],
+          "required_fragment_ids": [],
+          "assertions": []
+        }
+      ],
+      "procedures": []
+    },
+    {
+      "schema_version": "coverage-manifest-v1",
+      "revision": 1,
+      "document_id": "8c280426-99c2-4514-8e43-46e1ff7f61c2",
+      "version_id": "6a97cb49-3518-4b5b-a79b-05c452825f2c",
+      "indexation_id": "b4e05938-556f-440e-8607-350b3de2b360",
+      "source_sha256": "007891427c521d1f56c16a63eed27de2569c34de668f50832ba19de464954b27",
+      "source_hash_basis": "synthetic_virtual_document",
+      "vocabulary_version": "business-coverage-draft-v1",
+      "approval": {
+        "state": "draft",
+        "human_reviewed": false
+      },
+      "units": [
+        {
+          "fragment_id": "conflict-1",
+          "text_sha256": "dd7753a4470e64562dbcfc1d6992057a5f2c025aba4f113a046ba9ad9d437ae9",
+          "spans": [
+            {
+              "start": 0,
+              "end": 94,
+              "sha256": "dd7753a4470e64562dbcfc1d6992057a5f2c025aba4f113a046ba9ad9d437ae9"
+            }
+          ],
+          "topics": [
+            "reservation"
+          ],
+          "aspects": [
+            "price",
+            "condition",
+            "comparison"
+          ],
+          "qualifiers": [],
+          "required_fragment_ids": [],
+          "assertions": [
+            {
+              "predicate": "reservation_advance",
+              "value": "30",
+              "unit": "percent",
+              "condition": "reservation"
+            }
+          ]
+        }
+      ],
+      "procedures": []
+    },
+    {
+      "schema_version": "coverage-manifest-v1",
+      "revision": 1,
+      "document_id": "24d2b765-1459-44c3-9698-c7373951c037",
+      "version_id": "9a03bb7a-d277-4cf0-8437-2fedf4afaea7",
+      "indexation_id": "745ddcb7-7975-4925-80b8-718adf916632",
+      "source_sha256": "435a8de22eb43141515da666596f88f8555854be60aa3a350e51ef23bc2b486b",
+      "source_hash_basis": "synthetic_virtual_document",
+      "vocabulary_version": "business-coverage-draft-v1",
+      "approval": {
+        "state": "draft",
+        "human_reviewed": false
+      },
+      "units": [
+        {
+          "fragment_id": "conflict-2",
+          "text_sha256": "c71ea763095150d6e36644664e7341336edb597df90596d17f30758d8540cdc5",
+          "spans": [
+            {
+              "start": 0,
+              "end": 127,
+              "sha256": "c71ea763095150d6e36644664e7341336edb597df90596d17f30758d8540cdc5"
+            }
+          ],
+          "topics": [
+            "reservation"
+          ],
+          "aspects": [
+            "price",
+            "condition",
+            "comparison"
+          ],
+          "qualifiers": [],
+          "required_fragment_ids": [],
+          "assertions": [
+            {
+              "predicate": "reservation_advance",
+              "value": "50",
+              "unit": "percent",
+              "condition": "reservation"
+            }
+          ]
+        }
+      ],
+      "procedures": []
+    }
+  ],
+  "fragment_texts": {
+    "proc-1": "Documento ficticio de evaluación. 1. Confirmar el diseño aprobado. 2. Tomar medidas con consentimiento. 3. Trazar el patrón antes del corte.",
+    "proc-2": "Documento ficticio de evaluación. 4. Cortar únicamente la tela del pedido identificado. 5. Hilvanar las piezas para la primera prueba.",
+    "proc-3": "Documento ficticio de evaluación. 6. Realizar la prueba de ajuste. Si hay diferencias, corregir antes de coser. 7. Coser las piezas aprobadas.",
+    "proc-4": "Documento ficticio de evaluación. 8. Revisar costuras, limpieza y cierre. 9. Entregar solo después de la aprobación final; registrar la entrega.",
+    "price-1": "Tarifa ficticia para evaluación: arreglo simple Bs 250.00; anticipo 40%; saldo antes de entregar. No describe tarifas reales.",
+    "stock-1": "Regla ficticia: contar unidades físicamente; mínimo 8 unidades; registrar diferencias con su motivo. No modificar existencias por conversación.",
+    "work-1": "Organización ficticia: separar piezas por pedido, identificar cada paquete y revisar la disponibilidad del material antes de programar el corte.",
+    "sec-1": "Guía defensiva ficticia: usar cuentas individuales, comprobar permisos en el servidor y revisar registros sin compartir contraseñas.",
+    "conflict-1": "Circular ficticia A, vigente: reserva con anticipo del 30%. Ninguna circular indica prioridad.",
+    "conflict-2": "Circular ficticia B, vigente: reserva con anticipo del 50%. Ninguna circular indica prioridad. Debe aclararse la contradicción."
+  }
+}
+```

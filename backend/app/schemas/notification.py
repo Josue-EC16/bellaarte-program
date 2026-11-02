@@ -12,7 +12,27 @@ class NotificationResolveRequest(BaseModel):
     @field_validator("motivo", mode="before")
     @classmethod
     def normalize_reason(cls, value: str) -> str:
-        return value.strip().upper()
+        normalized = value.strip().upper()
+        if len(normalized) < 5:
+            raise ValueError("El motivo debe contener al menos 5 caracteres.")
+        return normalized
+
+
+class NotificationReadRequest(BaseModel):
+    revision: int = Field(ge=1)
+
+
+class NotificationPreferencesRequest(BaseModel):
+    desktop_enabled: bool
+
+
+class NotificationEmailRetryRequest(BaseModel):
+    confirm_uncertain: bool = False
+
+
+class NotificationPreferencesResponse(BaseModel):
+    desktop_enabled: bool
+    desktop_enabled_since: datetime | None
 
 
 class NotificationRecipientSummary(ORMBaseModel):
@@ -38,10 +58,26 @@ class NotificationListItem(ORMBaseModel):
     tabla_referencia: str | None
     id_referencia: int | None
     recipient: NotificationRecipientSummary
+    revision: int
+    revision_fecha: datetime
+    can_resolve: bool
+    motivo_cierre: str | None = None
+    duplicada_de_id: int | None = None
 
 
 class NotificationDetailResponse(NotificationListItem):
     action_path: str | None
+
+
+class NotificationPageResponse(BaseModel):
+    items: list[NotificationListItem]
+    total: int
+    page: int
+    page_size: int
+
+
+class NotificationDesktopClaimResponse(BaseModel):
+    items: list[NotificationDetailResponse]
 
 
 class NotificationSummaryResponse(BaseModel):
@@ -69,7 +105,7 @@ class NotificationReportSummary(BaseModel):
 
 
 class NotificationQueryFilters(BaseModel):
-    user_id: int | None = None
+    user_id: int | None = Field(default=None, gt=0)
     role_code: str | None = None
     module: str | None = None
     type: str | None = None
@@ -79,7 +115,7 @@ class NotificationQueryFilters(BaseModel):
     date_from: date | None = None
     date_to: date | None = None
     table_ref: str | None = None
-    record_id_ref: int | None = None
+    record_id_ref: int | None = Field(default=None, gt=0)
 
     @field_validator("role_code", "module", "type", "table_ref", mode="before")
     @classmethod

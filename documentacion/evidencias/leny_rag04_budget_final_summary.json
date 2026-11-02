@@ -1,0 +1,96 @@
+{
+  "scope": "frozen_four_variant_budget_diagnostic",
+  "source_artifact": "documentacion/evidencias/leny_rag04_budget_final.json",
+  "source_sha256": "777188a9f11fb5af73b3d94588ea44056ce2a8c487d9823e68afe08a375edf1d",
+  "source_snapshot_sha256": "0eb52084cfd5ac503c139c2804109cff984862423c4193d2e0016cfc492121c9",
+  "same_invocation": true,
+  "num_ctx": 4096,
+  "num_predict": 768,
+  "cases_per_variant": 1,
+  "latency_p95_ms": null,
+  "p95_unavailable_reason": "one_case_per_variant",
+  "acceptance_certified": false,
+  "semantic_review_complete": false,
+  "configuration_not_final_candidate": true,
+  "cases": [
+    {
+      "variant": {
+        "mode": "fixed",
+        "bytes": 2048,
+        "probe": false
+      },
+      "status": "completed",
+      "selected_fragment_ids": [
+        "proc-4",
+        "work-1"
+      ],
+      "evidence_bytes": 1090,
+      "prompt_tokens": 524,
+      "probe_count": 0,
+      "probe_tokens": null,
+      "probe_ms": 0,
+      "request_ms": 18734.000000011292,
+      "verdict": "partial"
+    },
+    {
+      "variant": {
+        "mode": "fixed",
+        "bytes": 2304,
+        "probe": false
+      },
+      "status": "completed",
+      "selected_fragment_ids": [
+        "proc-4",
+        "work-1"
+      ],
+      "evidence_bytes": 1090,
+      "prompt_tokens": 524,
+      "probe_count": 0,
+      "probe_tokens": null,
+      "probe_ms": 0,
+      "request_ms": 17750.0,
+      "verdict": "partial"
+    },
+    {
+      "variant": {
+        "mode": "fixed",
+        "bytes": 2560,
+        "probe": false
+      },
+      "status": "completed",
+      "selected_fragment_ids": [
+        "proc-4",
+        "work-1"
+      ],
+      "evidence_bytes": 1090,
+      "prompt_tokens": 524,
+      "probe_count": 0,
+      "probe_tokens": null,
+      "probe_ms": 0,
+      "request_ms": 18156.000000002678,
+      "verdict": "partial"
+    },
+    {
+      "variant": {
+        "mode": "adaptive",
+        "bytes": 2048,
+        "probe": true
+      },
+      "status": "completed",
+      "selected_fragment_ids": [
+        "proc-4",
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "work-1"
+      ],
+      "evidence_bytes": 3906,
+      "prompt_tokens": 1206,
+      "probe_count": 2,
+      "probe_tokens": 1207,
+      "probe_ms": 9733.99999999674,
+      "request_ms": 31875.0,
+      "verdict": "sufficient"
+    }
+  ]
+}

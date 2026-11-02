@@ -11,6 +11,7 @@ from app.models.client import Cliente
 from app.models.order import Pedido, PruebaPedido
 from app.schemas.order import OrderTestCreateRequest, OrderTestListItem, OrderTestUpdateRequest
 from app.services.notification_service import sync_material_preparation_notification_for_test, sync_test_schedule_notifications_for_test
+from app.services.notification_sync_service import lock_source
 
 
 def _get_test_entity(db: Session, test_id: int) -> PruebaPedido:
@@ -23,7 +24,7 @@ def _get_test_entity(db: Session, test_id: int) -> PruebaPedido:
 
 
 def _get_active_order(db: Session, order_id: int) -> Pedido:
-    order = db.execute(select(Pedido).options(joinedload(Pedido.cliente)).where(Pedido.id == order_id)).scalar_one_or_none()
+    order = db.execute(select(Pedido).options(joinedload(Pedido.cliente)).where(Pedido.id == order_id).with_for_update(of=Pedido)).scalar_one_or_none()
     if order is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Pedido no encontrado.")
     if order.estado_general != EstadoPedidoGeneralEnum.ACTIVO or not order.habilitado:
@@ -157,9 +158,12 @@ def update_order_test(
     user_agent: str | None,
 ) -> OrderTestListItem:
     test = _get_test_entity(db, test_id)
+    lock_source(db, Pedido, test.pedido_id)
+    test = lock_source(db, PruebaPedido, test_id)
     if test.pedido.estado_general != EstadoPedidoGeneralEnum.ACTIVO or not test.pedido.habilitado:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Solo puedes editar pruebas de pedidos activos y habilitados.")
     _validate_test_date(test.pedido, payload.fecha)
+    schedule_changed = test.fecha != payload.fecha or test.hora != payload.hora
     test.fecha = payload.fecha
     test.hora = payload.hora
     test.estado = payload.estado
@@ -175,6 +179,7 @@ def update_order_test(
         user_agent=user_agent,
     )
     sync_test_schedule_notifications_for_test(db, test_id=test.id)
-    sync_material_preparation_notification_for_test(db, test_id=test.id)
+    if schedule_changed:
+        sync_material_preparation_notification_for_test(db, test_id=test.id)
     db.commit()
     return get_order_test_detail(db, test.id)

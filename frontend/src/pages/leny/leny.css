@@ -1,0 +1,71 @@
+.leny { --leny-primary: #8f3d2e; --leny-ink: #422a22; --leny-muted: #806d63; display: grid; grid-template-columns: 230px minmax(0, 1fr); min-height: 660px; height: calc(100dvh - 180px); max-height: 1100px; color: var(--leny-ink); border: 1px solid #e8dcd1; border-radius: 20px; background: #fffdf9; overflow: hidden; box-shadow: 0 8px 30px #643c2510; }
+.leny button:focus-visible { outline: 2px solid var(--leny-primary); outline-offset: 3px; }
+.leny-history { display: flex; flex-direction: column; gap: 14px; min-height: 0; padding: 20px 14px; background: #f7efe6; border-right: 1px solid #e8dcd1; }
+.leny-history-heading { display: flex; justify-content: space-between; align-items: center; padding-left: 8px; }
+.leny-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .15em; color: var(--leny-primary); }
+.leny-history-list { overflow-y: auto; flex: 1; min-height: 90px; }
+.leny-history-item { display: flex; align-items: center; margin: 5px 0; padding: 3px 7px; border-radius: 10px; }
+.leny-history-item:hover, .leny-history-item.is-selected { background: #eadbd0; }
+.leny-history-select { border: 0; background: none; text-align: left; padding: 10px 3px; color: inherit; flex: 1; min-width: 0; cursor: pointer; font: inherit; }
+.leny-history-select span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; font-weight: 600; }
+.leny-history-select small { display: block; margin-top: 4px; color: var(--leny-muted); font-size: 11px; }
+.leny-history-empty, .leny-history-note { color: var(--leny-muted); font-size: 12px; line-height: 1.7; padding: 0 8px; }
+.leny-history-note { margin: 0; border-top: 1px solid #e8dcd1; padding-top: 16px; }
+.leny-workspace { min-width: 0; min-height: 0; display: flex; flex-direction: column; position: relative; }
+.leny-header { padding: 20px 26px; border-bottom: 1px solid #eee6de; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.leny-brand, .leny-header-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.leny-brand { gap: 12px; }
+.leny-monogram { display: grid; place-items: center; width: 40px; height: 44px; border: 1px solid #b78a6b; border-radius: 20px 20px 5px 5px; color: var(--leny-primary); font-family: Georgia, serif; font-size: 27px; }
+.leny-brand h1 { font-size: 17px; letter-spacing: .15em; margin: 0 0 2px; }
+.leny-brand div > span { font-size: 11px; color: var(--leny-muted); }
+.leny-header .ant-tag { margin: 0; font-size: 10px; }
+.leny-alert { padding: 12px 22px 0; }
+.leny-messages { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 28px max(24px, calc((100% - 750px) / 2)); scrollbar-gutter: stable; }
+.leny-welcome { max-width: 600px; margin: clamp(8px, 5vh, 60px) auto 20px; }
+.leny-welcome h2 { font-size: clamp(26px, 2.7vw, 40px); line-height: 1.25; font-weight: 500; letter-spacing: -.035em; margin: 20px 0; }
+.leny-welcome h2 span { color: #997967; }
+.leny-welcome p { font-size: 14px; line-height: 1.8; color: var(--leny-muted); max-width: 510px; }
+.leny-suggestions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 26px 0; }
+.leny-suggestions button { text-align: left; cursor: pointer; background: #fbf6ef; border: 1px solid #e8dcd1; border-radius: 12px; padding: 17px; color: var(--leny-ink); font: inherit; font-size: 12px; line-height: 1.7; }
+.leny-suggestions button:hover { border-color: #b78a6b; background: #f6ece2; }
+.leny-suggestions button span { display: block; margin-top: 10px; color: var(--leny-primary); }
+.leny-welcome .leny-limit-note { border-left: 2px solid #d9bea4; padding-left: 14px; font-size: 12px; }
+.leny-message { margin: 0 auto 28px; max-width: 750px; padding: 4px 0; }
+.leny-message-user { margin-left: auto; padding: 17px 22px; max-width: 88%; background: #f3e8dd; border: 1px solid #eddfd1; border-radius: 16px 16px 3px 16px; }
+.leny-message-author { font-size: 10px; letter-spacing: .14em; font-weight: 700; color: var(--leny-primary); margin-bottom: 9px; }
+.leny-message-body { line-height: 1.8; font-size: 14px; overflow-wrap: anywhere; }
+.leny-message-body p { margin: 0 0 12px; }
+.leny-message-body p:last-child { margin-bottom: 0; }
+.leny-message-user p { white-space: pre-wrap; }
+.leny-message-body pre { overflow-x: auto; max-width: 100%; background: #f2ebe4; border: 1px solid #e8dcd1; border-radius: 9px; padding: 14px; }
+.leny-message-body code { font-size: 12px; }
+.leny-message-body blockquote { border-left: 2px solid #b78a6b; padding-left: 16px; margin-left: 0; color: var(--leny-muted); }
+.leny-message-state { display: block; margin-top: 10px; font-size: 11px; color: var(--leny-muted); }
+.leny-sources { margin-top: 16px; padding-top: 12px; border-top: 1px solid #e8dcd1; }
+.leny-sources h3 { margin: 0 0 10px; color: var(--leny-muted); font-size: 12px; font-weight: 600; }
+.leny-sources ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.leny-sources li { display: flex; gap: 6px 12px; flex-wrap: wrap; align-items: center; font-size: 12px; overflow-wrap: anywhere; }
+.leny-source-title { font-weight: 600; }
+.leny-source-location { color: var(--leny-muted); }
+.leny-source-detail { overflow-wrap: anywhere; }
+.leny-source-detail h3 { font-size: 14px; margin-top: 24px; }
+.leny-source-text { white-space: pre-wrap; line-height: 1.8; padding: 16px; background: #fbf6ef; border: 1px solid #e8dcd1; border-radius: 10px; }
+.leny-loading { display: flex; gap: 10px; justify-content: center; font-size: 12px; padding: 16px; color: var(--leny-muted); }
+.leny-older { display: block; margin: 0 auto 24px; }
+.leny-composer-area { position: relative; padding: 8px 26px 14px; background: #fffdf9; }
+.leny-composer { max-width: 750px; margin: auto; border: 1px solid #d8c5b5; border-radius: 15px; background: #fff; box-shadow: 0 3px 12px #643c2508; padding: 10px 12px; }
+.leny-composer:focus-within { border-color: var(--leny-primary); box-shadow: 0 0 0 2px #8f3d2e12; }
+.leny-composer textarea.ant-input { border: 0; border-radius: 0; box-shadow: none; resize: none; padding: 4px; background: transparent; font-size: 14px; }
+.leny-composer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; }
+.leny-composer-bottom > span { font-size: 10px; color: var(--leny-muted); }
+.leny-disclaimer { margin: 10px 0 0; text-align: center; font-size: 10px; line-height: 1.6; color: var(--leny-muted); }
+.leny-field-error { margin: 8px 4px 0; color: #b42318; font-size: 12px; line-height: 1.5; }
+.leny-jump { position: absolute; left: 50%; top: -34px; transform: translateX(-50%); z-index: 1; }
+@media (max-width: 1100px) { .leny { grid-template-columns: 190px minmax(0, 1fr); } .leny-header { padding: 16px; flex-wrap: wrap; } .leny-keyboard-help { display: none; } }
+@media (max-width: 700px) { .leny { grid-template-columns: 1fr; height: auto; min-height: 780px; max-height: none; border-radius: 14px; } .leny-history { padding: 12px; gap: 10px; border-right: 0; border-bottom: 1px solid #e8dcd1; } .leny-history-heading, .leny-history-note { display: none; } .leny-history-list { display: flex; gap: 8px; min-height: 0; max-height: 84px; overflow-x: auto; } .leny-history-item { flex: 0 0 165px; margin: 0; } .leny-history-empty { margin: 0; } .leny-workspace { height: 700px; height: max(600px, calc(100dvh - 200px)); } .leny-header { gap: 10px; padding: 14px; } .leny-messages { padding: 24px 16px; } .leny-composer-area { padding: 8px 12px 12px; } .leny-suggestions { grid-template-columns: 1fr; gap: 8px; margin: 18px 0; } .leny-suggestions button { padding: 12px; } .leny-suggestions button span { display: inline; margin-left: 12px; } .leny-message-user { max-width: 95%; } }
+@media (prefers-reduced-motion: reduce) { .leny *, .leny *::before, .leny *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+@media (max-width: 700px) {
+  .leny-shell-header { flex-wrap: wrap; gap: 12px; padding: 16px 16px 0 !important; }
+  .leny-shell-header > .ant-space:first-child { flex: 1 1 160px; min-width: 0; }
+  .leny-shell-header > .ant-space:last-child { flex: 0 1 auto; max-width: 100%; min-width: 0; flex-wrap: wrap; gap: 8px !important; }
+}

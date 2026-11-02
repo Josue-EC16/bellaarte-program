@@ -1,0 +1,81 @@
+{
+  "resources": {
+    "scope": "whole_system_spot_samples_during_final_focused_run",
+    "start_utc": "2026-10-21T02:38:10.988908+00:00",
+    "artifact_finished_mtime_utc": "2026-10-21T02:49:09.620138+00:00",
+    "sample_count": 127,
+    "minimum_observed_available_ram_bytes": 2873315328,
+    "maximum_observed_gpu_used_mib": 3743
+  },
+  "phases": {
+    "routing": {
+      "samples": 5,
+      "mean_seconds": 10.706200000000536,
+      "maximum_seconds": 12.75,
+      "p95_seconds": null
+    },
+    "embedding_and_release": {
+      "samples": 44,
+      "mean_seconds": 4.137840909090962,
+      "maximum_seconds": 4.78099999999904,
+      "p95_seconds": 4.7040000000015425
+    },
+    "search": {
+      "samples": 44,
+      "mean_seconds": 0.013068181818198354,
+      "maximum_seconds": 0.0319999999992433,
+      "p95_seconds": 0.01600000000325963
+    },
+    "review": {
+      "samples": 44,
+      "mean_seconds": 4.977704545454634,
+      "maximum_seconds": 5.796999999998661,
+      "p95_seconds": 5.5939999999973224
+    },
+    "selection": {
+      "samples": 44,
+      "mean_seconds": 0.0003409090908958619,
+      "maximum_seconds": 0.014999999999417923,
+      "p95_seconds": 0.0
+    },
+    "context": {
+      "samples": 44,
+      "mean_seconds": 5.19004545454556,
+      "maximum_seconds": 13.40599999999904,
+      "p95_seconds": 5.71900000000096
+    },
+    "context_probe": {
+      "samples": 0,
+      "mean_seconds": null,
+      "maximum_seconds": null,
+      "p95_seconds": null
+    },
+    "render": {
+      "samples": 34,
+      "mean_seconds": 0.03591176470570859,
+      "maximum_seconds": 0.125,
+      "p95_seconds": 0.06300000000192085
+    },
+    "generation": {
+      "samples": 0,
+      "mean_seconds": null,
+      "maximum_seconds": null,
+      "p95_seconds": null
+    },
+    "first_content": {
+      "samples": 44,
+      "mean_seconds": 10.607522727272805,
+      "maximum_seconds": 22.75,
+      "p95_seconds": 21.5470000000023
+    },
+    "total": {
+      "samples": 47,
+      "mean_seconds": 10.106680851063658,
+      "maximum_seconds": 22.812000000001717,
+      "p95_seconds": 21.59400000000096
+    }
+  },
+  "context_includes_subphases_not_additive": true,
+  "generation_freeform_invoked": false,
+  "browser_latency_measured": false
+}

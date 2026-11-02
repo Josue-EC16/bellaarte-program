@@ -1,0 +1,764 @@
+{
+  "scope": "synthetic_human_review_template_not_completed",
+  "reviewer_id": null,
+  "corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "review_complete": false,
+  "cases": [
+    {
+      "case_id": "rag04-natural-01",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-natural-02",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-natural-03",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-natural-04",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-natural-05",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-natural-06",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-natural-07",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-natural-08",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-natural-09",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-natural-10",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-natural-11",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-natural-12",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-natural-13",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-natural-14",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-literal-01",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-literal-02",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-literal-03",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-literal-04",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-literal-05",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-literal-06",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-literal-07",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-literal-08",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-literal-09",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-literal-10",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-literal-11",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-synonyms-01",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-synonyms-02",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-synonyms-03",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-synonyms-04",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-synonyms-05",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-synonyms-06",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-synonyms-07",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-synonyms-08",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-synonyms-09",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-synonyms-10",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-synonyms-11",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-followup-01",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-followup-02",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-followup-03",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-followup-04",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-followup-05",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-followup-06",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-followup-07",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-multi_conflict-01",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-multi_conflict-02",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-multi_conflict-03",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-multi_conflict-04",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-multi_conflict-05",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-multi_conflict-06",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-multi_conflict-07",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-formats-01",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-formats-02",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-formats-03",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-formats-04",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-formats-05",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-formats-06",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-formats-07",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-out_capabilities-01",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-out_capabilities-02",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-out_capabilities-03",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-out_capabilities-04",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-out_capabilities-05",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-out_capabilities-06",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-out_capabilities-07",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-acl-01",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-acl-02",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-acl-03",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-acl-04",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-acl-05",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-acl-06",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-acl-07",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-acl-08",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-acl-09",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-acl-10",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-attacks-01",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-attacks-02",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-attacks-03",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-attacks-04",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-attacks-05",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-attacks-06",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-attacks-07",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-no_evidence-01",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-no_evidence-02",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    },
+    {
+      "case_id": "rag04-no_evidence-03",
+      "A": {
+        "review": null
+      },
+      "B": {
+        "review": null
+      }
+    }
+  ]
+}

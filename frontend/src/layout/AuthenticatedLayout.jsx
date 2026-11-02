@@ -18,14 +18,16 @@ import {
   SafetyOutlined,
   TeamOutlined,
   UserOutlined,
+  MessageOutlined,
 } from '@ant-design/icons'
-import { Avatar, Badge, Button, Dropdown, Layout, Menu, Popover, Space, Tag, Typography } from 'antd'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Alert, Avatar, Badge, Button, Dropdown, Layout, Menu, Popover, Space, Tag, Typography } from 'antd'
+import { useMemo, useState } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 
-import { apiClient } from '../api/client'
 import { useAuth } from '../auth/AuthProvider'
+import { canManageDocuments } from '../pages/leny/documents/documentUtils'
 import { FooterBar } from '../components/FooterBar'
+import { useNotificationCenter } from '../pages/notificaciones/useNotificationCenter'
 import {
   buildNotificationOriginPath,
   notificationPriorityColor,
@@ -39,63 +41,15 @@ export function AuthenticatedLayout() {
   const location = useLocation()
   const navigate = useNavigate()
   const { logout, user } = useAuth()
-  const [notificationSummary, setNotificationSummary] = useState({
-    unread_count: 0,
-    unresolved_count: 0,
-    urgent_count: 0,
-    latest: [],
-  })
   const [notificationsOpen, setNotificationsOpen] = useState(false)
-  const notifiedIdsRef = useRef(new Set())
-  const canUseNotifications = user?.permissions?.includes('notifications:list')
-
-  const loadNotificationSummary = useCallback(async () => {
-    if (!canUseNotifications) return
-    try {
-      const response = await apiClient.get('/notificaciones/resumen')
-      const newData = response.data
-      setNotificationSummary(newData)
-
-      if ('Notification' in window && Notification.permission === 'granted') {
-        newData.latest?.forEach((n) => {
-          if (!n.leida && !notifiedIdsRef.current.has(n.id)) {
-            notifiedIdsRef.current.add(n.id)
-            new Notification(n.titulo, { body: n.mensaje })
-          }
-        })
-      }
-    } catch {
-      setNotificationSummary((current) => ({ ...current, latest: current.latest || [] }))
-    }
-  }, [canUseNotifications])
-
-  useEffect(() => {
-    if (!canUseNotifications) return undefined
-
-    if ('Notification' in window && Notification.permission === 'default') {
-      Notification.requestPermission()
-    }
-
-    loadNotificationSummary()
-    const intervalId = window.setInterval(loadNotificationSummary, 60000)
-    const handleFocus = () => {
-      loadNotificationSummary()
-    }
-    window.addEventListener('focus', handleFocus)
-    return () => {
-      window.clearInterval(intervalId)
-      window.removeEventListener('focus', handleFocus)
-    }
-  }, [canUseNotifications, loadNotificationSummary])
-
-  const markNotificationAsRead = useCallback(async (notificationId) => {
-    try {
-      await apiClient.patch(`/notificaciones/${notificationId}/read`)
-      await loadNotificationSummary()
-    } catch {
-      return
-    }
-  }, [loadNotificationSummary])
+  const {
+    summary: notificationSummary,
+    error: notificationError,
+    refresh: loadNotificationSummary,
+    markRead: markNotificationAsRead,
+    reading: readingNotifications,
+    canUse: canUseNotifications,
+  } = useNotificationCenter(user, navigate)
 
   const items = useMemo(() => {
     const baseItems = [
@@ -465,6 +419,14 @@ export function AuthenticatedLayout() {
       })
     }
 
+    if (user?.permissions?.includes('leny:chat')) {
+      baseItems.push({ key: '/app/leny', icon: <MessageOutlined />, label: <Link to="/app/leny">LENY · Asistente</Link> })
+    }
+
+    if (canManageDocuments(user)) {
+      baseItems.push({ key: '/app/leny/documents', icon: <FileTextOutlined />, label: <Link to="/app/leny/documents">LENY · Biblioteca documental</Link> })
+    }
+
     baseItems.push({
       key: '/app/cambiar-clave',
       icon: <LockOutlined />,
@@ -516,8 +478,12 @@ export function AuthenticatedLayout() {
         </Button>
       </div>
 
+      {notificationError ? (
+        <Alert type="warning" showIcon message={notificationError} style={{ marginBottom: 12 }}
+          action={<Button size="small" onClick={loadNotificationSummary}>Reintentar</Button>} />
+      ) : null}
       <div style={{ display: 'grid', gap: 10 }}>
-        {notificationSummary.latest?.filter(n => !n.leida).length ? notificationSummary.latest.filter(n => !n.leida).map((notification) => (
+        {notificationSummary.latest?.length ? notificationSummary.latest.map((notification) => (
           <div
             key={notification.id}
             style={{
@@ -563,7 +529,7 @@ export function AuthenticatedLayout() {
                 VER
               </Button>
               {!notification.leida ? (
-                <Button size="small" icon={<CheckOutlined />} onClick={() => markNotificationAsRead(notification.id)}>
+                <Button size="small" icon={<CheckOutlined />} loading={readingNotifications.includes(notification.id)} onClick={() => markNotificationAsRead(notification)}>
                   LEÍDA
                 </Button>
               ) : null}
@@ -612,7 +578,6 @@ export function AuthenticatedLayout() {
            BELLAARTE BOUTIQUE
           </Typography.Title>
           <Typography.Text style={{ color: 'rgba(255,247,241,0.7)', fontSize: '0.85rem' }}>
-           Sistema interno
           </Typography.Text>
          </div>
        </div>
@@ -629,6 +594,7 @@ export function AuthenticatedLayout() {
 
       <Layout style={{ background: 'transparent', height: '100vh', overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
         <Header
+          className={['/app/leny', '/app/leny/documents'].includes(location.pathname) ? 'leny-shell-header' : undefined}
           style={{
             background: 'transparent',
             display: 'flex',
@@ -639,7 +605,7 @@ export function AuthenticatedLayout() {
           }}
         >
           <Space direction="vertical" size={2}>
-            <Typography.Text type="secondary">Panel operativo</Typography.Text>
+            <Typography.Text type="secondary">PANEL OPERATIVO</Typography.Text>
             <Typography.Title level={4} style={{ margin: 0 }}>
               {pageTitle(location.pathname)}
             </Typography.Title>
@@ -706,6 +672,8 @@ export function AuthenticatedLayout() {
 }
 
 function pageTitle(pathname) {
+  if (pathname === '/app/leny/documents') return 'LENY · Gestión documental'
+  if (pathname === '/app/leny') return 'LENY · Asistente inteligente'
   if (pathname === '/app/seguridad/roles') return 'Roles'
   if (pathname === '/app/seguridad/usuarios') return 'Usuarios'
   if (pathname === '/app/clientes') return 'Clientes'

@@ -1,0 +1,15 @@
+{
+  "scope": "real HTTP localhost8001, native parsers, JWT, disposable person and storage; no business database",
+  "results": {
+    "anonymous_401": true,
+    "four_real_multipart_uploads_original_hashes_and_private_headers": true,
+    "version_two_preserves_previous": true,
+    "duplicate_after_quota_not_recharged": true,
+    "sixth_generation_429": true,
+    "real_docx_paragraph_and_table_preview": true,
+    "real_image_previews": true,
+    "publish_blocked_and_foreign_version_404": true,
+    "trash_blocks_content_and_confirmed_restore": true,
+    "jwt_refresh_preserves_library_access": true
+  }
+}

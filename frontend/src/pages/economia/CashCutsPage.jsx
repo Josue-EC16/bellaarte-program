@@ -4,7 +4,9 @@ import {
   App as AntdApp,
   Button,
   Col,
+  Checkbox,
   Descriptions,
+  DatePicker,
   Drawer,
   Form,
   Input,
@@ -15,7 +17,7 @@ import {
   Tag,
   Typography,
 } from 'antd'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { apiClient } from '../../api/client'
 import { useAuth } from '../../auth/AuthProvider'
@@ -30,9 +32,16 @@ export function CashCutsPage() {
   const { user } = useAuth()
   const { message } = AntdApp.useApp()
   const [loading, setLoading] = useState(true)
+  const mutationPending = useRef(false)
+  const request = useRef(null)
+  const usersLoaded = useRef(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
   const [cuts, setCuts] = useState([])
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 25, total: 0 })
+  const { current: currentPage, pageSize } = pagination
+  const [counts, setCounts] = useState({ open_count: 0, closed_count: 0, observed_count: 0 })
+  const [filters, setFilters] = useState({ state: undefined, cashier_id: undefined, dates: null })
   const [users, setUsers] = useState([])
   const [myCut, setMyCut] = useState(null)
   const [myHistory, setMyHistory] = useState([])
@@ -46,37 +55,52 @@ export function CashCutsPage() {
   const isAdmin = user?.role_code === 'ADMIN'
 
   const loadData = useCallback(async () => {
+    request.current?.abort()
+    const controller = new AbortController()
+    request.current = controller
     setLoading(true)
     setError(null)
+    const params = { page: currentPage, page_size: pageSize, state: filters.state, cashier_id: filters.cashier_id,
+      date_from: filters.dates?.[0]?.format('YYYY-MM-DD'), date_to: filters.dates?.[1]?.format('YYYY-MM-DD') }
     try {
       if (isAdmin) {
         const [cutsResponse, usersResponse] = await Promise.all([
-          apiClient.get('/economia/cortes-caja'),
-          apiClient.get('/users'),
+          apiClient.get('/economia/cortes-caja', { params, signal: controller.signal }),
+          usersLoaded.current ? Promise.resolve(null) : apiClient.get('/users', { signal: controller.signal }),
         ])
-        setCuts(cutsResponse.data)
-        setUsers(usersResponse.data.filter((item) => item.role_code === 'CAJA' && item.user_is_active && item.account_is_active))
+        if (controller.signal.aborted) return
+        setCuts(cutsResponse.data.items)
+        setPagination((current) => ({ ...current, total: cutsResponse.data.total }))
+        setCounts(cutsResponse.data)
+        if (usersResponse) {
+          setUsers(usersResponse.data.filter((item) => item.role_code === 'CAJA' && item.user_is_active && item.account_is_active))
+          usersLoaded.current = true
+        }
         setMyCut(null)
         setMyHistory([])
       } else {
         const [cutResponse, historyResponse] = await Promise.all([
-          apiClient.get('/economia/cortes-caja/me'),
-          apiClient.get('/economia/cortes-caja/me/history'),
+          apiClient.get('/economia/cortes-caja/me', { signal: controller.signal }),
+          apiClient.get('/economia/cortes-caja/me/history', { params: { page: currentPage, page_size: pageSize }, signal: controller.signal }),
         ])
+        if (controller.signal.aborted) return
         setMyCut(cutResponse.data.cut)
-        setMyHistory(historyResponse.data)
+        setMyHistory(historyResponse.data.items)
+        setPagination((current) => ({ ...current, total: historyResponse.data.total }))
         setCuts([])
         setUsers([])
       }
     } catch (requestError) {
+      if (controller.signal.aborted) return
       setError(requestError.response?.data?.detail || 'NO FUE POSIBLE CARGAR LOS CORTES DE CAJA.')
     } finally {
-      setLoading(false)
+      if (!controller.signal.aborted) setLoading(false)
     }
-  }, [isAdmin])
+  }, [isAdmin, currentPage, pageSize, filters])
 
   useEffect(() => {
     loadData()
+    return () => request.current?.abort()
   }, [loadData])
 
   const cajeroOptions = useMemo(
@@ -94,6 +118,8 @@ export function CashCutsPage() {
   }
 
   const submitCreate = async (values) => {
+    if (mutationPending.current) return
+    mutationPending.current = true
     setSaving(true)
     setFormError(null)
     try {
@@ -108,15 +134,22 @@ export function CashCutsPage() {
       })
       setFormError(resolved.globalMessage)
     } finally {
+      mutationPending.current = false
       setSaving(false)
     }
   }
 
   const submitClose = async () => {
+    if (mutationPending.current) return
+    mutationPending.current = true
     setSaving(true)
     try {
       const values = await closeForm.validateFields()
-      await apiClient.patch(`/economia/cortes-caja/${closeCutTarget.id}/close`, values)
+      await apiClient.patch(`/economia/cortes-caja/${closeCutTarget.id}/close`, {
+        ...values,
+        efectivo_recibido: closeCutTarget.control_version > 0 ? values.efectivo_recibido : {},
+        cierre_legado: closeCutTarget.control_version > 0 ? false : values.cierre_legado,
+      })
       message.success('SE CERRÓ EL CORTE DE CAJA CORRECTAMENTE.')
       setCloseCutTarget(null)
       closeForm.resetFields()
@@ -132,6 +165,7 @@ export function CashCutsPage() {
       }
       message.error(requestError.response?.data?.detail || 'NO FUE POSIBLE CERRAR EL CORTE DE CAJA.')
     } finally {
+      mutationPending.current = false
       setSaving(false)
     }
   }
@@ -158,7 +192,13 @@ export function CashCutsPage() {
           </Col>
           {record.estado === 'abierto' ? (
             <Col>
-              <Button icon={<LockOutlined />} onClick={() => { setCloseCutTarget(record); closeForm.resetFields(); }}>
+              <Button icon={<LockOutlined />} onClick={async () => {
+                try {
+                  const { data } = await apiClient.get(`/economia/cortes-caja/${record.id}`)
+                  closeForm.resetFields()
+                  setCloseCutTarget(data)
+                } catch (failure) { message.error(failure.response?.data?.detail || 'NO FUE POSIBLE LEER EL CORTE ACTUAL.') }
+              }}>
                 CERRAR
               </Button>
             </Col>
@@ -169,6 +209,7 @@ export function CashCutsPage() {
   ]
 
   const historyColumns = [
+    { title: 'TRAZABILIDAD', dataIndex: 'certified', render: (value) => <Tag color={value ? 'green' : 'default'}>{value ? 'CIERRE CONTROLADO' : 'LEGADO / INFORMATIVO'}</Tag> },
     { title: 'CORTE', dataIndex: 'id', render: (value) => `#${value}` },
     { title: 'APERTURA', dataIndex: 'fecha_apertura', render: (value) => new Date(value).toLocaleString('es-BO') },
     { title: 'CIERRE', dataIndex: 'fecha_cierre', render: (value) => (value ? new Date(value).toLocaleString('es-BO') : 'PENDIENTE') },
@@ -191,7 +232,7 @@ export function CashCutsPage() {
           <Typography.Paragraph type="secondary" style={{ marginBottom: 0 }}>
             {isAdmin
               ? 'Abre, cierra y supervisa períodos operativos de caja por cajero.'
-              : 'Consulta tu corte activo y tu historial enmascarado de períodos cerrados.'}
+              : 'Consulta tu corte activo y tu historial propio de períodos cerrados.'}
           </Typography.Paragraph>
         </div>
         {isAdmin ? (
@@ -207,16 +248,21 @@ export function CashCutsPage() {
         <>
           <Row gutter={[14, 14]} style={{ marginBottom: 16 }}>
             <Col xs={24} md={8}>
-              <EconomySummaryCard eyebrow="CORTE ACTIVO" title="Períodos abiertos" value={String(cuts.filter((item) => item.estado === 'abierto').length)} accent="#4d2219" />
+              <EconomySummaryCard eyebrow="CORTE ACTIVO" title="Períodos abiertos" value={String(counts.open_count)} accent="#4d2219" />
             </Col>
             <Col xs={24} md={8}>
-              <EconomySummaryCard eyebrow="INGRESOS VISIBLES" title="Suma de ingresos por corte" value={formatBs(cuts.reduce((acc, item) => acc + Number(item.ingresos_total_bob || 0), 0))} accent="#4b7f5a" />
+              <EconomySummaryCard eyebrow="CORTES CERRADOS" title="Cierres normales" value={String(counts.closed_count)} accent="#4b7f5a" />
             </Col>
             <Col xs={24} md={8}>
-              <EconomySummaryCard eyebrow="RESULTADO GLOBAL" title="Suma de resultados" value={formatBs(cuts.reduce((acc, item) => acc + Number(item.resultado_bob || 0), 0))} accent="#b86c45" />
+              <EconomySummaryCard eyebrow="CORTES OBSERVADOS" title="Cierres con observación" value={String(counts.observed_count)} accent="#b86c45" />
             </Col>
           </Row>
-          <Table className="glass-panel" rowKey="id" columns={adminColumns} dataSource={cuts} loading={loading} scroll={{ x: 'max-content' }} />
+          <Row gutter={[12, 12]} style={{ marginBottom: 16 }}>
+            <Col xs={24} md={7}><Select allowClear aria-label="Estado del corte" placeholder="ESTADO DEL CORTE" options={[{ value: 'abierto', label: 'ABIERTO' }, ...CIERRE_CORTE_OPTIONS]} value={filters.state} onChange={(state) => { setPagination((previous) => ({ ...previous, current: 1 })); setFilters((previous) => ({ ...previous, state })) }} style={{ width: '100%' }} /></Col>
+            <Col xs={24} md={7}><Select allowClear showSearch optionFilterProp="label" aria-label="Cajero del corte" placeholder="CAJERO" options={cajeroOptions} value={filters.cashier_id} onChange={(cashier_id) => { setPagination((previous) => ({ ...previous, current: 1 })); setFilters((previous) => ({ ...previous, cashier_id })) }} style={{ width: '100%' }} /></Col>
+            <Col xs={24} md={10}><DatePicker.RangePicker format="DD/MM/YYYY" value={filters.dates} onChange={(dates) => { setPagination((previous) => ({ ...previous, current: 1 })); setFilters((previous) => ({ ...previous, dates })) }} style={{ width: '100%' }} /></Col>
+          </Row>
+          <Table className="glass-panel" rowKey="id" columns={adminColumns} dataSource={cuts} loading={loading} pagination={{ ...pagination, showSizeChanger: true, pageSizeOptions: [25, 50, 100], onChange: (current, pageSize) => setPagination((previous) => ({ ...previous, current, pageSize })) }} scroll={{ x: 'max-content' }} />
         </>
       ) : (
         <>
@@ -231,7 +277,7 @@ export function CashCutsPage() {
               />
             </Col>
           </Row>
-          <Table className="glass-panel" rowKey="id" columns={historyColumns} dataSource={myHistory} loading={loading} scroll={{ x: 'max-content' }} />
+          <Table className="glass-panel" rowKey="id" columns={historyColumns} dataSource={myHistory} loading={loading} pagination={{ ...pagination, showSizeChanger: true, pageSizeOptions: [25, 50, 100], onChange: (current, pageSize) => setPagination((previous) => ({ ...previous, current, pageSize })) }} scroll={{ x: 'max-content' }} />
         </>
       )}
 
@@ -301,6 +347,18 @@ export function CashCutsPage() {
               description="UNA VEZ CERRADO, EL PERÍODO YA NO DEBE SEGUIR RECIBIENDO EGRESOS OPERATIVOS DEL CAJERO."
             />
             <Form {...FORM_COMMON_PROPS} form={closeForm} onFinish={submitClose}>
+              {closeCutTarget.control_version > 0 ? <>
+                <Alert type="info" showIcon message={`EFECTIVO LIBRE BOB: ${formatBs(closeCutTarget.efectivo_libre_bob)} · GARANTÍAS RESERVADAS: ${formatBs(closeCutTarget.garantias_reservadas_bob)}`} description="Cuenta el efectivo físico por moneda, incluyendo dinero en custodia. Los cobros electrónicos no se entregan como efectivo." style={{ marginBottom: 16 }} />
+                {Object.entries(closeCutTarget.efectivo_esperado || {}).map(([currency, expected]) => <Form.Item key={currency} name={['efectivo_recibido', currency]} label={`EFECTIVO RECIBIDO ${currency} (ESPERADO ${Number(expected).toFixed(2)})`} rules={[{ required: true, message: 'REGISTRA EL CONTEO REAL, INCLUSO SI ES CERO.' }]}>
+                  <InputNumber min={0} precision={2} style={{ width: '100%' }} />
+                </Form.Item>)}
+                <Alert type="warning" message="CUALQUIER DIFERENCIA EXIGE CIERRE OBSERVADO Y EXPLICACIÓN." style={{ marginBottom: 16 }} />
+              </> : <>
+                <Alert type="warning" showIcon message="CORTE LEGADO: INFORMACIÓN HISTÓRICA NO CERTIFICADA" description="El cierre manual no reconstruye métodos de pago ni certifica conteos anteriores. Debe cerrarse antes de operar con los controles nuevos." style={{ marginBottom: 16 }} />
+                <Form.Item name="cierre_legado" valuePropName="checked" rules={[{ validator: (_, value) => value ? Promise.resolve() : Promise.reject(new Error('CONFIRMA EL CIERRE LEGADO.')) }]}>
+                  <Checkbox>CONFIRMO EL CIERRE MANUAL DEL CORTE LEGADO</Checkbox>
+                </Form.Item>
+              </>}
               <Form.Item
                 label="ESTADO DE CIERRE"
                 name="estado"
@@ -311,6 +369,7 @@ export function CashCutsPage() {
               <Form.Item
                 label="OBSERVACIONES DE CIERRE"
                 name="observaciones_cierre"
+                rules={[{ required: !closeCutTarget.control_version, message: 'EXPLICA EL CIERRE LEGADO.' }]}
                 normalize={(value) => (value || '').toUpperCase()}
               >
                 <Input.TextArea rows={3} placeholder="OBLIGATORIO SI EL CIERRE ES OBSERVADO" />
@@ -342,13 +401,22 @@ export function CashCutsPage() {
               <Descriptions.Item label="ADMIN">{detail.admin.full_name}</Descriptions.Item>
               <Descriptions.Item label="APERTURA">{new Date(detail.fecha_apertura).toLocaleString('es-BO')}</Descriptions.Item>
               <Descriptions.Item label="CIERRE">{detail.fecha_cierre ? new Date(detail.fecha_cierre).toLocaleString('es-BO') : 'PENDIENTE'}</Descriptions.Item>
-              <Descriptions.Item label="FONDO">{formatBs(detail.fondo_asignado)}</Descriptions.Item>
+              <Descriptions.Item label="CERTIFICACIÓN">{detail.certified ? 'CIERRE CERTIFICADO' : detail.control_version > 0 ? 'CONTROL ACTUAL / ABIERTO' : 'LEGADO NO CERTIFICADO'}</Descriptions.Item>
+              <Descriptions.Item label="EFECTIVO LIBRE BOB">{formatBs(detail.efectivo_libre_bob)}</Descriptions.Item>
+              <Descriptions.Item label="GARANTÍAS RESERVADAS">{formatBs(detail.garantias_reservadas_bob)}</Descriptions.Item>
+              <Descriptions.Item label="FONDO / ANTICIPO">{formatBs(detail.fondo_asignado)}</Descriptions.Item>
               <Descriptions.Item label="INGRESOS">{formatBs(detail.ingresos_total_bob)}</Descriptions.Item>
               <Descriptions.Item label="EGRESOS">{formatBs(detail.egresos_total_bob)}</Descriptions.Item>
               <Descriptions.Item label="RESULTADO">{formatBs(detail.resultado_bob)}</Descriptions.Item>
               <Descriptions.Item label="OBS. APERTURA" span={2}>{detail.observaciones_apertura || 'SIN OBSERVACIÓN'}</Descriptions.Item>
               <Descriptions.Item label="OBS. CIERRE" span={2}>{detail.observaciones_cierre || 'SIN OBSERVACIÓN'}</Descriptions.Item>
             </Descriptions>
+            <Table
+              rowKey="currency" size="small" pagination={false}
+              dataSource={Object.entries(detail.efectivo_esperado || {}).map(([currency, expected]) => ({ currency, expected, received: detail.efectivo_recibido?.[currency], difference: detail.diferencias_efectivo?.[currency] }))}
+              columns={[{ title: 'MONEDA FÍSICA', dataIndex: 'currency' }, { title: 'ESPERADO', dataIndex: 'expected' }, { title: 'RECIBIDO', dataIndex: 'received' }, { title: 'DIFERENCIA', dataIndex: 'difference' }]}
+              style={{ marginBottom: 16 }}
+            />
             <Table
               rowKey="id"
               pagination={false}

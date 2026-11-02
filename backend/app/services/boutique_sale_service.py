@@ -23,6 +23,8 @@ from app.schemas.boutique import (
     BoutiqueSaleUserSummary,
 )
 from app.services.currency_service import get_active_exchange_rate_for_currency
+from app.services.financial_source_service import money, rate, _lock, rollback_on_error
+from app.services.economic_ledger_service import lock_active_cut, record_income
 from app.services.notification_service import sync_boutique_stock_notification
 from app.services.receipt_service import _to_receipt_summary, annul_receipt, create_sale_receipt
 
@@ -202,6 +204,7 @@ def list_boutique_sales(
     return [_to_sale_list_item(sale) for sale in db.execute(stmt).unique().scalars().all()]
 
 
+@rollback_on_error
 def create_boutique_sale(
     db: Session,
     *,
@@ -209,10 +212,13 @@ def create_boutique_sale(
     created_by: Cuenta,
     ip_address: str | None,
     user_agent: str | None,
+    commit: bool = True,
 ) -> BoutiqueSaleDetailResponse:
     if not created_by.is_active or not created_by.usuario.activo or not created_by.rol.activo:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="La cuenta usada para registrar la venta no está habilitada.")
 
+    cut = lock_active_cut(db, created_by)
+    _lock(db, ItemBoutique, payload.item_id)
     item = _get_item_for_sale(db, payload.item_id)
     client = _get_client_for_sale(db, payload.client_id)
     currency = _get_currency_for_sale(db, payload.currency_id)
@@ -220,9 +226,9 @@ def create_boutique_sale(
     if payload.quantity > item.stock:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="La cantidad vendida no puede ser mayor al stock disponible.")
 
-    unit_price = Decimal(item.precio_venta)
+    unit_price = money(item.precio_venta)
     subtotal = Decimal(payload.quantity) * unit_price
-    discount = Decimal(payload.discount or 0)
+    discount = money(payload.discount)
     if discount > subtotal:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="El descuento no puede ser mayor al subtotal de la venta.")
     total_bob = subtotal - discount
@@ -236,12 +242,13 @@ def create_boutique_sale(
         exchange_rate = get_active_exchange_rate_for_currency(db, currency.id)
         if exchange_rate is None:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="La moneda seleccionada no tiene un tipo de cambio activo.")
-        exchange_rate_used = Decimal(exchange_rate.valor_bob)
-        total_currency_origin = (total_bob / exchange_rate_used).quantize(Decimal("0.01"))
+        exchange_rate_used = rate(exchange_rate.valor_bob)
+        total_currency_origin = money(total_bob / exchange_rate_used)
 
     sale = VentaBoutique(
         item_id=item.id,
         usuario_id=created_by.usuario_id,
+        corte_id=cut.id if cut else None,
         cliente_id=client.id if client else None,
         moneda_id=currency.id,
         cantidad=payload.quantity,
@@ -257,6 +264,10 @@ def create_boutique_sale(
     item.stock -= payload.quantity
     db.add(sale)
     db.flush()
+    db.refresh(sale)
+    record_income(db, account=created_by, cut=cut, origin_type="venta_boutique", source=sale,
+                  amount_bob=sale.total, amount_original=sale.total_moneda_original,
+                  currency_code=currency.codigo, payment_method=sale.metodo_pago)
     create_sale_receipt(
         db,
         sale=sale,
@@ -274,7 +285,8 @@ def create_boutique_sale(
         user_agent=user_agent,
     )
     sync_boutique_stock_notification(db, item_id=item.id)
-    db.commit()
+    if commit:
+        db.commit()
     return get_boutique_sale_detail(db, sale.id)
 
 
@@ -320,8 +332,12 @@ def change_boutique_sale_state(
     changed_by: Cuenta,
     ip_address: str | None,
     user_agent: str | None,
+    commit: bool = True,
 ) -> BoutiqueSaleDetailResponse:
-    raise HTTPException(
-        status_code=status.HTTP_409_CONFLICT,
-        detail="Debes registrar la DEVOLUCIÓN desde ECONOMÍA antes de cancelar o anular la venta.",
-    )
+    from app.schemas.economy import OperativeCancellationRequest
+    from app.services.refund_flow_service import apply_operative_cancellation
+    apply_operative_cancellation(db, payload=OperativeCancellationRequest(
+        origin_type="VENTA_BOUTIQUE", origin_id=sale_id, target_state=target_state.name,
+        reason=reason), account=changed_by, ip_address=ip_address,
+        user_agent=user_agent, commit=commit)
+    return get_boutique_sale_detail(db, sale_id)

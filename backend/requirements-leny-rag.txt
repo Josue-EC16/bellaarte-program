@@ -1,0 +1,4 @@
+# SPEC-02 additions only: preserve every distribution already installed.
+# Install using -c requirements.txt --no-deps --only-binary=:all:
+pgvector==0.5.1
+pypdfium2==5.14.0

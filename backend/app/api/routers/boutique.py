@@ -1,3 +1,4 @@
+from app.services.economic_write_service import economic_write
 from datetime import date
 
 from fastapi import APIRouter, Depends, Query, Request, status
@@ -450,13 +451,15 @@ def create_sale(
     db: Session = Depends(get_db),
     account: Cuenta = Depends(require_permission("boutique_sales:create")),
 ) -> BoutiqueSaleDetailResponse:
-    return create_boutique_sale(
+    return economic_write(db,account=account,operation="sale_create",key=request.headers.get("Idempotency-Key"),
+        payload=payload,execute=lambda: create_boutique_sale(
         db,
         payload=payload,
         created_by=account,
         ip_address=request.client.host if request.client else None,
         user_agent=request.headers.get("user-agent"),
-    )
+        commit=False,
+    ))
 
 
 @router.patch("/sales/{sale_id}/cancel", response_model=BoutiqueSaleDetailResponse)
@@ -467,7 +470,8 @@ def cancel_sale(
     db: Session = Depends(get_db),
     account: Cuenta = Depends(require_permission("boutique_sales:cancel")),
 ) -> BoutiqueSaleDetailResponse:
-    return change_boutique_sale_state(
+    return economic_write(db,account=account,operation="cancel_sale",key=request.headers.get("Idempotency-Key"),
+        payload={"resource_id":sale_id,"body":payload.model_dump(mode="python")},execute=lambda: change_boutique_sale_state(
         db,
         sale_id=sale_id,
         target_state=EstadoVentaBoutiqueEnum.CANCELADA,
@@ -475,7 +479,8 @@ def cancel_sale(
         changed_by=account,
         ip_address=request.client.host if request.client else None,
         user_agent=request.headers.get("user-agent"),
-    )
+        commit=False,
+    ))
 
 
 @router.patch("/sales/{sale_id}/annul", response_model=BoutiqueSaleDetailResponse)
@@ -486,7 +491,8 @@ def annul_sale(
     db: Session = Depends(get_db),
     account: Cuenta = Depends(require_permission("boutique_sales:annul")),
 ) -> BoutiqueSaleDetailResponse:
-    return change_boutique_sale_state(
+    return economic_write(db,account=account,operation="annul_sale",key=request.headers.get("Idempotency-Key"),
+        payload={"resource_id":sale_id,"body":payload.model_dump(mode="python")},execute=lambda: change_boutique_sale_state(
         db,
         sale_id=sale_id,
         target_state=EstadoVentaBoutiqueEnum.ANULADA,
@@ -494,4 +500,5 @@ def annul_sale(
         changed_by=account,
         ip_address=request.client.host if request.client else None,
         user_agent=request.headers.get("user-agent"),
-    )
+        commit=False,
+    ))

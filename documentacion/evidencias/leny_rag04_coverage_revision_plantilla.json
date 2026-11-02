@@ -1,0 +1,318 @@
+{
+  "scope": "human_review_template_no_ratings_completed",
+  "reviewer_id": null,
+  "review_complete": false,
+  "rubric_fields": [
+    "relevance",
+    "conditions",
+    "completeness",
+    "numeric_fidelity",
+    "intent_interpretation",
+    "scope_annotation",
+    "usefulness"
+  ],
+  "cases": [
+    {
+      "case_id": "rag04-natural-01",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-natural-02",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-natural-03",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-natural-04",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-natural-05",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-natural-06",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-natural-07",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-natural-08",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-natural-09",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-natural-10",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-natural-11",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-natural-12",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-natural-13",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-natural-14",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-literal-03",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-literal-08",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-synonyms-07",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-synonyms-10",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-synonyms-11",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-followup-01",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-followup-02",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-followup-03",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-followup-04",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-followup-05",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-followup-06",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-followup-07",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-multi_conflict-01",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-multi_conflict-02",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-multi_conflict-03",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-multi_conflict-04",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-multi_conflict-05",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-multi_conflict-06",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-multi_conflict-07",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-formats-05",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-formats-06",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-acl-01",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-acl-02",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-acl-03",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-acl-04",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-acl-05",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-acl-06",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-acl-07",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-acl-08",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-acl-09",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-acl-10",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-no_evidence-01",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-no_evidence-02",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "rag04-no_evidence-03",
+      "review": null,
+      "notes": null
+    }
+  ],
+  "controls": [
+    {
+      "case_id": "coverage-control-01",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "coverage-control-02",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "coverage-control-03",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "coverage-control-04",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "coverage-control-05",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "coverage-control-06",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "coverage-control-07",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "coverage-control-08",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "coverage-control-09",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "coverage-control-10",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "coverage-control-11",
+      "review": null,
+      "notes": null
+    },
+    {
+      "case_id": "coverage-control-12",
+      "review": null,
+      "notes": null
+    }
+  ]
+}

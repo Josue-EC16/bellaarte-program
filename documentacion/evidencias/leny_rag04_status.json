@@ -1,0 +1,73 @@
+{
+  "scope": "spec04_implementation_evaluation_status",
+  "recorded_at_utc": "2026-10-20T17:18:49.685359+00:00",
+  "implementation_available": true,
+  "acceptance": "not_accepted",
+  "candidate_promoted": false,
+  "business_profile": "legacy",
+  "business_env_changed": false,
+  "new_dependencies": [],
+  "new_migrations": [],
+  "new_endpoints": [],
+  "new_roles": [],
+  "model_training_or_weight_change": false,
+  "business_document_evaluation_permission_received": true,
+  "business_document_e2e_executed": false,
+  "synthetic_development_cases_recorded": 84,
+  "human_review_assigned_to": "project_owner",
+  "human_review_complete": false,
+  "holdout_cases_planned": 36,
+  "holdout_cases_authored_by_independent_custodian": false,
+  "holdout_cases_executed": 0,
+  "full_candidate_evaluations": 2,
+  "post_full_source_delta_artifact": "leny_rag04_post_full_run_delta.json",
+  "candidate_metrics_artifact": "leny_rag04_candidate_final_metrics_v2.json",
+  "comparison_artifact": "leny_rag04_final_comparison_v2.json",
+  "automatic_critical_case_count": 7,
+  "acceptance_failures": [
+    "human_review_incomplete",
+    "critical_failure",
+    "unsuccessful_attempts",
+    "threshold_rag_activation",
+    "threshold_hit_at_5",
+    "threshold_grounding",
+    "threshold_no_evidence_abstention",
+    "threshold_capabilities_acknowledged",
+    "acl_route_accuracy"
+  ],
+  "semantic_metrics_verified": false,
+  "known_diagnostic_quality_blocks": [
+    "unsupported_number_of_fitting_sessions",
+    "unstated_actor_added_to_consent",
+    "tangential_partial_evidence",
+    "authorized_evidence_false_negatives",
+    "failed_prerequisites_without_citations"
+  ],
+  "tests": {
+    "base": {
+      "passed": 766,
+      "skipped": 1,
+      "warnings": 1,
+      "seconds": 9.0
+    },
+    "postgresql_isolated": {
+      "passed": 199,
+      "seconds": 61.02,
+      "port": 55432
+    },
+    "frontend_previous_same_stage": {
+      "passed": 116,
+      "rerun_after_backend_only_corrections": false
+    }
+  },
+  "end_state": {
+    "ollama_running": true,
+    "resident_models": 0,
+    "test_port_55432_listening": false,
+    "usual_backend_port_8000_listening": true,
+    "usual_frontend_port_5173_listening": true,
+    "synthetic_inference_window_finished": true
+  },
+  "review_packet": "leny_rag04_revision_humana.md",
+  "implementation_inventory": "leny_rag04_implementation_inventory.json"
+}

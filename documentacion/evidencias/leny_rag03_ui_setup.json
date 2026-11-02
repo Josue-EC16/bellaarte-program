@@ -1,0 +1,60 @@
+{
+  "time_utc": "2026-10-20T05:01:02.073777+00:00",
+  "scope": "isolated PostgreSQL55432 / synthetic content / real OCR and CPU Ollama / TestClient HTTP",
+  "results": {
+    "real_formats": 1,
+    "idempotent_admission": true,
+    "cpu_embeddings_1024": true,
+    "publication_blocked": false,
+    "cancel_preserves_valid_index": false,
+    "http_authentication": true,
+    "admin_publication_and_caja_real_chat": true,
+    "real_backup_restore_vectors_and_originals": true
+  },
+  "native_extraction": {},
+  "documents": [
+    {
+      "format": "pdf",
+      "elapsed_seconds": 6.312,
+      "chunk_count": 1,
+      "warnings": [],
+      "status": "completed"
+    }
+  ],
+  "timings": [
+    {
+      "embedding_and_release_seconds": 3.64,
+      "search_seconds": 0.016,
+      "context_seconds": 0.0,
+      "first_content_seconds": 10.172,
+      "total_seconds": 10.204
+    }
+  ],
+  "real_documental_chat": [
+    {
+      "format": "pdf",
+      "elapsed_seconds": 10.297,
+      "source_type": "PDF_TEXT",
+      "answer_contains_known_price": true,
+      "original_download_verified": true
+    }
+  ],
+  "backup_counts": {
+    "rag_embeddings": 1,
+    "rag_fragmentos": 1,
+    "rag_indexaciones": 1,
+    "rag_trabajos": 1
+  },
+  "resources": {
+    "scope": "System-wide sample; other applications included, not per-process peak attribution",
+    "samples": 847,
+    "interval_seconds": 0.25,
+    "available_ram_before_bytes": 2096902144,
+    "minimum_available_ram_bytes": 1832648704,
+    "system_cpu_busy_percent": 15.53,
+    "embeddings_gpu_bytes": 0,
+    "embeddings_gpu_check": "verified per real batch by provider",
+    "parser_job_memory_limit_mb": 1536,
+    "acceptance_job_timeout_seconds": 1800
+  }
+}

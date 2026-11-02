@@ -1,0 +1,97 @@
+{
+  "scope": "business_readonly_preflight_no_content_export",
+  "created_utc": "2026-10-21T15:00:15.623584+00:00",
+  "database": "bellaarte_db",
+  "port": 5432,
+  "settings": {
+    "leny_enabled": true,
+    "leny_model": "qwen3.5:4b-q4_K_M",
+    "leny_ollama_url": "http://127.0.0.1:11434",
+    "leny_documents_enabled": true,
+    "leny_rag_enabled": true,
+    "leny_rag_chat_enabled": true,
+    "leny_rag_profile": "legacy",
+    "leny_rag_evidence_mode": "fixed",
+    "leny_rag_ranking": "semantic",
+    "leny_rag_adaptive_token_probe": false,
+    "leny_rag_neighbor_chunks": false,
+    "leny_num_ctx": 4096,
+    "leny_num_predict": 768,
+    "leny_temperature": 0.3,
+    "leny_keep_alive": "0",
+    "leny_rag_model": "qwen3-embedding:0.6b",
+    "leny_rag_model_digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d",
+    "leny_rag_top_k": 5,
+    "leny_rag_candidates": 20,
+    "leny_rag_max_context_bytes": 2048,
+    "leny_rag_min_ram_bytes": 2147483648,
+    "leny_rag_min_resident_ram_bytes": 1073741824,
+    "leny_rate_limit": 5,
+    "leny_rate_window_seconds": 60
+  },
+  "env_sha256": "af3153226e1db483c81dc70b002d5cc8b46ec193df98624d7552195d703583cc",
+  "revision": "20261020_0021",
+  "vector_extension": [
+    "0.8.7",
+    "leny"
+  ],
+  "role_codes": [
+    "ADMIN",
+    "CAJA",
+    "DOC",
+    "INV_BOUTIQUE",
+    "INV_TALLER",
+    "MODISTA"
+  ],
+  "published_documents": 2,
+  "worker_live_count": 0,
+  "queued_running_jobs": 0,
+  "inference_state": "idle",
+  "data_fingerprints": {
+    "documentos": {
+      "count": 2,
+      "server_md5_fingerprint": "6ec531d7a97315468ffc9571d882c513"
+    },
+    "documento_versiones": {
+      "count": 2,
+      "server_md5_fingerprint": "331ca226a1e50e60dbe35247671614bf"
+    },
+    "documento_roles_lectura": {
+      "count": 4,
+      "server_md5_fingerprint": "25262d8ad42bcc5d8be18225b049f609"
+    },
+    "carpetas": {
+      "count": 2,
+      "server_md5_fingerprint": "1647afb68f3275f2b45e6da6fa298244"
+    },
+    "carpeta_roles_lectura": {
+      "count": 4,
+      "server_md5_fingerprint": "4f63d7978cf6837fbfd51a50f41a8364"
+    },
+    "rag_indexaciones": {
+      "count": 3,
+      "server_md5_fingerprint": "2e782ddaf0a28e238556e4442490723a"
+    },
+    "rag_fragmentos": {
+      "count": 51,
+      "server_md5_fingerprint": "6226873192c000157ac8d08ea0ee1d8b"
+    },
+    "rag_embeddings": {
+      "count": 47,
+      "server_md5_fingerprint": "9396c56127baa114a36c40a83a902f26"
+    }
+  },
+  "model_tags": [
+    {
+      "name": "qwen3-embedding:0.6b",
+      "digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d",
+      "size_vram": null
+    },
+    {
+      "name": "qwen3.5:4b-q4_K_M",
+      "digest": "d8b0f5e9760cd1682034f292d7ef72ec46f432149be0df7574bf2d6e92e38c04",
+      "size_vram": null
+    }
+  ],
+  "resident_models": []
+}

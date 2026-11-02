@@ -816,7 +816,7 @@ def get_currencies_report(
     rates = db.execute(rates_stmt.order_by(TipoCambioMoneda.fecha_registro.asc())).scalars().all()
 
     sales_stmt = select(VentaBoutique).options(joinedload(VentaBoutique.moneda))
-    payments_stmt = select(PagoPedido).options(joinedload(PagoPedido.moneda)).where(PagoPedido.estado == EstadoPagoPedidoEnum.REGISTRADO)
+    payments_stmt = select(PagoPedido).options(joinedload(PagoPedido.moneda))
     flete_stmt = select(SalidaFlete).options(joinedload(SalidaFlete.moneda))
     if start_date is not None:
         sales_stmt = sales_stmt.where(VentaBoutique.fecha >= _start_of_day(start_date))

@@ -96,7 +96,7 @@ def test_order_base_payload_requires_discount_reason() -> None:
             {
                 "client_id": 1,
                 "tipo": "vestido",
-                "fecha_entrega": "2026-06-20",
+                "fecha_entrega": str(date.today() + timedelta(days=1)),
                 "precio": 1000,
                 "descuento": 100,
             }

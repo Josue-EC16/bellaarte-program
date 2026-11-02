@@ -1,0 +1,448 @@
+{
+  "schema_version": "rag04-real-synthetic-observations-v1",
+  "data_classification": "synthetic",
+  "profile": "rag4_v1",
+  "corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "model_identity": {
+    "chat_digest": "d8b0f5e9760cd1682034f292d7ef72ec46f432149be0df7574bf2d6e92e38c04",
+    "embedding_digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d"
+  },
+  "configuration_sha256": "6b09c48deb82b8f418f447348e652abae76cf484b1a0a584130944f33c1acb31",
+  "snapshot_manifest_sha256": "3399d7259a959474f05d90b0ec4278c1afaa96b39b4ece3481175333d7374585",
+  "comparison_contract_sha256": "6ed167daf5aaaf6dafff1fa4cb9d3f64b1a2e08af769c5eb034b4c6af3c24429",
+  "cases": [
+    {
+      "case_id": "rag04-formats-05",
+      "status": "completed",
+      "route": "no_evidence",
+      "latency_ms": 9046.999999998661,
+      "request_id": "597c5af8-00df-4140-9cbc-94c7cf35e102",
+      "latency_scope": "generation_request",
+      "response_text": "No encontr\u00e9 informaci\u00f3n documental disponible para tu consulta. Puedes precisar la pregunta o solicitar al administrador que revise la documentaci\u00f3n publicada.",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "rag_evidence_insufficient",
+        "verdict": "none",
+        "outcome": "no_evidence",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "review_documents": 3,
+          "selected": 0,
+          "evidence_bytes": 0
+        },
+        "durations_seconds": {
+          "embedding_and_release": 3.5319999999992433,
+          "search": 0.030999999999039574,
+          "review": 5.312000000001717,
+          "selection": 0.0,
+          "context": 5.312000000001717,
+          "first_content": 9.031999999999243,
+          "total": 9.031999999999243
+        }
+      },
+      "ram_available_before_bytes": 4527816704,
+      "ram_available_after_bytes": 3622744064,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "stock-1",
+        "proc-2",
+        "proc-4",
+        "conflict-1",
+        "proc-3",
+        "proc-1",
+        "work-1",
+        "sec-1"
+      ],
+      "sql_candidates": [
+        {
+          "rank": 1,
+          "fragment": "price-1",
+          "document_id": "476ea9b1-9132-46d0-9742-a51731c39691",
+          "version_id": "96a77ca2-60b1-42d5-948f-15084ce70abc",
+          "version": 1,
+          "indexation_id": "59401f66-a517-4558-b8f3-206f39d5592c",
+          "distance": 0.4666296402623824,
+          "rrf_score": 0.01639344262295082
+        },
+        {
+          "rank": 2,
+          "fragment": "conflict-2",
+          "document_id": "72c2dea3-d980-4c55-9498-d303266361f4",
+          "version_id": "7bba4204-1560-4029-9430-e9ff411353d8",
+          "version": 1,
+          "indexation_id": "9d7e3ac7-e958-48d3-b4ff-db09717b5ada",
+          "distance": 0.6619442780977456,
+          "rrf_score": 0.016129032258064516
+        },
+        {
+          "rank": 3,
+          "fragment": "stock-1",
+          "document_id": "3ecdb2c0-9906-46ed-b961-f6f7d39f6d26",
+          "version_id": "aca2ddb5-209d-4e2d-983d-a7a9bf237ce5",
+          "version": 1,
+          "indexation_id": "c5be50fa-9cad-4575-ab84-a830ee0c5392",
+          "distance": 0.6656400856602385,
+          "rrf_score": 0.015873015873015872
+        },
+        {
+          "rank": 4,
+          "fragment": "proc-2",
+          "document_id": "227909f3-3c48-48c3-b70a-a37be21ce132",
+          "version_id": "85f32938-2983-4d92-98b0-ac92902ddb6d",
+          "version": 1,
+          "indexation_id": "eceb2c52-d128-4e5f-b2e6-ea0517bf3bae",
+          "distance": 0.6696088423042661,
+          "rrf_score": 0.015625
+        },
+        {
+          "rank": 5,
+          "fragment": "proc-4",
+          "document_id": "227909f3-3c48-48c3-b70a-a37be21ce132",
+          "version_id": "85f32938-2983-4d92-98b0-ac92902ddb6d",
+          "version": 1,
+          "indexation_id": "eceb2c52-d128-4e5f-b2e6-ea0517bf3bae",
+          "distance": 0.6788107167610995,
+          "rrf_score": 0.015384615384615385
+        },
+        {
+          "rank": 6,
+          "fragment": "conflict-1",
+          "document_id": "eb079211-b5db-428c-927f-72617a2da631",
+          "version_id": "ac8b281f-4b0c-4ec6-a0a6-a660706c83d0",
+          "version": 1,
+          "indexation_id": "6db734a8-03cd-4b03-bc88-d381bcdebfb0",
+          "distance": 0.6976669624747631,
+          "rrf_score": 0.015151515151515152
+        },
+        {
+          "rank": 7,
+          "fragment": "proc-3",
+          "document_id": "227909f3-3c48-48c3-b70a-a37be21ce132",
+          "version_id": "85f32938-2983-4d92-98b0-ac92902ddb6d",
+          "version": 1,
+          "indexation_id": "eceb2c52-d128-4e5f-b2e6-ea0517bf3bae",
+          "distance": 0.7050350289119776,
+          "rrf_score": 0.014925373134328358
+        },
+        {
+          "rank": 8,
+          "fragment": "proc-1",
+          "document_id": "227909f3-3c48-48c3-b70a-a37be21ce132",
+          "version_id": "85f32938-2983-4d92-98b0-ac92902ddb6d",
+          "version": 1,
+          "indexation_id": "eceb2c52-d128-4e5f-b2e6-ea0517bf3bae",
+          "distance": 0.7105379943823189,
+          "rrf_score": 0.014705882352941176
+        },
+        {
+          "rank": 9,
+          "fragment": "work-1",
+          "document_id": "06609490-22f5-4445-b0c6-37508aa87f4a",
+          "version_id": "ded1f247-c4e8-4abf-9d75-427fd4393266",
+          "version": 1,
+          "indexation_id": "5ba65fb0-1b04-4ff6-89fa-0ba5acd43842",
+          "distance": 0.7728044946200311,
+          "rrf_score": 0.014492753623188406
+        },
+        {
+          "rank": 10,
+          "fragment": "sec-1",
+          "document_id": "3ae25fb7-ed09-4fc3-ae32-0dfdb35f80f6",
+          "version_id": "4fba7a85-17c5-4edc-893c-52323c92f539",
+          "version": 1,
+          "indexation_id": "de28452b-2594-4f24-91c1-2632444f2015",
+          "distance": 0.8139209955169806,
+          "rrf_score": 0.014285714285714285
+        }
+      ],
+      "review_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "stock-1"
+      ],
+      "document_reviews": [
+        {
+          "fragment_ids": [
+            "price-1",
+            "conflict-2",
+            "stock-1"
+          ],
+          "decision": {
+            "relation": "absent",
+            "sources": []
+          }
+        }
+      ],
+      "review_decision": {
+        "relation": "absent",
+        "sources": []
+      },
+      "sent_fragment_ids": [],
+      "response_origin": "model_or_policy",
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [],
+      "review": null,
+      "abstained": true,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-acl-10",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 9422.0000000023,
+      "request_id": "7796b7fc-302a-438a-b189-58178e7409ab",
+      "latency_scope": "generation_request",
+      "response_text": "La evidencia disponible es parcial; esta respuesta se limita a los puntos documentados.\n\nExtractos de las fuentes publicadas, conservando sus condiciones:\n\n> Regla ficticia: contar unidades f\u00edsicamente; m\u00ednimo 8 unidades; registrar diferencias con su motivo. No modificar existencias por conversaci\u00f3n. [S1]",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "business_context",
+        "verdict": "partial",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 7,
+          "review_documents": 3,
+          "selected": 1,
+          "evidence_bytes": 146,
+          "prompt_bytes": 1334,
+          "documented_excerpt": 1,
+          "grounded_excerpt": 1,
+          "citations": 1
+        },
+        "durations_seconds": {
+          "embedding_and_release": 3.9840000000003783,
+          "search": 0.01599999999962165,
+          "review": 5.1709999999984575,
+          "selection": 0.0,
+          "context": 5.1709999999984575,
+          "first_content": 9.34400000000096,
+          "render": 0.014999999999417923,
+          "total": 9.406000000002678
+        }
+      },
+      "ram_available_before_bytes": 3997585408,
+      "ram_available_after_bytes": 4701159424,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-4",
+        "stock-1",
+        "proc-2",
+        "work-1",
+        "proc-1",
+        "proc-3",
+        "sec-1"
+      ],
+      "sql_candidates": [
+        {
+          "rank": 1,
+          "fragment": "proc-4",
+          "document_id": "227909f3-3c48-48c3-b70a-a37be21ce132",
+          "version_id": "85f32938-2983-4d92-98b0-ac92902ddb6d",
+          "version": 1,
+          "indexation_id": "eceb2c52-d128-4e5f-b2e6-ea0517bf3bae",
+          "distance": 0.613119859771776,
+          "rrf_score": 0.01639344262295082
+        },
+        {
+          "rank": 2,
+          "fragment": "stock-1",
+          "document_id": "3ecdb2c0-9906-46ed-b961-f6f7d39f6d26",
+          "version_id": "aca2ddb5-209d-4e2d-983d-a7a9bf237ce5",
+          "version": 1,
+          "indexation_id": "c5be50fa-9cad-4575-ab84-a830ee0c5392",
+          "distance": 0.6317958298094413,
+          "rrf_score": 0.016129032258064516
+        },
+        {
+          "rank": 3,
+          "fragment": "proc-2",
+          "document_id": "227909f3-3c48-48c3-b70a-a37be21ce132",
+          "version_id": "85f32938-2983-4d92-98b0-ac92902ddb6d",
+          "version": 1,
+          "indexation_id": "eceb2c52-d128-4e5f-b2e6-ea0517bf3bae",
+          "distance": 0.6402393412304479,
+          "rrf_score": 0.015873015873015872
+        },
+        {
+          "rank": 4,
+          "fragment": "work-1",
+          "document_id": "06609490-22f5-4445-b0c6-37508aa87f4a",
+          "version_id": "ded1f247-c4e8-4abf-9d75-427fd4393266",
+          "version": 1,
+          "indexation_id": "5ba65fb0-1b04-4ff6-89fa-0ba5acd43842",
+          "distance": 0.6473026134661936,
+          "rrf_score": 0.015625
+        },
+        {
+          "rank": 5,
+          "fragment": "proc-1",
+          "document_id": "227909f3-3c48-48c3-b70a-a37be21ce132",
+          "version_id": "85f32938-2983-4d92-98b0-ac92902ddb6d",
+          "version": 1,
+          "indexation_id": "eceb2c52-d128-4e5f-b2e6-ea0517bf3bae",
+          "distance": 0.664904038321469,
+          "rrf_score": 0.015384615384615385
+        },
+        {
+          "rank": 6,
+          "fragment": "proc-3",
+          "document_id": "227909f3-3c48-48c3-b70a-a37be21ce132",
+          "version_id": "85f32938-2983-4d92-98b0-ac92902ddb6d",
+          "version": 1,
+          "indexation_id": "eceb2c52-d128-4e5f-b2e6-ea0517bf3bae",
+          "distance": 0.6751150965416108,
+          "rrf_score": 0.015151515151515152
+        },
+        {
+          "rank": 7,
+          "fragment": "sec-1",
+          "document_id": "3ae25fb7-ed09-4fc3-ae32-0dfdb35f80f6",
+          "version_id": "4fba7a85-17c5-4edc-893c-52323c92f539",
+          "version": 1,
+          "indexation_id": "de28452b-2594-4f24-91c1-2632444f2015",
+          "distance": 0.7464799293327429,
+          "rrf_score": 0.014925373134328358
+        }
+      ],
+      "review_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "stock-1",
+        "work-1"
+      ],
+      "document_reviews": [
+        {
+          "fragment_ids": [
+            "proc-1",
+            "proc-2",
+            "proc-3",
+            "proc-4",
+            "stock-1",
+            "work-1"
+          ],
+          "decision": {
+            "relation": "partial",
+            "sources": [
+              5
+            ]
+          }
+        }
+      ],
+      "review_decision": {
+        "relation": "partial",
+        "sources": [
+          5
+        ]
+      },
+      "selected_fragment_ids": [
+        "stock-1"
+      ],
+      "sent_fragment_ids": [
+        "stock-1"
+      ],
+      "sent_evidence_basis": "confirmed_relevance_prompt_for_documented_excerpt",
+      "response_origin": "backend_grounded_excerpts",
+      "generator_fragment_ids": [],
+      "render_fragment_ids": [
+        "stock-1"
+      ],
+      "generator_invoked": false,
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [
+        "stock-1"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    }
+  ],
+  "human_review_complete": false,
+  "business_e2e_executed": false,
+  "holdout_executed": false,
+  "extraction_formats_evaluated": false,
+  "settings": {
+    "leny_enabled": true,
+    "leny_documents_enabled": true,
+    "leny_rag_enabled": true,
+    "leny_rag_chat_enabled": true,
+    "leny_keep_alive": "0",
+    "leny_num_ctx": 4096,
+    "leny_num_predict": 768,
+    "leny_temperature": 0.0,
+    "leny_rate_limit": 5,
+    "leny_rate_window_seconds": 60,
+    "leny_rag_min_ram_bytes": 2147483648,
+    "leny_rag_min_resident_ram_bytes": 1073741824,
+    "leny_rag_cpu_threads": 4,
+    "leny_rag_batch_size": 2,
+    "leny_rag_top_k": 5,
+    "leny_rag_candidates": 20,
+    "leny_rag_profile": "rag4_v1",
+    "leny_rag_evidence_mode": "adaptive",
+    "leny_rag_max_context_bytes": 2048,
+    "leny_rag_ranking": "hybrid",
+    "leny_rag_adaptive_token_probe": true,
+    "leny_rag_neighbor_chunks": false
+  },
+  "runner_mode": "stability",
+  "original_representation": "generated synthetic originals with fixture source types; extraction not evaluated by this runner",
+  "created_at_utc": "2026-10-21T02:50:02.626969+00:00",
+  "component_versions": {
+    "policy": "rag4-v3",
+    "documentary_output": "document-excerpts-v2",
+    "retrieval": "sql-acl-current-publication",
+    "ranking": "hybrid",
+    "selection": "joint-evidence-plan-v3"
+  },
+  "source_files_sha256": {
+    "backend/app/core/config.py": "255d9f75fc82305d7d226840f2b42a5069168e8d285f728082a2b4bae28736c1",
+    "backend/app/services/leny_coordination.py": "b171770ebd63b568aa58b5c2279b2bc5bca8bc24abe771cdcc9a9127139958b5",
+    "backend/app/services/leny_document_backup.py": "d9e1c6017f88bcbb56332f43425308b2f5ed48dded95e89a59dedf0e21dba841",
+    "backend/app/services/leny_document_maintenance.py": "5641fdc19b799973ed1a1cf1ddbfb82fcb14fb6e67c1243fd3a0ee635aecec82",
+    "backend/app/services/leny_document_service.py": "4d4a92270425f73f7f2bed4c576f980584e86f363d1c0370a94188fe69a5b248",
+    "backend/app/services/leny_document_storage.py": "223508eb4132df2eaad9278ea03091a745051a051c2f5b38d0c95af92b96fe58",
+    "backend/app/services/leny_document_validation.py": "f308f43588151c2a7486fb084c812edc1243625954dcc3775fac1b7f790f0397",
+    "backend/app/services/leny_guard.py": "646aedcf45d6b84c50a170ce1ea19c0b8af517e1bfd6bdab0dbaccfb2db58749",
+    "backend/app/services/leny_inference_state.py": "851fcef019370000a372c9841120412cd49ab7489c2207924bdb2530336f4fb2",
+    "backend/app/services/leny_ollama.py": "d03765e1b1ec83d33333122100807366207fbeb334dba8c73adffadbf65a2d85",
+    "backend/app/services/leny_policy.py": "c2fb1eda757aa9d35c1902c026cd0769b759dd65ffa0a844043471f44b6a0fbd",
+    "backend/app/services/leny_rag_chunking.py": "02860cd76bc90608cd8dd86a9157e837995a527cab8169b4ad429c107f4e8ad5",
+    "backend/app/services/leny_rag_common.py": "bd7489fa48291c2de77cf507a2755514317eec6ffeed1436cf3cf928795d66cc",
+    "backend/app/services/leny_rag_diagnostics.py": "86c943f4004181fae67640a4205e1a7b4adf257a53491b35d3d612508052122c",
+    "backend/app/services/leny_rag_embeddings.py": "00f9b633c68afc0ecbde6df74fa8aa6c6b941c3068c78b26456ed4e0b7b38db1",
+    "backend/app/services/leny_rag_evaluation.py": "867cd31c19ead08dd20cb427247293dd895d4997959568b86cfe43f7d2f66326",
+    "backend/app/services/leny_rag_extraction.py": "aa50c998a24e83267323c2ad750d4060a7260a7a66620b67dfa5ee4113f2fa54",
+    "backend/app/services/leny_rag_followup.py": "0709ae9e659c244aae6b0741227ca70236f2ae5af28a2a6590bb8cfba52643c9",
+    "backend/app/services/leny_rag_grounding.py": "17ebc582ac8cbc005bc3da4f2ff9bb9245d75c06fb7e192c65ea0bd5acdfe55b",
+    "backend/app/services/leny_rag_publication.py": "13137d3aca1ab3ea8e77810bcc5b21b734bb2aacd652a80efa188473842e5717",
+    "backend/app/services/leny_rag_retrieval.py": "0147d35ad84fbb2e670d33f44d596e48bb4cc7bb9ab5c2cc6e0f2512c3116b84",
+    "backend/app/services/leny_rag_routing.py": "17080bb21c03aa07e047187b6538905623c189fc0b04d545031872e68b71018c",
+    "backend/app/services/leny_rag_selection.py": "4cfe03665c797ffd861e53b658846b5934933fcb899ba715ccfb0d76db3d0006",
+    "backend/app/services/leny_rag_service.py": "01c320001d8fdb679c2636c3bb404d11b6a812fa9a1e0f4244d874a52f9f2dd1",
+    "backend/app/services/leny_rag_sources.py": "2895fff0d04a6efbeab1e7222a6e683a9dc18e67bab7e198299e3de91534d19c",
+    "backend/app/services/leny_rag_worker.py": "d0588f175ea57ced1874b9cb69aa437808a06f8643e694a78095f1042e17ab80",
+    "backend/app/services/leny_rate_limit.py": "7c4a0c01c3219f7243d27e27b404e095974b76c0c8b0ee8a4af5d4521d96f4ef",
+    "backend/app/services/leny_service.py": "19d0413ef3ce0c3d3b9c76ffedf0e6c34ad3f5a4d92e9071f3e18ecf76657799",
+    "backend/app/services/leny_store.py": "d6053c9ee5d36bcad0c608ff793df8b35011de84509dae5cdc0cdf5c48f97201",
+    "backend/scripts/leny_rag_layered_evaluation.py": "a3958a5dd0bb323a25a437a8138c81c4459940ba865192ba4102bfb34e0b0079",
+    "backend/scripts/run_leny_rag_quality.ps1": "6bba53e099aea42d1aaaec339f7b9e28fd5758756342ce3b07a380f3cd28ed58",
+    "backend/scripts/run_leny_rag_quality.py": "b670a0841cad9c76affc8edc10b87399396bf73536e56d57134350846a261dbd",
+    "backend/tests/fixtures/leny_rag04_development.json": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661"
+  },
+  "source_freeze_verified": true,
+  "model_identity_verified": true,
+  "cleanup_confirmed": true
+}

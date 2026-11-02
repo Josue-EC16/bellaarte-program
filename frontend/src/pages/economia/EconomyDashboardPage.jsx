@@ -19,6 +19,7 @@ export function EconomyDashboardPage() {
   const [incomeStatement, setIncomeStatement] = useState(null)
   const [cashFlow, setCashFlow] = useState(null)
   const [cashCuts, setCashCuts] = useState([])
+  const [openCutTotal, setOpenCutTotal] = useState(0)
   const [myPeriod, setMyPeriod] = useState(null)
   const [myCut, setMyCut] = useState(null)
 
@@ -34,7 +35,8 @@ export function EconomyDashboardPage() {
         ])
         setIncomeStatement(incomeResponse.data)
         setCashFlow(flowResponse.data)
-        setCashCuts(cutsResponse.data)
+        setCashCuts(cutsResponse.data.items)
+        setOpenCutTotal(cutsResponse.data.total)
         setMyPeriod(null)
         setMyCut(null)
       } else {
@@ -101,6 +103,8 @@ export function EconomyDashboardPage() {
         </div>
       </div>
 
+      {myCut && !myCut.control_version ? <Alert type="warning" showIcon message="CORTE LEGADO: REQUIERE CIERRE MANUAL ANTES DE REGISTRAR MOVIMIENTOS NUEVOS." style={{ marginBottom: 16 }} /> : null}
+      {myCut?.control_version > 0 ? <Alert type="info" showIcon message={`EFECTIVO LIBRE: ${formatBs(myCut.efectivo_libre_bob)} · GARANTÍAS RESERVADAS: ${formatBs(myCut.garantias_reservadas_bob)}`} description="El saldo operativo incluye el anticipo y los cobros electrónicos. La garantía permanece en custodia y no es ingreso comercial." style={{ marginBottom: 16 }} /> : null}
       {isAdmin ? (
         <>
           <Row gutter={[14, 14]} style={{ marginBottom: 16 }}>
@@ -111,7 +115,7 @@ export function EconomyDashboardPage() {
               <EconomySummaryCard eyebrow="EGRESOS" title="Salidas registradas" value={formatBs(incomeStatement?.egresos_total_bob)} accent="#b86c45" />
             </Col>
             <Col xs={24} md={8}>
-              <EconomySummaryCard eyebrow="RESULTADO" title="Resultado neto" value={formatBs(incomeStatement?.resultado_bob)} accent="#4d2219" />
+              <EconomySummaryCard eyebrow="RESULTADO" title="Saldo neto (no utilidad contable)" value={formatBs(incomeStatement?.resultado_bob)} accent="#4d2219" />
             </Col>
           </Row>
 
@@ -165,7 +169,7 @@ export function EconomyDashboardPage() {
               </EconomyChartCard>
             </Col>
             <Col xs={24} xl={14}>
-              <EconomyChartCard title="Cortes de caja abiertos" subtitle="Seguimiento inmediato de los períodos que aún no se cerraron." empty={!cashCuts.length}>
+              <EconomyChartCard title="Cortes de caja abiertos" subtitle={`Cortes abiertos: ${openCutTotal}. Se muestran los primeros 25; consulta Cortes de Caja para ver el resto.`} empty={!cashCuts.length}>
                 {cashCuts.length ? (
                   <Table
                     rowKey="id"
@@ -194,10 +198,10 @@ export function EconomyDashboardPage() {
               <EconomySummaryCard eyebrow="MI CORTE" title="Período activo" value={myCut ? `#${myCut.id}` : 'SIN CORTE'} accent="#4d2219" helper={myCut ? cutStateLabel(myCut.estado) : 'NO DISPONIBLE'} />
             </Col>
             <Col xs={24} md={8}>
-              <EconomySummaryCard eyebrow="INGRESOS DEL PERÍODO" title="Monto visible solo mientras el corte está activo" value={formatBs(myPeriod?.ingresos_total_bob)} accent="#4b7f5a" />
+              <EconomySummaryCard eyebrow="INGRESOS DEL PERÍODO" title="Ingresos comerciales del corte activo" value={formatBs(myPeriod?.ingresos_total_bob)} accent="#4b7f5a" />
             </Col>
             <Col xs={24} md={8}>
-              <EconomySummaryCard eyebrow="RESULTADO" title="FONDO + INGRESOS - EGRESOS" value={formatBs(myPeriod?.resultado_bob)} accent="#b86c45" />
+              <EconomySummaryCard eyebrow="RESULTADO" title="ANTICIPO + INGRESOS - EGRESOS" value={formatBs(myPeriod?.resultado_bob)} accent="#b86c45" />
             </Col>
           </Row>
 

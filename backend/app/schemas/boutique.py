@@ -1,3 +1,4 @@
+from decimal import Decimal
 from datetime import datetime
 from typing import Any, Literal
 
@@ -239,7 +240,7 @@ class BoutiqueSaleCreateRequest(BaseModel):
     client_id: int | None = Field(default=None, gt=0)
     currency_id: int = Field(gt=0)
     quantity: int = Field(gt=0)
-    discount: float | None = Field(default=None, ge=0)
+    discount: Decimal | None = Field(default=None, ge=0,max_digits=12,decimal_places=2)
     discount_reason: MotivoDescVentaBoutiqueEnum | None = None
     payment_method: MetodoPagoEnum
     observations: str | None = None

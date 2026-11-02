@@ -1,13 +1,14 @@
 import { DownloadOutlined, FilterOutlined } from '@ant-design/icons'
 import { Alert, Button, Col, DatePicker, Row, Select, Table, Tabs, Tag, Typography } from 'antd'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import dayjs from 'dayjs'
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
 import { apiClient } from '../../api/client'
 import { useAuth } from '../../auth/AuthProvider'
 import { EconomyChartCard } from './EconomyChartCard'
 import { EconomySummaryCard } from './EconomySummaryCard'
-import { ECONOMY_CHART_COLORS, STORAGE_KEYS } from './economyConstants'
+import { ECONOMY_CHART_COLORS, INCOME_SOURCE_OPTIONS, STORAGE_KEYS } from './economyConstants'
 import { cutStateColor, cutStateLabel, downloadEconomyCsv, expenseTypeLabel, formatBs, getStoredFilters, incomeSourceLabel, storeFilters } from './economyUtils'
 
 const { RangePicker } = DatePicker
@@ -16,6 +17,9 @@ const DEFAULT_REPORT_FILTERS = {
   date_from: undefined,
   date_to: undefined,
   cashier_id: undefined,
+  source_type: undefined,
+  payment_method: undefined,
+  currency_id: undefined,
 }
 
 export function EconomyReportsPage() {
@@ -25,6 +29,8 @@ export function EconomyReportsPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [cashiers, setCashiers] = useState([])
+  const [currencies, setCurrencies] = useState([])
+  const reportRequest = useRef(null)
   const [incomeStatement, setIncomeStatement] = useState(null)
   const [cashFlow, setCashFlow] = useState(null)
   const [cashierReport, setCashierReport] = useState(null)
@@ -37,56 +43,60 @@ export function EconomyReportsPage() {
     setFilters(nextFilters)
   }, [])
 
-  const loadAdminReports = useCallback(async () => {
-    const params = {}
-    if (filters.date_from) params.date_from = filters.date_from
-    if (filters.date_to) params.date_to = filters.date_to
-    if (filters.cashier_id) params.cashier_id = filters.cashier_id
-    const [usersResponse, stateResponse, flowResponse] = await Promise.all([
-      apiClient.get('/users'),
-      apiClient.get('/economia/reportes/estado-resultados', { params }),
-      apiClient.get('/economia/reportes/flujo-efectivo', { params }),
-    ])
-    setCashiers(usersResponse.data.filter((item) => item.role_code === 'CAJA'))
-    setIncomeStatement(stateResponse.data)
-    setCashFlow(flowResponse.data)
-    if (filters.cashier_id) {
-      const cashierResponse = await apiClient.get(`/economia/reportes/cajeros/${filters.cashier_id}`)
-      setCashierReport(cashierResponse.data)
-    } else {
-      setCashierReport(null)
-    }
-  }, [filters.cashier_id, filters.date_from, filters.date_to])
-
-  const loadCajaReports = useCallback(async () => {
-    const [periodResponse, stateResponse, historyResponse] = await Promise.all([
-      apiClient.get('/economia/reportes/mi-periodo'),
-      apiClient.get('/economia/reportes/mi-estado-resultados'),
-      apiClient.get('/economia/reportes/mi-historial'),
-    ])
-    setMyPeriod(periodResponse.data)
-    setMyIncomeStatement(stateResponse.data)
-    setMyHistory(historyResponse.data)
-  }, [])
+  useEffect(() => {
+    if (!isAdmin) return
+    const controller = new AbortController()
+    Promise.all([
+      apiClient.get('/users', { signal: controller.signal }),
+      apiClient.get('/monedas', { signal: controller.signal }),
+    ]).then(([usersResponse, currenciesResponse]) => {
+      if (controller.signal.aborted) return
+      // Users may have changed role since their historical cuts.
+      setCashiers(usersResponse.data)
+      setCurrencies(currenciesResponse.data)
+    }).catch((failure) => { if (!controller.signal.aborted) setError(failure.response?.data?.detail || 'NO FUE POSIBLE CARGAR LOS FILTROS.') })
+    return () => controller.abort()
+  }, [isAdmin])
 
   const loadReports = useCallback(async () => {
+    reportRequest.current?.abort()
+    const controller = new AbortController()
+    reportRequest.current = controller
     setLoading(true)
     setError(null)
     try {
       if (isAdmin) {
-        await loadAdminReports()
+        const params = Object.fromEntries(Object.entries(filters).filter(([, value]) => value !== undefined && value !== null && value !== ''))
+        const [stateResponse, flowResponse, cashierResponse] = await Promise.all([
+          apiClient.get('/economia/reportes/estado-resultados', { params, signal: controller.signal }),
+          apiClient.get('/economia/reportes/flujo-efectivo', { params, signal: controller.signal }),
+          filters.cashier_id ? apiClient.get(`/economia/reportes/cajeros/${filters.cashier_id}`, { params: { date_from: filters.date_from, date_to: filters.date_to }, signal: controller.signal }) : Promise.resolve(null),
+        ])
+        if (controller.signal.aborted) return
+        setIncomeStatement(stateResponse.data)
+        setCashFlow(flowResponse.data)
+        setCashierReport(cashierResponse?.data || null)
       } else {
-        await loadCajaReports()
+        const [periodResponse, stateResponse, historyResponse] = await Promise.all([
+          apiClient.get('/economia/reportes/mi-periodo', { signal: controller.signal }),
+          apiClient.get('/economia/reportes/mi-estado-resultados', { signal: controller.signal }),
+          apiClient.get('/economia/reportes/mi-historial', { signal: controller.signal }),
+        ])
+        if (controller.signal.aborted) return
+        setMyPeriod(periodResponse.data)
+        setMyIncomeStatement(stateResponse.data)
+        setMyHistory(historyResponse.data)
       }
-    } catch (requestError) {
-      setError(requestError.response?.data?.detail || 'NO FUE POSIBLE CARGAR LOS REPORTES ECONÓMICOS.')
+    } catch (failure) {
+      if (!controller.signal.aborted) setError(failure.response?.data?.detail || 'NO FUE POSIBLE CARGAR LOS REPORTES ECONÓMICOS.')
     } finally {
-      setLoading(false)
+      if (!controller.signal.aborted) setLoading(false)
     }
-  }, [isAdmin, loadAdminReports, loadCajaReports])
+  }, [isAdmin, filters])
 
   useEffect(() => {
-    loadReports()
+    const timer = setTimeout(() => { loadReports() }, 300)
+    return () => { clearTimeout(timer); reportRequest.current?.abort() }
   }, [loadReports])
 
   const cashierOptions = useMemo(
@@ -95,10 +105,7 @@ export function EconomyReportsPage() {
   )
 
   const exportAdmin = async (path) => {
-    const params = {}
-    if (filters.date_from) params.date_from = filters.date_from
-    if (filters.date_to) params.date_to = filters.date_to
-    if (filters.cashier_id) params.cashier_id = filters.cashier_id
+    const params = Object.fromEntries(Object.entries(filters).filter(([, value]) => value !== undefined && value !== null && value !== ''))
     await downloadEconomyCsv(path, params)
   }
 
@@ -111,7 +118,7 @@ export function EconomyReportsPage() {
           <Row gutter={[14, 14]} style={{ marginBottom: 16 }}>
             <Col xs={24} md={8}><EconomySummaryCard eyebrow="INGRESOS" title="Ingresos brutos" value={formatBs(incomeStatement?.ingresos_total_bob)} accent="#4b7f5a" /></Col>
             <Col xs={24} md={8}><EconomySummaryCard eyebrow="EGRESOS" title="Salidas registradas" value={formatBs(incomeStatement?.egresos_total_bob)} accent="#b86c45" /></Col>
-            <Col xs={24} md={8}><EconomySummaryCard eyebrow="RESULTADO" title="Neto del período" value={formatBs(incomeStatement?.resultado_bob)} accent="#4d2219" /></Col>
+            <Col xs={24} md={8}><EconomySummaryCard eyebrow="RESULTADO" title="Saldo del período (no utilidad contable)" value={formatBs(incomeStatement?.resultado_bob)} accent="#4d2219" /></Col>
           </Row>
           <Row gutter={[16, 16]}>
             <Col xs={24} xl={14}>
@@ -271,7 +278,8 @@ export function EconomyReportsPage() {
             { title: 'APERTURA', dataIndex: 'fecha_apertura', render: (value) => new Date(value).toLocaleString('es-BO') },
             { title: 'CIERRE', dataIndex: 'fecha_cierre', render: (value) => (value ? new Date(value).toLocaleString('es-BO') : 'PENDIENTE') },
             { title: 'ESTADO', dataIndex: 'estado', render: (value) => <Tag color={cutStateColor(value)}>{cutStateLabel(value)}</Tag> },
-            { title: 'INGRESOS', dataIndex: 'ingresos_display' },
+            { title: 'TRAZABILIDAD', dataIndex: 'certified', render: (value) => value ? 'CIERRE CONTROLADO' : 'LEGADO / INFORMATIVO' },
+              { title: 'INGRESOS', dataIndex: 'ingresos_display' },
             { title: 'VENTAS', dataIndex: 'ventas_display' },
             { title: 'PAGOS', dataIndex: 'pagos_display' },
             { title: 'FLETES', dataIndex: 'fletes_display' },
@@ -293,7 +301,7 @@ export function EconomyReportsPage() {
           <Typography.Paragraph type="secondary" style={{ marginBottom: 0 }}>
             {isAdmin
               ? 'Analiza ingresos, egresos, flujo y desempeño por cajero con enfoque financiero en BOB.'
-              : 'Consulta tu período activo y tu historial enmascarado de cortes cerrados.'}
+              : 'Consulta tu período activo y tu historial propio de cortes cerrados.'}
           </Typography.Paragraph>
         </div>
       </div>
@@ -303,9 +311,13 @@ export function EconomyReportsPage() {
       {isAdmin ? (
         <div className="glass-panel boutique-filter-bar" style={{ marginBottom: 16 }}>
           <Row gutter={[12, 12]}>
+            <Col xs={24} md={8}><Select aria-label="Fuente de ingreso" allowClear placeholder="FUENTE DE INGRESO" options={INCOME_SOURCE_OPTIONS} value={filters.source_type} onChange={(value) => syncStoredFilters({ ...filters, source_type: value })} style={{ width: '100%' }} /></Col>
+            <Col xs={24} md={8}><Select aria-label="Método de cobro" allowClear placeholder="MÉTODO DE COBRO" options={[{ value: 'efectivo', label: 'EFECTIVO' }, { value: 'qr', label: 'QR' }, { value: 'transaccion', label: 'TRANSFERENCIA' }, { value: 'tarjeta', label: 'TARJETA' }, { value: 'ticket_o_vale', label: 'TICKET O VALE' }]} value={filters.payment_method} onChange={(value) => syncStoredFilters({ ...filters, payment_method: value })} style={{ width: '100%' }} /></Col>
+            <Col xs={24} md={8}><Select aria-label="Moneda de cobro" allowClear placeholder="MONEDA DE COBRO" options={currencies.map((currency) => ({ value: currency.id, label: currency.codigo }))} value={filters.currency_id} onChange={(value) => syncStoredFilters({ ...filters, currency_id: value })} style={{ width: '100%' }} /></Col>
             <Col xs={24} md={8}>
               <RangePicker
                 format="DD/MM/YYYY"
+                value={filters.date_from && filters.date_to ? [dayjs(filters.date_from), dayjs(filters.date_to)] : null}
                 style={{ width: '100%' }}
                 onChange={(values) =>
                   syncStoredFilters({
@@ -321,7 +333,7 @@ export function EconomyReportsPage() {
                 allowClear
                 showSearch
                 optionFilterProp="label"
-                placeholder="FILTRAR POR CAJERO"
+                placeholder="USUARIO / CAJERO HISTÓRICO"
                 options={cashierOptions}
                 value={filters.cashier_id}
                 onChange={(value) => syncStoredFilters({ ...filters, cashier_id: value })}
@@ -329,7 +341,7 @@ export function EconomyReportsPage() {
               />
             </Col>
             <Col xs={24} md={8} style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
-              <Button icon={<FilterOutlined />} onClick={loadReports}>Actualizar</Button>
+              <Button icon={<FilterOutlined />} onClick={() => loadReports()}>Actualizar</Button>
               <Button icon={<DownloadOutlined />} onClick={() => exportAdmin('/economia/reportes/estado-resultados')}>Exportar estado</Button>
               <Button icon={<DownloadOutlined />} onClick={() => exportAdmin('/economia/reportes/flujo-efectivo')}>Exportar flujo</Button>
             </Col>
@@ -343,6 +355,8 @@ export function EconomyReportsPage() {
         </Row>
       )}
 
+      {incomeStatement?.comparison_note ? <Alert type="info" showIcon message={incomeStatement.comparison_note} style={{ marginBottom: 16 }} /> : null}
+      {cashFlow?.comparison_note && cashFlow.comparison_note !== incomeStatement?.comparison_note ? <Alert type="info" showIcon message={cashFlow.comparison_note} style={{ marginBottom: 16 }} /> : null}
       <Tabs
         destroyOnHidden
         items={isAdmin ? adminItems : cajaItems}

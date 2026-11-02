@@ -92,7 +92,7 @@ function summaryFromRows(rows) {
 function SummaryCard({ title, value, accent }) {
   return (
     <Card
-      bodyStyle={{ padding: 18 }}
+      styles={{ body: { padding: 18 } }}
       style={{
         borderRadius: 22,
         border: `1px solid ${accent}22`,

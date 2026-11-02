@@ -65,7 +65,8 @@ export async function downloadBackupFile(backupId) {
   link.href = url
   const header = response.headers['content-disposition'] || ''
   const fileMatch = /filename="?([^"]+)"?/.exec(header)
-  link.download = fileMatch?.[1] || `backup_${backupId}.dump`
+  const extension = response.headers['content-type']?.includes('zip') ? 'zip' : 'dump'
+  link.download = fileMatch?.[1] || `backup_${backupId}.${extension}`
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)

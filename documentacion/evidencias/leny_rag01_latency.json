@@ -1,0 +1,21 @@
+{
+  "scope": "loopback8001, isolated PostgreSQL55432, 4 synthetic documents, 5 versions, 10 sequential warm requests",
+  "listing_ms": {
+    "samples": [
+      11.32,
+      13.71,
+      9.86,
+      10.36,
+      14.37,
+      10.32,
+      10.59,
+      10.94,
+      10.54,
+      9.58
+    ],
+    "median": 10.565,
+    "p95_observed": 14.37
+  },
+  "acceptance_limit_ms": 1000,
+  "acceptance_scope": "This small warm fixture only; not a volume SLA."
+}

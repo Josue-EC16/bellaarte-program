@@ -1,0 +1,139 @@
+{
+  "scope": "spec04_owned_source_inventory_not_git_status",
+  "baseline_coverage": "41 pre-change files, including untracked; does not reconstruct unrelated historical edits",
+  "changed_baseline_files": [
+    {
+      "path": "backend/app/core/config.py",
+      "before_sha256": "82bc752cf36578a63b75b90863714571d89c04e50c1f6810204364203bd6dd47",
+      "after_sha256": "255d9f75fc82305d7d226840f2b42a5069168e8d285f728082a2b4bae28736c1"
+    },
+    {
+      "path": "backend/app/services/leny_guard.py",
+      "before_sha256": "8645b97d754944712c98ade13716362e55fcdca393809f3a7515d54db5af188f",
+      "after_sha256": "646aedcf45d6b84c50a170ce1ea19c0b8af517e1bfd6bdab0dbaccfb2db58749"
+    },
+    {
+      "path": "backend/app/services/leny_inference_state.py",
+      "before_sha256": "be19d08287f260971b8941d4bbe7e0e3c30a2c29445e2fe1f8a2a5c5b7a66d3d",
+      "after_sha256": "851fcef019370000a372c9841120412cd49ab7489c2207924bdb2530336f4fb2"
+    },
+    {
+      "path": "backend/app/services/leny_ollama.py",
+      "before_sha256": "561c64f972e621195b480e35808a8b96c47aa8bd077546e2fa1e4485ab7fe3c9",
+      "after_sha256": "d03765e1b1ec83d33333122100807366207fbeb334dba8c73adffadbf65a2d85"
+    },
+    {
+      "path": "backend/app/services/leny_policy.py",
+      "before_sha256": "db61abea6df79a4d6cee7c0c875f7619d10cdb5bfa13bee46f1885dc18fbc392",
+      "after_sha256": "c2fb1eda757aa9d35c1902c026cd0769b759dd65ffa0a844043471f44b6a0fbd"
+    },
+    {
+      "path": "backend/app/services/leny_rag_retrieval.py",
+      "before_sha256": "41f0a45630f4adb49fd55245104a7e0a7a7e08443de7c081d992043547794746",
+      "after_sha256": "fe3401b15fa88b75ea2022b8d2dd2ecbb5fd2a448515553d174dc76f03ffc003"
+    },
+    {
+      "path": "backend/app/services/leny_service.py",
+      "before_sha256": "df49f114e4407297eef6d94830533ef093d6354be7490c1727b69900aca2b0e4",
+      "after_sha256": "a8037645726e1ad23cc0432b34871da9f2ef7f5e0d97931e005e9e03aa3e4d81"
+    },
+    {
+      "path": "backend/app/services/leny_store.py",
+      "before_sha256": "fc8f8b2c174280fdf429c2bb9320efc63aa0a65535eda28401a3ef2083dad46a",
+      "after_sha256": "4c6af318b25871d4bcad4217ce753f06f47e38c52614f6cf1787944ddf700e6d"
+    },
+    {
+      "path": "frontend/src/pages/leny/lenyTransport.js",
+      "before_sha256": "8d5921651de4610a18e281d91270fdcb1b12c283a49cbd649aaef95f4daae498",
+      "after_sha256": "7ad74b00aa955f165570b862fa8f55163a11ddf2bddb1dc0e2495a28fa629684"
+    },
+    {
+      "path": "frontend/src/pages/leny/lenyTransport.test.js",
+      "before_sha256": "db05e2e3e6c3050a202722054117dc90d337ca3fd8f1a58941ca36da109e65b7",
+      "after_sha256": "ec301dd7db63ffeb86c21866fa450fafc0034b07dead89976743acc9b8dcb0cb"
+    }
+  ],
+  "created_this_stage": [
+    {
+      "path": "backend/app/services/leny_rag_routing.py",
+      "sha256": "b562ab1f04d0dd199e4937ca0c25f03843bebdf4b7ec708cdcd9671f198fdc18"
+    },
+    {
+      "path": "backend/app/services/leny_rag_followup.py",
+      "sha256": "a427d2a4dcd784b76196fb1ae59d5badfef67bffd24d2df8966efa30690cee97"
+    },
+    {
+      "path": "backend/app/services/leny_rag_diagnostics.py",
+      "sha256": "27dbb4abded817f759b8bf39f081978b8a2b00ebdcc05535e00eea01e690b357"
+    },
+    {
+      "path": "backend/app/services/leny_rag_evaluation.py",
+      "sha256": "362571be57fe57a4b2c490c18a3e97d7187673603fd1ca382d28b92250806f1d"
+    },
+    {
+      "path": "backend/scripts/evaluate_leny_rag.py",
+      "sha256": "d1fe2f6ca6a53d393894b3323f3dff2d74b5acb036d262e618c423fe8c2cb027"
+    },
+    {
+      "path": "backend/scripts/evaluate_leny_rag.ps1",
+      "sha256": "da5a9470a91c7d15587c6dc147bc5a066427608648fd517f6ce3aeddb786138c"
+    },
+    {
+      "path": "backend/scripts/run_leny_rag_quality.py",
+      "sha256": "9ad8f73467c7a52586677b57a30d0075aab7908795da351327640beb7c56d16f"
+    },
+    {
+      "path": "backend/scripts/run_leny_rag_quality.ps1",
+      "sha256": "ee3056e5f9a4c5bfcd3b6b9bf4801ce32d9c9aebabe000907a7a8c2134033226"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_quality.py",
+      "sha256": "6169104a3b668f9c861970961571982c2c45694fb684bc2a65ac4e74ed909656"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_quality_packing.py",
+      "sha256": "e0426f9f29905523d5a0a6c0970d9af6bc1f2e2871af2d14f1d36e0cd4b5ac5b"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_followup.py",
+      "sha256": "ecaadaeb7c16d6c77ed7e185738f0c39ddd2413cadd839797587b7b23a5a89bf"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_evaluation.py",
+      "sha256": "11ca97d49b4202a958495d77690fc0a32b4ea820c08bb871ae8f222ba8c413d1"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_quality_runner.py",
+      "sha256": "17580dac62ead03210b36c28935a960adb1e45c0b1422403fb6cfaf16730ede6"
+    },
+    {
+      "path": "backend/tests/integration/test_leny_rag_quality.py",
+      "sha256": "4243be5563aa929a804258578387c454e3b03f01dbbe86fc0d72cab74c72d3a4"
+    },
+    {
+      "path": "backend/tests/fixtures/leny_rag04_development.json",
+      "sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661"
+    },
+    {
+      "path": "backend/tests/fixtures/leny_rag04_holdout_manifest.json",
+      "sha256": "8b77c2525b0a0842f81919cfb498516c43f2c27174c4a12d719c6a8aa2155b1b"
+    },
+    {
+      "path": "documentacion/LENY_RAG04_EVALUACION.md",
+      "sha256": "5894fe6ae2a2b493d43a856a560c610473fbc877c85886a2f764498b144663f9"
+    }
+  ],
+  "other_modified_this_stage": [
+    "backend/.env.example",
+    "documentacion/MODULO_LENY.md",
+    "documentacion/REPORTE_IMPLEMENTACION_LENY.md"
+  ],
+  "dependencies_added": [],
+  "new_migrations": [],
+  "new_endpoints": [],
+  "business_env_changed": false,
+  "candidate_promoted": false,
+  "post_full_run_delta_artifact": "leny_rag04_post_full_run_delta.json",
+  "acceptance_status": "not_accepted",
+  "updated_at_utc": "2026-10-20T17:18:49.682818+00:00"
+}

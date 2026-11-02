@@ -148,8 +148,12 @@ python scripts/seed_admin2.py
 Ejecutar pruebas:
 
 ```powershell
-pytest
+.\venv\Scripts\python.exe -B .\scripts\run_base_tests.py
 ```
+
+Este lanzador bloquea conexiones y efectos externos y excluye integración.
+No ejecutar Pytest directamente con el `.env` empresarial cargado. La integración
+usa una instancia PostgreSQL independiente; ver [estrategia](../documentacion/ESTRATEGIA_PRUEBAS.md).
 
 ## Estructura oficial
 
@@ -205,6 +209,7 @@ El flujo correcto es:
 - `20260605_0011_audit_system_module.py`
 - `20260615_0012_phase1_report_indexes.py`
 - `20260620_0013_backup_module.py`
+- `20261018_0014_notification_reliability.py` (validada en testing y aplicada con autorización en `bellaarte_db:5432` el 18/10/2026)
 
 Estas migraciones ya crean el bloque boutique/comercial con nombres físicos en minúscula.
 
@@ -683,11 +688,60 @@ Además, la auditoría actual ya funciona con:
 
 ## Validación recomendada después de cambios grandes
 
-1. `python -m alembic -c alembic.ini upgrade head`
-2. `python scripts/seed_security.py`
-3. `pytest`
-4. smoke tests manuales de login, inventario, ventas, fletes, pedidos, pagos, pruebas y comprobantes internos
+1. Ejecutar `scripts/run_base_tests.py` con el intérprete del venv.
+2. Probar migraciones y operaciones persistidas exclusivamente en la instancia aislada autorizada.
+3. Ejecutar regresiones frontend y smoke tests con datos sintéticos.
+4. Revisar respaldo, autorización y ventana de despliegue antes de migrar datos empresariales.
+
+Los seeds y las migraciones sobre la base real no son comprobaciones rutinarias
+de calidad: requieren revisar sus efectos y la autorización aplicable.
+
+## Notificaciones: revisión del 18/10/2026
+
+Episodios únicos por destinatario/origen, reconocimiento con revisión, cierre
+automático de condiciones y escritorio opcional con reclamación atómica.
+Campana personal incluso para ADMIN; supervisión global con permiso independiente.
+Listado paginado y reintentos de correo coordinados sin restablecer credenciales.
+
+La migración 0014 y el cambio de contratos requieren desplegar API/SPA conjuntamente.
+La revisión 0014 se aplicó con autorización en `bellaarte_db:5432` el 18/10/2026,
+con respaldo previo verificado y API pausada/reanudada. Se conservaron las 16 filas
+de notificaciones existentes; las consultas de preferencias, resumen y listado
+pasaron en modo de solo lectura. Procedimiento, contratos, resultados y límites:
+[módulo de notificaciones](../documentacion/MODULO_NOTIFICACIONES.md).
+
+Desde la raíz del repositorio, reutilizar el clúster de testing ya aprovisionado:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\backend\scripts\provision_notification_test_postgres.ps1 -RunTests
+```
+
+Solo opera sobre la raíz propia en LOCALAPPDATA y el puerto 55432, con manifiesto
+y credenciales protegidas. El cambio de ExecutionPolicy afecta ese proceso, sin
+modificar la configuración global. El servidor iniciado por el comando se detiene
+al terminar. Sin switches, el script solo muestra la propuesta. No usar `-Provision`
+para un clúster existente ni borrar/recrear sus datos como parte de las pruebas.
 
 ## Problema conocido
 
 Puede aparecer el warning de `passlib` con `bcrypt`. La autenticación sigue funcionando, pero conviene revisar el pin de versiones más adelante.
+
+
+## Economía: consolidación del 18/10, desplegada el 19/10/2026
+
+Implementación y pruebas se prepararon en copia aislada. Con autorización expresa,
+se aplicaron 0015/0016 a bellaarte_db:5432 el 19/10/2026 y se promovieron API/SPA
+conjuntamente, con API pausada y respaldo privado verificado. Revisión activa 0016.
+Se conservaron los datos históricos y el corte legado abierto requiere cierre
+explícito de ADMIN antes de nuevas operaciones controladas.
+
+Ver [reglas de Economía](../documentacion/MODULO_INGRESOS_EGRESOS_CORTE_CAJA.md),
+[contratos](../documentacion/CONTRATOS_API_ECONOMIA.md),
+[procedimiento de despliegue](../documentacion/DESPLIEGUE_ECONOMIA.md) y
+[reporte con pruebas y límites](../documentacion/REPORTE_IMPLEMENTACION_ECONOMIA.md).
+
+Testing reutiliza exclusivamente PostgreSQL 55432/bab_vdos_testing con marcador
+de identidad y roles/directorio propios. El runner de integración ahora recorre
+también los casos económicos y exige head 0016. No ejecutar pytest directo con
+la configuración empresarial. Los casos de concurrencia conservan evidencia
+sintética QA_ECON en testing; no se borran registros financieros inmutables.

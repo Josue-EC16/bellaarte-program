@@ -1,0 +1,1034 @@
+{
+  "schema_version": "rag04-real-synthetic-observations-v1",
+  "data_classification": "synthetic",
+  "profile": "rag4_v1",
+  "corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "model_identity": {
+    "chat_digest": "d8b0f5e9760cd1682034f292d7ef72ec46f432149be0df7574bf2d6e92e38c04",
+    "embedding_digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d"
+  },
+  "configuration_sha256": "6b09c48deb82b8f418f447348e652abae76cf484b1a0a584130944f33c1acb31",
+  "snapshot_manifest_sha256": "5824e27cdc9ddc7b5903aef9961de20b293fc637374f2670f32e1a227ed3769c",
+  "comparison_contract_sha256": "6ed167daf5aaaf6dafff1fa4cb9d3f64b1a2e08af769c5eb034b4c6af3c24429",
+  "cases": [
+    {
+      "case_id": "rag04-natural-01",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 33405.99999999904,
+      "request_id": "8056ef21-8c92-47f8-b240-9dd1faa29c40",
+      "latency_scope": "generation_request",
+      "response_text": "Las fuentes disponibles contienen condiciones contradictorias; no puedo afirmar una \u00fanica regla.\n\nPara la fabricaci\u00f3n de los vestidos en BELLAARTE BOUTIQUE, existen procedimientos documentados que presentan contradicciones respecto a las condiciones de reserva y pago.\n\nEn el **Documento D1** se establece una secuencia operativa para la confecci\u00f3n: primero confirmar el dise\u00f1o aprobado, luego tomar medidas con consentimiento y finalmente trazar el patr\u00f3n antes del corte [S1].\n\nSin embargo, existen discrepancias en los requisitos de reserva y anticipo entre las fuentes documentales:\n*   El **Documento D2** indica una tarifa ficticia de evaluaci\u00f3n para arreglo simple de Bs 250.00, requiriendo un anticipo del 40% con el saldo antes de la entrega [S2].\n*   La **Circular ficticia B (D3)** establece una reserva con un anticipo del 50%, advirtiendo que ninguna circular indica prioridad y se\u00f1alando la necesidad de aclarar la contradicci\u00f3n respecto a D4 [S3].\n*   La **Circular ficticia A (D4)** establece una reserva con un anticipo del 30% [S4].\n\nNo se puede determinar cu\u00e1l es el \u00fanico requisito v\u00e1lido de porcentaje de anticipo sin resolver la contradicci\u00f3n entre los documentos D2, D3 y D4.",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "business_context",
+        "verdict": "contradictory",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "probe_count": 2,
+          "probe_prompt_tokens": 1074,
+          "selected": 4,
+          "evidence_bytes": 491,
+          "prompt_bytes": 2215,
+          "citations": 4,
+          "prompt_eval_count": 589,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 259
+        },
+        "durations_seconds": {
+          "embedding_and_release": 3.610000000000582,
+          "search": 0.0470000000022992,
+          "context_probe": 11.65599999999904,
+          "context": 11.65599999999904,
+          "review": 7.046999999998661,
+          "first_content": 29.45300000000134,
+          "generation": 10.718000000000757,
+          "load": 5.4434114,
+          "prompt_eval": 0.371119,
+          "eval": 4.883022,
+          "provider_total": 10.7036581,
+          "total": 33.375
+        }
+      },
+      "ram_available_before_bytes": 2645164032,
+      "ram_available_after_bytes": 2287173632,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "proc-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "review_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "review_decision": {
+        "verdict": "contradictory",
+        "relevant_sources": [
+          "S5",
+          "S6",
+          "S8",
+          "S9"
+        ]
+      },
+      "selected_fragment_ids": [
+        "proc-1",
+        "price-1",
+        "conflict-2",
+        "conflict-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-1",
+        "price-1",
+        "conflict-2",
+        "conflict-1"
+      ],
+      "sent_evidence_basis": "provider_completion_received",
+      "response_origin": "model_or_policy",
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [
+        "proc-1",
+        "price-1",
+        "conflict-2",
+        "conflict-1"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-multi_conflict-06",
+      "status": "completed",
+      "route": "no_evidence",
+      "latency_ms": 21469.00000000096,
+      "request_id": "35854b1a-97e8-4549-b5e2-8531a58a7fb7",
+      "latency_scope": "generation_request",
+      "response_text": "No encontr\u00e9 informaci\u00f3n documental disponible para tu consulta. Puedes precisar la pregunta o solicitar al administrador que revise la documentaci\u00f3n publicada.",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "rag_evidence_insufficient",
+        "verdict": "none",
+        "outcome": "no_evidence",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "probe_count": 2,
+          "probe_prompt_tokens": 1081,
+          "selected": 10,
+          "evidence_bytes": 1342
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.14100000000326,
+          "search": 0.01599999999962165,
+          "context_probe": 11.265999999999622,
+          "context": 11.28099999999904,
+          "review": 5.890999999999622,
+          "total": 21.4529999999977
+        }
+      },
+      "ram_available_before_bytes": 2627883008,
+      "ram_available_after_bytes": 1894584320,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-2",
+        "proc-4",
+        "stock-1",
+        "conflict-2",
+        "proc-1",
+        "proc-3",
+        "work-1",
+        "price-1",
+        "conflict-1",
+        "sec-1"
+      ],
+      "review_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "stock-1",
+        "conflict-2",
+        "work-1",
+        "price-1",
+        "conflict-1",
+        "sec-1"
+      ],
+      "review_decision": {
+        "verdict": "none",
+        "relevant_sources": []
+      },
+      "sent_fragment_ids": [],
+      "response_origin": "model_or_policy",
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [],
+      "review": null,
+      "abstained": true,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-formats-07",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 31375.0,
+      "request_id": "a65ec992-3d3f-4b6e-a55e-d29f8ac69940",
+      "latency_scope": "generation_request",
+      "response_text": "Las fuentes disponibles contienen condiciones contradictorias; no puedo afirmar una \u00fanica regla.\n\nLa evidencia presenta una contradicci\u00f3n respecto al porcentaje de anticipo requerido para la reserva, sin poder establecer una cifra \u00fanica v\u00e1lida:\n\n*   La Circular ficticia B establece que la reserva con anticipo debe ser del **50%**, y se\u00f1ala expl\u00edcitamente que ninguna circular indica prioridad ni aclara esta contradicci\u00f3n [S1].\n*   Por otro lado, la Tarifa ficticia para evaluaci\u00f3n especifica un anticipo del **40%** para el arreglo simple, advirtiendo que no describe tarifas reales [S2].\n*   El Documento ficticio de evaluaci\u00f3n detalla pasos operativos (confirmar dise\u00f1o, tomar medidas, trazar patr\u00f3n) pero no menciona porcentajes de anticipo ni contradice los datos anteriores [S3].\n\nNo existe una cifra \u00fanica respaldada por la evidencia; se observan dos valores distintos (**50%** y **40%**) en documentos etiquetados como ficticios o de evaluaci\u00f3n, sin que ning\u00fan documento resuelva la discrepancia.",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "operational_business_context",
+        "verdict": "contradictory",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "probe_count": 2,
+          "probe_prompt_tokens": 1079,
+          "selected": 3,
+          "evidence_bytes": 397,
+          "prompt_bytes": 1986,
+          "citations": 3,
+          "prompt_eval_count": 521,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 204
+        },
+        "durations_seconds": {
+          "embedding_and_release": 3.6559999999990396,
+          "search": 0.01600000000325963,
+          "context_probe": 11.546999999998661,
+          "context": 11.546999999998661,
+          "review": 6.718000000000757,
+          "first_content": 28.48400000000038,
+          "generation": 9.203000000001339,
+          "load": 4.9873778,
+          "prompt_eval": 0.372057,
+          "eval": 3.820395,
+          "provider_total": 9.1832551,
+          "total": 31.35900000000038
+        }
+      },
+      "ram_available_before_bytes": 1898594304,
+      "ram_available_after_bytes": 2002100224,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "conflict-2",
+        "price-1",
+        "proc-2",
+        "proc-3",
+        "proc-1",
+        "stock-1",
+        "conflict-1",
+        "proc-4",
+        "work-1",
+        "sec-1"
+      ],
+      "review_fragment_ids": [
+        "conflict-2",
+        "price-1",
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "stock-1",
+        "conflict-1",
+        "work-1",
+        "sec-1"
+      ],
+      "review_decision": {
+        "verdict": "contradictory",
+        "relevant_sources": [
+          "S1",
+          "S2",
+          "S5"
+        ]
+      },
+      "selected_fragment_ids": [
+        "conflict-2",
+        "price-1",
+        "proc-1"
+      ],
+      "sent_fragment_ids": [
+        "conflict-2",
+        "price-1",
+        "proc-1"
+      ],
+      "sent_evidence_basis": "provider_completion_received",
+      "response_origin": "model_or_policy",
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [
+        "conflict-2",
+        "price-1",
+        "proc-1"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-acl-01",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 32360.000000000582,
+      "request_id": "1420a284-6952-4e69-ac82-965817d8fca6",
+      "latency_scope": "generation_request",
+      "response_text": "Las fuentes disponibles contienen condiciones contradictorias; no puedo afirmar una \u00fanica regla.\n\nNo se puede determinar una tarifa real ni confirmar el pago requerido debido a contradicciones en las fuentes presentadas:\n\n*   El documento D1 [S1] establece una \"Tarifa ficticia para evaluaci\u00f3n\" de Bs 250.00 con un anticipo del 40%, aclarando expl\u00edcitamente que no describe tarifas reales.\n*   El documento D2 [S2] presenta una \"Circular ficticia B, vigente\" que exige reserva con un anticipo del 50% y afirma que ninguna circular indica prioridad, sin especificar el monto de la tarifa.\n*   El documento D3 [S3] contiene instrucciones sobre costuras, limpieza y entrega posterior a la aprobaci\u00f3n final, pero no menciona tarifas ni porcentajes de anticipo.\n\nExiste una contradicci\u00f3n entre los porcentajes de anticipo (40% en D1 vs 50% en D2) y la naturaleza ficticia de las tarifas mencionadas en D1 [S1]. No hay respaldo para acciones de pago o confirmaci\u00f3n de precios reales.",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "business_context",
+        "verdict": "contradictory",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 8,
+          "probe_count": 2,
+          "probe_prompt_tokens": 911,
+          "selected": 3,
+          "evidence_bytes": 401,
+          "prompt_bytes": 1949,
+          "citations": 3,
+          "prompt_eval_count": 510,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 219
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.359000000000378,
+          "search": 0.01599999999962165,
+          "context_probe": 11.609000000000378,
+          "context": 11.609000000000378,
+          "review": 6.562000000001717,
+          "first_content": 29.5,
+          "generation": 9.59400000000096,
+          "load": 5.1512227,
+          "prompt_eval": 0.318018,
+          "eval": 4.100837999,
+          "provider_total": 9.5748719,
+          "total": 32.36000000000058
+        }
+      },
+      "ram_available_before_bytes": 2575564800,
+      "ram_available_after_bytes": 2056114176,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "proc-2",
+        "proc-4",
+        "conflict-1",
+        "proc-1",
+        "proc-3",
+        "sec-1"
+      ],
+      "review_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "conflict-1",
+        "sec-1"
+      ],
+      "review_decision": {
+        "verdict": "contradictory",
+        "relevant_sources": [
+          "S1",
+          "S2",
+          "S4"
+        ]
+      },
+      "selected_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "proc-4"
+      ],
+      "sent_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "proc-4"
+      ],
+      "sent_evidence_basis": "provider_completion_received",
+      "response_origin": "model_or_policy",
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "proc-4"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-acl-03",
+      "status": "completed",
+      "route": "no_evidence",
+      "latency_ms": 10265.999999999622,
+      "request_id": "e1352ef1-99fc-4121-b117-586d32a7dbf5",
+      "latency_scope": "generation_request",
+      "response_text": "No encontr\u00e9 informaci\u00f3n documental disponible para tu consulta. Puedes precisar la pregunta o solicitar al administrador que revise la documentaci\u00f3n publicada.",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "rag_evidence_insufficient",
+        "verdict": "none",
+        "outcome": "no_evidence",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 6,
+          "selected": 6,
+          "evidence_bytes": 849
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.110000000000582,
+          "search": 0.0,
+          "context": 0.014999999999417923,
+          "review": 6.01600000000326,
+          "total": 10.265999999999622
+        }
+      },
+      "ram_available_before_bytes": 2675781632,
+      "ram_available_after_bytes": 2054275072,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-4",
+        "stock-1",
+        "proc-2",
+        "proc-1",
+        "proc-3",
+        "sec-1"
+      ],
+      "review_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "stock-1",
+        "sec-1"
+      ],
+      "review_decision": {
+        "verdict": "none",
+        "relevant_sources": []
+      },
+      "sent_fragment_ids": [],
+      "response_origin": "model_or_policy",
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [],
+      "review": null,
+      "abstained": true,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-acl-07",
+      "status": "failed",
+      "route": "rag",
+      "latency_ms": 21936.99999999808,
+      "request_id": "6b9c8f15-f290-43e2-8f68-e3dd98a8e3a0",
+      "latency_scope": "generation_request",
+      "response_text": "",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "leny_rag_review_invalid",
+        "verdict": "pending",
+        "outcome": "failed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 8,
+          "probe_count": 2,
+          "probe_prompt_tokens": 916,
+          "selected": 8,
+          "evidence_bytes": 1051
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.437999999998283,
+          "search": 0.014999999999417923,
+          "context_probe": 11.204000000001543,
+          "context": 11.204000000001543,
+          "review": 6.15599999999904,
+          "total": 21.920999999998457
+        }
+      },
+      "ram_available_before_bytes": 2192756736,
+      "ram_available_after_bytes": 2127904768,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "price-1",
+        "proc-3",
+        "proc-4",
+        "proc-2",
+        "proc-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "review_fragment_ids": [
+        "price-1",
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "review_decision": {
+        "verdict": "contradictory",
+        "relevant_sources": []
+      },
+      "sent_fragment_ids": [],
+      "response_origin": "model_or_policy",
+      "observed_turn": 0,
+      "target_turn": 1,
+      "target_executed": false,
+      "failure_stage": "prerequisite",
+      "citation_fragment_ids": [],
+      "review": null,
+      "abstained": false,
+      "error_code": "LENY_RAG_REVIEW_INVALID"
+    },
+    {
+      "case_id": "rag04-acl-08",
+      "status": "completed",
+      "route": "no_evidence",
+      "latency_ms": 9827.9999999977,
+      "request_id": "f39711f2-b374-4afa-959a-af38432a4f4b",
+      "latency_scope": "generation_request",
+      "response_text": "No encontr\u00e9 informaci\u00f3n documental disponible para tu consulta. Puedes precisar la pregunta o solicitar al administrador que revise la documentaci\u00f3n publicada.",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "rag_evidence_insufficient",
+        "verdict": "none",
+        "outcome": "no_evidence",
+        "counts": {
+          "topic_questions": 1,
+          "candidates": 3,
+          "selected": 3,
+          "evidence_bytes": 348
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.171999999998661,
+          "search": 0.01599999999962165,
+          "context": 0.0,
+          "review": 5.5,
+          "total": 9.81199999999808
+        }
+      },
+      "ram_available_before_bytes": 2495082496,
+      "ram_available_after_bytes": 2292469760,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "conflict-1"
+      ],
+      "review_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "conflict-1"
+      ],
+      "review_decision": {
+        "verdict": "none",
+        "relevant_sources": []
+      },
+      "sent_fragment_ids": [],
+      "response_origin": "model_or_policy",
+      "observed_turn": 1,
+      "target_turn": 1,
+      "target_executed": true,
+      "citation_fragment_ids": [],
+      "review": null,
+      "abstained": true,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-acl-09",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 25686.99999999808,
+      "request_id": "a0d2fe2a-bc3f-425b-b60c-3c7781e39833",
+      "latency_scope": "generation_request",
+      "response_text": "Las fuentes disponibles contienen condiciones contradictorias; no puedo afirmar una \u00fanica regla.\n\nNo se puede determinar una tarifa \u00fanica ni un requisito de anticipo uniforme debido a contradicciones documentales.\n\n*   La evidencia [S1] en el documento D1 establece una \"Tarifa ficticia para evaluaci\u00f3n\" de Bs 250.00 con un requisito de \"anticipo 40%\", aclarando expl\u00edcitamente que no describe tarifas reales.\n*   La evidencia [S2] en el documento D2 (Circular ficticia B) indica un requisito de \"reserva con anticipo del 50%\" y afirma que ninguna circular indica prioridad.\n*   La evidencia [S3] en el documento D3 (Circular ficticia A) establece un requisito de \"reserva con anticipo del 30%\" y tambi\u00e9n afirma que ninguna circular indica prioridad.\n\nNo existe una afirmaci\u00f3n \u00fanica que demuestre acciones realizadas ni datos operativos actuales consistentes, ya que los documentos presentan valores de anticipo contradictorios (40%, 50% y 30%) y la primera fuente se identifica como ficticia para evaluaci\u00f3n.",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "operational_business_context",
+        "verdict": "contradictory",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "probe_count": 2,
+          "probe_prompt_tokens": 1069,
+          "selected": 3,
+          "evidence_bytes": 348,
+          "prompt_bytes": 1881,
+          "citations": 3,
+          "prompt_eval_count": 491,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 218
+        },
+        "durations_seconds": {
+          "embedding_and_release": 3.4839999999967404,
+          "search": 0.01600000000325963,
+          "context_probe": 9.437999999998283,
+          "context": 9.437999999998283,
+          "review": 4.514999999999418,
+          "first_content": 22.79699999999866,
+          "generation": 8.03099999999904,
+          "load": 3.635159,
+          "prompt_eval": 0.277155,
+          "eval": 4.092202,
+          "provider_total": 8.0056118,
+          "total": 25.67199999999866
+        }
+      },
+      "ram_available_before_bytes": 2298228736,
+      "ram_available_after_bytes": 3488522240,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "proc-2",
+        "conflict-1",
+        "proc-4",
+        "stock-1",
+        "proc-1",
+        "proc-3",
+        "work-1",
+        "sec-1"
+      ],
+      "review_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "conflict-1",
+        "stock-1",
+        "work-1",
+        "sec-1"
+      ],
+      "review_decision": {
+        "verdict": "contradictory",
+        "relevant_sources": [
+          "S1",
+          "S2",
+          "S4"
+        ]
+      },
+      "selected_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "conflict-1"
+      ],
+      "sent_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "conflict-1"
+      ],
+      "sent_evidence_basis": "provider_completion_received",
+      "response_origin": "model_or_policy",
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "conflict-1"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-acl-10",
+      "status": "failed",
+      "route": "rag",
+      "latency_ms": 19078.00000000134,
+      "request_id": "18cfcacf-420c-415b-8f37-1c3415cb8dc1",
+      "latency_scope": "generation_request",
+      "response_text": "",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "leny_rag_review_invalid",
+        "verdict": "pending",
+        "outcome": "failed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 7,
+          "probe_count": 2,
+          "probe_prompt_tokens": 822,
+          "selected": 7,
+          "evidence_bytes": 994
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.547000000002299,
+          "search": 0.01599999999962165,
+          "context_probe": 9.546999999998661,
+          "context": 9.546999999998661,
+          "review": 4.843000000000757,
+          "total": 19.07800000000134
+        }
+      },
+      "ram_available_before_bytes": 4116922368,
+      "ram_available_after_bytes": 3291955200,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-4",
+        "stock-1",
+        "proc-2",
+        "work-1",
+        "proc-1",
+        "proc-3",
+        "sec-1"
+      ],
+      "review_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "stock-1",
+        "work-1",
+        "sec-1"
+      ],
+      "review_decision": {
+        "verdict": "contradictory",
+        "relevant_sources": []
+      },
+      "sent_fragment_ids": [],
+      "response_origin": "model_or_policy",
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [],
+      "review": null,
+      "abstained": false,
+      "error_code": "LENY_RAG_REVIEW_INVALID"
+    },
+    {
+      "case_id": "rag04-no_evidence-01",
+      "status": "completed",
+      "route": "no_evidence",
+      "latency_ms": 19860.000000000582,
+      "request_id": "296b9bfe-8c88-47e1-8278-2c07790b9c5f",
+      "latency_scope": "generation_request",
+      "response_text": "No encontr\u00e9 informaci\u00f3n documental disponible para tu consulta. Puedes precisar la pregunta o solicitar al administrador que revise la documentaci\u00f3n publicada.",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "rag_evidence_insufficient",
+        "verdict": "none",
+        "outcome": "no_evidence",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "probe_count": 2,
+          "probe_prompt_tokens": 1079,
+          "selected": 10,
+          "evidence_bytes": 1342
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.125,
+          "search": 0.0,
+          "context_probe": 10.28099999999904,
+          "context": 10.28099999999904,
+          "review": 5.313000000001921,
+          "total": 19.860000000000582
+        }
+      },
+      "ram_available_before_bytes": 3300188160,
+      "ram_available_after_bytes": 3226329088,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "proc-1",
+        "stock-1",
+        "work-1",
+        "price-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "review_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "stock-1",
+        "work-1",
+        "price-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "review_decision": {
+        "verdict": "none",
+        "relevant_sources": []
+      },
+      "sent_fragment_ids": [],
+      "response_origin": "model_or_policy",
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [],
+      "review": null,
+      "abstained": true,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-no_evidence-02",
+      "status": "completed",
+      "route": "no_evidence",
+      "latency_ms": 20015.99999999962,
+      "request_id": "3eaf08f7-0ad6-4ea7-9e17-ba257f268cc4",
+      "latency_scope": "generation_request",
+      "response_text": "No encontr\u00e9 informaci\u00f3n documental disponible para tu consulta. Puedes precisar la pregunta o solicitar al administrador que revise la documentaci\u00f3n publicada.",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "rag_evidence_insufficient",
+        "verdict": "none",
+        "outcome": "no_evidence",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "probe_count": 2,
+          "probe_prompt_tokens": 1081,
+          "selected": 10,
+          "evidence_bytes": 1342
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.15599999999904,
+          "search": 0.01600000000325963,
+          "context_probe": 10.389999999999418,
+          "context": 10.40599999999904,
+          "review": 5.296999999998661,
+          "total": 20.0
+        }
+      },
+      "ram_available_before_bytes": 3286323200,
+      "ram_available_after_bytes": 3250921472,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-3",
+        "proc-2",
+        "proc-4",
+        "proc-1",
+        "work-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "review_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "review_decision": {
+        "verdict": "none",
+        "relevant_sources": []
+      },
+      "sent_fragment_ids": [],
+      "response_origin": "model_or_policy",
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [],
+      "review": null,
+      "abstained": true,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-no_evidence-03",
+      "status": "completed",
+      "route": "no_evidence",
+      "latency_ms": 18312.999999998283,
+      "request_id": "fd05c782-ec8e-47ee-bf64-08942d76c74c",
+      "latency_scope": "generation_request",
+      "response_text": "No encontr\u00e9 informaci\u00f3n documental disponible para tu consulta. Puedes precisar la pregunta o solicitar al administrador que revise la documentaci\u00f3n publicada.",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "rag_evidence_insufficient",
+        "verdict": "none",
+        "outcome": "no_evidence",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "probe_count": 2,
+          "probe_prompt_tokens": 1081,
+          "selected": 10,
+          "evidence_bytes": 1342
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.235000000000582,
+          "search": 0.014999999999417923,
+          "context_probe": 9.75,
+          "context": 9.75,
+          "review": 4.188000000001921,
+          "total": 18.29699999999866
+        }
+      },
+      "ram_available_before_bytes": 3507613696,
+      "ram_available_after_bytes": 3478245376,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-3",
+        "proc-4",
+        "price-1",
+        "proc-2",
+        "work-1",
+        "proc-1",
+        "conflict-2",
+        "stock-1",
+        "conflict-1",
+        "sec-1"
+      ],
+      "review_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "price-1",
+        "work-1",
+        "conflict-2",
+        "stock-1",
+        "conflict-1",
+        "sec-1"
+      ],
+      "review_decision": {
+        "verdict": "none",
+        "relevant_sources": []
+      },
+      "sent_fragment_ids": [],
+      "response_origin": "model_or_policy",
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [],
+      "review": null,
+      "abstained": true,
+      "error_code": null
+    }
+  ],
+  "human_review_complete": false,
+  "business_e2e_executed": false,
+  "holdout_executed": false,
+  "extraction_formats_evaluated": false,
+  "settings": {
+    "leny_enabled": true,
+    "leny_documents_enabled": true,
+    "leny_rag_enabled": true,
+    "leny_rag_chat_enabled": true,
+    "leny_keep_alive": "0",
+    "leny_num_ctx": 4096,
+    "leny_num_predict": 768,
+    "leny_temperature": 0.0,
+    "leny_rate_limit": 5,
+    "leny_rate_window_seconds": 60,
+    "leny_rag_min_ram_bytes": 2147483648,
+    "leny_rag_min_resident_ram_bytes": 1073741824,
+    "leny_rag_cpu_threads": 4,
+    "leny_rag_batch_size": 2,
+    "leny_rag_top_k": 5,
+    "leny_rag_candidates": 20,
+    "leny_rag_profile": "rag4_v1",
+    "leny_rag_evidence_mode": "adaptive",
+    "leny_rag_max_context_bytes": 2048,
+    "leny_rag_ranking": "hybrid",
+    "leny_rag_adaptive_token_probe": true,
+    "leny_rag_neighbor_chunks": false
+  },
+  "runner_mode": "quality",
+  "original_representation": "generated synthetic originals with fixture source types; extraction not evaluated by this runner",
+  "created_at_utc": "2026-10-21T00:01:34.249895+00:00",
+  "source_files_sha256": {
+    "backend/app/core/config.py": "255d9f75fc82305d7d226840f2b42a5069168e8d285f728082a2b4bae28736c1",
+    "backend/app/services/leny_coordination.py": "b171770ebd63b568aa58b5c2279b2bc5bca8bc24abe771cdcc9a9127139958b5",
+    "backend/app/services/leny_document_backup.py": "d9e1c6017f88bcbb56332f43425308b2f5ed48dded95e89a59dedf0e21dba841",
+    "backend/app/services/leny_document_maintenance.py": "5641fdc19b799973ed1a1cf1ddbfb82fcb14fb6e67c1243fd3a0ee635aecec82",
+    "backend/app/services/leny_document_service.py": "4d4a92270425f73f7f2bed4c576f980584e86f363d1c0370a94188fe69a5b248",
+    "backend/app/services/leny_document_storage.py": "223508eb4132df2eaad9278ea03091a745051a051c2f5b38d0c95af92b96fe58",
+    "backend/app/services/leny_document_validation.py": "f308f43588151c2a7486fb084c812edc1243625954dcc3775fac1b7f790f0397",
+    "backend/app/services/leny_guard.py": "646aedcf45d6b84c50a170ce1ea19c0b8af517e1bfd6bdab0dbaccfb2db58749",
+    "backend/app/services/leny_inference_state.py": "851fcef019370000a372c9841120412cd49ab7489c2207924bdb2530336f4fb2",
+    "backend/app/services/leny_ollama.py": "d03765e1b1ec83d33333122100807366207fbeb334dba8c73adffadbf65a2d85",
+    "backend/app/services/leny_policy.py": "c2fb1eda757aa9d35c1902c026cd0769b759dd65ffa0a844043471f44b6a0fbd",
+    "backend/app/services/leny_rag_chunking.py": "02860cd76bc90608cd8dd86a9157e837995a527cab8169b4ad429c107f4e8ad5",
+    "backend/app/services/leny_rag_common.py": "bd7489fa48291c2de77cf507a2755514317eec6ffeed1436cf3cf928795d66cc",
+    "backend/app/services/leny_rag_diagnostics.py": "27dbb4abded817f759b8bf39f081978b8a2b00ebdcc05535e00eea01e690b357",
+    "backend/app/services/leny_rag_embeddings.py": "00f9b633c68afc0ecbde6df74fa8aa6c6b941c3068c78b26456ed4e0b7b38db1",
+    "backend/app/services/leny_rag_evaluation.py": "362571be57fe57a4b2c490c18a3e97d7187673603fd1ca382d28b92250806f1d",
+    "backend/app/services/leny_rag_extraction.py": "aa50c998a24e83267323c2ad750d4060a7260a7a66620b67dfa5ee4113f2fa54",
+    "backend/app/services/leny_rag_followup.py": "a427d2a4dcd784b76196fb1ae59d5badfef67bffd24d2df8966efa30690cee97",
+    "backend/app/services/leny_rag_publication.py": "13137d3aca1ab3ea8e77810bcc5b21b734bb2aacd652a80efa188473842e5717",
+    "backend/app/services/leny_rag_retrieval.py": "a60bac9ffcb3a8ee4ea42de5cdc595e2a2958e7db0150ba5d4834352611d47ff",
+    "backend/app/services/leny_rag_routing.py": "4b548bfdbe7db0fd0f89d2e1e6e0cee147710f819bf1c02fb5a60c1fdc33de67",
+    "backend/app/services/leny_rag_service.py": "01c320001d8fdb679c2636c3bb404d11b6a812fa9a1e0f4244d874a52f9f2dd1",
+    "backend/app/services/leny_rag_sources.py": "2895fff0d04a6efbeab1e7222a6e683a9dc18e67bab7e198299e3de91534d19c",
+    "backend/app/services/leny_rag_worker.py": "d0588f175ea57ced1874b9cb69aa437808a06f8643e694a78095f1042e17ab80",
+    "backend/app/services/leny_rate_limit.py": "7c4a0c01c3219f7243d27e27b404e095974b76c0c8b0ee8a4af5d4521d96f4ef",
+    "backend/app/services/leny_service.py": "96d6410a2b3271585a97c306b8b078469c5235f8a34ce18d58d78b7dbb98be96",
+    "backend/app/services/leny_store.py": "d6053c9ee5d36bcad0c608ff793df8b35011de84509dae5cdc0cdf5c48f97201",
+    "backend/scripts/run_leny_rag_quality.py": "ec6ab29bc561504f29cbe421950c3300e508f283ce005a400835e238939f4e26"
+  },
+  "source_freeze_verified": true,
+  "model_identity_verified": true,
+  "cleanup_confirmed": true
+}

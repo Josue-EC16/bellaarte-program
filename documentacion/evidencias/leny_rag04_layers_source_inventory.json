@@ -1,0 +1,100 @@
+{
+  "scope": "source_hash_comparison_to_previous_frozen_repair",
+  "files": [
+    {
+      "path": "backend/app/services/leny_rag_diagnostics.py",
+      "before_sha256": "0de0e8cdd2cd9b7f44a8a5ee5c95807f39261ac440720bffe5d3cb06023d0f85",
+      "after_sha256": "86c943f4004181fae67640a4205e1a7b4adf257a53491b35d3d612508052122c",
+      "change": "modified"
+    },
+    {
+      "path": "backend/app/services/leny_rag_evaluation.py",
+      "before_sha256": "362571be57fe57a4b2c490c18a3e97d7187673603fd1ca382d28b92250806f1d",
+      "after_sha256": "867cd31c19ead08dd20cb427247293dd895d4997959568b86cfe43f7d2f66326",
+      "change": "modified"
+    },
+    {
+      "path": "backend/app/services/leny_rag_grounding.py",
+      "before_sha256": "6d53a4368e6db94817eb636dbbaac3ab60744662897680912a4c56b42245ac14",
+      "after_sha256": "17ebc582ac8cbc005bc3da4f2ff9bb9245d75c06fb7e192c65ea0bd5acdfe55b",
+      "change": "modified"
+    },
+    {
+      "path": "backend/app/services/leny_rag_routing.py",
+      "before_sha256": "1c62eb8bf677dc187e9a007edcaf06de54f912e159e0f2579a74058ed832752e",
+      "after_sha256": "17080bb21c03aa07e047187b6538905623c189fc0b04d545031872e68b71018c",
+      "change": "modified"
+    },
+    {
+      "path": "backend/app/services/leny_rag_selection.py",
+      "before_sha256": null,
+      "after_sha256": "4cfe03665c797ffd861e53b658846b5934933fcb899ba715ccfb0d76db3d0006",
+      "change": "new"
+    },
+    {
+      "path": "backend/app/services/leny_service.py",
+      "before_sha256": "426e215bfc6eabfdaf28ba8bea648d37a05e92d8c4861a61628c6ca76663936b",
+      "after_sha256": "19d0413ef3ce0c3d3b9c76ffedf0e6c34ad3f5a4d92e9071f3e18ecf76657799",
+      "change": "modified"
+    },
+    {
+      "path": "backend/scripts/leny_rag_layered_evaluation.py",
+      "before_sha256": null,
+      "after_sha256": "a3958a5dd0bb323a25a437a8138c81c4459940ba865192ba4102bfb34e0b0079",
+      "change": "new"
+    },
+    {
+      "path": "backend/scripts/run_leny_rag_quality.ps1",
+      "before_sha256": "043516ab595d91f8c6931dfc8e602bddc19571b57b343253c95961f493a099e5",
+      "after_sha256": "6bba53e099aea42d1aaaec339f7b9e28fd5758756342ce3b07a380f3cd28ed58",
+      "change": "modified"
+    },
+    {
+      "path": "backend/scripts/run_leny_rag_quality.py",
+      "before_sha256": "c6be74588c5ce5e2bd9011d40c127d52d7e19820c8d88c3d9c63ed95930a3a8a",
+      "after_sha256": "b670a0841cad9c76affc8edc10b87399396bf73536e56d57134350846a261dbd",
+      "change": "modified"
+    },
+    {
+      "path": "backend/tests/integration/test_leny_rag_quality.py",
+      "before_sha256": "a2ae346ef03dbbb993b403fd8ba48c503a34dcff31f08341e7d789c1302a7f73",
+      "after_sha256": "90b4b45f92876ddf34b1b4888476ab7d0d971dc282442e48b0762b93342fd438",
+      "change": "modified"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_evaluation.py",
+      "before_sha256": "11ca97d49b4202a958495d77690fc0a32b4ea820c08bb871ae8f222ba8c413d1",
+      "after_sha256": "44cc84e1c877fb4e4488488b60b5a033614dcbaeba0f1468accadcbaa385132c",
+      "change": "modified"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_grounding.py",
+      "before_sha256": "29b804e7a4a303fe6e567ff4733bc84c70f75d74f89d86190b9f953887f995a9",
+      "after_sha256": "aab134fe5a13bde59a6a6454269ce53bd103f12d3d3ff03ec87838293c555e0d",
+      "change": "modified"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_quality.py",
+      "before_sha256": "4c568b321b72c3be0c43c807a6e846d8387903ed1c4273061acc8ddb92890c5f",
+      "after_sha256": "1ddea150efb7c750eb7f3a8068db29b69b412c4435a8ed0117b9e07b1e3231bf",
+      "change": "modified"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_quality_runner.py",
+      "before_sha256": "ed8b5972e05228e4421d38307b5f6554f0ea64493a870c1225a48ce0f77f4250",
+      "after_sha256": "b6c8ae46f56ed2b0d9480ab345c6c5d7537ba819e651128d37463b3be15ca60b",
+      "change": "modified"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_selection.py",
+      "before_sha256": null,
+      "after_sha256": "54f24b3d729b5ebefb8bfd5990d2cd9c7030fcb8fc75a7cce8e9fa43616f6f31",
+      "change": "new"
+    }
+  ],
+  "new_dependencies": [],
+  "new_migrations": [],
+  "new_endpoints": [],
+  "business_configuration_modified": false,
+  "candidate_activated": false
+}

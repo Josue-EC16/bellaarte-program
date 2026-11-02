@@ -1,0 +1,634 @@
+{
+  "scope": "synthetic_stage_authorization_identity_checks_not_semantic_or_global_security_certification",
+  "expected_publication_comparisons": 244,
+  "publication_mismatches": [],
+  "case_checks": [
+    {
+      "case_id": "rag04-natural-01",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 4,
+        "renderer": 4,
+        "generator": 0,
+        "citations": 4
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-natural-02",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 5,
+        "renderer": 5,
+        "generator": 0,
+        "citations": 5
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-natural-03",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 4,
+        "renderer": 4,
+        "generator": 0,
+        "citations": 4
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-natural-04",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 5,
+        "renderer": 5,
+        "generator": 0,
+        "citations": 5
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-natural-05",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 5,
+        "renderer": 5,
+        "generator": 0,
+        "citations": 5
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-natural-06",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 4,
+        "renderer": 4,
+        "generator": 0,
+        "citations": 4
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-natural-07",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 5,
+        "renderer": 5,
+        "generator": 0,
+        "citations": 5
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-natural-08",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 5,
+        "renderer": 5,
+        "generator": 0,
+        "citations": 5
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-natural-09",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 4,
+        "renderer": 4,
+        "generator": 0,
+        "citations": 4
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-natural-10",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 5,
+        "renderer": 5,
+        "generator": 0,
+        "citations": 5
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-natural-11",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 2,
+        "renderer": 2,
+        "generator": 0,
+        "citations": 2
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-natural-12",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 4,
+        "renderer": 4,
+        "generator": 0,
+        "citations": 4
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-natural-13",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 1,
+        "renderer": 1,
+        "generator": 0,
+        "citations": 1
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-natural-14",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 4,
+        "renderer": 4,
+        "generator": 0,
+        "citations": 4
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-literal-03",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 1,
+        "renderer": 1,
+        "generator": 0,
+        "citations": 1
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-literal-08",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 5,
+        "renderer": 5,
+        "generator": 0,
+        "citations": 5
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-synonyms-07",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": null,
+        "renderer": null,
+        "generator": null,
+        "citations": 0
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-synonyms-10",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 1,
+        "renderer": 1,
+        "generator": 0,
+        "citations": 1
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-synonyms-11",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 3,
+        "renderer": 3,
+        "generator": 0,
+        "citations": 3
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-followup-01",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 4,
+        "reviewer": 4,
+        "selected": 4,
+        "renderer": 4,
+        "generator": 0,
+        "citations": 1
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-followup-02",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 4,
+        "reviewer": 4,
+        "selected": 4,
+        "renderer": 4,
+        "generator": 0,
+        "citations": 1
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-followup-03",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 4,
+        "reviewer": 4,
+        "selected": 4,
+        "renderer": 4,
+        "generator": 0,
+        "citations": 4
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-followup-04",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 4,
+        "reviewer": 4,
+        "selected": 4,
+        "renderer": 4,
+        "generator": 0,
+        "citations": 4
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-followup-05",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 4,
+        "reviewer": 4,
+        "selected": 4,
+        "renderer": 4,
+        "generator": 0,
+        "citations": 4
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-followup-06",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 4,
+        "reviewer": 4,
+        "selected": 4,
+        "renderer": 4,
+        "generator": 0,
+        "citations": 3
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-followup-07",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": null,
+        "reviewer": null,
+        "selected": null,
+        "renderer": null,
+        "generator": null,
+        "citations": 0
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-01",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 4,
+        "renderer": 4,
+        "generator": 0,
+        "citations": 4
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-02",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 10,
+        "selected": 2,
+        "renderer": 2,
+        "generator": 0,
+        "citations": 2
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-03",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 10,
+        "selected": 2,
+        "renderer": 2,
+        "generator": 0,
+        "citations": 2
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-04",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 4,
+        "renderer": 4,
+        "generator": 0,
+        "citations": 4
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-05",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 3,
+        "renderer": 3,
+        "generator": 0,
+        "citations": 3
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-06",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": null,
+        "renderer": null,
+        "generator": null,
+        "citations": 0
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-07",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": null,
+        "reviewer": null,
+        "selected": null,
+        "renderer": null,
+        "generator": null,
+        "citations": 0
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-formats-05",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 3,
+        "selected": null,
+        "renderer": null,
+        "generator": null,
+        "citations": 0
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-formats-06",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 1,
+        "renderer": 1,
+        "generator": 0,
+        "citations": 1
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-acl-01",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 8,
+        "reviewer": 6,
+        "selected": null,
+        "renderer": null,
+        "generator": null,
+        "citations": 0
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-acl-02",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 6,
+        "reviewer": 6,
+        "selected": null,
+        "renderer": null,
+        "generator": null,
+        "citations": 0
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-acl-03",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 6,
+        "reviewer": 6,
+        "selected": 1,
+        "renderer": 1,
+        "generator": 0,
+        "citations": 1
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-acl-04",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 8,
+        "reviewer": 6,
+        "selected": null,
+        "renderer": null,
+        "generator": null,
+        "citations": 0
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-acl-05",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 6,
+        "reviewer": 6,
+        "selected": 5,
+        "renderer": 5,
+        "generator": 0,
+        "citations": 5
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-acl-06",
+      "target_executed": false,
+      "known_stage_counts": {
+        "sql": null,
+        "reviewer": null,
+        "selected": null,
+        "renderer": null,
+        "generator": null,
+        "citations": null
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-acl-07",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": null,
+        "reviewer": null,
+        "selected": null,
+        "renderer": null,
+        "generator": null,
+        "citations": 0
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-acl-08",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 0,
+        "reviewer": null,
+        "selected": null,
+        "renderer": null,
+        "generator": null,
+        "citations": 0
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-acl-09",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": null,
+        "renderer": null,
+        "generator": null,
+        "citations": 0
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-acl-10",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 7,
+        "reviewer": 6,
+        "selected": 1,
+        "renderer": 1,
+        "generator": 0,
+        "citations": 1
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-no_evidence-01",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": 6,
+        "selected": 4,
+        "renderer": 4,
+        "generator": 0,
+        "citations": 4
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-no_evidence-02",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": null,
+        "selected": null,
+        "renderer": null,
+        "generator": null,
+        "citations": 0
+      },
+      "errors": []
+    },
+    {
+      "case_id": "rag04-no_evidence-03",
+      "target_executed": true,
+      "known_stage_counts": {
+        "sql": 10,
+        "reviewer": null,
+        "selected": null,
+        "renderer": null,
+        "generator": null,
+        "citations": 0
+      },
+      "errors": []
+    }
+  ],
+  "stage_errors": [],
+  "doc_target_executed": false,
+  "human_review_complete": false
+}

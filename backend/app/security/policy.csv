@@ -85,6 +85,8 @@ p, ADMIN, fletes:resolve_review, use
 p, ADMIN, fletes:retire, use
 p, ADMIN, fletes:update, use
 p, ADMIN, fletes:view, use
+p, ADMIN, leny:admin, use
+p, ADMIN, leny:chat, use
 p, ADMIN, notifications:list, use
 p, ADMIN, notifications:list_all, use
 p, ADMIN, notifications:mark_all_read, use
@@ -152,6 +154,7 @@ p, INV_TALLER, auth:change_password, use
 p, INV_TALLER, auth:logout, use
 p, INV_TALLER, auth:me, use
 p, INV_TALLER, dashboard:view, use
+p, INV_TALLER, leny:chat, use
 p, INV_TALLER, notifications:list, use
 p, INV_TALLER, notifications:mark_all_read, use
 p, INV_TALLER, notifications:mark_read, use
@@ -210,6 +213,7 @@ p, INV_BOUTIQUE, exchange_rates:list, use
 p, INV_BOUTIQUE, exchange_rates:view, use
 p, INV_BOUTIQUE, flete_reports:print, use
 p, INV_BOUTIQUE, flete_reports:view, use
+p, INV_BOUTIQUE, leny:chat, use
 p, INV_BOUTIQUE, notifications:list, use
 p, INV_BOUTIQUE, notifications:mark_all_read, use
 p, INV_BOUTIQUE, notifications:mark_read, use
@@ -265,6 +269,7 @@ p, CAJA, fletes:resolve_review, use
 p, CAJA, fletes:retire, use
 p, CAJA, fletes:update, use
 p, CAJA, fletes:view, use
+p, CAJA, leny:chat, use
 p, CAJA, notifications:list, use
 p, CAJA, notifications:mark_all_read, use
 p, CAJA, notifications:mark_read, use
@@ -293,6 +298,7 @@ p, MODISTA, clients:view, use
 p, MODISTA, clients_reports:print, use
 p, MODISTA, clients_reports:view, use
 p, MODISTA, dashboard:view, use
+p, MODISTA, leny:chat, use
 p, MODISTA, notifications:list, use
 p, MODISTA, notifications:mark_all_read, use
 p, MODISTA, notifications:mark_read, use

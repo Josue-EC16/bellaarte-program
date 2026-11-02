@@ -1,0 +1,9 @@
+{
+  "scope": "real parsers + PostgreSQL55432 + pg_dump/pg_restore + new private restore root",
+  "results": {
+    "four_formats_real_validation": true,
+    "bundle_originals_and_previews_verified": true,
+    "real_pg_restore_metadata_files_and_trash_match": true,
+    "corrupt_bundle_rejected": true
+  }
+}

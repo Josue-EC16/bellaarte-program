@@ -26,6 +26,9 @@
 **/*.sqlite*
 **/*.pgpass
 storage/backups/
+# Private library must remain outside the webroot; ignore legacy/custom paths too.
+backend/storage/leny/
+**/*.leny-bundle.zip
 
 # Python (entornos y cache)
 **/__pycache__/
@@ -44,6 +47,7 @@ storage/backups/
 
 # Node (por seguridad, evita subir node_modules en cualquier carpeta)
 **/node_modules/
+.pnpm-store/
 **/dist/
 **/.vite/
 **/coverage/

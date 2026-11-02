@@ -1,360 +1,109 @@
-# MODULO INGRESOS, EGRESOS Y CORTE DE CAJA
+# Economía: ingresos, egresos y cortes de caja
 
-## Resumen
+Referencia de implementación: 18/10/2026. Desplegado con autorización el 19/10/2026 en bellaarte_db:5432, revisión Alembic `20261018_0016`, con backend y frontend coordinados. Ver [contratos](CONTRATOS_API_ECONOMIA.md), [despliegue](DESPLIEGUE_ECONOMIA.md) y [resultados](REPORTE_IMPLEMENTACION_ECONOMIA.md).
 
-El módulo `Economía` centraliza la lectura financiera operativa de BellaArte Boutique sin romper la lógica de los módulos origen.
+## Alcance
 
-En esta v1:
+Se consolida Economía y sus consumidores actuales. No se añade una pantalla general nueva de ingresos ni contabilidad integral. El resultado operativo no representa utilidad: no incorpora imputación completa de costos ni obligaciones contables.
 
-- `VENTA_BOUTIQUE`, `PAGO_PEDIDO` y `SALIDA_FLETE` siguen siendo ingresos históricos aun si luego se anulan o cancelan
-- la salida real de dinero se registra exclusivamente con `egreso`
-- toda devolución al cliente se fuerza mediante el flujo económico obligatorio
-- `ADMIN` ve el panorama global
-- `CAJA` opera su período activo y su historial propio con restricciones de privacidad
-- todos los agregados oficiales se calculan en `BOB`
-- cuando aplica, también se conserva `MONEDA`, `MONTO_MONEDA_ORIGEN` y `TIPO_CAMBIO_USADO`
+## Definiciones y fórmulas
 
-## Objetivo funcional
+| Concepto | Fuente / cálculo | Interpretación |
+|---|---|---|
+| Ingreso comercial bruto | Venta Boutique, pago de pedido, servicio de flete | Cobro histórico, incluso después de anular el origen |
+| Devolución efectiva | Egreso DEVOLUCION menos correcciones vinculadas | Salida de dinero, sin borrar ingreso bruto |
+| Cobrado neto | Bruto menos devoluciones efectivas | Se conservan ambos componentes |
+| Fondo asignado | Anticipo inicial ADMIN → CAJA en BOB | Capital operativo; no venta, ingreso comercial ni deuda automática del empleado |
+| Resultado operativo del corte | Fondo + ingresos atribuidos − egresos netos atribuidos | Incluye medios electrónicos; no equivale a billetes entregables |
+| Efectivo físico | Movimientos en efectivo por moneda original | BOB y monedas extranjeras se cuentan separadamente |
+| Efectivo BOB libre | Físico BOB menos garantías reservadas | Único saldo que puede financiar egresos en efectivo del cajero |
+| Garantía | Custodia recibida, devolución y retención pendiente | Fuera del ingreso comercial; efectivo recibido queda reservado |
+| Devolución pendiente | Cobrado neto de origen/pedido cancelado | Obligación informativa; no inventa egreso ni retención |
 
-El módulo resuelve tres necesidades del negocio:
+Ejemplo: fondo Bs 500 + cobro QR Bs 1.000 − gasto efectivo Bs 100 = resultado operativo Bs 1.400, efectivo físico BOB 400. El cierre compara el conteo con 400. Una garantía en efectivo aumenta el físico y la reserva, sin aumentar el efectivo libre.
 
-1. Separar el hecho operativo del hecho económico.
-2. Registrar devoluciones parciales o totales sin distorsionar el histórico bruto de ingresos.
-3. Controlar períodos de caja por cajero mediante `corte_caja`.
+El estado comercial y `mi-estado-resultados` excluyen fondo. `mi-periodo` y cortes incluyen fondo. No deben llamarse utilidad contable.
 
-## Tablas involucradas
+## Estructura y persistencia
 
-### Núcleo económico
+Se conserva FastAPI → contratos Pydantic → servicios → SQLAlchemy/PostgreSQL.
 
-- `egreso`
-- `corte_caja`
+| Servicio | Responsabilidad |
+|---|---|
+| income_service / economy_query_service | Unión SQL de las tres fuentes, filtros, paginación, agregados y contexto autorizado |
+| financial_source_service | Bloqueos, devoluciones efectivas, crédito neto y deuda exigible |
+| refund_flow_service | Coordinadores separados de devolución, cancelación operativa y custodia |
+| expense_service | Egresos, correcciones y consultas históricas |
+| cash_cut_service | Apertura, cierre con conteo, snapshot e historial |
+| economic_ledger_service | Atribución, efectivo, reservas y movimientos sin commit propio |
+| economic_idempotency_service / economic_write_service | Intención única y límite transaccional HTTP |
+| economy_report_service | Agregados SQL y reportes por período/cajero |
 
-### Fuentes de ingreso derivadas
+Las fuentes nuevas tienen `corte_id` explícito. `egreso.metodo_pago` es obligatorio en nuevas altas; su nulabilidad preserva datos legados. Nuevas tablas: `movimiento_economico`, `constancia_devolucion`, `solicitud_economica`. Los movimientos atribuyen dinero/custodia; no se vuelven a sumar como ingresos comerciales globales.
 
-- `venta_boutique`
-- `pago_pedido`
-- `salida_flete`
+Triggers impiden UPDATE/DELETE de movimientos y constancias, reemplazar resultados idempotentes y modificar cierres controlados. Titular, fondo y apertura del corte controlado son inmutables. Estas protecciones no certifican inviolabilidad frente al propietario del esquema o superusuario.
 
-### Relacionadas
+## Flujos empresariales
 
-- `usuarios`
-- `cliente`
-- `moneda`
-- `comprobante_interno`
-- `auditoria_sistema`
+1. CAJA necesita corte propio, abierto y controlado para todos los cobros, incluidos electrónicos. ADMIN opera globalmente sin atribuirse un corte ajeno.
+2. Se bloquean corte y recursos antes de consultar disponibilidad o escribir. Fuente, ledger, comprobante, auditoría, notificación e idempotencia se confirman conjuntamente; un fallo revierte todo.
+3. Reembolso y cancelación son independientes. El reembolso no cambia estado, inventario ni comprobante original. La cancelación revierte la operación y su comprobante una sola vez; no devuelve dinero automáticamente.
+4. Se permiten reembolsos parciales sucesivos, incluso tras cancelar, hasta el máximo histórico menos devoluciones efectivas. No se implementa devolución parcial de unidades físicas.
+5. CAJA solo cancela/reembolsa fuentes propias de su corte activo. ADMIN puede operar sobre históricos y otros usuarios.
+6. Pago Bs 500 y devolución Bs 200 acreditan Bs 300; pedido Bs 1.000 queda con deuda Bs 700. Cobro bruto permanece Bs 500.
+7. Cancelar pedido conserva pagos y comprobantes, deja deuda exigible cero y expone cobrado neto como devolución pendiente. No crea egreso automático.
+8. Se bloquea reembolso de pedido entregado; no se reabre deuda por atajos.
+9. Cada reembolso emite constancia interna NO FISCAL inmutable, enlazada a egreso y comprobante original. Una corrección posterior no altera ese documento histórico.
 
-## Regla contable principal
+Listados, detalles, reportes e impresión de pedidos/pagos distinguen bruto, devuelto, neto, saldo exigible y obligación pendiente. Los snapshots de comprobantes originales conservan la situación de su emisión.
 
-Los ingresos válidos del sistema se consideran realizados cuando se registran en:
+## Garantías y devolución física
 
-- `venta_boutique`
-- `pago_pedido`
-- `salida_flete`
+La reserva declara garantía BOB comprometida. Su recepción monetaria es explícita con medio real, única por salida y por el importe configurado; no se presume cobrada al reservar.
 
-Si luego el origen se anula o cancela:
+Devolver el vestido conserva los roles operativos y no paga dinero. La devolución de garantía es otra acción, antes o después de la devolución física, con medio real y saldo verificado. Retención exige ADMIN y motivo: permanece identificada/reservada y pendiente de liquidación, sin ingreso comercial automático.
 
-- el ingreso bruto permanece visible en reportes económicos
-- no se descuenta automáticamente del histórico
-- la devolución real de dinero se refleja mediante uno o varios `egreso` de tipo `DEVOLUCION`
+Una devolución financiada externamente por ADMIN libera la obligación/reserva del corte abierto de origen sin retirar ficticiamente sus billetes. Si está cerrado, el snapshot no cambia.
 
-Esto permite cubrir correctamente:
+La numeración de salidas es histórica, positiva y monotónica. El máximo empresarial se controla con usos válidos; una salida anulada no consume artificialmente el cupo por su número histórico.
 
-- devoluciones totales
-- devoluciones parciales
-- devoluciones diferidas
-- anulaciones con trazabilidad administrativa
+## Egresos y correcciones
 
-## Estructura económica nueva
+Nuevos fondos, egresos, reembolsos y garantías utilizan BOB. CAJA no puede financiar salida de efectivo BOB con QR, otra moneda o garantías reservadas. Cada egreso declara medio real.
 
-### `egreso`
+CAJA solo corrige egresos propios del corte abierto declarando que el dinero nunca salió; se registra compensación atribuida y el egreso queda anulado. Restitución real o corrección histórica exige ADMIN y medio real: ajuste vinculado en fecha actual, sin reescribir egreso original ni cierre previo y sin reversión automática de stock/estado.
 
-Campos operativos principales:
+Las filas exponen importe original, ajuste y salida neta. El reporte por fechas ubica el ajuste en su fecha efectiva; el listado histórico muestra el saldo corregido actual del egreso. Son alcances temporales distintos. Un egreso legado sin método verificable requiere revisión manual; no se infiere su medio.
 
-- `usu_id`
-- `cco_id`
-- `egr_fec`
-- `egr_tipo`
-- `egr_concepto`
-- `egr_cantidad`
-- `egr_precio_unidad`
-- `egr_beneficiario`
-- `egr_monto`
-- `egr_obs1`
-- `egr_obs2`
-- `egr_estado`
-- `egr_fec_camb_est`
-- `egr_motivo_camb_est`
+## Cortes y cierres
 
-Extensión aprobada para devoluciones:
+ADMIN abre para cajero habilitado; fondo cero permitido. No se añaden anticipos dentro del corte en esta versión. PostgreSQL garantiza un corte abierto por cajero.
 
-- `egr_tabla_ref`
-- `egr_id_ref`
+Cierre bloquea corte, calcula cifras y exige efectivo recibido para cada moneda física esperada, incluido BOB cero. Diferencias requieren `cerrado_observado` y explicación. No hay conciliación electrónica completa.
 
-Reglas:
+El snapshot conserva cifras, agrupaciones, egresos, efectivo esperado/recibido y diferencias. Consultas posteriores lo leen sin recálculo histórico. CAJA ve sus cifras cerradas sin notas internas de ADMIN ni otros cajeros. ADMIN puede consultar historial de un usuario que cambió de rol.
 
-- si `egr_tipo = DEVOLUCION`, ambas referencias son obligatorias
-- `egr_tabla_ref` solo admite:
-  - `venta_boutique`
-  - `pago_pedido`
-  - `salida_flete`
-- si no es devolución, ambas referencias deben quedar nulas
-- para devoluciones se fuerza:
-  - `egr_cantidad = 1`
-  - el monto se captura en `egr_precio_unidad`
+## Consultas, fechas, precisión y UI
 
-### `corte_caja`
+- Decimal y HALF_UP, dinero de dos decimales, tasa histórica de cuatro; nuevas capturas rechazan exceso de escala, NaN e infinito.
+- Cobros extranjeros conservan original y tasa; reembolsos BOB contra máximo histórico, sin recotización.
+- Fechas calendario America/La_Paz → límites UTC; fin exclusivo del día siguiente. Rango invertido: 422.
+- Enums comparados con valor válido; funciones de texto usan cast explícito. Origen desconocido: 422.
+- Ingresos, egresos, cortes e historial propio: páginas por defecto 25, máximo 100. Agregados oficiales corresponden al filtro completo, no a la página.
+- Filtro exclusivo de ingresos (fuente/moneda/medio): resultado o flujo neto `null`, `comparable=false` y explicación. No se resta gasto global para inventar rentabilidad de una selección.
+- Exportaciones conservan alcance, autorización y explicación. UI muestra NO COMPARABLE en lugar de Bs 0.
+- UI cancela consultas obsoletas, espera 300 ms al filtrar y bloquea doble envío. Claves de intención en memoria ante respuesta incierta; sin credenciales en storage.
 
-Campos operativos principales:
+## Concurrencia e idempotencia
 
-- `usu_id_cajero`
-- `usu_id_admin`
-- `cco_fec_apertura`
-- `cco_fec_cierre`
-- `cco_fondo_asignado`
-- `cco_obs_apertura`
-- `cco_obs_cierre`
-- `cco_estado`
+Orden: idempotencia → corte → padre/artículo → origen → auxiliares. Pedido antes de pago; artículo antes de configuración/salida de flete. Entradas y otros escritores de stock compartido también bloquean/refrescan artículo antes de escribir.
 
-Reglas:
+Idempotency-Key obligatoria en escrituras económicas actualizadas. Misma cuenta/operación/clave/payload devuelve resultado confirmado. Misma clave con otro payload: 409. Resultado y efectos se confirman en una transacción; fallo no deja éxito registrado. Autenticación/permisos se comprueban antes de reintentar.
 
-- solo puede existir un corte abierto por cajero
-- `cerrado_observado` exige observación de cierre
-- los cortes cerrados son inmutables
+## Históricos y límites
 
-## Flujo obligatorio de devolución económica
+Cortes existentes quedan `control_version=0`; no se certifican métodos ni cierres retroactivamente. Corte legado abierto requiere cierre explícito con observación antes de movimientos nuevos. No se atribuyen automáticamente ingresos antiguos a cortes controlados ni se reparan anulaciones sin devoluciones reales.
 
-Las anulaciones y cancelaciones económicas ya no se cierran directamente desde:
+Pendientes fuera de alcance: utilidad contable integral, conciliación electrónica, anticipos adicionales, liquidación final de garantías retenidas, devolución de pedidos entregados y mercancía parcial. Los listados tradicionales de pedidos/pagos conservan consultas financieras por registro; medir volumen y optimizar por lotes en una tarea posterior. No se acredita prueba de carga ni E2E visual completo.
 
-- ventas boutique
-- pagos de pedido
-- salidas de flete
-
-Ahora el flujo correcto es:
-
-1. el usuario inicia la anulación o cancelación desde el módulo origen
-2. el frontend redirige a `/app/economia/egresos?mode=refund...`
-3. el backend carga el `refund-context`
-4. el usuario registra cuánto dinero se devuelve realmente
-5. el backend crea el `egreso` de tipo `DEVOLUCION`
-6. en la misma transacción cambia el estado del origen
-7. se ejecutan stock, saldo, comprobante y auditoría ya existentes
-
-## Casos soportados
-
-### Venta boutique
-
-- el ingreso bruto histórico sigue visible aunque la venta quede `CANCELADA` o `ANULADA`
-- la devolución económica puede ser total o parcial
-- el stock vuelve según la lógica del módulo de ventas
-
-### Pago de pedido
-
-- el pago sigue figurando como ingreso histórico realizado
-- el saldo del pedido se recalcula cuando el pago se anula
-- la devolución real al cliente se registra aparte como egreso
-
-### Salida de flete
-
-- el ingreso económico solo considera `SFL_TOTAL_FLETE`
-- la garantía no se trata como ingreso principal
-- una devolución económica asociada al flete queda como `egreso` de tipo `DEVOLUCION`
-
-## Reportes económicos
-
-### Administración global
-
-`ADMIN` dispone de:
-
-- `Estado de Resultados`
-- `Flujo de Efectivo`
-- reporte por cajero
-- listado unificado de ingresos
-- listado y detalle de egresos
-- cortes de caja globales
-- exportación CSV
-
-### Vista del cajero
-
-`CAJA` dispone de:
-
-- `Mi Período`
-- `Mi Estado de Resultados`
-- `Mi Historial`
-- su corte activo
-- sus egresos y devoluciones dentro del período habilitado
-
-Reglas de privacidad para cajero:
-
-- el historial cerrado enmascara ingresos y resultados como `***`
-- los CSV del cajero respetan el mismo enmascaramiento
-- no se exponen observaciones internas del admin en cierres cerrados
-
-## Moneda y conversión
-
-Los reportes y listados de ingresos incluyen, cuando aplica:
-
-- `MONEDA`
-- `SIMBOLO`
-- `MONTO_MONEDA_ORIGEN`
-- `TIPO_CAMBIO_USADO`
-- `MONTO_BOB`
-
-Reglas:
-
-- los gráficos agregados siempre usan `BOB`
-- la moneda origen se muestra como dato de trazabilidad
-- no se mezclan monedas distintas dentro de una misma serie agregada
-
-## Seguridad y permisos
-
-Permisos nuevos:
-
-- `economy_expenses:list`
-- `economy_expenses:view`
-- `economy_expenses:create`
-- `economy_expenses:annul`
-- `cash_cuts:list`
-- `cash_cuts:view`
-- `cash_cuts:open`
-- `cash_cuts:close`
-- `cash_cuts:view_own`
-- `economy_income:view`
-- `economy_income:view_all`
-- `economy_refunds:create`
-- `economy_reports:view`
-- `economy_reports:view_all`
-- `economy_reports:export`
-
-Asignación:
-
-- `ADMIN`: acceso completo
-- `CAJA`: acceso económico operativo limitado por backend
-- otros roles: sin acceso por defecto
-
-## API pública
-
-Router:
-
-- `/api/v1/economia`
-
-Ingresos:
-
-- `GET /api/v1/economia/ingresos`
-- `GET /api/v1/economia/ingresos/{origin_type}/{origin_id}/refund-context`
-
-Devoluciones:
-
-- `POST /api/v1/economia/devoluciones`
-
-Egresos:
-
-- `POST /api/v1/economia/egresos`
-- `GET /api/v1/economia/egresos`
-- `GET /api/v1/economia/egresos/{expense_id}`
-- `PATCH /api/v1/economia/egresos/{expense_id}/annul`
-
-Cortes:
-
-- `POST /api/v1/economia/cortes-caja`
-- `PATCH /api/v1/economia/cortes-caja/{cut_id}/close`
-- `GET /api/v1/economia/cortes-caja`
-- `GET /api/v1/economia/cortes-caja/{cut_id}`
-- `GET /api/v1/economia/cortes-caja/me`
-- `GET /api/v1/economia/cortes-caja/me/history`
-
-Reportes:
-
-- `GET /api/v1/economia/reportes/estado-resultados`
-- `GET /api/v1/economia/reportes/flujo-efectivo`
-- `GET /api/v1/economia/reportes/cajeros/{user_id}`
-- `GET /api/v1/economia/reportes/mi-periodo`
-- `GET /api/v1/economia/reportes/mi-estado-resultados`
-- `GET /api/v1/economia/reportes/mi-historial`
-
-Todos los reportes aceptan:
-
-- `format=json`
-- `format=csv`
-
-## Frontend
-
-Rutas SPA nuevas:
-
-- `/app/economia`
-- `/app/economia/egresos`
-- `/app/economia/cortes-caja`
-- `/app/economia/reportes`
-
-Páginas:
-
-- `EconomyDashboardPage.jsx`
-- `EconomyExpensesPage.jsx`
-- `CashCutsPage.jsx`
-- `EconomyReportsPage.jsx`
-
-Experiencia de usuario:
-
-- dashboard distinto para `ADMIN` y `CAJA`
-- flujo `refund` obligatorio por query params
-- drawers y modales con `maskClosable={false}`
-- filtros persistidos con `sessionStorage`
-- reportes con `Recharts`
-- navegación de reversión desde ventas, pagos y fletes hacia economía
-
-## Validaciones críticas
-
-- `CAJA` no puede registrar egresos sin corte abierto
-- `ADMIN` puede registrar egresos sin corte
-- `CAJA` no puede anular egresos de cortes cerrados
-- la suma de devoluciones activas no puede superar el monto bruto del ingreso origen
-- las anulaciones directas de venta, pago y salida de flete ahora devuelven conflicto y exigen el flujo económico
-- el ingreso de flete sigue tomando solo el servicio, no la garantía
-
-## Auditoría
-
-El módulo registra auditoría económica sobre:
-
-- apertura de corte
-- cierre de corte
-- alta de egreso
-- anulación de egreso
-- devolución económica obligatoria
-
-Evento explícito introducido en esta v1:
-
-- `ECONOMY_REFUND_RECORDED`
-
-## Migración y dependencias
-
-Migración:
-
-- `20260604_0010_economy_module.py`
-
-Dependencia frontend nueva:
-
-- `recharts`
-
-## Validación ejecutada
-
-Validación aplicada en esta implementación:
-
-- `alembic upgrade head`
-- `python scripts/seed_security.py`
-- `pytest`
-- `pnpm lint`
-- `pnpm build`
-
-Resultado:
-
-- backend: `59 passed`
-- frontend: `lint` OK
-- frontend: `build` OK
-
-## Regla que no debe romperse
-
-La regla más importante del módulo es esta:
-
-- una anulación operativa no borra un ingreso histórico
-- una devolución real de dinero siempre debe vivir como egreso manual trazable
-
-Esa separación mantiene consistencia contable, trazabilidad administrativa y flexibilidad para devoluciones parciales.
+Pruebas persistentes solo en bab_vdos_testing:55432 con directorio/usuarios propios. La promoción y migración empresarial de esta entrega se ejecutaron con autorización el 19/10/2026; ver evidencia en el procedimiento enlazado. Futuras operaciones sensibles conservan sus requisitos de autorización.

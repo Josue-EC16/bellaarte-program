@@ -1,0 +1,675 @@
+{
+  "schema_version": "rag04-real-synthetic-observations-v1",
+  "data_classification": "synthetic",
+  "profile": "rag4_v1",
+  "corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "model_identity": {
+    "chat_digest": "d8b0f5e9760cd1682034f292d7ef72ec46f432149be0df7574bf2d6e92e38c04",
+    "embedding_digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d"
+  },
+  "configuration_sha256": "427e81eef9a27191b3dfec9732116d922cc432d02d1254d7a4aff17b39a76a5f",
+  "snapshot_manifest_sha256": "f09dc02ab335a3e370e54b716f456c12f6d423a13c899a1ffd551cf7e5723a55",
+  "comparison_contract_sha256": "6ed167daf5aaaf6dafff1fa4cb9d3f64b1a2e08af769c5eb034b4c6af3c24429",
+  "cases": [
+    {
+      "case_id": "rag04-natural-01",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 19203.999999997905,
+      "request_id": "500ed475-2e69-4520-a83e-f22f2f5fb201",
+      "latency_scope": "generation_request",
+      "response_text": "Para la fabricaci\u00f3n de los vestidos en BELLAARTE BOUTIQUE, se deben seguir los siguientes pasos autorizados:\n\n1.  **Preparaci\u00f3n inicial:** Confirmar el dise\u00f1o aprobado y tomar las medidas con consentimiento del cliente [S5].\n2.  **Planificaci\u00f3n de corte:** Separar las piezas por pedido, identificar cada paquete y revisar la disponibilidad del material antes de programar el corte [S4].\n3.  **Trazado y corte:** Trazar el patr\u00f3n antes del corte y cortar \u00fanicamente la tela correspondiente al pedido identificado [S5], [S1].\n4.  **Construcci\u00f3n:** Hilvanar las piezas para la primera prueba; realizar la prueba de ajuste, corrigiendo cualquier diferencia antes de proceder a coser las piezas aprobadas [S2].\n5.  **Acabados:** Revisar costuras, limpieza y cierre [S3].\n6.  **Finalizaci\u00f3n:** Entregar el producto \u00fanicamente despu\u00e9s de la aprobaci\u00f3n final y registrar dicha entrega [S3].",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "business_context",
+        "verdict": "sufficient",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "selected": 5,
+          "evidence_bytes": 714,
+          "prompt_bytes": 2271,
+          "citations": 5,
+          "prompt_eval_count": 589,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 217
+        },
+        "durations_seconds": {
+          "embedding_and_release": 3.985000000000582,
+          "search": 0.014999999999417923,
+          "context": 0.0,
+          "review": 5.687999999994645,
+          "first_content": 16.23399999999674,
+          "generation": 9.25,
+          "load": 4.7647635,
+          "prompt_eval": 0.38493,
+          "eval": 4.071633,
+          "provider_total": 9.2262933,
+          "total": 19.187999999994645
+        }
+      },
+      "ram_available_before_bytes": 4162093056,
+      "ram_available_after_bytes": 3381243904,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "proc-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "proc-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "proc-1"
+      ],
+      "citation_fragment_ids": [
+        "proc-1",
+        "work-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-natural-02",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 20327.999999994063,
+      "request_id": "8b515cc1-67fb-4bf8-aa72-6607c308fedc",
+      "latency_scope": "generation_request",
+      "response_text": "Para confeccionar un vestido bajo los procedimientos documentados, se deben seguir los siguientes pasos autorizados:\n\n1.  **Confirmaci\u00f3n y Medici\u00f3n:** Confirmar el dise\u00f1o aprobado y tomar las medidas con consentimiento del cliente [S4].\n2.  **Preparaci\u00f3n de Patrones y Materiales:** Trazar el patr\u00f3n antes del corte; separar las piezas por pedido, identificar cada paquete y revisar la disponibilidad del material [S4], [S5].\n3.  **Corte Controlado:** Cortar \u00fanicamente la tela correspondiente al pedido identificado [S2].\n4.  **Prueba de Ajuste:** Hilvanar las piezas para realizar una primera prueba; si existen diferencias en el ajuste, corregirlas antes de proceder a coser definitivamente [S1], [S2].\n5.  **Confecci\u00f3n Final:** Coser las piezas aprobadas tras la correcci\u00f3n necesaria [S1].\n6.  **Inspecci\u00f3n y Entrega:** Revisar costuras, limpieza y cierre; entregar el vestido \u00fanicamente despu\u00e9s de la aprobaci\u00f3n final y registrar dicha entrega [S3].\n\n*Nota: La evidencia disponible detalla estos pasos operativos, pero no incluye informaci\u00f3n sobre los materiales espec\u00edficos requeridos ni las herramientas exactas a utilizar.*",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "business_context",
+        "verdict": "partial",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "selected": 5,
+          "evidence_bytes": 714,
+          "prompt_bytes": 2270,
+          "citations": 5,
+          "prompt_eval_count": 589,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 267
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.48399999999674,
+          "search": 0.01600000000325963,
+          "context": 0.0,
+          "review": 5.4210000000020955,
+          "first_content": 16.343999999997322,
+          "generation": 10.109000000011292,
+          "load": 4.6886285,
+          "prompt_eval": 0.370536,
+          "eval": 5.024315,
+          "provider_total": 10.0866075,
+          "total": 20.311999999990803
+        }
+      },
+      "ram_available_before_bytes": 3959169024,
+      "ram_available_after_bytes": 3178274816,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-3",
+        "proc-2",
+        "proc-4",
+        "proc-1",
+        "work-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "sec-1",
+        "conflict-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-3",
+        "proc-2",
+        "proc-4",
+        "proc-1",
+        "work-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-3",
+        "proc-2",
+        "proc-4",
+        "proc-1",
+        "work-1"
+      ],
+      "citation_fragment_ids": [
+        "proc-1",
+        "work-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-natural-03",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 19125.0,
+      "request_id": "79e29c8d-554f-4d6e-b4ad-f10dbd68de4a",
+      "latency_scope": "generation_request",
+      "response_text": "Para la fabricaci\u00f3n de un vestido bajo los protocolos documentados, se deben seguir los siguientes pasos autorizados:\n\n1.  **Confirmaci\u00f3n y Medici\u00f3n:** Confirmar el dise\u00f1o aprobado y tomar medidas con consentimiento [S5].\n2.  **Preparaci\u00f3n del Material:** Separar las piezas por pedido, identificar cada paquete y revisar la disponibilidad del material antes de programar el corte [S4].\n3.  **Trazado y Corte:** Trazar el patr\u00f3n antes del corte y cortar \u00fanicamente la tela del pedido identificado [S5], [S1].\n4.  **Construcci\u00f3n Preliminar:** Hilvanar las piezas para la primera prueba [S1].\n5.  **Prueba de Ajuste:** Realizar la prueba de ajuste; si hay diferencias, corregir antes de coser [S2].\n6.  **Costura Final:** Coser las piezas aprobadas [S2].\n7.  **Revisi\u00f3n y Entrega:** Revisar costuras, limpieza y cierre, entregando solo despu\u00e9s de la aprobaci\u00f3n final y registrando la entrega [S3].\n\n*Nota: Los pasos mencionados corresponden a un documento ficticio de evaluaci\u00f3n.*",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "business_context",
+        "verdict": "partial",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "selected": 5,
+          "evidence_bytes": 714,
+          "prompt_bytes": 2273,
+          "citations": 5,
+          "prompt_eval_count": 589,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 252
+        },
+        "durations_seconds": {
+          "embedding_and_release": 3.7030000000086147,
+          "search": 0.014999999999417923,
+          "context": 0.0,
+          "review": 5.360000000000582,
+          "first_content": 15.421000000002095,
+          "generation": 9.735000000000582,
+          "load": 4.5954887,
+          "prompt_eval": 0.379556,
+          "eval": 4.741523,
+          "provider_total": 9.7205888,
+          "total": 19.10899999999674
+        }
+      },
+      "ram_available_before_bytes": 3650961408,
+      "ram_available_after_bytes": 3235168256,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "proc-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "proc-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "proc-1"
+      ],
+      "citation_fragment_ids": [
+        "proc-1",
+        "work-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-natural-04",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 19437.999999994645,
+      "request_id": "16afc2e3-0d86-42b8-ab10-63d777eb3727",
+      "latency_scope": "generation_request",
+      "response_text": "El proceso para la confecci\u00f3n de vestidos en BELLAARTE BOUTIQUE se estructura en las siguientes fases autorizadas:\n\n1.  **Preparaci\u00f3n y Medici\u00f3n:** Confirmar el dise\u00f1o aprobado, tomar medidas con consentimiento y trazar el patr\u00f3n antes del corte [S5].\n2.  **Corte y Preparaci\u00f3n de Materiales:** Separar piezas por pedido, identificar cada paquete y revisar la disponibilidad del material antes de programar el corte; cortar \u00fanicamente la tela del pedido identificado y hilvanar las piezas para la primera prueba [S1], [S4].\n3.  **Prueba y Ajuste:** Realizar la prueba de ajuste; si hay diferencias, corregir antes de coser [S2].\n4.  **Confecci\u00f3n Final:** Coser las piezas aprobadas [S2].\n5.  **Control de Calidad y Entrega:** Revisar costuras, limpieza y cierre; entregar solo despu\u00e9s de la aprobaci\u00f3n final y registrar la entrega [S3].",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "business_context",
+        "verdict": "sufficient",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "selected": 5,
+          "evidence_bytes": 714,
+          "prompt_bytes": 2283,
+          "citations": 5,
+          "prompt_eval_count": 591,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 211
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.203000000008615,
+          "search": 0.0,
+          "context": 0.0,
+          "review": 5.359000000011292,
+          "first_content": 16.656000000002678,
+          "generation": 9.578000000008615,
+          "load": 5.1807437,
+          "prompt_eval": 0.37014,
+          "eval": 3.989275,
+          "provider_total": 9.5456556,
+          "total": 19.437999999994645
+        }
+      },
+      "ram_available_before_bytes": 3808759808,
+      "ram_available_after_bytes": 3310182400,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "proc-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "proc-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "proc-1"
+      ],
+      "citation_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "work-1",
+        "proc-3",
+        "proc-4"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-followup-01",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 18922.000000005937,
+      "request_id": "470a7e04-7f97-4b69-9fce-a1d0c6115597",
+      "latency_scope": "generation_request",
+      "response_text": "Tras la confirmaci\u00f3n del dise\u00f1o y la toma de medidas con consentimiento, los siguientes pasos autorizados son:\n\n1.  **Trazado y Corte:** Se debe trazar el patr\u00f3n antes del corte y cortar \u00fanicamente la tela identificada con el pedido correspondiente [S1], [S4].\n2.  **Preparaci\u00f3n para Prueba:** Las piezas deben hilvanarse para realizar la primera prueba; se recomienda separar las piezas por pedido e identificar cada paquete, revisando previamente la disponibilidad del material antes de programar el corte [S5].\n3.  **Prueba de Ajuste:** Se realizar\u00e1 una prueba de ajuste. Si existen diferencias entre el dise\u00f1o aprobado y la prenda, es obligatorio corregirlas antes de proceder a coser las piezas [S2].\n4.  **Construcci\u00f3n Final:** Una vez aprobada la correcci\u00f3n, se coser\u00e1n las piezas [S2].\n5.  **Control de Calidad:** Se revisar\u00e1n las costuras, la limpieza y el cierre del vestido [S3].\n6.  **Entrega:** La entrega solo se realizar\u00e1 tras la aprobaci\u00f3n final del cliente; este proceso debe registrarse formalmente [S3].",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "rag_followup",
+        "verdict": "sufficient",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 1,
+          "candidates": 10,
+          "selected": 5,
+          "evidence_bytes": 714,
+          "prompt_bytes": 2374,
+          "citations": 5,
+          "prompt_eval_count": 612,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 252
+        },
+        "durations_seconds": {
+          "embedding_and_release": 3.7820000000065193,
+          "search": 0.014999999999417923,
+          "context": 0.0,
+          "review": 5.2189999999973224,
+          "first_content": 15.281000000002678,
+          "generation": 9.702999999994063,
+          "load": 4.5648687,
+          "prompt_eval": 0.374131,
+          "eval": 4.745588,
+          "provider_total": 9.6902779,
+          "total": 18.906000000002678
+        }
+      },
+      "ram_available_before_bytes": 3303981056,
+      "ram_available_after_bytes": 3270205440,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-1",
+        "proc-3",
+        "proc-4",
+        "proc-2",
+        "work-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-1",
+        "proc-3",
+        "proc-4",
+        "proc-2",
+        "work-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-1",
+        "proc-3",
+        "proc-4",
+        "proc-2",
+        "work-1"
+      ],
+      "citation_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "work-1",
+        "proc-3",
+        "proc-4"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-followup-02",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 21921.999999991385,
+      "request_id": "f5487230-e9fd-4636-a350-6b43b29bb68a",
+      "latency_scope": "generation_request",
+      "response_text": "La etapa descrita corresponde a la **finalizaci\u00f3n y entrega del producto**, que sigue inmediatamente despu\u00e9s de las pruebas de ajuste y correcciones. Seg\u00fan la evidencia disponible, esta fase implica los siguientes pasos autorizados:\n\n1.  **Revisi\u00f3n t\u00e9cnica final:** Se debe revisar minuciosamente todas las costuras, verificar la limpieza general y confirmar el cierre correcto del vestido [S3].\n2.  **Aprobaci\u00f3n previa a entrega:** El producto no puede entregarse hasta que se obtiene la aprobaci\u00f3n final por parte del cliente o responsable [S3].\n3.  **Registro de entrega:** Una vez aprobada, es obligatorio registrar formalmente la entrega del pedido [S3].\n\nAdicionalmente, para garantizar la integridad del pedido antes de este punto, se deben cumplir condiciones previas establecidas en etapas anteriores:\n*   El corte de la tela debe realizarse exclusivamente sobre el material identificado con el pedido correspondiente, sin incluir otros materiales [S4].\n*   Las piezas deben haber sido hilvanadas para realizar la prueba de ajuste; cualquier diferencia detectada debe corregirse antes de proceder a la costura definitiva [S4].\n*   El dise\u00f1o aprobado y las medidas tomadas con consentimiento son la base obligatoria para iniciar esta fase [S1].\n\nEs importante notar que, aunque se menciona una organizaci\u00f3n ficticia sobre la separaci\u00f3n de piezas por pedido y revisi\u00f3n de disponibilidad del material, este punto parece referirse a la log\u00edstica previa al corte (etapa anterior) m\u00e1s que a la etapa actual de finalizaci\u00f3n [S5]. La evidencia actual confirma que el flujo operativo debe centrarse en la validaci\u00f3n del producto terminado y su registro.",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "rag_followup",
+        "verdict": "sufficient",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 1,
+          "candidates": 10,
+          "selected": 5,
+          "evidence_bytes": 714,
+          "prompt_bytes": 2390,
+          "citations": 4,
+          "prompt_eval_count": 614,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 346
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.546999999991385,
+          "search": 0.0,
+          "context": 0.0,
+          "review": 5.688000000009197,
+          "first_content": 16.327999999994063,
+          "generation": 11.485000000000582,
+          "load": 4.5309387,
+          "prompt_eval": 0.376746,
+          "eval": 6.550791,
+          "provider_total": 11.4623598,
+          "total": 21.921999999991385
+        }
+      },
+      "ram_available_before_bytes": 3269795840,
+      "ram_available_after_bytes": 3062091776,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-1",
+        "proc-3",
+        "proc-4",
+        "proc-2",
+        "work-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "sec-1",
+        "conflict-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-1",
+        "proc-3",
+        "proc-4",
+        "proc-2",
+        "work-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-1",
+        "proc-3",
+        "proc-4",
+        "proc-2",
+        "work-1"
+      ],
+      "citation_fragment_ids": [
+        "proc-4",
+        "proc-2",
+        "proc-1",
+        "work-1"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-followup-03",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 17828.999999997905,
+      "request_id": "f11f266c-7df8-4453-82d9-e295df728ae9",
+      "latency_scope": "generation_request",
+      "response_text": "Para elaborar los vestidos en BELLAARTE BOUTIQUE, se deben seguir estos cinco pasos autorizados:\n\n1.  Confirmar el dise\u00f1o aprobado y tomar las medidas con consentimiento del cliente [S4].\n2.  Separar las piezas por pedido, identificar cada paquete y revisar la disponibilidad del material antes de programar el corte [S5].\n3.  Trazar el patr\u00f3n, cortar \u00fanicamente la tela del pedido identificado y hilvanar las piezas para la primera prueba [S1, S4].\n4.  Realizar la prueba de ajuste; si existen diferencias, corregir antes de proceder a coser las piezas aprobadas [S2].\n5.  Revisar costuras, limpieza y cierre, entregando el producto \u00fanicamente tras la aprobaci\u00f3n final y registrando dicha entrega [S3].",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "rag_followup",
+        "verdict": "sufficient",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 1,
+          "candidates": 10,
+          "selected": 5,
+          "evidence_bytes": 714,
+          "prompt_bytes": 2349,
+          "citations": 4,
+          "prompt_eval_count": 606,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 172
+        },
+        "durations_seconds": {
+          "embedding_and_release": 3.952999999994063,
+          "search": 0.0,
+          "context": 0.0,
+          "review": 5.39100000000326,
+          "first_content": 15.656999999991967,
+          "generation": 8.171999999991385,
+          "load": 4.5108049,
+          "prompt_eval": 0.376526,
+          "eval": 3.251715,
+          "provider_total": 8.1430257,
+          "total": 17.828999999997905
+        }
+      },
+      "ram_available_before_bytes": 3122966528,
+      "ram_available_after_bytes": 3194437632,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "proc-1",
+        "work-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "proc-1",
+        "work-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "proc-1",
+        "work-1"
+      ],
+      "citation_fragment_ids": [
+        "proc-1",
+        "work-1",
+        "proc-3",
+        "proc-4"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-out_capabilities-01",
+      "status": "completed",
+      "route": "outside",
+      "latency_ms": 77.99999999406282,
+      "request_id": "b667ab6c-3ecd-4b02-8987-efe3ab168d1d",
+      "latency_scope": "generation_request",
+      "response_text": "Mi funci\u00f3n es apoyar las actividades administrativas y operativas de BELLAARTE BOUTIQUE. Esa consulta est\u00e1 fuera de mi \u00e1mbito de asistencia.",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "out_of_scope",
+        "reason": "outside_business_scope",
+        "verdict": "pending",
+        "outcome": "policy",
+        "counts": {
+          "topic_questions": 0
+        },
+        "durations_seconds": {
+          "total": 0.07799999999406282
+        }
+      },
+      "ram_available_before_bytes": 3637411840,
+      "ram_available_after_bytes": 4330827776,
+      "human_review": null,
+      "sent_fragment_ids": [],
+      "citation_fragment_ids": [],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-out_capabilities-07",
+      "status": "completed",
+      "route": "general",
+      "latency_ms": 12406.000000002678,
+      "request_id": "580fffd5-87ca-402c-96fe-797d69a7dbfc",
+      "latency_scope": "generation_request",
+      "response_text": "Hola, soy LENY, tu agente de anal\u00edtica aumentada del ERP BELLAARTE BOUTIQUE.\n\nPara calcular el **margen de utilidad** (tambi\u00e9n conocido como margen neto), utilizamos la siguiente f\u00f3rmula sencilla:\n\n**(Ingresos Totales - Gastos Totales) / Ingresos Totales \u00d7 100**\n\n**Pasos para aplicarlo:**\n1.  Resta todos los gastos operativos, costos de confecci\u00f3n y otros desembolsos a tus **Ingresos Totales**. El resultado es el **Utilidad Neta**.\n2.  Divide esa utilidad neta entre tus Ingresos Totales.\n3.  Multiplica el resultado por 100 para obtener el porcentaje.\n\n**Ejemplo pr\u00e1ctico en Bs (BOB):**\nSi tu tienda vendi\u00f3 ropa por **5,000 Bs** y pagaste gastos de alquiler, sueldos y materiales que sumaron **2,500 Bs**:\n*   Utilidad Neta = 5,000 - 2,500 = **2,500 Bs**.\n*   Margen = (2,500 / 5,000) \u00d7 100 = **50%**.\n\nEsto significa que de cada bol\u00edvar vendido, el 50% queda como ganancia para la empresa.\n\n\u00bfTe gustar\u00eda aplicar este c\u00e1lculo a alg\u00fan dato espec\u00edfico de tu inventario o ventas recientes?",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "business",
+        "reason": "business_context",
+        "verdict": "pending",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "prompt_eval_count": 331,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 312
+        },
+        "durations_seconds": {
+          "first_content": 7.875,
+          "generation": 12.297000000005937,
+          "load": 6.1617996,
+          "prompt_eval": 0.249516,
+          "eval": 5.855926,
+          "provider_total": 12.271984,
+          "total": 12.406000000002678
+        }
+      },
+      "ram_available_before_bytes": 4339716096,
+      "ram_available_after_bytes": 3243855872,
+      "human_review": null,
+      "sent_fragment_ids": [],
+      "citation_fragment_ids": [],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    }
+  ],
+  "human_review_complete": false,
+  "business_e2e_executed": false,
+  "holdout_executed": false,
+  "extraction_formats_evaluated": false,
+  "settings": {
+    "leny_enabled": true,
+    "leny_documents_enabled": true,
+    "leny_rag_enabled": true,
+    "leny_rag_chat_enabled": true,
+    "leny_keep_alive": "0",
+    "leny_num_ctx": 4096,
+    "leny_num_predict": 768,
+    "leny_rate_limit": 5,
+    "leny_rate_window_seconds": 60,
+    "leny_rag_min_ram_bytes": 2147483648,
+    "leny_rag_min_resident_ram_bytes": 1073741824,
+    "leny_rag_cpu_threads": 4,
+    "leny_rag_batch_size": 2,
+    "leny_rag_top_k": 5,
+    "leny_rag_candidates": 20,
+    "leny_rag_profile": "rag4_v1",
+    "leny_rag_evidence_mode": "fixed",
+    "leny_rag_max_context_bytes": 2048,
+    "leny_rag_ranking": "semantic",
+    "leny_rag_adaptive_token_probe": false,
+    "leny_rag_neighbor_chunks": false
+  },
+  "runner_mode": "pilot",
+  "original_representation": "generated synthetic originals with fixture source types; extraction not evaluated by this runner",
+  "created_at_utc": "2026-10-20T14:45:32.313364+00:00",
+  "cleanup_confirmed": true
+}

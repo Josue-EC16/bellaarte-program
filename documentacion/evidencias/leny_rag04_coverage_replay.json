@@ -1,0 +1,5870 @@
+{
+  "scope": "offline_coverage_replay_not_real_generation_or_new_sql",
+  "coverage_version": "coverage-prototype-v1",
+  "human_review_complete": false,
+  "acceptance": "not_accepted",
+  "approval_blockers": [
+    "draft_vocabulary_and_manifests",
+    "control_expectations_not_human_reviewed"
+  ],
+  "source_hash_basis": "virtual_synthetic_documents_not_uploaded_files",
+  "control_basis": "proposed_control_vocabulary_extension_not_independent_unseen_language_test",
+  "qwen_calls": 0,
+  "embedding_calls": 0,
+  "postgres_connections": 0,
+  "business_documents_read": false,
+  "candidate_activated": false,
+  "evaluation84_executed": false,
+  "holdout_executed": false,
+  "strict_approved_release_count": 0,
+  "counts": {
+    "records": 48,
+    "targets_executed": 47,
+    "expected_rag": 39,
+    "baseline_hit": 38,
+    "simulated_hit": 12,
+    "simulated_recall_macro": 0.3076923076923077,
+    "natural_total": 14,
+    "natural_retained": 4,
+    "newly_lost_evidence": 26,
+    "critical_total": 2,
+    "critical_unsafe_acceptances": 0,
+    "critical_specific_rejections": 2,
+    "controls_positive_correct": 1,
+    "controls_positive_total": 6,
+    "controls_negative_correct": 1,
+    "controls_negative_total": 6,
+    "controls_unsafe_acceptances": 0,
+    "unauthorized_simulated_ids": 0
+  },
+  "cases": [
+    {
+      "case_id": "rag04-natural-01",
+      "category": "natural",
+      "question": "¿Cómo se hacen los vestidos?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 19,
+              "end": 27,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": true,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "approved",
+        "reason": "coverage_verified",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 19,
+              "end": 27,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": true,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4"
+        ],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": [
+          "430c6426a758b8cf9a39078a6264e98fcd73c52d8778e1afddcd8e1fb70d3a40",
+          "bd49c93e0a711e075e29f5f4e8877f3605eaf4158b11601442dfecb25caff33e"
+        ]
+      },
+      "simulated_retained_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "selection_added_ids": [],
+      "simulated_route": "rag",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-natural-02",
+      "category": "natural",
+      "question": "¿Cómo confeccionan un vestido?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 6,
+              "end": 18,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 22,
+              "end": 29,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "approved",
+        "reason": "coverage_verified",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 6,
+              "end": 18,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 22,
+              "end": 29,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4"
+        ],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": [
+          "430c6426a758b8cf9a39078a6264e98fcd73c52d8778e1afddcd8e1fb70d3a40",
+          "bd49c93e0a711e075e29f5f4e8877f3605eaf4158b11601442dfecb25caff33e"
+        ]
+      },
+      "simulated_retained_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "selection_added_ids": [],
+      "simulated_route": "rag",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-natural-03",
+      "category": "natural",
+      "question": "Explícame cómo se hace un vestido",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 10,
+              "end": 14,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 26,
+              "end": 33,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "approved",
+        "reason": "coverage_verified",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 10,
+              "end": 14,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 26,
+              "end": 33,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4"
+        ],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": [
+          "430c6426a758b8cf9a39078a6264e98fcd73c52d8778e1afddcd8e1fb70d3a40",
+          "bd49c93e0a711e075e29f5f4e8877f3605eaf4158b11601442dfecb25caff33e"
+        ]
+      },
+      "simulated_retained_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "selection_added_ids": [],
+      "simulated_route": "rag",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-natural-04",
+      "category": "natural",
+      "question": "¿Cuál es el proceso para hacer vestidos?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 12,
+              "end": 19,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 31,
+              "end": 39,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "es",
+              "start": 6,
+              "end": 8
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 12,
+              "end": 19,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 31,
+              "end": 39,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "es",
+              "start": 6,
+              "end": 8
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-natural-05",
+      "category": "natural",
+      "question": "¿Cómo elaboramos vestidos?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 17,
+              "end": 25,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "elaboramos",
+              "start": 6,
+              "end": 16
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 17,
+              "end": 25,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "elaboramos",
+              "start": 6,
+              "end": 16
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-natural-06",
+      "category": "natural",
+      "question": "¿Qué pasos lleva confeccionar un vestido?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 5,
+              "end": 10,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 17,
+              "end": 29,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 33,
+              "end": 40,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "lleva",
+              "start": 11,
+              "end": 16
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 5,
+              "end": 10,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 17,
+              "end": 29,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 33,
+              "end": 40,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "lleva",
+              "start": 11,
+              "end": 16
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-natural-07",
+      "category": "natural",
+      "question": "¿Cómo hacemos una prenda de principio a fin?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 18,
+              "end": 24,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "principio",
+              "start": 28,
+              "end": 37
+            },
+            {
+              "token": "fin",
+              "start": 40,
+              "end": 43
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 18,
+              "end": 24,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "principio",
+              "start": 28,
+              "end": 37
+            },
+            {
+              "token": "fin",
+              "start": 40,
+              "end": 43
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-natural-08",
+      "category": "natural",
+      "question": "Necesito entender cómo fabricamos un vestido",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 18,
+              "end": 22,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 37,
+              "end": 44,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "necesito",
+              "start": 0,
+              "end": 8
+            },
+            {
+              "token": "entender",
+              "start": 9,
+              "end": 17
+            },
+            {
+              "token": "fabricamos",
+              "start": 23,
+              "end": 33
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 18,
+              "end": 22,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 37,
+              "end": 44,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "necesito",
+              "start": 0,
+              "end": 8
+            },
+            {
+              "token": "entender",
+              "start": 9,
+              "end": 17
+            },
+            {
+              "token": "fabricamos",
+              "start": 23,
+              "end": 33
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-natural-09",
+      "category": "natural",
+      "question": "¿Cómo se transforma la tela en un vestido?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 34,
+              "end": 41,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "transforma",
+              "start": 9,
+              "end": 19
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 34,
+              "end": 41,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "transforma",
+              "start": 9,
+              "end": 19
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-natural-10",
+      "category": "natural",
+      "question": "Descríbeme el proceso de confección",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 14,
+              "end": 21,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 25,
+              "end": 35,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "describeme",
+              "start": 0,
+              "end": 10
+            }
+          ],
+          "complete": true,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 14,
+              "end": 21,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 25,
+              "end": 35,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "describeme",
+              "start": 0,
+              "end": 10
+            }
+          ],
+          "complete": true,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-natural-11",
+      "category": "natural",
+      "question": "¿Qué se hace antes de cortar la tela?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "work-1"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "cutting"
+          ],
+          "aspects": [
+            "timing"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "cutting",
+              "kind": "topic",
+              "start": 22,
+              "end": 36,
+              "origin": "current_user"
+            },
+            {
+              "concept": "timing",
+              "kind": "aspect",
+              "start": 13,
+              "end": 18,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "not_covered",
+        "reason": "coverage_subject_mismatch",
+        "signature": {
+          "topics": [
+            "cutting"
+          ],
+          "aspects": [
+            "timing"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "cutting",
+              "kind": "topic",
+              "start": 22,
+              "end": 36,
+              "origin": "current_user"
+            },
+            {
+              "concept": "timing",
+              "kind": "aspect",
+              "start": 13,
+              "end": 18,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "no_evidence",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-natural-12",
+      "category": "natural",
+      "question": "¿Cómo se prepara un vestido para entregarlo?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "delivery",
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 20,
+              "end": 27,
+              "origin": "current_user"
+            },
+            {
+              "concept": "delivery",
+              "kind": "topic",
+              "start": 33,
+              "end": 43,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "approved",
+        "reason": "coverage_verified",
+        "signature": {
+          "topics": [
+            "delivery",
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 20,
+              "end": 27,
+              "origin": "current_user"
+            },
+            {
+              "concept": "delivery",
+              "kind": "topic",
+              "start": 33,
+              "end": 43,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4"
+        ],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": [
+          "430c6426a758b8cf9a39078a6264e98fcd73c52d8778e1afddcd8e1fb70d3a40",
+          "bd49c93e0a711e075e29f5f4e8877f3605eaf4158b11601442dfecb25caff33e"
+        ]
+      },
+      "simulated_retained_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "selection_added_ids": [],
+      "simulated_route": "rag",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.25
+      },
+      "exploratory_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.25
+      },
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-natural-13",
+      "category": "natural",
+      "question": "¿En qué momento se corrigen los ajustes?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-3"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "fitting"
+          ],
+          "aspects": [
+            "timing"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "timing",
+              "kind": "aspect",
+              "start": 8,
+              "end": 15,
+              "origin": "current_user"
+            },
+            {
+              "concept": "fitting",
+              "kind": "topic",
+              "start": 32,
+              "end": 39,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "corrigen",
+              "start": 19,
+              "end": 27
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "fitting"
+          ],
+          "aspects": [
+            "timing"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "timing",
+              "kind": "aspect",
+              "start": 8,
+              "end": 15,
+              "origin": "current_user"
+            },
+            {
+              "concept": "fitting",
+              "kind": "topic",
+              "start": 32,
+              "end": 39,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "corrigen",
+              "start": 19,
+              "end": 27
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-natural-14",
+      "category": "natural",
+      "question": "¿Qué revisamos al terminar el vestido?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 30,
+              "end": 37,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "revisamos",
+              "start": 5,
+              "end": 14
+            },
+            {
+              "token": "terminar",
+              "start": 18,
+              "end": 26
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 30,
+              "end": 37,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "revisamos",
+              "start": 5,
+              "end": 14
+            },
+            {
+              "token": "terminar",
+              "start": 18,
+              "end": 26
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-literal-03",
+      "category": "literal",
+      "question": "¿Qué exige la guía antes de entregar?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "delivery"
+          ],
+          "aspects": [
+            "timing"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "timing",
+              "kind": "aspect",
+              "start": 19,
+              "end": 24,
+              "origin": "current_user"
+            },
+            {
+              "concept": "delivery",
+              "kind": "topic",
+              "start": 28,
+              "end": 36,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "exige",
+              "start": 5,
+              "end": 10
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "delivery"
+          ],
+          "aspects": [
+            "timing"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "timing",
+              "kind": "aspect",
+              "start": 19,
+              "end": 24,
+              "origin": "current_user"
+            },
+            {
+              "concept": "delivery",
+              "kind": "topic",
+              "start": 28,
+              "end": 36,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "exige",
+              "start": 5,
+              "end": 10
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-literal-08",
+      "category": "literal",
+      "question": "Lee las instrucciones para organizar el taller",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "workshop"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "workshop",
+              "kind": "topic",
+              "start": 27,
+              "end": 46,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "lee",
+              "start": 0,
+              "end": 3
+            },
+            {
+              "token": "instrucciones",
+              "start": 8,
+              "end": 21
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "workshop"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "workshop",
+              "kind": "topic",
+              "start": 27,
+              "end": 46,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "lee",
+              "start": 0,
+              "end": 3
+            },
+            {
+              "token": "instrucciones",
+              "start": 8,
+              "end": 21
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 0.2
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-synonyms-07",
+      "category": "synonyms",
+      "question": "¿Cuándo se hacen los retoques?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-3"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "fitting"
+          ],
+          "aspects": [
+            "timing"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "timing",
+              "kind": "aspect",
+              "start": 1,
+              "end": 7,
+              "origin": "current_user"
+            },
+            {
+              "concept": "fitting",
+              "kind": "topic",
+              "start": 21,
+              "end": 29,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "approved",
+        "reason": "coverage_verified",
+        "signature": {
+          "topics": [
+            "fitting"
+          ],
+          "aspects": [
+            "timing"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "timing",
+              "kind": "aspect",
+              "start": 1,
+              "end": 7,
+              "origin": "current_user"
+            },
+            {
+              "concept": "fitting",
+              "kind": "topic",
+              "start": 21,
+              "end": 29,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [
+          "proc-3"
+        ],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": [
+          "430c6426a758b8cf9a39078a6264e98fcd73c52d8778e1afddcd8e1fb70d3a40",
+          "bd49c93e0a711e075e29f5f4e8877f3605eaf4158b11601442dfecb25caff33e"
+        ]
+      },
+      "simulated_retained_ids": [
+        "proc-3"
+      ],
+      "selection_added_ids": [],
+      "simulated_route": "rag",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-synonyms-10",
+      "category": "synonyms",
+      "question": "¿Qué umbral de reposición usa la guía?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "stock-1"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "inventory"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "inventory",
+              "kind": "topic",
+              "start": 5,
+              "end": 25,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "approved",
+        "reason": "coverage_verified",
+        "signature": {
+          "topics": [
+            "inventory"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "inventory",
+              "kind": "topic",
+              "start": 5,
+              "end": 25,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [
+          "stock-1"
+        ],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": [
+          "67a8cf5b252e9fabd9c4f5649615cdc15667783acac6031d530093447e152a5d",
+          "bd49c93e0a711e075e29f5f4e8877f3605eaf4158b11601442dfecb25caff33e"
+        ]
+      },
+      "simulated_retained_ids": [
+        "stock-1"
+      ],
+      "selection_added_ids": [],
+      "simulated_route": "rag",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-synonyms-11",
+      "category": "synonyms",
+      "question": "¿Cómo agrupamos las piezas de una orden?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "work-1",
+        "proc-1"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "agrupamos",
+              "start": 6,
+              "end": 15
+            },
+            {
+              "token": "orden",
+              "start": 34,
+              "end": 39
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "agrupamos",
+              "start": 6,
+              "end": 15
+            },
+            {
+              "token": "orden",
+              "start": 34,
+              "end": 39
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-followup-01",
+      "category": "followup",
+      "question": "¿Y después?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_anchor_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_anchor_uncertain",
+        "signature": {
+          "topics": [],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_anchor_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-followup-02",
+      "category": "followup",
+      "question": "Explícame la siguiente etapa",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_anchor_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_anchor_uncertain",
+        "signature": {
+          "topics": [],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_anchor_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-followup-03",
+      "category": "followup",
+      "question": "Resúmelo en cinco pasos",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "user_topic"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 19,
+              "end": 27,
+              "origin": "user_topic"
+            }
+          ],
+          "unknown": [],
+          "complete": true,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "approved",
+        "reason": "coverage_verified",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "user_topic"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 19,
+              "end": 27,
+              "origin": "user_topic"
+            }
+          ],
+          "unknown": [],
+          "complete": true,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4"
+        ],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": [
+          "430c6426a758b8cf9a39078a6264e98fcd73c52d8778e1afddcd8e1fb70d3a40",
+          "bd49c93e0a711e075e29f5f4e8877f3605eaf4158b11601442dfecb25caff33e"
+        ]
+      },
+      "simulated_retained_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "selection_added_ids": [],
+      "simulated_route": "rag",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-followup-04",
+      "category": "followup",
+      "question": "¿Qué ocurre antes de entregarlo?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "delivery"
+          ],
+          "aspects": [
+            "timing"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "timing",
+              "kind": "aspect",
+              "start": 12,
+              "end": 17,
+              "origin": "current_user"
+            },
+            {
+              "concept": "delivery",
+              "kind": "topic",
+              "start": 21,
+              "end": 31,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "ocurre",
+              "start": 5,
+              "end": 11
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "delivery"
+          ],
+          "aspects": [
+            "timing"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "timing",
+              "kind": "aspect",
+              "start": 12,
+              "end": 17,
+              "origin": "current_user"
+            },
+            {
+              "concept": "delivery",
+              "kind": "topic",
+              "start": 21,
+              "end": 31,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "ocurre",
+              "start": 5,
+              "end": 11
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.25
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-followup-05",
+      "category": "followup",
+      "question": "¿Y si hay diferencias en la prueba?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "fitting"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "fitting",
+              "kind": "topic",
+              "start": 28,
+              "end": 34,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "si",
+              "start": 3,
+              "end": 5
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_logic_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_logic_uncertain",
+        "signature": {
+          "topics": [
+            "fitting"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "fitting",
+              "kind": "topic",
+              "start": 28,
+              "end": 34,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "si",
+              "start": 3,
+              "end": 5
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_logic_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.3333333333333333
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-followup-06",
+      "category": "followup",
+      "question": "Continúa con ese procedimiento",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_anchor_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_anchor_uncertain",
+        "signature": {
+          "topics": [],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_anchor_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 0.25,
+        "mrr": 0.5
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-followup-07",
+      "category": "followup",
+      "question": "¿Sigue siendo válido después del cambio de permisos?",
+      "role": "MODISTA",
+      "baseline_route": "no_evidence",
+      "target_executed": true,
+      "baseline_sent_ids": [],
+      "strict": null,
+      "exploratory": null,
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "no_evidence",
+      "expected_route": "no_evidence",
+      "baseline_metrics": null,
+      "exploratory_metrics": null,
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-01",
+      "category": "multi_conflict",
+      "question": "Resume el procedimiento completo y sus condiciones",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [],
+          "aspects": [
+            "condition",
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 10,
+              "end": 23,
+              "origin": "current_user"
+            },
+            {
+              "concept": "condition",
+              "kind": "aspect",
+              "start": 39,
+              "end": 50,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "resume",
+              "start": 0,
+              "end": 6
+            }
+          ],
+          "complete": true,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [],
+          "aspects": [
+            "condition",
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 10,
+              "end": 23,
+              "origin": "current_user"
+            },
+            {
+              "concept": "condition",
+              "kind": "aspect",
+              "start": 39,
+              "end": 50,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "resume",
+              "start": 0,
+              "end": 6
+            }
+          ],
+          "complete": true,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-02",
+      "category": "multi_conflict",
+      "question": "Compara las dos circulares de anticipo",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "conflict-2",
+        "conflict-1"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "alteration_price",
+            "reservation"
+          ],
+          "aspects": [
+            "comparison"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "comparison",
+              "kind": "aspect",
+              "start": 0,
+              "end": 7,
+              "origin": "current_user"
+            },
+            {
+              "concept": "reservation",
+              "kind": "topic",
+              "start": 16,
+              "end": 26,
+              "origin": "current_user"
+            },
+            {
+              "concept": "alteration_price",
+              "kind": "topic",
+              "start": 30,
+              "end": 38,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "dos",
+              "start": 12,
+              "end": 15
+            }
+          ],
+          "complete": false,
+          "compare": true,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "alteration_price",
+            "reservation"
+          ],
+          "aspects": [
+            "comparison"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "comparison",
+              "kind": "aspect",
+              "start": 0,
+              "end": 7,
+              "origin": "current_user"
+            },
+            {
+              "concept": "reservation",
+              "kind": "topic",
+              "start": 16,
+              "end": 26,
+              "origin": "current_user"
+            },
+            {
+              "concept": "alteration_price",
+              "kind": "topic",
+              "start": 30,
+              "end": 38,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "dos",
+              "start": 12,
+              "end": 15
+            }
+          ],
+          "complete": false,
+          "compare": true,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-03",
+      "category": "multi_conflict",
+      "question": "¿Qué anticipo puedo asegurar si ambas circulares están vigentes?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "conflict-2",
+        "conflict-1"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "alteration_price",
+            "reservation"
+          ],
+          "aspects": [
+            "comparison"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "alteration_price",
+              "kind": "topic",
+              "start": 5,
+              "end": 13,
+              "origin": "current_user"
+            },
+            {
+              "concept": "comparison",
+              "kind": "aspect",
+              "start": 32,
+              "end": 37,
+              "origin": "current_user"
+            },
+            {
+              "concept": "reservation",
+              "kind": "topic",
+              "start": 38,
+              "end": 48,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "asegurar",
+              "start": 20,
+              "end": 28
+            },
+            {
+              "token": "si",
+              "start": 29,
+              "end": 31
+            },
+            {
+              "token": "estan",
+              "start": 49,
+              "end": 54
+            }
+          ],
+          "complete": false,
+          "compare": true,
+          "reason": "coverage_logic_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_logic_uncertain",
+        "signature": {
+          "topics": [
+            "alteration_price",
+            "reservation"
+          ],
+          "aspects": [
+            "comparison"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "alteration_price",
+              "kind": "topic",
+              "start": 5,
+              "end": 13,
+              "origin": "current_user"
+            },
+            {
+              "concept": "comparison",
+              "kind": "aspect",
+              "start": 32,
+              "end": 37,
+              "origin": "current_user"
+            },
+            {
+              "concept": "reservation",
+              "kind": "topic",
+              "start": 38,
+              "end": 48,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "asegurar",
+              "start": 20,
+              "end": 28
+            },
+            {
+              "token": "si",
+              "start": 29,
+              "end": 31
+            },
+            {
+              "token": "estan",
+              "start": 49,
+              "end": 54
+            }
+          ],
+          "complete": false,
+          "compare": true,
+          "reason": "coverage_logic_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-04",
+      "category": "multi_conflict",
+      "question": "Relaciona el control de calidad y la aprobación final",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "quality"
+          ],
+          "aspects": [
+            "condition"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "quality",
+              "kind": "topic",
+              "start": 24,
+              "end": 31,
+              "origin": "current_user"
+            },
+            {
+              "concept": "condition",
+              "kind": "aspect",
+              "start": 37,
+              "end": 47,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "relaciona",
+              "start": 0,
+              "end": 9
+            },
+            {
+              "token": "control",
+              "start": 13,
+              "end": 20
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "quality"
+          ],
+          "aspects": [
+            "condition"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "quality",
+              "kind": "topic",
+              "start": 24,
+              "end": 31,
+              "origin": "current_user"
+            },
+            {
+              "concept": "condition",
+              "kind": "aspect",
+              "start": 37,
+              "end": 47,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "relaciona",
+              "start": 0,
+              "end": 9
+            },
+            {
+              "token": "control",
+              "start": 13,
+              "end": 20
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-05",
+      "category": "multi_conflict",
+      "question": "¿Cómo se conectan el patrón, el corte y la prueba?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "cutting",
+            "fitting",
+            "pattern"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            },
+            {
+              "concept": "pattern",
+              "kind": "topic",
+              "start": 21,
+              "end": 27,
+              "origin": "current_user"
+            },
+            {
+              "concept": "cutting",
+              "kind": "topic",
+              "start": 32,
+              "end": 37,
+              "origin": "current_user"
+            },
+            {
+              "concept": "fitting",
+              "kind": "topic",
+              "start": 43,
+              "end": 49,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "conectan",
+              "start": 9,
+              "end": 17
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "cutting",
+            "fitting",
+            "pattern"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            },
+            {
+              "concept": "pattern",
+              "kind": "topic",
+              "start": 21,
+              "end": 27,
+              "origin": "current_user"
+            },
+            {
+              "concept": "cutting",
+              "kind": "topic",
+              "start": 32,
+              "end": 37,
+              "origin": "current_user"
+            },
+            {
+              "concept": "fitting",
+              "kind": "topic",
+              "start": 43,
+              "end": 49,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "conectan",
+              "start": 9,
+              "end": 17
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-06",
+      "category": "multi_conflict",
+      "question": "¿Puedo omitir una condición al resumir el procedimiento?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [],
+          "aspects": [
+            "condition",
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "condition",
+              "kind": "aspect",
+              "start": 18,
+              "end": 27,
+              "origin": "current_user"
+            },
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 42,
+              "end": 55,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "resumir",
+              "start": 31,
+              "end": 38
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [],
+          "aspects": [
+            "condition",
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "condition",
+              "kind": "aspect",
+              "start": 18,
+              "end": 27,
+              "origin": "current_user"
+            },
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 42,
+              "end": 55,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "resumir",
+              "start": 31,
+              "end": 38
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 0.5,
+        "mrr": 0.3333333333333333
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-07",
+      "category": "multi_conflict",
+      "question": "Describe el proceso utilizando varios fragmentos",
+      "role": "ADMIN",
+      "baseline_route": "ambiguous",
+      "target_executed": true,
+      "baseline_sent_ids": [],
+      "strict": null,
+      "exploratory": null,
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "ambiguous",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-formats-05",
+      "category": "formats",
+      "question": "Explica la tarifa con cifras exactas y cita la fuente",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "price-1"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "alteration_price"
+          ],
+          "aspects": [
+            "price"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "price",
+              "kind": "aspect",
+              "start": 22,
+              "end": 36,
+              "origin": "current_user"
+            },
+            {
+              "concept": "alteration_price",
+              "kind": "topic",
+              "start": 11,
+              "end": 17,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "approved",
+        "reason": "coverage_verified",
+        "signature": {
+          "topics": [
+            "alteration_price"
+          ],
+          "aspects": [
+            "price"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "price",
+              "kind": "aspect",
+              "start": 22,
+              "end": 36,
+              "origin": "current_user"
+            },
+            {
+              "concept": "alteration_price",
+              "kind": "topic",
+              "start": 11,
+              "end": 17,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [
+          "price-1"
+        ],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": [
+          "7973faa026dc2289959ab87dbbce5dee671af0b1c61aa4aef0eb120b7b7c0799",
+          "bd49c93e0a711e075e29f5f4e8877f3605eaf4158b11601442dfecb25caff33e"
+        ]
+      },
+      "simulated_retained_ids": [
+        "price-1"
+      ],
+      "selection_added_ids": [],
+      "simulated_route": "rag",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-formats-06",
+      "category": "formats",
+      "question": "Resume las reglas de inventario en dos viñetas",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "stock-1"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "inventory"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "inventory",
+              "kind": "topic",
+              "start": 21,
+              "end": 31,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "resume",
+              "start": 0,
+              "end": 6
+            },
+            {
+              "token": "reglas",
+              "start": 11,
+              "end": 17
+            },
+            {
+              "token": "dos",
+              "start": 35,
+              "end": 38
+            },
+            {
+              "token": "vinetas",
+              "start": 39,
+              "end": 46
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "inventory"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "inventory",
+              "kind": "topic",
+              "start": 21,
+              "end": 31,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "resume",
+              "start": 0,
+              "end": 6
+            },
+            {
+              "token": "reglas",
+              "start": 11,
+              "end": 17
+            },
+            {
+              "token": "dos",
+              "start": 35,
+              "end": 38
+            },
+            {
+              "token": "vinetas",
+              "start": 39,
+              "end": 46
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "uncertain",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-acl-01",
+      "category": "acl",
+      "question": "Consulta la tarifa como CAJA",
+      "role": "CAJA",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "price-1"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "alteration_price"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "alteration_price",
+              "kind": "topic",
+              "start": 12,
+              "end": 18,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "approved",
+        "reason": "coverage_verified",
+        "signature": {
+          "topics": [
+            "alteration_price"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "alteration_price",
+              "kind": "topic",
+              "start": 12,
+              "end": 18,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [
+          "price-1"
+        ],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": [
+          "7973faa026dc2289959ab87dbbce5dee671af0b1c61aa4aef0eb120b7b7c0799",
+          "bd49c93e0a711e075e29f5f4e8877f3605eaf4158b11601442dfecb25caff33e"
+        ]
+      },
+      "simulated_retained_ids": [
+        "price-1"
+      ],
+      "selection_added_ids": [],
+      "simulated_route": "rag",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-acl-02",
+      "category": "acl",
+      "question": "Consulta la tarifa como MODISTA",
+      "role": "MODISTA",
+      "baseline_route": "no_evidence",
+      "target_executed": true,
+      "baseline_sent_ids": [],
+      "strict": null,
+      "exploratory": null,
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "no_evidence",
+      "expected_route": "no_evidence",
+      "baseline_metrics": null,
+      "exploratory_metrics": null,
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-acl-03",
+      "category": "acl",
+      "question": "Consulta inventario como INV_BOUTIQUE",
+      "role": "INV_BOUTIQUE",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "stock-1"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "inventory"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "inventory",
+              "kind": "topic",
+              "start": 9,
+              "end": 19,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "approved",
+        "reason": "coverage_verified",
+        "signature": {
+          "topics": [
+            "inventory"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "inventory",
+              "kind": "topic",
+              "start": 9,
+              "end": 19,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [
+          "stock-1"
+        ],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": [
+          "67a8cf5b252e9fabd9c4f5649615cdc15667783acac6031d530093447e152a5d",
+          "bd49c93e0a711e075e29f5f4e8877f3605eaf4158b11601442dfecb25caff33e"
+        ]
+      },
+      "simulated_retained_ids": [
+        "stock-1"
+      ],
+      "selection_added_ids": [],
+      "simulated_route": "rag",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-acl-04",
+      "category": "acl",
+      "question": "Consulta inventario como CAJA",
+      "role": "CAJA",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "price-1"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "inventory"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "inventory",
+              "kind": "topic",
+              "start": 9,
+              "end": 19,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "not_covered",
+        "reason": "coverage_subject_mismatch",
+        "signature": {
+          "topics": [
+            "inventory"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "inventory",
+              "kind": "topic",
+              "start": 9,
+              "end": 19,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "no_evidence",
+      "expected_route": "no_evidence",
+      "baseline_metrics": null,
+      "exploratory_metrics": null,
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-acl-05",
+      "category": "acl",
+      "question": "Consulta taller como MODISTA",
+      "role": "MODISTA",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "workshop"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "workshop",
+              "kind": "topic",
+              "start": 9,
+              "end": 15,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "not_covered",
+        "reason": "coverage_tangential_unit",
+        "signature": {
+          "topics": [
+            "workshop"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "workshop",
+              "kind": "topic",
+              "start": 9,
+              "end": 15,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "no_evidence",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 0.2,
+        "mrr": 0.2
+      },
+      "exploratory_metrics": {
+        "hit": 0,
+        "recall": 0.0,
+        "precision": 0,
+        "mrr": 0
+      },
+      "new_loss_of_gold_evidence": true,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-acl-06",
+      "category": "acl",
+      "question": "Consulta tarifa con el rol DOC",
+      "role": "DOC",
+      "baseline_route": "unknown",
+      "target_executed": false,
+      "baseline_sent_ids": [],
+      "strict": null,
+      "exploratory": null,
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "unknown",
+      "expected_route": "forbidden",
+      "baseline_metrics": null,
+      "exploratory_metrics": null,
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-acl-07",
+      "category": "acl",
+      "question": "Continúa la tarifa después de revocar la ACL",
+      "role": "CAJA",
+      "baseline_route": "no_evidence",
+      "target_executed": true,
+      "baseline_sent_ids": [],
+      "strict": null,
+      "exploratory": null,
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "no_evidence",
+      "expected_route": "no_evidence",
+      "baseline_metrics": null,
+      "exploratory_metrics": null,
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-acl-08",
+      "category": "acl",
+      "question": "Continúa el procedimiento después de retirar su publicación",
+      "role": "ADMIN",
+      "baseline_route": "no_evidence",
+      "target_executed": true,
+      "baseline_sent_ids": [],
+      "strict": null,
+      "exploratory": null,
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "no_evidence",
+      "expected_route": "no_evidence",
+      "baseline_metrics": null,
+      "exploratory_metrics": null,
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-acl-09",
+      "category": "acl",
+      "question": "Consulta tarifa como ADMIN",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "price-1"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "alteration_price"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "alteration_price",
+              "kind": "topic",
+              "start": 9,
+              "end": 15,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "approved",
+        "reason": "coverage_verified",
+        "signature": {
+          "topics": [
+            "alteration_price"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "alteration_price",
+              "kind": "topic",
+              "start": 9,
+              "end": 15,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [
+          "price-1"
+        ],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": [
+          "7973faa026dc2289959ab87dbbce5dee671af0b1c61aa4aef0eb120b7b7c0799",
+          "bd49c93e0a711e075e29f5f4e8877f3605eaf4158b11601442dfecb25caff33e"
+        ]
+      },
+      "simulated_retained_ids": [
+        "price-1"
+      ],
+      "selection_added_ids": [],
+      "simulated_route": "rag",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-acl-10",
+      "category": "acl",
+      "question": "Consulta inventario como INV_TALLER",
+      "role": "INV_TALLER",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "stock-1"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "inventory"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "inventory",
+              "kind": "topic",
+              "start": 9,
+              "end": 19,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "approved",
+        "reason": "coverage_verified",
+        "signature": {
+          "topics": [
+            "inventory"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "inventory",
+              "kind": "topic",
+              "start": 9,
+              "end": 19,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [
+          "stock-1"
+        ],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": [
+          "67a8cf5b252e9fabd9c4f5649615cdc15667783acac6031d530093447e152a5d",
+          "bd49c93e0a711e075e29f5f4e8877f3605eaf4158b11601442dfecb25caff33e"
+        ]
+      },
+      "simulated_retained_ids": [
+        "stock-1"
+      ],
+      "selection_added_ids": [],
+      "simulated_route": "rag",
+      "expected_route": "rag",
+      "baseline_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "exploratory_metrics": {
+        "hit": 1,
+        "recall": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-no_evidence-01",
+      "category": "no_evidence",
+      "question": "¿Qué procedimiento publicado regula bordados con hilo de oro?",
+      "role": "ADMIN",
+      "baseline_route": "rag",
+      "target_executed": true,
+      "baseline_sent_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "strict": {
+        "verdict": "uncertain",
+        "reason": "coverage_human_review_pending",
+        "signature": {
+          "topics": [
+            "embroidery"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [
+            "gold_thread"
+          ],
+          "spans": [
+            {
+              "concept": "gold_thread",
+              "kind": "qualifier",
+              "start": 49,
+              "end": 60,
+              "origin": "current_user"
+            },
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 5,
+              "end": 18,
+              "origin": "current_user"
+            },
+            {
+              "concept": "embroidery",
+              "kind": "topic",
+              "start": 36,
+              "end": 44,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exploratory": {
+        "verdict": "not_covered",
+        "reason": "coverage_subject_mismatch",
+        "signature": {
+          "topics": [
+            "embroidery"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [
+            "gold_thread"
+          ],
+          "spans": [
+            {
+              "concept": "gold_thread",
+              "kind": "qualifier",
+              "start": 49,
+              "end": 60,
+              "origin": "current_user"
+            },
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 5,
+              "end": 18,
+              "origin": "current_user"
+            },
+            {
+              "concept": "embroidery",
+              "kind": "topic",
+              "start": 36,
+              "end": 44,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "no_evidence",
+      "expected_route": "no_evidence",
+      "baseline_metrics": null,
+      "exploratory_metrics": null,
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-no_evidence-02",
+      "category": "no_evidence",
+      "question": "¿Cuántas pruebas exige un vestido de ceremonia con plumas?",
+      "role": "ADMIN",
+      "baseline_route": "no_evidence",
+      "target_executed": true,
+      "baseline_sent_ids": [],
+      "strict": null,
+      "exploratory": null,
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "no_evidence",
+      "expected_route": "no_evidence",
+      "baseline_metrics": null,
+      "exploratory_metrics": null,
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    },
+    {
+      "case_id": "rag04-no_evidence-03",
+      "category": "no_evidence",
+      "question": "¿Qué plazo exacto publicado tienen los ajustes de encaje?",
+      "role": "ADMIN",
+      "baseline_route": "no_evidence",
+      "target_executed": true,
+      "baseline_sent_ids": [],
+      "strict": null,
+      "exploratory": null,
+      "simulated_retained_ids": [],
+      "selection_added_ids": [],
+      "simulated_route": "no_evidence",
+      "expected_route": "no_evidence",
+      "baseline_metrics": null,
+      "exploratory_metrics": null,
+      "new_loss_of_gold_evidence": false,
+      "unauthorized_simulated_ids": []
+    }
+  ],
+  "prerequisites": [
+    {
+      "case_id": "rag04-followup-01",
+      "turn": 0,
+      "question": "¿Cómo se confirma el diseño y se toman medidas para el vestido?",
+      "decision": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "design",
+            "garment",
+            "measurements"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            },
+            {
+              "concept": "design",
+              "kind": "topic",
+              "start": 21,
+              "end": 27,
+              "origin": "current_user"
+            },
+            {
+              "concept": "measurements",
+              "kind": "topic",
+              "start": 39,
+              "end": 46,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 55,
+              "end": 62,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "confirma",
+              "start": 9,
+              "end": 17
+            },
+            {
+              "token": "toman",
+              "start": 33,
+              "end": 38
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      }
+    },
+    {
+      "case_id": "rag04-followup-02",
+      "turn": 0,
+      "question": "¿Cómo se confirma el diseño y se toman medidas para el vestido?",
+      "decision": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "design",
+            "garment",
+            "measurements"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            },
+            {
+              "concept": "design",
+              "kind": "topic",
+              "start": 21,
+              "end": 27,
+              "origin": "current_user"
+            },
+            {
+              "concept": "measurements",
+              "kind": "topic",
+              "start": 39,
+              "end": 46,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 55,
+              "end": 62,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "confirma",
+              "start": 9,
+              "end": 17
+            },
+            {
+              "token": "toman",
+              "start": 33,
+              "end": 38
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      }
+    },
+    {
+      "case_id": "rag04-followup-03",
+      "turn": 0,
+      "question": "¿Cómo se hacen los vestidos?",
+      "decision": {
+        "verdict": "approved",
+        "reason": "coverage_verified",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 19,
+              "end": 27,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": true,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4"
+        ],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": [
+          "430c6426a758b8cf9a39078a6264e98fcd73c52d8778e1afddcd8e1fb70d3a40",
+          "bd49c93e0a711e075e29f5f4e8877f3605eaf4158b11601442dfecb25caff33e"
+        ]
+      }
+    },
+    {
+      "case_id": "rag04-followup-04",
+      "turn": 0,
+      "question": "¿Cómo se hacen los vestidos?",
+      "decision": {
+        "verdict": "approved",
+        "reason": "coverage_verified",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 19,
+              "end": 27,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": true,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4"
+        ],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": [
+          "430c6426a758b8cf9a39078a6264e98fcd73c52d8778e1afddcd8e1fb70d3a40",
+          "bd49c93e0a711e075e29f5f4e8877f3605eaf4158b11601442dfecb25caff33e"
+        ]
+      }
+    },
+    {
+      "case_id": "rag04-followup-05",
+      "turn": 0,
+      "question": "¿Cómo se hacen los vestidos?",
+      "decision": {
+        "verdict": "approved",
+        "reason": "coverage_verified",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 19,
+              "end": 27,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": true,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4"
+        ],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": [
+          "430c6426a758b8cf9a39078a6264e98fcd73c52d8778e1afddcd8e1fb70d3a40",
+          "bd49c93e0a711e075e29f5f4e8877f3605eaf4158b11601442dfecb25caff33e"
+        ]
+      }
+    },
+    {
+      "case_id": "rag04-followup-06",
+      "turn": 0,
+      "question": "Explica el proceso del vestido hasta el trazado del patrón",
+      "decision": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "garment",
+            "pattern"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 11,
+              "end": 18,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 23,
+              "end": 30,
+              "origin": "current_user"
+            },
+            {
+              "concept": "pattern",
+              "kind": "topic",
+              "start": 52,
+              "end": 58,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "trazado",
+              "start": 40,
+              "end": 47
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      }
+    },
+    {
+      "case_id": "rag04-followup-07",
+      "turn": 0,
+      "question": "Explícame la tarifa de arreglos",
+      "decision": {
+        "verdict": "approved",
+        "reason": "coverage_verified",
+        "signature": {
+          "topics": [
+            "alteration_price",
+            "alterations"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "alteration_price",
+              "kind": "topic",
+              "start": 13,
+              "end": 19,
+              "origin": "current_user"
+            },
+            {
+              "concept": "alterations",
+              "kind": "topic",
+              "start": 23,
+              "end": 31,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [
+          "price-1"
+        ],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": [
+          "7973faa026dc2289959ab87dbbce5dee671af0b1c61aa4aef0eb120b7b7c0799",
+          "bd49c93e0a711e075e29f5f4e8877f3605eaf4158b11601442dfecb25caff33e"
+        ]
+      }
+    },
+    {
+      "case_id": "rag04-acl-07",
+      "turn": 0,
+      "question": "Explícame la tarifa de arreglos",
+      "decision": {
+        "verdict": "approved",
+        "reason": "coverage_verified",
+        "signature": {
+          "topics": [
+            "alteration_price",
+            "alterations"
+          ],
+          "aspects": [],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "alteration_price",
+              "kind": "topic",
+              "start": 13,
+              "end": 19,
+              "origin": "current_user"
+            },
+            {
+              "concept": "alterations",
+              "kind": "topic",
+              "start": 23,
+              "end": 31,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [
+          "price-1"
+        ],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": [
+          "7973faa026dc2289959ab87dbbce5dee671af0b1c61aa4aef0eb120b7b7c0799",
+          "bd49c93e0a711e075e29f5f4e8877f3605eaf4158b11601442dfecb25caff33e"
+        ]
+      }
+    },
+    {
+      "case_id": "rag04-acl-08",
+      "turn": 0,
+      "question": "¿Cómo se hacen los vestidos?",
+      "decision": {
+        "verdict": "approved",
+        "reason": "coverage_verified",
+        "signature": {
+          "topics": [
+            "garment"
+          ],
+          "aspects": [
+            "procedure"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "procedure",
+              "kind": "aspect",
+              "start": 1,
+              "end": 5,
+              "origin": "current_user"
+            },
+            {
+              "concept": "garment",
+              "kind": "topic",
+              "start": 19,
+              "end": 27,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": true,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4"
+        ],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": [
+          "430c6426a758b8cf9a39078a6264e98fcd73c52d8778e1afddcd8e1fb70d3a40",
+          "bd49c93e0a711e075e29f5f4e8877f3605eaf4158b11601442dfecb25caff33e"
+        ]
+      }
+    }
+  ],
+  "controls": [
+    {
+      "case_id": "coverage-control-01",
+      "polarity": "positive",
+      "expected_decision": "approved",
+      "decision": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "skirt_panels"
+          ],
+          "aspects": [
+            "sequence"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "sequence",
+              "kind": "aspect",
+              "start": 5,
+              "end": 21,
+              "origin": "current_user"
+            },
+            {
+              "concept": "skirt_panels",
+              "kind": "topic",
+              "start": 48,
+              "end": 64,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "ficha",
+              "start": 34,
+              "end": 39
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exact_decision_match": false,
+      "unsafe_acceptance": false,
+      "history_basis": "no_current_authorized_anchor",
+      "annotation_human_reviewed": false
+    },
+    {
+      "case_id": "coverage-control-02",
+      "polarity": "negative",
+      "expected_decision": "not_covered",
+      "decision": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "skirt_panels"
+          ],
+          "aspects": [
+            "sequence"
+          ],
+          "qualifiers": [
+            "thermal_rhinestones"
+          ],
+          "spans": [
+            {
+              "concept": "thermal_rhinestones",
+              "kind": "qualifier",
+              "start": 70,
+              "end": 97,
+              "origin": "current_user"
+            },
+            {
+              "concept": "sequence",
+              "kind": "aspect",
+              "start": 5,
+              "end": 21,
+              "origin": "current_user"
+            },
+            {
+              "concept": "skirt_panels",
+              "kind": "topic",
+              "start": 49,
+              "end": 65,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "documenta",
+              "start": 22,
+              "end": 31
+            },
+            {
+              "token": "ficha",
+              "start": 35,
+              "end": 40
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exact_decision_match": false,
+      "unsafe_acceptance": false,
+      "history_basis": "no_current_authorized_anchor",
+      "annotation_human_reviewed": false
+    },
+    {
+      "case_id": "coverage-control-03",
+      "polarity": "positive",
+      "expected_decision": "approved",
+      "decision": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "simple_mending"
+          ],
+          "aspects": [
+            "price"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "simple_mending",
+              "kind": "topic",
+              "start": 27,
+              "end": 43,
+              "origin": "current_user"
+            },
+            {
+              "concept": "price",
+              "kind": "aspect",
+              "start": 5,
+              "end": 11,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "figura",
+              "start": 12,
+              "end": 18
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exact_decision_match": false,
+      "unsafe_acceptance": false,
+      "history_basis": "no_current_authorized_anchor",
+      "annotation_human_reviewed": false
+    },
+    {
+      "case_id": "coverage-control-04",
+      "polarity": "negative",
+      "expected_decision": "not_covered",
+      "decision": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "simple_mending"
+          ],
+          "aspects": [
+            "quantity"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "quantity",
+              "kind": "aspect",
+              "start": 1,
+              "end": 17,
+              "origin": "current_user"
+            },
+            {
+              "concept": "simple_mending",
+              "kind": "topic",
+              "start": 53,
+              "end": 69,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "parches",
+              "start": 21,
+              "end": 28
+            },
+            {
+              "token": "disponibles",
+              "start": 33,
+              "end": 44
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exact_decision_match": false,
+      "unsafe_acceptance": false,
+      "history_basis": "no_current_authorized_anchor",
+      "annotation_human_reviewed": false
+    },
+    {
+      "case_id": "coverage-control-05",
+      "polarity": "positive",
+      "expected_decision": "approved",
+      "decision": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "fastener_kit"
+          ],
+          "aspects": [
+            "quantity"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "fastener_kit",
+              "kind": "topic",
+              "start": 31,
+              "end": 45,
+              "origin": "current_user"
+            },
+            {
+              "concept": "quantity",
+              "kind": "aspect",
+              "start": 1,
+              "end": 16,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "contiene",
+              "start": 17,
+              "end": 25
+            },
+            {
+              "token": "cada",
+              "start": 26,
+              "end": 30
+            },
+            {
+              "token": "lirio",
+              "start": 46,
+              "end": 51
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exact_decision_match": false,
+      "unsafe_acceptance": false,
+      "history_basis": "no_current_authorized_anchor",
+      "annotation_human_reviewed": false
+    },
+    {
+      "case_id": "coverage-control-06",
+      "polarity": "negative",
+      "expected_decision": "not_covered",
+      "decision": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "fastener_kit"
+          ],
+          "aspects": [
+            "duration"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "fastener_kit",
+              "kind": "topic",
+              "start": 42,
+              "end": 56,
+              "origin": "current_user"
+            },
+            {
+              "concept": "duration",
+              "kind": "aspect",
+              "start": 1,
+              "end": 13,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "dura",
+              "start": 14,
+              "end": 18
+            },
+            {
+              "token": "preparacion",
+              "start": 22,
+              "end": 33
+            },
+            {
+              "token": "cada",
+              "start": 37,
+              "end": 41
+            },
+            {
+              "token": "lirio",
+              "start": 57,
+              "end": 62
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exact_decision_match": false,
+      "unsafe_acceptance": false,
+      "history_basis": "no_current_authorized_anchor",
+      "annotation_human_reviewed": false
+    },
+    {
+      "case_id": "coverage-control-07",
+      "polarity": "positive",
+      "expected_decision": "approved",
+      "decision": {
+        "verdict": "uncertain",
+        "reason": "coverage_logic_uncertain",
+        "signature": {
+          "topics": [
+            "packaging_lot"
+          ],
+          "aspects": [
+            "approval_actor"
+          ],
+          "qualifiers": [
+            "cover_required"
+          ],
+          "spans": [
+            {
+              "concept": "packaging_lot",
+              "kind": "topic",
+              "start": 6,
+              "end": 21,
+              "origin": "current_user"
+            },
+            {
+              "concept": "cover_required",
+              "kind": "qualifier",
+              "start": 22,
+              "end": 47,
+              "origin": "current_user"
+            },
+            {
+              "concept": "approval_actor",
+              "kind": "aspect",
+              "start": 50,
+              "end": 64,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "si",
+              "start": 0,
+              "end": 2
+            },
+            {
+              "token": "embalaje",
+              "start": 68,
+              "end": 76
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_logic_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exact_decision_match": false,
+      "unsafe_acceptance": false,
+      "history_basis": "no_current_authorized_anchor",
+      "annotation_human_reviewed": false
+    },
+    {
+      "case_id": "coverage-control-08",
+      "polarity": "negative",
+      "expected_decision": "not_covered",
+      "decision": {
+        "verdict": "uncertain",
+        "reason": "coverage_logic_uncertain",
+        "signature": {
+          "topics": [
+            "packaging_lot"
+          ],
+          "aspects": [
+            "approval_actor"
+          ],
+          "qualifiers": [
+            "cover_not_required"
+          ],
+          "spans": [
+            {
+              "concept": "cover_not_required",
+              "kind": "qualifier",
+              "start": 22,
+              "end": 50,
+              "origin": "current_user"
+            },
+            {
+              "concept": "packaging_lot",
+              "kind": "topic",
+              "start": 6,
+              "end": 21,
+              "origin": "current_user"
+            },
+            {
+              "concept": "approval_actor",
+              "kind": "aspect",
+              "start": 53,
+              "end": 67,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "si",
+              "start": 0,
+              "end": 2
+            },
+            {
+              "token": "embalaje",
+              "start": 71,
+              "end": 79
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_logic_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exact_decision_match": false,
+      "unsafe_acceptance": false,
+      "history_basis": "no_current_authorized_anchor",
+      "annotation_human_reviewed": false
+    },
+    {
+      "case_id": "coverage-control-09",
+      "polarity": "positive",
+      "expected_decision": "approved",
+      "decision": {
+        "verdict": "approved",
+        "reason": "coverage_verified",
+        "signature": {
+          "topics": [
+            "sample_books"
+          ],
+          "aspects": [
+            "quantity_comparison"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "sample_books",
+              "kind": "topic",
+              "start": 10,
+              "end": 34,
+              "origin": "current_user"
+            },
+            {
+              "concept": "quantity_comparison",
+              "kind": "aspect",
+              "start": 37,
+              "end": 58,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_intent_resolved"
+        },
+        "proposed_fragment_ids": [
+          "samples-fragment-1"
+        ],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": [
+          "028572569d0fcb3f8205c6c4d7360457227a8d02c144451440149c9287a8ba03",
+          "28a6c0a69583d99089722dc1629f600078849ab6fe19cd69d685bc945d56b1cd"
+        ]
+      },
+      "exact_decision_match": true,
+      "unsafe_acceptance": false,
+      "history_basis": "no_current_authorized_anchor",
+      "annotation_human_reviewed": false
+    },
+    {
+      "case_id": "coverage-control-10",
+      "polarity": "negative",
+      "expected_decision": "not_covered",
+      "decision": {
+        "verdict": "uncertain",
+        "reason": "coverage_terms_uncertain",
+        "signature": {
+          "topics": [
+            "sample_books"
+          ],
+          "aspects": [
+            "movement_record"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "sample_books",
+              "kind": "topic",
+              "start": 7,
+              "end": 31,
+              "origin": "current_user"
+            },
+            {
+              "concept": "movement_record",
+              "kind": "aspect",
+              "start": 33,
+              "end": 53,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [
+            {
+              "token": "3",
+              "start": 57,
+              "end": 58
+            },
+            {
+              "token": "fichas",
+              "start": 59,
+              "end": 65
+            },
+            {
+              "token": "alba",
+              "start": 69,
+              "end": 73
+            },
+            {
+              "token": "brisa",
+              "start": 76,
+              "end": 81
+            }
+          ],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_terms_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exact_decision_match": false,
+      "unsafe_acceptance": false,
+      "history_basis": "no_current_authorized_anchor",
+      "annotation_human_reviewed": false
+    },
+    {
+      "case_id": "coverage-control-11",
+      "polarity": "positive",
+      "expected_decision": "approved",
+      "decision": {
+        "verdict": "uncertain",
+        "reason": "coverage_subject_uncertain",
+        "signature": {
+          "topics": [],
+          "aspects": [
+            "included_items",
+            "price"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "included_items",
+              "kind": "aspect",
+              "start": 1,
+              "end": 18,
+              "origin": "current_user"
+            },
+            {
+              "concept": "price",
+              "kind": "aspect",
+              "start": 23,
+              "end": 30,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_subject_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exact_decision_match": false,
+      "unsafe_acceptance": false,
+      "history_basis": "proposed_fixture_precondition_not_recorded_live_prior_turn",
+      "annotation_human_reviewed": false
+    },
+    {
+      "case_id": "coverage-control-12",
+      "polarity": "negative",
+      "expected_decision": "not_covered",
+      "decision": {
+        "verdict": "not_covered",
+        "reason": "coverage_evidence_empty",
+        "signature": {
+          "topics": [],
+          "aspects": [
+            "included_items",
+            "price"
+          ],
+          "qualifiers": [],
+          "spans": [
+            {
+              "concept": "included_items",
+              "kind": "aspect",
+              "start": 1,
+              "end": 18,
+              "origin": "current_user"
+            },
+            {
+              "concept": "price",
+              "kind": "aspect",
+              "start": 23,
+              "end": 30,
+              "origin": "current_user"
+            }
+          ],
+          "unknown": [],
+          "complete": false,
+          "compare": false,
+          "reason": "coverage_subject_uncertain"
+        },
+        "proposed_fragment_ids": [],
+        "release_allowed": false,
+        "authoritative": false,
+        "manifest_fingerprints": []
+      },
+      "exact_decision_match": true,
+      "unsafe_acceptance": false,
+      "history_basis": "no_current_authorized_anchor",
+      "annotation_human_reviewed": false
+    }
+  ],
+  "performance": {
+    "basis": "per_target_two_gate_passes_strict_plus_research_not_http_latency",
+    "samples": 40,
+    "p95_ms": 3.8027000045985915,
+    "max_ms": 3.9832000038586557,
+    "memory_before": {
+      "rss_bytes": 35377152,
+      "peak_rss_bytes": 35688448
+    },
+    "memory_after": {
+      "rss_bytes": 36249600,
+      "peak_rss_bytes": 36249600
+    },
+    "rss_growth_bytes": 872448
+  },
+  "inputs_sha256": {
+    "corpus": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+    "observations": "fb19faf3b67b23cfc90adf7b0c2b7891ba2e9f531c6a9398e1d992fa2dca35c3",
+    "journal": "1e10e2515124c9a178334cdf3cae248875bf165cd2437eee09d8ad242db98f9c",
+    "package": "b49001815d859d76cbcf25d293f235e48e9b4b35f13e1de21adadf22d7c026f4",
+    "controls": "2ad9a709dd37b8436da397f6ffc53c7c356232510671a510df14d126dc28d27f"
+  },
+  "source_sha256": {
+    "backend/scripts/replay_leny_rag_coverage.py": "65d311936220f936bc479a4e9cba76dfb5eabd246415060dffac8310f79fe117",
+    "backend/app/services/leny_rag_coverage.py": "cdc1267906f4f6ab0f4d864daa57103df152ceff8772e2949adde9f05f295825",
+    "backend/app/services/leny_service.py": "57331e2a2964d29476f3bebe90668c579677ce88c44dceab289e6c78103bbc42",
+    "backend/app/services/leny_rag_diagnostics.py": "0c50ae366e2e61ad3e657b929bfe3b88b5ff0e3f97398d9ed1fb58b5911f2bb2"
+  }
+}

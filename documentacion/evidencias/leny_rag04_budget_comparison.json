@@ -1,0 +1,95 @@
+{
+  "scope": "synthetic_budget_experiment",
+  "frozen84_corpus_evaluation": false,
+  "context": 4096,
+  "generation_reserve": 768,
+  "margin": 256,
+  "model": "qwen3.5:4b-q4_K_M",
+  "embeddings": "qwen3-embedding:0.6b",
+  "notes": [
+    "Exactly one diagnostic case per variant; no p95 or generalization claim.",
+    "Complete fragments; byte counts are not exact token counts.",
+    "Sources/steps/claims still require semantic review; this is evidence of selection and model use, not certification.",
+    "Adaptive remains optional; keep_alive0, two cold equal measurements and no generated probe text transmitted.",
+    "Diagnostic experiments preceded per-source relevance selection. A final frozen-code budget sweep is required for the final candidate."
+  ],
+  "variants": [
+    {
+      "variant": "2048",
+      "evidence_bytes": 1362,
+      "prompt_tokens": 678,
+      "probe_prompt_tokens": null,
+      "probe_count": 0,
+      "selected_fixture_fragment_ids": [
+        "proc-4",
+        "work-1",
+        "price-1",
+        "stock-1"
+      ],
+      "procedure_fragments_selected": 1,
+      "latency_seconds": 18.906000000002678,
+      "completed": true,
+      "artifact": "leny_rag04_budget_2048.json",
+      "configuration_sha256": "427e81eef9a27191b3dfec9732116d922cc432d02d1254d7a4aff17b39a76a5f",
+      "source_snapshot": "a6d682fdb416b124da90d89e765932c9b70b3c5dab6fded0b8739d33e970a187"
+    },
+    {
+      "variant": "2304",
+      "evidence_bytes": 1362,
+      "prompt_tokens": 678,
+      "probe_prompt_tokens": null,
+      "probe_count": 0,
+      "selected_fixture_fragment_ids": [
+        "proc-4",
+        "work-1",
+        "price-1",
+        "stock-1"
+      ],
+      "procedure_fragments_selected": 1,
+      "latency_seconds": 18.077999999994063,
+      "completed": true,
+      "artifact": "leny_rag04_budget_2304.json",
+      "configuration_sha256": "88f20a9775d80e4684fcc7e10955cfcf893da91748e5269203b3c536292110ca",
+      "source_snapshot": "1dc603359e4ecd143a673f6cdd6e791dd6e21b9e7a75b05ffeabf805bc477eab"
+    },
+    {
+      "variant": "2560",
+      "evidence_bytes": 1362,
+      "prompt_tokens": 678,
+      "probe_prompt_tokens": null,
+      "probe_count": 0,
+      "selected_fixture_fragment_ids": [
+        "proc-4",
+        "work-1",
+        "price-1",
+        "stock-1"
+      ],
+      "procedure_fragments_selected": 1,
+      "latency_seconds": 19.578000000008615,
+      "completed": true,
+      "artifact": "leny_rag04_budget_2560.json",
+      "configuration_sha256": "bc643bdcb9b69d924afc55101d4e561182146ba59358aab63127e8643081501f",
+      "source_snapshot": "1dc603359e4ecd143a673f6cdd6e791dd6e21b9e7a75b05ffeabf805bc477eab"
+    },
+    {
+      "variant": "adaptive",
+      "evidence_bytes": 3906,
+      "prompt_tokens": 1206,
+      "probe_prompt_tokens": 1207,
+      "probe_count": 2,
+      "selected_fixture_fragment_ids": [
+        "proc-4",
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "work-1"
+      ],
+      "procedure_fragments_selected": 4,
+      "latency_seconds": 27.577999999994063,
+      "completed": true,
+      "artifact": "leny_rag04_budget_adaptive.json",
+      "configuration_sha256": "503402d962b81c06e8611f0bbbc1daa8de8b8d5825e0fbb1c3df379da1db18f3",
+      "source_snapshot": "3361f3ff6304e8b9fcc72522ee753d902945d4f1e4e8c90f348c37aba7e78b43"
+    }
+  ]
+}

@@ -1,0 +1,854 @@
+{
+  "scope": "synthetic_paired_candidate_review_unblinding_key",
+  "corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "before_artifact": "leny_rag04_candidate_final_development.json",
+  "before_artifact_sha256": "809fb811631dffc5f6119ea70168dfdf26b58b0edc15d0fb8039f587e4c3919a",
+  "after_artifact": "leny_rag04_quality_resumed_development.json",
+  "after_artifact_sha256": "432a97466f4c87f572828bd6dd5a91c303a732befa075be6216b7fcce97dfd56",
+  "model_identity": {
+    "chat_digest": "d8b0f5e9760cd1682034f292d7ef72ec46f432149be0df7574bf2d6e92e38c04",
+    "embedding_digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d"
+  },
+  "cases": {
+    "rag04-natural-01": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-natural-02": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-natural-03": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-natural-04": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-natural-05": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-natural-06": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-natural-07": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-natural-08": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-natural-09": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-natural-10": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-natural-11": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-natural-12": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-natural-13": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-natural-14": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-literal-01": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-literal-02": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-literal-03": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-literal-04": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-literal-05": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-literal-06": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-literal-07": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-literal-08": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-literal-09": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-literal-10": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-literal-11": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-synonyms-01": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-synonyms-02": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-synonyms-03": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-synonyms-04": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-synonyms-05": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-synonyms-06": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-synonyms-07": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-synonyms-08": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-synonyms-09": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-synonyms-10": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-synonyms-11": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-followup-01": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-followup-02": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-followup-03": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-followup-04": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-followup-05": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-followup-06": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-followup-07": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-multi_conflict-01": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-multi_conflict-02": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-multi_conflict-03": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-multi_conflict-04": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-multi_conflict-05": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-multi_conflict-06": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-multi_conflict-07": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-formats-01": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-formats-02": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-formats-03": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-formats-04": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-formats-05": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-formats-06": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-formats-07": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-out_capabilities-01": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-out_capabilities-02": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-out_capabilities-03": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-out_capabilities-04": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-out_capabilities-05": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-out_capabilities-06": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-out_capabilities-07": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-acl-01": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-acl-02": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-acl-03": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-acl-04": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-acl-05": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-acl-06": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-acl-07": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-acl-08": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-acl-09": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-acl-10": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-attacks-01": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-attacks-02": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-attacks-03": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-attacks-04": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-attacks-05": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-attacks-06": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-attacks-07": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    },
+    "rag04-no_evidence-01": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-no_evidence-02": {
+      "A": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      },
+      "B": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      }
+    },
+    "rag04-no_evidence-03": {
+      "A": {
+        "revision": "before",
+        "artifact": "leny_rag04_candidate_final_development.json"
+      },
+      "B": {
+        "revision": "after",
+        "artifact": "leny_rag04_quality_resumed_development.json"
+      }
+    }
+  }
+}

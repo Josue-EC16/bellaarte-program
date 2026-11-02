@@ -3,7 +3,7 @@ from pathlib import Path
 import casbin
 from fastapi import APIRouter
 
-from app.api.routers import auditoria, auth, backups, boutique, clients, currencies, economia, fletes, notifications, orders, receipts, roles, users, workshop
+from app.api.routers import auditoria, auth, backups, boutique, clients, currencies, economia, fletes, leny, leny_documents, leny_contextualizations, notifications, orders, receipts, roles, users, workshop
 from app.services.seed_service import sync_policy_file
 
 
@@ -26,3 +26,8 @@ api_router.include_router(notifications.router, prefix="/notificaciones", tags=[
 api_router.include_router(economia.router, prefix="/economia", tags=["economia"])
 api_router.include_router(auditoria.router, prefix="/auditoria", tags=["auditoria"])
 api_router.include_router(backups.router, prefix="/backups", tags=["backups"])
+api_router.include_router(leny.router, prefix="/leny", tags=["leny"])
+api_router.include_router(leny_documents.router, prefix="/leny/documents", tags=["leny-documents"])
+api_router.include_router(leny_contextualizations.router, prefix="/leny", tags=["leny-contextualizations"])
+from app.api.routers import leny_sources
+api_router.include_router(leny_sources.router, prefix="/leny", tags=["leny-sources"])

@@ -1,0 +1,59 @@
+{
+  "backup_verified": true,
+  "isolated_restore_verified": true,
+  "business_profile": "legacy",
+  "business_configuration_modified": false,
+  "migrations_executed": false,
+  "code_sha256": "f40ac015be8d53277ddc599875e5ca9d173fb9d619775bbd5c9c9d313ab0fd55",
+  "backup_sha256": "0f8c4e0fff285543b67b14d09735b07e5ca73ada20f9454ee7beb8f135278711",
+  "backup_bytes": 4713984,
+  "revision": "20261020_0021",
+  "original_count": 2,
+  "preview_count": 1,
+  "data_fingerprints": {
+    "documentos": {
+      "count": 2,
+      "fingerprint": "6ec531d7a97315468ffc9571d882c513"
+    },
+    "documento_versiones": {
+      "count": 2,
+      "fingerprint": "331ca226a1e50e60dbe35247671614bf"
+    },
+    "documento_roles_lectura": {
+      "count": 4,
+      "fingerprint": "c36555e2905cb2658cedf70e35173e7b"
+    },
+    "carpetas": {
+      "count": 2,
+      "fingerprint": "7a3b6d9a3064264096c7ba7693f1f341"
+    },
+    "carpeta_roles_lectura": {
+      "count": 4,
+      "fingerprint": "ccbbac450509c4300f0e100a5b7a1b11"
+    },
+    "rag_indexaciones": {
+      "count": 3,
+      "fingerprint": "2e782ddaf0a28e238556e4442490723a"
+    },
+    "rag_fragmentos": {
+      "count": 51,
+      "fingerprint": "cbc7acb8627885e7fdadb72f076e0687"
+    },
+    "rag_embeddings": {
+      "count": 47,
+      "fingerprint": "530793d4a3384aa9000e34c29cd28f15"
+    }
+  },
+  "restored_vector_extension": [
+    "0.8.7",
+    "leny"
+  ],
+  "business_library_unchanged": true,
+  "env_unchanged": true,
+  "source_freeze_verified": true,
+  "isolated_database_removed": true,
+  "created_utc": "2026-10-21T15:26:19.188520+00:00",
+  "state": "prepared_not_activated",
+  "private_package_id": "leny-rag-v1-piloto-20261021-r3",
+  "backup_location": "existing private document backup directory; details in protected recovery-proof.json"
+}

@@ -1,6 +1,6 @@
 import { CloseCircleOutlined, EyeOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import { Alert, App as AntdApp, Button, Col, DatePicker, Descriptions, Drawer, Form, Input, InputNumber, Modal, Row, Select, Table, Tag, Typography } from 'antd'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 
 import { apiClient } from '../../api/client'
@@ -22,6 +22,7 @@ export function OrderPaymentsPage() {
   const [exchangeRates, setExchangeRates] = useState([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const mutationPending = useRef(false)
   const [error, setError] = useState(null)
   const [formError, setFormError] = useState(null)
   const [filters, setFilters] = useState({ search: '', state: undefined, payment_method: undefined, currency_id: undefined, date_from: undefined, date_to: undefined })
@@ -122,6 +123,8 @@ export function OrderPaymentsPage() {
   }, [loadPayments])
 
   const submitPayment = async (values) => {
+    if (mutationPending.current) return
+    mutationPending.current = true
     setSaving(true)
     setFormError(null)
     try {
@@ -142,6 +145,7 @@ export function OrderPaymentsPage() {
     } catch (requestError) {
       setFormError(requestError.response?.data?.detail || 'No fue posible registrar el pago.')
     } finally {
+      mutationPending.current = false
       setSaving(false)
     }
   }
@@ -171,13 +175,16 @@ export function OrderPaymentsPage() {
     { title: 'FECHA', dataIndex: 'fecha', render: (value) => new Date(value).toLocaleString() },
     { title: 'MONEDA', render: (_, record) => record.currency?.codigo },
     { title: 'MONTO ORIGEN', dataIndex: 'monto', render: (value, record) => `${Number(value).toFixed(2)} ${record.currency?.codigo}` },
-    { title: 'MONTO Bs', dataIndex: 'monto_bob', render: formatBs },
+    { title: 'COBRO BRUTO BS', dataIndex: 'gross_amount_bob', render: formatBs },
+    { title: 'DEVUELTO BS', dataIndex: 'refunded_amount_bob', render: formatBs },
+    { title: 'ACREDITADO NETO BS', dataIndex: 'effective_amount_bob', render: formatBs },
     { title: 'MÉTODO', dataIndex: 'metodo_pago', render: (value) => labelFromOptions(METODO_PAGO_OPTIONS, value) },
     { title: 'ESTADO', dataIndex: 'estado', render: (value) => <Tag color={paymentStateColor(value)}>{labelFromOptions(ESTADO_PAGO_OPTIONS, value)}</Tag> },
     {
       title: 'ACCIONES',
       render: (_, record) => (
         <Row gutter={[8, 8]}>
+          {user?.permissions?.includes('economy_refunds:create') ? <Col><Button onClick={() => navigate(buildRefundPath({ originType: 'PAGO_PEDIDO', originId: record.id, returnTo: `${location.pathname}${location.search}` }))}>DEVOLVER DINERO</Button></Col> : null}
           {canView ? <Col><Button icon={<EyeOutlined />} onClick={() => openDetail(record)}>Ver</Button></Col> : null}
           {canAnnul && record.estado === 'registrado' ? <Col><Button danger icon={<CloseCircleOutlined />} onClick={() => setAnnulPayment(record)}>Anular</Button></Col> : null}
         </Row>
@@ -232,7 +239,7 @@ export function OrderPaymentsPage() {
               showIcon
               style={{ marginBottom: 16 }}
               message={`Pedido ${selectedOrder.codigo}: ${selectedOrder.client_name}`}
-              description={`El precio total del pedido es de Bs. ${formatBs(selectedOrder.precio_total)} y el cliente ya pagó Bs. ${formatBs(selectedOrder.total_pagado)}.`}
+              description={`El precio total del pedido es de Bs. ${formatBs(selectedOrder.precio_total)} y el cliente tiene acreditado neto Bs. ${formatBs(selectedOrder.total_pagado)}.`}
             />
           ) : null}
 
@@ -303,7 +310,9 @@ export function OrderPaymentsPage() {
               <Descriptions.Item label="Fecha">{new Date(detail.fecha).toLocaleString()}</Descriptions.Item>
               <Descriptions.Item label="Moneda">{detail.currency?.codigo}</Descriptions.Item>
               <Descriptions.Item label="Monto origen">{`${Number(detail.monto || 0).toFixed(2)} ${detail.currency?.codigo}`}</Descriptions.Item>
-              <Descriptions.Item label="Monto en Bs">{formatBs(detail.monto_bob)}</Descriptions.Item>
+              <Descriptions.Item label="Cobro bruto histórico Bs">{formatBs(detail.gross_amount_bob)}</Descriptions.Item>
+              <Descriptions.Item label="Total devuelto Bs">{formatBs(detail.refunded_amount_bob)}</Descriptions.Item>
+              <Descriptions.Item label="Acreditado neto Bs">{formatBs(detail.effective_amount_bob)}</Descriptions.Item>
               <Descriptions.Item label="Método">{labelFromOptions(METODO_PAGO_OPTIONS, detail.metodo_pago)}</Descriptions.Item>
               <Descriptions.Item label="Estado"><Tag color={paymentStateColor(detail.estado)}>{labelFromOptions(ESTADO_PAGO_OPTIONS, detail.estado)}</Tag></Descriptions.Item>
               <Descriptions.Item label="Comprobante interno">
@@ -317,25 +326,28 @@ export function OrderPaymentsPage() {
       </Drawer>
 
       <Modal title="Anular pago" open={Boolean(annulPayment)} onCancel={() => setAnnulPayment(null)} onOk={async () => {
+        if (mutationPending.current) return
+        mutationPending.current = true
         try {
           const values = await annulForm.validateFields()
+          setSaving(true)
+          await apiClient.post('/economia/anulaciones-operativas', {
+            origin_type: 'PAGO_PEDIDO', origin_id: annulPayment.id,
+            target_state: 'ANULADA', reason: values.reason,
+          })
           setAnnulPayment(null)
           annulForm.resetFields()
-          navigate(
-            buildRefundPath({
-              originType: 'PAGO_PEDIDO',
-              originId: annulPayment.id,
-              targetState: 'ANULADA',
-              returnTo: `${location.pathname}${location.search}`,
-            }),
-            { state: { refundReason: values.reason } },
-          )
+          message.success('PAGO ANULADO OPERATIVAMENTE. NO SE HA DEVUELTO DINERO.')
+          await Promise.all([loadPayments(), loadReferences()])
         } catch (requestError) {
           if (requestError?.errorFields) return
-          message.error('NO FUE POSIBLE INICIAR EL FLUJO ECONÓMICO DE DEVOLUCIÓN.')
+          message.error(requestError.response?.data?.detail || 'NO FUE POSIBLE ANULAR EL PAGO.')
+        } finally {
+          mutationPending.current = false
+          setSaving(false)
         }
       }} confirmLoading={saving} okButtonProps={{ danger: true }} maskClosable={false}>
-        <Alert type="warning" showIcon message="La anulación del pago te redirigirá al flujo económico obligatorio para registrar cuánto dinero se devuelve a la clienta." style={{ marginBottom: 12 }} />
+        <Alert type="warning" showIcon message="La anulación operativa no devuelve dinero. El cobro histórico se conserva y la devolución se registra por separado." style={{ marginBottom: 12 }} />
         <Form form={annulForm} layout="vertical">
           <Form.Item name="reason" label="Motivo de anulación" rules={[{ required: true, message: 'Debe escribir el motivo.' }, { min: 5, message: 'El motivo debe ser más específico.' }]} normalize={(value) => (value || '').toUpperCase()}><Input.TextArea rows={3} placeholder="Describe el motivo de anulación" /></Form.Item>
         </Form>

@@ -1,0 +1,114 @@
+{
+  "schema_version": "leny-supervised-pilot-activation-v1",
+  "created_utc": "2026-10-21T16:08:23.648355+00:00",
+  "pilot_id": "leny-rag-v1-piloto-20261021-r3",
+  "state": "ACTIVE_SUPERVISED_PILOT_FORMAL_ACCEPTANCE_PENDING",
+  "owner_confirmation_received": true,
+  "database": "bellaarte_db",
+  "port": 5432,
+  "revision": "20261020_0021",
+  "effective_runtime_settings_verified_in_existing_authenticated_admin_ui": {
+    "leny_rag_profile": "rag4_v1",
+    "leny_rag_evidence_mode": "adaptive",
+    "leny_rag_ranking": "hybrid",
+    "leny_rag_adaptive_token_probe": true,
+    "leny_temperature": 0.0
+  },
+  "runtime_policy_verified_in_completed_message": "rag4-v4",
+  "runtime_model_verified_in_completed_message": "qwen3.5:4b-q4_K_M",
+  "coverage_verifier_enabled": false,
+  "source_freeze_still_matches": true,
+  "source_freeze_manifest_sha256": "9e286ce7445a887cd25688d46d62e5119137d0c9b8c79a1cbebd15626f7fbb0c",
+  "env_before_sha256": "af3153226e1db483c81dc70b002d5cc8b46ec193df98624d7552195d703583cc",
+  "env_after_sha256": "aa3707f5543b26014cd36a8022448bd0362c80efa8637b1c7794b01c40d08b97",
+  "dacl_preserved": true,
+  "final_replacement_full_security_descriptor_preserved": true,
+  "backend_reloaded": true,
+  "backend_child_pid_before": 4284,
+  "backend_child_pid_after": 16448,
+  "frontend_restarted": false,
+  "ollama_restarted": false,
+  "worker_started": false,
+  "frontend": "http://localhost:5173/app/leny",
+  "backend": "http://127.0.0.1:8000",
+  "authenticated_admin_session_works": true,
+  "chat_from_erp_verified": true,
+  "browser_check": {
+    "input": "Hola",
+    "content_classification": "non_documentary_technical_greeting",
+    "generating_stop_state_observed": true,
+    "completed_reply_visible": true,
+    "history_reloaded_and_same_two_messages_visible": true,
+    "private_document_content_read": false,
+    "commercial_operations_executed": false
+  },
+  "new_test_conversations": 1,
+  "new_test_messages": 2,
+  "operational_message_metadata": {
+    "role": "assistant",
+    "status": "completed",
+    "model": "qwen3.5:4b-q4_K_M",
+    "category": "business",
+    "reason": "identity_or_greeting",
+    "policy_version": "rag4-v4",
+    "content_bytes": 608
+  },
+  "public_tables_compared": 42,
+  "public_data_unchanged": true,
+  "public_comparison_exclusions": [
+    "auditoria_sistema",
+    "cuentas"
+  ],
+  "comparison_exclusion_reason": "audit and normal authentication activity are outside the commercial data comparison",
+  "documents_acl_publications_versions_vectors_unchanged": true,
+  "preexisting_history_unchanged": true,
+  "role_codes_unchanged": true,
+  "model_digests": {
+    "qwen3-embedding:0.6b": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d",
+    "qwen3.5:4b-q4_K_M": "d8b0f5e9760cd1682034f292d7ef72ec46f432149be0df7574bf2d6e92e38c04"
+  },
+  "inference_state_after": "idle",
+  "global_generation_locks_after": 0,
+  "ollama_models_loaded_after_check": 0,
+  "published_sql_eligible_for_verified_session_actor": {
+    "documents": 2,
+    "fragments": 47
+  },
+  "source_check_scope": "SQL eligibility/counts and unauthenticated HTTP401 only; no private source opened",
+  "unauthenticated_endpoint_statuses": {
+    "unauthenticated_conversations_http_status": 401,
+    "unauthenticated_config_http_status": 401,
+    "unauthenticated_source_http_status": 401
+  },
+  "migrations_executed": false,
+  "dependencies_installed": false,
+  "full84_executed": false,
+  "holdout36_executed": false,
+  "business_document_semantic_e2e_executed": false,
+  "real_cancellation_test_repeated": false,
+  "known_critical_semantic_failures": [
+    "rag04-acl-04",
+    "rag04-no_evidence-01"
+  ],
+  "new_noncritical_observation": "Technical greeting misnamed BOB as Bolivares; generic capability wording requires human review. No financial action or enterprise-document assertion was executed.",
+  "earlier_preventive_rollback": {
+    "full_descriptor_check_differed": true,
+    "rollback_to_exact_legacy_confirmed": true,
+    "backend_reload_attempted": false,
+    "legacy_effective_verified_in_admin_ui": true,
+    "reason": "initial_check_compared_full_security_descriptor_instead_of_DACL"
+  },
+  "rollback_ready": "restore exact env.before from protected r3 packet and reload backend; no DB rollback",
+  "rollout_scope": "all currently authorized LENY users; not restricted to ADMIN",
+  "pending": [
+    "owner enterprise-document review and source navigation",
+    "human semantic rubric",
+    "independent holdout preparation/validation",
+    "formal SPEC04 acceptance"
+  ],
+  "artifacts_sha256": {
+    "leny_rag04_pilot_activation_before.json": "0ada737aeaf22c6d37db79334e6c8d0a5b4bb2c0a2d2fbbce4c0d5ebe3df35f8",
+    "leny_rag04_pilot_activation_after.json": "3cab67f0199e529d0afd9f735cdf81e0683ce18dff946970b03243410ca4cb5f",
+    "leny_rag04_pilot_activation_event.json": "a770b2e23216bae334ccf499639539010d3466e81ce323b8243778306896bc16"
+  }
+}

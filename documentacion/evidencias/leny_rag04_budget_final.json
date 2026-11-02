@@ -1,0 +1,396 @@
+{
+  "schema_version": "rag04-real-synthetic-observations-v1",
+  "data_classification": "synthetic",
+  "profile": "rag4_v1",
+  "corpus_sha256": "252905ddbc93286a6b2b4160704ba8b912450e0edc2b417f458cd27778dd1882",
+  "model_identity": {
+    "chat_digest": "d8b0f5e9760cd1682034f292d7ef72ec46f432149be0df7574bf2d6e92e38c04",
+    "embedding_digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d"
+  },
+  "configuration_sha256": "427e81eef9a27191b3dfec9732116d922cc432d02d1254d7a4aff17b39a76a5f",
+  "snapshot_manifest_sha256": "0eb52084cfd5ac503c139c2804109cff984862423c4193d2e0016cfc492121c9",
+  "base_corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "fixture_variant": "procedure_stress",
+  "fixture_variant_sha256": "252905ddbc93286a6b2b4160704ba8b912450e0edc2b417f458cd27778dd1882",
+  "comparison_contract_sha256": "6ed167daf5aaaf6dafff1fa4cb9d3f64b1a2e08af769c5eb034b4c6af3c24429",
+  "cases": [
+    {
+      "case_id": "budget-fixed-2048",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 18734.000000011292,
+      "request_id": "0aa6dbf2-3e04-41db-8a9a-5b3975a560fb",
+      "latency_scope": "generation_request",
+      "response_text": "La evidencia disponible es parcial; esta respuesta se limita a los puntos documentados.\n\nLa confecci\u00f3n de los vestidos en BELLAARTE BOUTIQUE sigue un procedimiento documentado que incluye las siguientes etapas clave:\n\n1.  **Preparaci\u00f3n y organizaci\u00f3n:** Se deben separar las piezas por pedido, identificar cada paquete y revisar la disponibilidad del material antes de programar el corte [S2].\n2.  **Confecci\u00f3n:** El documento de evaluaci\u00f3n establece un procedimiento ficticio para la confecci\u00f3n, aunque no detalla los pasos intermedios de corte o ensamblaje en este fragmento espec\u00edfico [S1].\n3.  **Control de calidad:** Una vez realizados los trabajos, se debe revisar las costuras, realizar la limpieza y verificar el cierre del vestido [S1].\n4.  **Entrega y registro:** El producto solo puede entregarse despu\u00e9s de obtener la aprobaci\u00f3n final; en ese momento es obligatorio registrar la entrega [S1].\n\n*Nota: La evidencia disponible indica que los detalles espec\u00edficos sobre el proceso de corte o ensamblaje no est\u00e1n completos en los documentos citados, por lo que se limita a describir las fases de organizaci\u00f3n previa y control posterior al documento actual.*",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "business_context",
+        "verdict": "partial",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "selected": 2,
+          "evidence_bytes": 1090,
+          "prompt_bytes": 2365,
+          "citations": 2,
+          "prompt_eval_count": 524,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 233
+        },
+        "durations_seconds": {
+          "embedding_and_release": 3.937000000005355,
+          "search": 0.01600000000325963,
+          "context": 0.0,
+          "review": 5.921999999991385,
+          "first_content": 15.312000000005355,
+          "generation": 8.610000000000582,
+          "load": 3.8691412,
+          "prompt_eval": 0.338009,
+          "eval": 4.382968,
+          "provider_total": 8.5929817,
+          "total": 18.734000000011292
+        }
+      },
+      "ram_available_before_bytes": 4588527616,
+      "ram_available_after_bytes": 3631964160,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-4",
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "work-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-4",
+        "work-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-4",
+        "work-1"
+      ],
+      "citation_fragment_ids": [
+        "work-1",
+        "proc-4"
+      ],
+      "review": null,
+      "budget_variant": {
+        "mode": "fixed",
+        "bytes": 2048,
+        "probe": false
+      },
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "budget-fixed-2304",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 17750.0,
+      "request_id": "e518124a-b611-41be-b650-693e92e41f0c",
+      "latency_scope": "generation_request",
+      "response_text": "La evidencia disponible es parcial; esta respuesta se limita a los puntos documentados.\n\nLa confecci\u00f3n de los vestidos en BELLAARTE BOUTIQUE sigue un procedimiento documentado que incluye las siguientes etapas clave:\n\n1.  **Preparaci\u00f3n inicial:** Se deben separar las piezas por pedido, identificar cada paquete y revisar la disponibilidad del material antes de programar el corte [S2].\n2.  **Confecci\u00f3n y acabado:** El proceso finaliza con la revisi\u00f3n de costuras, limpieza y cierre [S1].\n3.  **Entrega:** La entrega se realiza \u00fanicamente despu\u00e9s de la aprobaci\u00f3n final, momento en el cual debe registrarse dicha entrega [S1].\n\n*Nota: La evidencia disponible es parcial y no detalla los pasos intermedios entre la preparaci\u00f3n del material y la confecci\u00f3n inicial, ni especifica responsables ni obligaciones adicionales.*",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "business_context",
+        "verdict": "partial",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "selected": 2,
+          "evidence_bytes": 1090,
+          "prompt_bytes": 2365,
+          "citations": 2,
+          "prompt_eval_count": 524,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 163
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.0,
+          "search": 0.014999999999417923,
+          "context": 0.0,
+          "review": 5.985000000000582,
+          "first_content": 15.672000000005937,
+          "generation": 7.562000000005355,
+          "load": 4.1145149,
+          "prompt_eval": 0.354086,
+          "eval": 3.059996,
+          "provider_total": 7.5339771,
+          "total": 17.75
+        }
+      },
+      "ram_available_before_bytes": 4219740160,
+      "ram_available_after_bytes": 3458543616,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-4",
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "work-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-4",
+        "work-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-4",
+        "work-1"
+      ],
+      "citation_fragment_ids": [
+        "work-1",
+        "proc-4"
+      ],
+      "review": null,
+      "budget_variant": {
+        "mode": "fixed",
+        "bytes": 2304,
+        "probe": false
+      },
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "budget-fixed-2560",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 18156.000000002678,
+      "request_id": "7e884413-6228-4b3a-a5b3-03ffd419523d",
+      "latency_scope": "generation_request",
+      "response_text": "La evidencia disponible es parcial; esta respuesta se limita a los puntos documentados.\n\nLa confecci\u00f3n de los vestidos en BELLAARTE BOUTIQUE sigue un procedimiento documentado que incluye las siguientes etapas clave:\n\n1.  **Preparaci\u00f3n inicial:** Se deben separar las piezas por pedido, identificar cada paquete y revisar la disponibilidad del material antes de programar el corte [S2].\n2.  **Confecci\u00f3n y control de calidad:** El proceso finaliza con la revisi\u00f3n de costuras, limpieza y cierre del vestido [S1].\n3.  **Entrega:** La entrega del producto solo se realiza despu\u00e9s de la aprobaci\u00f3n final, momento en el cual debe registrarse dicha entrega [S1].\n\n*Nota: Esta informaci\u00f3n se basa exclusivamente en los fragmentos del procedimiento ficticio proporcionados como evidencia.*",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "business_context",
+        "verdict": "partial",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "selected": 2,
+          "evidence_bytes": 1090,
+          "prompt_bytes": 2365,
+          "citations": 2,
+          "prompt_eval_count": 524,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 154
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.76600000000326,
+          "search": 0.01600000000325963,
+          "context": 0.0,
+          "review": 6.187000000005355,
+          "first_content": 16.23399999999674,
+          "generation": 6.98399999999674,
+          "load": 3.734934,
+          "prompt_eval": 0.329437,
+          "eval": 2.899482,
+          "provider_total": 6.9700093,
+          "total": 18.139999999999418
+        }
+      },
+      "ram_available_before_bytes": 4021215232,
+      "ram_available_after_bytes": 3506151424,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-4",
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "work-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-4",
+        "work-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-4",
+        "work-1"
+      ],
+      "citation_fragment_ids": [
+        "work-1",
+        "proc-4"
+      ],
+      "review": null,
+      "budget_variant": {
+        "mode": "fixed",
+        "bytes": 2560,
+        "probe": false
+      },
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "budget-adaptive",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 31875.0,
+      "request_id": "972b9bdb-a81a-49ab-9ee4-285c305dac73",
+      "latency_scope": "generation_request",
+      "response_text": "La confecci\u00f3n de los vestidos en BELLAARTE BOUTIQUE sigue un procedimiento documentado que integra la planificaci\u00f3n, la ejecuci\u00f3n t\u00e9cnica y el control de calidad. A continuaci\u00f3n se presenta la secuencia operativa basada en las fuentes disponibles:\n\n**1. Planificaci\u00f3n y Preparaci\u00f3n Inicial**\nAntes de iniciar cualquier trabajo f\u00edsico, es fundamental confirmar el dise\u00f1o aprobado [S2]. Posteriormente, se deben tomar las medidas del cliente con su consentimiento expl\u00edcito [S2]. Una vez obtenidas las medidas, se procede a trazar el patr\u00f3n antes de realizar el corte de la tela [S2]. Paralelamente, para la gesti\u00f3n log\u00edstica, se debe separar las piezas por pedido, identificar cada paquete y revisar la disponibilidad del material necesario antes de programar el corte [S5].\n\n**2. Ejecuci\u00f3n del Corte y Preparaci\u00f3n de Piezas**\nEl corte de la tela est\u00e1 restringido exclusivamente a la cantidad identificada en el pedido espec\u00edfico; no se permite cortar m\u00e1s material sin autorizaci\u00f3n correspondiente [S3]. Tras el corte, las piezas resultantes deben ser hilvanadas para su primera prueba o ensayo [S3].\n\n**3. Pruebas y Correcciones**\nSe realiza una prueba de ajuste sobre las piezas hilvanadas para verificar la concordancia con las medidas establecidas [S4]. Si se detectan diferencias entre el patr\u00f3n trazado y el resultado de la prueba, es obligatorio corregir las desviaciones antes de proceder a la costura definitiva [S4].\n\n**4. Costura Final y Entrega**\nUna vez que todas las piezas han sido aprobadas tras las correcciones necesarias, se procede a coser las mismas para finalizar el vestido [S4]. Posteriormente, se revisan las costuras, la limpieza general y el cierre del producto [S1]. El vestido solo puede ser entregado al cliente despu\u00e9s de recibir la aprobaci\u00f3n final; en ese momento se debe registrar formalmente la entrega [S1].\n\nEste flujo asegura que cada etapa est\u00e9 documentada y controlada antes de avanzar a la siguiente.",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "business_context",
+        "verdict": "sufficient",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "probe_count": 2,
+          "probe_prompt_tokens": 1207,
+          "selected": 5,
+          "evidence_bytes": 3906,
+          "prompt_bytes": 5601,
+          "citations": 5,
+          "prompt_eval_count": 1206,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 426
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.2810000000026776,
+          "search": 0.01600000000325963,
+          "context_probe": 9.73399999999674,
+          "context": 9.73399999999674,
+          "review": 5.312999999994645,
+          "first_content": 24.703999999997905,
+          "generation": 12.328999999997905,
+          "load": 3.6398081,
+          "prompt_eval": 0.548585,
+          "eval": 8.12341,
+          "provider_total": 12.3148187,
+          "total": 31.860000000000582
+        }
+      },
+      "ram_available_before_bytes": 4049362944,
+      "ram_available_after_bytes": 3434463232,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-4",
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "work-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-4",
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "work-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-4",
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "work-1"
+      ],
+      "citation_fragment_ids": [
+        "proc-1",
+        "work-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "review": null,
+      "budget_variant": {
+        "mode": "adaptive",
+        "bytes": 2048,
+        "probe": true
+      },
+      "abstained": false,
+      "error_code": null
+    }
+  ],
+  "human_review_complete": false,
+  "business_e2e_executed": false,
+  "holdout_executed": false,
+  "extraction_formats_evaluated": false,
+  "settings": {
+    "leny_enabled": true,
+    "leny_documents_enabled": true,
+    "leny_rag_enabled": true,
+    "leny_rag_chat_enabled": true,
+    "leny_keep_alive": "0",
+    "leny_num_ctx": 4096,
+    "leny_num_predict": 768,
+    "leny_rate_limit": 5,
+    "leny_rate_window_seconds": 60,
+    "leny_rag_min_ram_bytes": 2147483648,
+    "leny_rag_min_resident_ram_bytes": 1073741824,
+    "leny_rag_cpu_threads": 4,
+    "leny_rag_batch_size": 2,
+    "leny_rag_top_k": 5,
+    "leny_rag_candidates": 20,
+    "leny_rag_profile": "rag4_v1",
+    "leny_rag_evidence_mode": "fixed",
+    "leny_rag_max_context_bytes": 2048,
+    "leny_rag_ranking": "semantic",
+    "leny_rag_adaptive_token_probe": false,
+    "leny_rag_neighbor_chunks": false
+  },
+  "runner_mode": "budget",
+  "original_representation": "generated synthetic originals with fixture source types; extraction not evaluated by this runner",
+  "created_at_utc": "2026-10-20T15:16:26.526838+00:00",
+  "scope": "synthetic_budget_experiment_not_development_corpus",
+  "procedure_stress_bytes": 900,
+  "source_files_sha256": {
+    "backend/app/core/config.py": "255d9f75fc82305d7d226840f2b42a5069168e8d285f728082a2b4bae28736c1",
+    "backend/app/services/leny_coordination.py": "b171770ebd63b568aa58b5c2279b2bc5bca8bc24abe771cdcc9a9127139958b5",
+    "backend/app/services/leny_document_backup.py": "d9e1c6017f88bcbb56332f43425308b2f5ed48dded95e89a59dedf0e21dba841",
+    "backend/app/services/leny_document_maintenance.py": "5641fdc19b799973ed1a1cf1ddbfb82fcb14fb6e67c1243fd3a0ee635aecec82",
+    "backend/app/services/leny_document_service.py": "4d4a92270425f73f7f2bed4c576f980584e86f363d1c0370a94188fe69a5b248",
+    "backend/app/services/leny_document_storage.py": "223508eb4132df2eaad9278ea03091a745051a051c2f5b38d0c95af92b96fe58",
+    "backend/app/services/leny_document_validation.py": "f308f43588151c2a7486fb084c812edc1243625954dcc3775fac1b7f790f0397",
+    "backend/app/services/leny_guard.py": "ba74e106b6ed020837e8cbcca08179c3aa7cbdee76b0b5329f40a64999d29a01",
+    "backend/app/services/leny_inference_state.py": "851fcef019370000a372c9841120412cd49ab7489c2207924bdb2530336f4fb2",
+    "backend/app/services/leny_ollama.py": "d03765e1b1ec83d33333122100807366207fbeb334dba8c73adffadbf65a2d85",
+    "backend/app/services/leny_policy.py": "c2fb1eda757aa9d35c1902c026cd0769b759dd65ffa0a844043471f44b6a0fbd",
+    "backend/app/services/leny_rag_chunking.py": "02860cd76bc90608cd8dd86a9157e837995a527cab8169b4ad429c107f4e8ad5",
+    "backend/app/services/leny_rag_common.py": "bd7489fa48291c2de77cf507a2755514317eec6ffeed1436cf3cf928795d66cc",
+    "backend/app/services/leny_rag_diagnostics.py": "38f0673706b995fc602f1de72120c84f7eb319256ae3c376c57df77acbd40abd",
+    "backend/app/services/leny_rag_embeddings.py": "00f9b633c68afc0ecbde6df74fa8aa6c6b941c3068c78b26456ed4e0b7b38db1",
+    "backend/app/services/leny_rag_evaluation.py": "4323a43bbafe828d11e34600ce075078bca51c4472a489cf788600cf0185bab6",
+    "backend/app/services/leny_rag_extraction.py": "aa50c998a24e83267323c2ad750d4060a7260a7a66620b67dfa5ee4113f2fa54",
+    "backend/app/services/leny_rag_publication.py": "13137d3aca1ab3ea8e77810bcc5b21b734bb2aacd652a80efa188473842e5717",
+    "backend/app/services/leny_rag_retrieval.py": "a159f0d818dfdbe4e010f0bf4b2505e7b98e12fe3846bbe7d8c31ea9e54ef972",
+    "backend/app/services/leny_rag_routing.py": "847c3b90568a2b76f9a76d66bec5fefad21dedcddffd6738efcd688a26e60538",
+    "backend/app/services/leny_rag_service.py": "01c320001d8fdb679c2636c3bb404d11b6a812fa9a1e0f4244d874a52f9f2dd1",
+    "backend/app/services/leny_rag_sources.py": "2895fff0d04a6efbeab1e7222a6e683a9dc18e67bab7e198299e3de91534d19c",
+    "backend/app/services/leny_rag_worker.py": "d0588f175ea57ced1874b9cb69aa437808a06f8643e694a78095f1042e17ab80",
+    "backend/app/services/leny_rate_limit.py": "7c4a0c01c3219f7243d27e27b404e095974b76c0c8b0ee8a4af5d4521d96f4ef",
+    "backend/app/services/leny_service.py": "8642c7a8ebcbf83a9d9d3ada66c0a23b8caaa16916b8a3af9f4b3591c4a45a29",
+    "backend/app/services/leny_store.py": "c4a72093f9e66b438b75a187c917cc4b6597f7c89a63510f1244ae5c742dea4e",
+    "backend/scripts/run_leny_rag_quality.py": "fcfdc0e3fedc95bd6045565ec584f9d0347c0f0268fa652a90fdef5ccd41660a"
+  },
+  "cleanup_confirmed": true
+}

@@ -10,6 +10,7 @@ import {
   App as AntdApp,
   Button,
   Col,
+  Checkbox,
   Descriptions,
   Drawer,
   Form,
@@ -21,7 +22,7 @@ import {
   Tag,
   Typography,
 } from 'antd'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 
 import { apiClient } from '../../api/client'
@@ -30,7 +31,8 @@ import { FORM_COMMON_PROPS, FORM_DRAWER_SUBMIT_PROPS } from '../../components/fo
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
 import { EconomySummaryCard } from './EconomySummaryCard'
-import { ESTADO_EGRESO_OPTIONS, EXPENSE_TYPE_COLOR, REFUND_TARGET_STATE_OPTIONS, STORAGE_KEYS, TIPO_EGRESO_OPTIONS } from './economyConstants'
+import { RefundReceiptDocument } from './RefundReceiptDocument'
+import { ESTADO_EGRESO_OPTIONS, EXPENSE_TYPE_COLOR, STORAGE_KEYS, TIPO_EGRESO_OPTIONS } from './economyConstants'
 import {
   cutStateLabel,
   expenseStateColor,
@@ -43,6 +45,12 @@ import {
   incomeSourceLabel,
   storeFilters,
 } from './economyUtils'
+
+const PAYMENT_METHODS = [
+  { value: 'efectivo', label: 'EFECTIVO' }, { value: 'qr', label: 'QR' },
+  { value: 'transaccion', label: 'TRANSFERENCIA' }, { value: 'tarjeta', label: 'TARJETA' },
+  { value: 'ticket_o_vale', label: 'TICKET O VALE' },
+]
 
 const DEFAULT_FILTERS = {
   search: '',
@@ -59,7 +67,15 @@ export function EconomyExpensesPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [filters, setFilters] = useState(() => getStoredFilters(STORAGE_KEYS.expenses, DEFAULT_FILTERS))
   const [expenses, setExpenses] = useState([])
-  const [cuts, setCuts] = useState([])
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 25, total: 0 })
+  const [expenseTotal, setExpenseTotal] = useState(0)
+  const { current: currentPage, pageSize } = pagination
+  const [constancia, setConstancia] = useState(null)
+  const expenseRequest = useRef(null)
+  const refundRequest = useRef(null)
+  const referenceRequest = useRef(null)
+  const mutationPending = useRef(false)
+  const [cutCount, setCutCount] = useState(null)
   const [activeCut, setActiveCut] = useState(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -83,10 +99,10 @@ export function EconomyExpensesPage() {
   const refundMode = searchParams.get('mode') === 'refund'
   const refundOriginType = searchParams.get('origin_type')
   const refundOriginId = searchParams.get('origin_id')
-  const refundTargetStatus = searchParams.get('target_status')
   const returnTo = searchParams.get('return_to')
 
   const syncFilterParams = useCallback((nextFilters) => {
+    setPagination((current) => ({ ...current, current: 1 }))
     storeFilters(STORAGE_KEYS.expenses, nextFilters)
     const next = new URLSearchParams(searchParams)
     for (const key of ['search', 'type', 'state', 'cut_id']) {
@@ -100,33 +116,45 @@ export function EconomyExpensesPage() {
   }, [searchParams, setSearchParams])
 
   const loadExpenses = useCallback(async () => {
+    expenseRequest.current?.abort()
+    const controller = new AbortController()
+    expenseRequest.current = controller
     setLoading(true)
     setError(null)
     try {
-      const params = {}
+      const params = { page: currentPage, page_size: pageSize }
       if (filters.search) params.search = filters.search
       if (filters.type) params.type = filters.type
       if (filters.state) params.state = filters.state
       if (filters.cut_id) params.cut_id = filters.cut_id
-      const response = await apiClient.get('/economia/egresos', { params })
-      setExpenses(response.data)
+      const response = await apiClient.get('/economia/egresos', { params, signal: controller.signal })
+      if (controller.signal.aborted) return
+      setExpenses(response.data.items)
+      setPagination((current) => ({ ...current, total: response.data.total }))
+      setExpenseTotal(response.data.total_bob)
     } catch (requestError) {
+      if (controller.signal.aborted) return
       setError(requestError.response?.data?.detail || 'NO FUE POSIBLE CARGAR LOS EGRESOS.')
     } finally {
-      setLoading(false)
+      if (!controller.signal.aborted) setLoading(false)
     }
-  }, [filters])
+  }, [filters, currentPage, pageSize])
 
   const loadReferences = useCallback(async () => {
+    referenceRequest.current?.abort()
+    const controller = new AbortController()
+    referenceRequest.current = controller
     try {
       if (isAdmin) {
-        const cutResponse = await apiClient.get('/economia/cortes-caja')
-        setCuts(cutResponse.data)
+        const cutResponse = await apiClient.get('/economia/cortes-caja', { signal: controller.signal })
+        if (controller.signal.aborted) return
+        setCutCount(cutResponse.data.total)
         setActiveCut(null)
       } else {
-        const ownCutResponse = await apiClient.get('/economia/cortes-caja/me')
+        const ownCutResponse = await apiClient.get('/economia/cortes-caja/me', { signal: controller.signal })
+        if (controller.signal.aborted) return
         setActiveCut(ownCutResponse.data.cut)
-        setCuts([])
+        setCutCount(null)
       }
     } catch {
       return
@@ -135,15 +163,15 @@ export function EconomyExpensesPage() {
 
   const loadRefundContext = useCallback(async () => {
     if (!refundMode || !refundOriginType || !refundOriginId || !canRefund) return
+    refundRequest.current?.abort()
+    const controller = new AbortController()
+    refundRequest.current = controller
     setRefundFormError(null)
     try {
-      const response = await apiClient.get(`/economia/ingresos/${refundOriginType}/${refundOriginId}/refund-context`)
+      const response = await apiClient.get(`/economia/ingresos/${refundOriginType}/${refundOriginId}/refund-context`, { signal: controller.signal })
+      if (controller.signal.aborted) return
       setRefundContext(response.data)
       refundForm.setFieldsValue({
-        target_state:
-          response.data.available_target_states.includes(refundTargetStatus)
-            ? refundTargetStatus
-            : response.data.available_target_states[0],
         refund_amount: response.data.refundable_balance_bob,
         reason: typeof location.state?.refundReason === 'string' ? location.state.refundReason : undefined,
         concepto: response.data.suggested_concept,
@@ -152,11 +180,12 @@ export function EconomyExpensesPage() {
       })
       setRefundOpen(true)
     } catch (requestError) {
+      if (controller.signal.aborted) return
       setRefundContext(null)
       setRefundOpen(false)
       setRefundFormError(requestError.response?.data?.detail || 'NO FUE POSIBLE PREPARAR EL FLUJO DE DEVOLUCIÓN.')
     }
-  }, [canRefund, location.state, refundForm, refundMode, refundOriginId, refundOriginType, refundTargetStatus])
+  }, [canRefund, location.state, refundForm, refundMode, refundOriginId, refundOriginType])
 
   useEffect(() => {
     const nextFilters = {
@@ -170,11 +199,14 @@ export function EconomyExpensesPage() {
   }, [])
 
   useEffect(() => {
-    Promise.all([loadExpenses(), loadReferences(), loadRefundContext()]).catch(() => {
-      setError('NO FUE POSIBLE CARGAR EL MÓDULO ECONÓMICO DE EGRESOS.')
-      setLoading(false)
-    })
-  }, [loadExpenses, loadReferences, loadRefundContext])
+    const timer = setTimeout(() => { loadExpenses() }, 300)
+    return () => { clearTimeout(timer); expenseRequest.current?.abort() }
+  }, [loadExpenses])
+  useEffect(() => { loadReferences(); return () => referenceRequest.current?.abort() }, [loadReferences])
+  useEffect(() => {
+    loadRefundContext()
+    return () => refundRequest.current?.abort()
+  }, [loadRefundContext])
 
   const openExpenseDetail = useCallback(async (expenseId) => {
     try {
@@ -186,6 +218,8 @@ export function EconomyExpensesPage() {
   }, [message])
 
   const submitManualExpense = async (values) => {
+    if (mutationPending.current) return
+    mutationPending.current = true
     setSaving(true)
     setFormError(null)
     try {
@@ -200,25 +234,36 @@ export function EconomyExpensesPage() {
       })
       setFormError(resolved.globalMessage)
     } finally {
+      mutationPending.current = false
       setSaving(false)
     }
   }
 
   const submitRefund = async (values) => {
+    if (mutationPending.current || !refundContext?.can_refund) return
+    mutationPending.current = true
     setSaving(true)
     setRefundFormError(null)
     try {
-      await apiClient.post('/economia/devoluciones', {
+      const result = await apiClient.post('/economia/devoluciones', {
         origin_type: refundContext.origin_type,
         origin_id: refundContext.origin_id,
-        target_state: values.target_state,
+        payment_method: values.payment_method,
         refund_amount: values.refund_amount,
         reason: values.reason,
         concepto: values.concepto,
         beneficiario: values.beneficiario,
         observaciones: values.observaciones,
       })
-      message.success('SE REGISTRÓ LA DEVOLUCIÓN Y SE COMPLETÓ LA ANULACIÓN ECONÓMICA.')
+      message.success('SE REGISTRÓ LA DEVOLUCIÓN. EL ESTADO OPERATIVO NO CAMBIA.')
+      if (result.data.constancia_id) {
+        try {
+          const document = await apiClient.get(`/economia/constancias-devolucion/${result.data.constancia_id}`)
+          setConstancia(document.data)
+        } catch {
+          message.warning(`DEVOLUCIÓN GUARDADA. CONSTANCIA #${result.data.constancia_id} DISPONIBLE EN EL DETALLE DEL EGRESO.`)
+        }
+      }
       setRefundOpen(false)
       setRefundContext(null)
       refundForm.resetFields()
@@ -226,20 +271,21 @@ export function EconomyExpensesPage() {
       ;['mode', 'origin_type', 'origin_id', 'target_status', 'return_to'].forEach((key) => next.delete(key))
       setSearchParams(next, { replace: true })
       await Promise.all([loadExpenses(), loadReferences()])
-      if (returnTo) {
-        navigate(returnTo)
-      }
+
     } catch (requestError) {
       const resolved = applyFormApiError(refundForm, requestError, {
         fallbackGlobalMessage: 'NO FUE POSIBLE COMPLETAR LA DEVOLUCIÓN ECONÓMICA.',
       })
       setRefundFormError(resolved.globalMessage)
     } finally {
+      mutationPending.current = false
       setSaving(false)
     }
   }
 
   const submitExpenseAnnul = async () => {
+    if (mutationPending.current) return
+    mutationPending.current = true
     setSaving(true)
     try {
       const values = await annulForm.validateFields()
@@ -255,14 +301,11 @@ export function EconomyExpensesPage() {
       }
       message.error(requestError.response?.data?.detail || 'NO FUE POSIBLE ANULAR EL EGRESO.')
     } finally {
+      mutationPending.current = false
       setSaving(false)
     }
   }
 
-  const cutOptions = useMemo(
-    () => cuts.map((cut) => ({ label: `CORTE #${cut.id} · ${cut.cajero.full_name}`, value: cut.id })),
-    [cuts],
-  )
 
   const columns = [
     {
@@ -283,7 +326,10 @@ export function EconomyExpensesPage() {
     },
     { title: 'CONCEPTO', dataIndex: 'concepto', key: 'concepto' },
     { title: 'BENEFICIARIO', dataIndex: 'beneficiario', key: 'beneficiario', render: (value) => value || 'SIN REGISTRO' },
-    { title: 'MONTO', dataIndex: 'monto', key: 'monto', render: (value) => formatBs(value) },
+    { title: 'MONTO ORIGINAL', dataIndex: 'monto', key: 'monto', render: (value) => formatBs(value) },
+    { title: 'MÉTODO REAL', dataIndex: 'metodo_pago', render: (value) => value === 'transaccion' ? 'TRANSFERENCIA' : value?.toUpperCase() || 'LEGADO / SIN REGISTRO' },
+    { title: 'REINTEGRO POSTERIOR', dataIndex: 'adjusted_amount_bob', render: formatBs },
+    { title: 'SALIDA NETA', dataIndex: 'net_amount_bob', render: formatBs },
     {
       title: 'ESTADO',
       dataIndex: 'estado',
@@ -333,7 +379,7 @@ export function EconomyExpensesPage() {
             Egresos
           </Typography.Title>
           <Typography.Paragraph type="secondary" style={{ marginBottom: 0 }}>
-            Controla salidas de dinero, devoluciones obligatorias y trazabilidad económica del sistema.
+            Controla salidas de dinero, devoluciones y trazabilidad económica del sistema.
           </Typography.Paragraph>
         </div>
         {canCreate ? (
@@ -349,17 +395,17 @@ export function EconomyExpensesPage() {
             <Col xs={24} md={8}>
               <EconomySummaryCard
                 eyebrow="OPERACIÓN ADMIN"
-                title="Egresos globales"
-                value={String(expenses.length)}
+                title="Egresos filtrados"
+                value={String(pagination.total)}
                 accent="#8f3d2e"
-                helper="Puedes registrar egresos sin corte y gestionar devoluciones manuales."
+                helper={`Total de todos los resultados filtrados: ${formatBs(expenseTotal)}`}
               />
             </Col>
             <Col xs={24} md={8}>
               <EconomySummaryCard
                 eyebrow="CORTE DE CAJA"
                 title="Cortes disponibles"
-                value={String(cuts.length)}
+                value={cutCount === null ? 'SIN DATO' : String(cutCount)}
                 accent="#4b7f5a"
                 helper="Filtra egresos por corte cuando quieras revisar un período específico."
               />
@@ -383,8 +429,8 @@ export function EconomyExpensesPage() {
           type="warning"
           showIcon
           style={{ marginBottom: 16 }}
-          message="FLUJO ECONÓMICO OBLIGATORIO DE DEVOLUCIÓN"
-          description="DEBES REGISTRAR EL MONTO DEVUELTO ANTES DE COMPLETAR LA ANULACIÓN O CANCELACIÓN DEL INGRESO ORIGEN."
+          message="DEVOLUCIÓN ECONÓMICA INDEPENDIENTE"
+          description="REGISTRA SOLO DINERO EFECTIVAMENTE DEVUELTO. LA CANCELACIÓN OPERATIVA SE REALIZA POR SEPARADO EN EL MÓDULO DE ORIGEN."
         />
       ) : null}
 
@@ -398,6 +444,7 @@ export function EconomyExpensesPage() {
         />
       ) : null}
 
+      {refundFormError && !refundOpen ? <Alert type="error" showIcon message={refundFormError} style={{ marginBottom: 16 }} /> : null}
       {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
 
       <div className="glass-panel boutique-filter-bar" style={{ marginBottom: 16 }}>
@@ -445,20 +492,11 @@ export function EconomyExpensesPage() {
           </Col>
           {isAdmin ? (
             <Col xs={24} md={7}>
-              <Select
-                allowClear
-                showSearch
-                optionFilterProp="label"
-                placeholder="FILTRAR POR CORTE"
-                options={cutOptions}
-                value={filters.cut_id}
-                onChange={(value) => {
-                  const next = { ...filters, cut_id: value }
-                  setFilters(next)
-                  syncFilterParams(next)
-                }}
-                style={{ width: '100%' }}
-              />
+              <InputNumber min={1} precision={0} aria-label="ID del corte" placeholder="ID DEL CORTE" value={filters.cut_id} onChange={(value) => {
+                const next = { ...filters, cut_id: value || undefined }
+                setFilters(next)
+                syncFilterParams(next)
+              }} style={{ width: '100%' }} />
             </Col>
           ) : null}
         </Row>
@@ -470,7 +508,7 @@ export function EconomyExpensesPage() {
         columns={columns}
         dataSource={expenses}
         loading={loading}
-        pagination={{ pageSize: 10 }}
+        pagination={{ ...pagination, showSizeChanger: true, pageSizeOptions: [25, 50, 100], onChange: (current, pageSize) => setPagination((previous) => ({ ...previous, current, pageSize })) }}
         scroll={{ x: 'max-content' }}
         style={{ borderRadius: 24, overflow: 'hidden' }}
       />
@@ -480,6 +518,7 @@ export function EconomyExpensesPage() {
         width={680}
         open={manualOpen}
         onClose={() => {
+          if (saving) return
           setManualOpen(false)
           setFormError(null)
           manualForm.resetFields()
@@ -489,6 +528,9 @@ export function EconomyExpensesPage() {
       >
         <Form {...FORM_COMMON_PROPS} form={manualForm} onFinish={submitManualExpense}>
           <FormProcessAlert message={formError} />
+          <Form.Item label="MÉTODO REAL DE SALIDA (BOB)" name="metodo_pago" rules={[{ required: true, message: 'SELECCIONA EL MÉTODO REAL.' }]}>
+            <Select options={PAYMENT_METHODS} />
+          </Form.Item>
           <Row gutter={12}>
             <Col xs={24} md={12}>
               <Form.Item
@@ -563,23 +605,24 @@ export function EconomyExpensesPage() {
       </Drawer>
 
       <Drawer
-        title="Flujo obligatorio de devolución"
+        title="Registrar devolución de dinero"
         width={780}
         open={refundOpen}
         onClose={() => {
-          if (refundMode) return
+          if (saving) return
           setRefundOpen(false)
           setRefundContext(null)
           refundForm.resetFields()
         }}
         maskClosable={false}
-        closable={!refundMode}
+        closable={!saving}
         destroyOnClose
       >
         <Form {...FORM_COMMON_PROPS} form={refundForm} onFinish={submitRefund}>
           <FormProcessAlert message={refundFormError} />
           {refundContext ? (
             <>
+              {!refundContext.can_refund ? <Alert type="warning" showIcon message={refundContext.refund_block_reason || 'ESTE ORIGEN NO ADMITE DEVOLUCIÓN.'} style={{ marginBottom: 16 }} /> : null}
               <Descriptions bordered column={2} size="small" style={{ marginBottom: 16 }}>
                 <Descriptions.Item label="ORIGEN">{incomeSourceLabel(refundContext.origin_type)}</Descriptions.Item>
                 <Descriptions.Item label="CÓDIGO">{refundContext.source_code}</Descriptions.Item>
@@ -589,6 +632,8 @@ export function EconomyExpensesPage() {
                   <Tag color={incomeStateColor(refundContext.current_state)}>{refundContext.current_state}</Tag>
                 </Descriptions.Item>
                 <Descriptions.Item label="MONTO ORIGINAL BS">{formatBs(refundContext.amount_bob)}</Descriptions.Item>
+                <Descriptions.Item label="NETO COBRADO">{formatBs(refundContext.net_collected_bob)}</Descriptions.Item>
+                <Descriptions.Item label="PENDIENTE DE DEVOLUCIÓN">{formatBs(refundContext.pending_refund_bob)}</Descriptions.Item>
                 <Descriptions.Item label="MONTO YA DEVUELTO">{formatBs(refundContext.refunded_amount_bob)}</Descriptions.Item>
                 <Descriptions.Item label="SALDO REEMBOLSABLE">{formatBs(refundContext.refundable_balance_bob)}</Descriptions.Item>
                 <Descriptions.Item label="MONEDA ORIGEN">
@@ -602,21 +647,18 @@ export function EconomyExpensesPage() {
                 type="warning"
                 showIcon
                 style={{ marginBottom: 16 }}
-                message="ESTA DEVOLUCIÓN ES OBLIGATORIA PARA COMPLETAR LA ANULACIÓN O CANCELACIÓN DEL INGRESO."
-                description="EL MONTO DEVUELTO SE REGISTRARÁ COMO EGRESO DE TIPO DEVOLUCIÓN Y EL INGRESO ORIGEN QUEDARÁ EN HISTÓRICO, PERO YA CON SU TRAZABILIDAD DE REEMBOLSO."
+                message="ESTA DEVOLUCIÓN NO MODIFICA INVENTARIO NI ESTADO OPERATIVO."
+                description="EL COBRO BRUTO SE CONSERVA. SE ADMITE DEVOLUCIÓN PARCIAL SUCESIVA HASTA EL SALDO PERMITIDO, CON CONSTANCIA INTERNA NO FISCAL."
               />
 
               <Row gutter={12}>
                 <Col xs={24} md={12}>
                   <Form.Item
-                    label="ESTADO DESTINO DEL ORIGEN"
-                    name="target_state"
-                    rules={[{ required: true, message: 'DEBE SELECCIONAR EL ESTADO DESTINO.' }]}
+                    label="MÉTODO REAL DE DEVOLUCIÓN (BOB)"
+                    name="payment_method"
+                    rules={[{ required: true, message: 'SELECCIONA EL MÉTODO REAL.' }]}
                   >
-                    <Select
-                      options={REFUND_TARGET_STATE_OPTIONS.filter((option) => refundContext.available_target_states.includes(option.value))}
-                      placeholder="SELECCIONA EL ESTADO DESTINO"
-                    />
+                    <Select options={PAYMENT_METHODS} />
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={12}>
@@ -641,7 +683,7 @@ export function EconomyExpensesPage() {
                     rules={[{ required: true, message: 'DEBE REGISTRAR EL MOTIVO OPERATIVO.' }]}
                     normalize={(value) => (value || '').toUpperCase()}
                   >
-                    <Input.TextArea rows={3} placeholder="EXPLICA POR QUÉ SE ESTÁ ANULANDO O CANCELANDO EL INGRESO" />
+                    <Input.TextArea rows={3} placeholder="EXPLICA EL MOTIVO DEL REEMBOLSO" />
                   </Form.Item>
                 </Col>
                 <Col xs={24}>
@@ -679,8 +721,8 @@ export function EconomyExpensesPage() {
           )}
           {refundContext ? (
             <Row justify="end" gutter={12}>
-              {!refundMode ? <Col><Button onClick={() => setRefundOpen(false)}>CANCELAR</Button></Col> : null}
-              <Col><Button type="primary" htmlType="submit" loading={saving} {...FORM_DRAWER_SUBMIT_PROPS}>REGISTRAR DEVOLUCIÓN Y CONTINUAR</Button></Col>
+              <Col><Button disabled={saving} onClick={() => { setRefundOpen(false); if (returnTo) navigate(returnTo) }}>VOLVER</Button></Col>
+              <Col><Button type="primary" htmlType="submit" disabled={!refundContext.can_refund} loading={saving} {...FORM_DRAWER_SUBMIT_PROPS}>REGISTRAR DEVOLUCIÓN</Button></Col>
             </Row>
           ) : null}
         </Form>
@@ -694,6 +736,11 @@ export function EconomyExpensesPage() {
         maskClosable={false}
       >
         {detail ? (
+          <>
+          {detail.constancia_id ? <Button style={{ marginBottom: 12 }} onClick={async () => {
+            try { const { data } = await apiClient.get(`/economia/constancias-devolucion/${detail.constancia_id}`); setConstancia(data) }
+            catch (failure) { message.error(failure.response?.data?.detail || 'NO FUE POSIBLE LEER LA CONSTANCIA.') }
+          }}>VER CONSTANCIA DE DEVOLUCIÓN</Button> : null}
           <Descriptions bordered column={2} size="small">
             <Descriptions.Item label="TIPO">
               <Tag color={EXPENSE_TYPE_COLOR[detail.tipo] || 'default'}>{expenseTypeLabel(detail.tipo)}</Tag>
@@ -702,7 +749,9 @@ export function EconomyExpensesPage() {
               <Tag color={expenseStateColor(detail.estado)}>{expenseStateLabel(detail.estado)}</Tag>
             </Descriptions.Item>
             <Descriptions.Item label="FECHA">{new Date(detail.fecha).toLocaleString('es-BO')}</Descriptions.Item>
-            <Descriptions.Item label="MONTO">{formatBs(detail.monto)}</Descriptions.Item>
+            <Descriptions.Item label="MONTO ORIGINAL">{formatBs(detail.monto)}</Descriptions.Item>
+            <Descriptions.Item label="AJUSTE POSTERIOR">{formatBs(detail.adjusted_amount_bob)}</Descriptions.Item>
+            <Descriptions.Item label="SALIDA NETA">{formatBs(detail.net_amount_bob)}</Descriptions.Item>
             <Descriptions.Item label="CONCEPTO" span={2}>{detail.concepto}</Descriptions.Item>
             <Descriptions.Item label="BENEFICIARIO">{detail.beneficiario || 'SIN REGISTRO'}</Descriptions.Item>
             <Descriptions.Item label="CANTIDAD">{Number(detail.cantidad || 0).toFixed(2)}</Descriptions.Item>
@@ -720,6 +769,7 @@ export function EconomyExpensesPage() {
             <Descriptions.Item label="OBSERVACIÓN 2" span={2}>{detail.observaciones_2 || 'SIN OBSERVACIÓN'}</Descriptions.Item>
             <Descriptions.Item label="MOTIVO CAMBIO ESTADO" span={2}>{detail.motivo_cambio_estado || 'SIN CAMBIO DE ESTADO'}</Descriptions.Item>
           </Descriptions>
+          </>
         ) : null}
       </Drawer>
 
@@ -728,6 +778,7 @@ export function EconomyExpensesPage() {
         width={560}
         open={Boolean(annullingExpense)}
         onClose={() => {
+          if (saving) return
           setAnnullingExpense(null)
           annulForm.resetFields()
         }}
@@ -742,6 +793,11 @@ export function EconomyExpensesPage() {
               style={{ marginBottom: 16 }}
             />
             <Form {...FORM_COMMON_PROPS} form={annulForm} onFinish={submitExpenseAnnul}>
+              <Alert type="info" message="UNA CORRECCIÓN REAL SE REGISTRA EN EL PERÍODO ACTUAL Y NO REESCRIBE CIERRES ANTERIORES." style={{ marginBottom: 12 }} />
+              <Form.Item name="money_did_not_leave" valuePropName="checked" initialValue={false} rules={isAdmin ? [] : [{ validator: (_, value) => value ? Promise.resolve() : Promise.reject(new Error('CONFIRMA QUE EL DINERO NUNCA SALIÓ. LOS REINTEGROS REALES LOS REGISTRA ADMIN.')) }]}>
+                <Checkbox>CONFIRMO QUE EL DINERO NUNCA SALIÓ (SOLO MI CORTE ABIERTO)</Checkbox>
+              </Form.Item>
+              {isAdmin ? <Form.Item label="MÉTODO DE REINTEGRO REAL (SI EL DINERO SÍ SALIÓ)" name="adjustment_method"><Select options={PAYMENT_METHODS} /></Form.Item> : null}
               <Form.Item
                 label="MOTIVO DE ANULACIÓN"
                 name="motivo"
@@ -757,6 +813,9 @@ export function EconomyExpensesPage() {
             </Form>
           </>
         ) : null}
+      </Drawer>
+      <Drawer title="Constancia interna de devolución — NO FISCAL" open={Boolean(constancia)} onClose={() => setConstancia(null)} width={760} maskClosable={false}>
+        {constancia ? <RefundReceiptDocument document={constancia} /> : null}
       </Drawer>
     </div>
   )

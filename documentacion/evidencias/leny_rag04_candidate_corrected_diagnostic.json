@@ -1,0 +1,1007 @@
+{
+  "schema_version": "rag04-real-synthetic-observations-v1",
+  "data_classification": "synthetic",
+  "profile": "rag4_v1",
+  "corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "model_identity": {
+    "chat_digest": "d8b0f5e9760cd1682034f292d7ef72ec46f432149be0df7574bf2d6e92e38c04",
+    "embedding_digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d"
+  },
+  "configuration_sha256": "6b09c48deb82b8f418f447348e652abae76cf484b1a0a584130944f33c1acb31",
+  "snapshot_manifest_sha256": "49f117725688aa224c618df10ed9fe96f4ee750ff08fd7bcd989892c62e73613",
+  "comparison_contract_sha256": "6ed167daf5aaaf6dafff1fa4cb9d3f64b1a2e08af769c5eb034b4c6af3c24429",
+  "cases": [
+    {
+      "case_id": "rag04-natural-01",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 17875.0,
+      "request_id": "5247ff3a-99d6-43aa-bb65-95bc597f9381",
+      "latency_scope": "generation_request",
+      "response_text": "Para fabricar los vestidos, se deben seguir los siguientes pasos autorizados:\n\n1. Confirmar el dise\u00f1o aprobado [S5].\n2. Tomar medidas con consentimiento [S5].\n3. Trazar el patr\u00f3n antes del corte [S5].\n4. Separar piezas por pedido, identificar cada paquete y revisar la disponibilidad del material antes de programar el corte [S4].\n5. Cortar \u00fanicamente la tela del pedido identificado [S1].\n6. Hilvanar las piezas para la primera prueba [S1].\n7. Realizar la prueba de ajuste; si hay diferencias, corregir antes de coser [S2].\n8. Coser las piezas aprobadas [S2].\n9. Revisar costuras, limpieza y cierre [S3].\n10. Entregar solo despu\u00e9s de la aprobaci\u00f3n final; registrar la entrega [S3].",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "business_context",
+        "verdict": "sufficient",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "selected": 5,
+          "evidence_bytes": 714,
+          "prompt_bytes": 2345,
+          "citations": 5,
+          "prompt_eval_count": 615,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 188
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.187999999994645,
+          "search": 0.01600000000325963,
+          "context": 0.0,
+          "review": 6.062999999994645,
+          "first_content": 15.577999999994063,
+          "generation": 7.311999999990803,
+          "load": 3.4367666,
+          "prompt_eval": 0.327495,
+          "eval": 3.519689,
+          "provider_total": 7.2881863,
+          "total": 17.875
+        }
+      },
+      "ram_available_before_bytes": 4522688512,
+      "ram_available_after_bytes": 4544020480,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "proc-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "proc-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "proc-1"
+      ],
+      "sent_evidence_basis": "provider_completion_received",
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [
+        "proc-1",
+        "work-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-natural-02",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 17766.00000000326,
+      "request_id": "26b85fa0-5038-46ff-8b31-f71236fdddeb",
+      "latency_scope": "generation_request",
+      "response_text": "Para confeccionar un vestido bajo los procedimientos documentados, se deben seguir los siguientes pasos autorizados:\n\n1. Confirmar el dise\u00f1o aprobado [S4].\n2. Tomar medidas con consentimiento [S4].\n3. Trazar el patr\u00f3n antes del corte [S4].\n4. Cortar \u00fanicamente la tela del pedido identificado [S2].\n5. Separar las piezas por pedido, identificar cada paquete y revisar la disponibilidad del material antes de programar el corte [S5].\n6. Hilvanar las piezas para la primera prueba [S2].\n7. Realizar la prueba de ajuste; si hay diferencias, corregir antes de coser [S1].\n8. Coser las piezas aprobadas [S1].\n9. Revisar costuras, limpieza y cierre [S3].\n10. Entregar solo despu\u00e9s de la aprobaci\u00f3n final; registrar la entrega [S3].",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "business_context",
+        "verdict": "sufficient",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "selected": 5,
+          "evidence_bytes": 714,
+          "prompt_bytes": 2347,
+          "citations": 5,
+          "prompt_eval_count": 616,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 195
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.077999999994063,
+          "search": 0.01600000000325963,
+          "context": 0.0,
+          "review": 6.0939999999973224,
+          "first_content": 15.312999999994645,
+          "generation": 7.35899999999674,
+          "load": 3.3349875,
+          "prompt_eval": 0.335366,
+          "eval": 3.6643,
+          "provider_total": 7.3383115,
+          "total": 17.76600000000326
+        }
+      },
+      "ram_available_before_bytes": 4897419264,
+      "ram_available_after_bytes": 3823005696,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-3",
+        "proc-2",
+        "proc-4",
+        "proc-1",
+        "work-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "sec-1",
+        "conflict-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-3",
+        "proc-2",
+        "proc-4",
+        "proc-1",
+        "work-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-3",
+        "proc-2",
+        "proc-4",
+        "proc-1",
+        "work-1"
+      ],
+      "sent_evidence_basis": "provider_completion_received",
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "work-1",
+        "proc-3",
+        "proc-4"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-natural-03",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 17859.000000011292,
+      "request_id": "44188d7d-1c1a-4738-a483-fb11b9841ac7",
+      "latency_scope": "generation_request",
+      "response_text": "Para elaborar un vestido, se deben seguir los siguientes pasos autorizados:\n\n1. Confirmar el dise\u00f1o aprobado [S5].\n2. Tomar medidas con consentimiento [S5].\n3. Trazar el patr\u00f3n antes del corte [S5].\n4. Separar piezas por pedido, identificar cada paquete y revisar la disponibilidad del material antes de programar el corte [S4].\n5. Cortar \u00fanicamente la tela del pedido identificado [S1].\n6. Hilvanar las piezas para la primera prueba [S1].\n7. Realizar la prueba de ajuste; si hay diferencias, corregir antes de coser [S2].\n8. Coser las piezas aprobadas [S2].\n9. Revisar costuras, limpieza y cierre [S3].\n10. Entregar solo despu\u00e9s de la aprobaci\u00f3n final; registrar la entrega [S3].",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "business_context",
+        "verdict": "sufficient",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "selected": 5,
+          "evidence_bytes": 714,
+          "prompt_bytes": 2350,
+          "citations": 5,
+          "prompt_eval_count": 616,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 187
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.3439999999973224,
+          "search": 0.014999999999417923,
+          "context": 0.0,
+          "review": 6.0939999999973224,
+          "first_content": 15.578000000008615,
+          "generation": 7.188000000009197,
+          "load": 3.3350638,
+          "prompt_eval": 0.326711,
+          "eval": 3.504887,
+          "provider_total": 7.1698325,
+          "total": 17.844000000011874
+        }
+      },
+      "ram_available_before_bytes": 4464898048,
+      "ram_available_after_bytes": 3938455552,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "proc-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "proc-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "proc-1"
+      ],
+      "sent_evidence_basis": "provider_completion_received",
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [
+        "proc-1",
+        "work-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-natural-04",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 18516.00000000326,
+      "request_id": "06a151ea-2f69-4d74-90a7-afaaced2f701",
+      "latency_scope": "generation_request",
+      "response_text": "El proceso para hacer vestidos en BELLAARTE BOUTIQUE se estructura en las siguientes etapas autorizadas:\n\n1. Confirmar el dise\u00f1o aprobado [S5].\n2. Tomar medidas con consentimiento [S5].\n3. Trazar el patr\u00f3n antes del corte [S5].\n4. Separar piezas por pedido, identificar cada paquete y revisar la disponibilidad del material antes de programar el corte [S4].\n5. Cortar \u00fanicamente la tela del pedido identificado [S1].\n6. Hilvanar las piezas para la primera prueba [S1].\n7. Realizar la prueba de ajuste; si hay diferencias, corregir antes de coser [S2].\n8. Coser las piezas aprobadas [S2].\n9. Revisar costuras, limpieza y cierre [S3].\n10. Entregar solo despu\u00e9s de la aprobaci\u00f3n final; registrar la entrega [S3].",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "business_context",
+        "verdict": "sufficient",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "selected": 5,
+          "evidence_bytes": 714,
+          "prompt_bytes": 2357,
+          "citations": 5,
+          "prompt_eval_count": 617,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 195
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.359000000011292,
+          "search": 0.015999999988707714,
+          "context": 0.0,
+          "review": 6.25,
+          "first_content": 16.125,
+          "generation": 7.6560000000026776,
+          "load": 3.6283533,
+          "prompt_eval": 0.330182,
+          "eval": 3.674616,
+          "provider_total": 7.6373583,
+          "total": 18.51600000000326
+        }
+      },
+      "ram_available_before_bytes": 4598976512,
+      "ram_available_after_bytes": 3887710208,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "proc-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "proc-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "proc-1"
+      ],
+      "sent_evidence_basis": "provider_completion_received",
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [
+        "proc-1",
+        "work-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-literal-03",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 23406.000000002678,
+      "request_id": "052056fa-fe4f-42bd-84e6-c1327a00da9d",
+      "latency_scope": "generation_request",
+      "response_text": "La gu\u00eda exige revisar las costuras, la limpieza y el cierre antes de entregar el documento [S1]. Adem\u00e1s, establece que la entrega debe realizarse \u00fanicamente despu\u00e9s de la aprobaci\u00f3n final y registrar dicha entrega [S1].",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "contextual_business",
+        "verdict": "sufficient",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "selected": 1,
+          "evidence_bytes": 147,
+          "prompt_bytes": 1251,
+          "citations": 1,
+          "prompt_eval_count": 311,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 46
+        },
+        "durations_seconds": {
+          "routing": 8.139999999999418,
+          "embedding_and_release": 4.375,
+          "search": 0.01600000000325963,
+          "context": 0.0,
+          "review": 6.0,
+          "generation": 4.672000000005937,
+          "load": 3.589029,
+          "prompt_eval": 0.198304,
+          "eval": 0.859063,
+          "provider_total": 4.649662,
+          "total": 23.406000000002678
+        }
+      },
+      "ram_available_before_bytes": 4602372096,
+      "ram_available_after_bytes": 3759407104,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-4",
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "stock-1",
+        "price-1",
+        "work-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-4"
+      ],
+      "sent_fragment_ids": [
+        "proc-4"
+      ],
+      "sent_evidence_basis": "provider_completion_received",
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [
+        "proc-4"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-literal-04",
+      "status": "completed",
+      "route": "ambiguous",
+      "latency_ms": 4125.0,
+      "request_id": "f52faeab-ef42-4143-bc5d-1948778759b2",
+      "latency_scope": "generation_request",
+      "response_text": "\u00bfPuedes precisar c\u00f3mo se relaciona tu consulta con las actividades de BELLAARTE BOUTIQUE? As\u00ed podr\u00e9 orientarte con el contexto adecuado.",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "ambiguous",
+        "reason": "contextual_ambiguous",
+        "verdict": "pending",
+        "outcome": "policy",
+        "counts": {
+          "topic_questions": 0
+        },
+        "durations_seconds": {
+          "routing": 3.9840000000112923,
+          "total": 4.125
+        }
+      },
+      "ram_available_before_bytes": 4279099392,
+      "ram_available_after_bytes": 3737513984,
+      "human_review": null,
+      "sent_fragment_ids": [],
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-literal-05",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 23108.99999999674,
+      "request_id": "70fdb2a2-83b1-4952-b2c0-c080db007b38",
+      "latency_scope": "generation_request",
+      "response_text": "La evidencia disponible es parcial; esta respuesta se limita a los puntos documentados.\n\nLa evidencia disponible no establece un anticipo ni un saldo real, ya que la tarifa presentada es una tarifa ficticia para evaluaci\u00f3n con un valor de arreglo simple de Bs 250.00 y un anticipo del 40%, sin describir tarifas reales [S1].",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "contextual_business",
+        "verdict": "partial",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "selected": 1,
+          "evidence_bytes": 126,
+          "prompt_bytes": 1242,
+          "citations": 1,
+          "prompt_eval_count": 314,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 58
+        },
+        "durations_seconds": {
+          "routing": 8.110000000000582,
+          "embedding_and_release": 4.2810000000026776,
+          "search": 0.01600000000325963,
+          "context": 0.0,
+          "review": 5.639999999999418,
+          "generation": 4.75,
+          "load": 3.4227079,
+          "prompt_eval": 0.206628,
+          "eval": 1.088696,
+          "provider_total": 4.7227673,
+          "total": 23.10899999999674
+        }
+      },
+      "ram_available_before_bytes": 4142292992,
+      "ram_available_after_bytes": 3977633792,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "conflict-1",
+        "proc-4",
+        "proc-2",
+        "stock-1",
+        "proc-1",
+        "proc-3",
+        "work-1",
+        "sec-1"
+      ],
+      "selected_fragment_ids": [
+        "price-1"
+      ],
+      "sent_fragment_ids": [
+        "price-1"
+      ],
+      "sent_evidence_basis": "provider_completion_received",
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [
+        "price-1"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-literal-07",
+      "status": "completed",
+      "route": "ambiguous",
+      "latency_ms": 3983.9999999967404,
+      "request_id": "15c7f72f-3692-46c6-a108-2d3743709d49",
+      "latency_scope": "generation_request",
+      "response_text": "\u00bfPuedes precisar c\u00f3mo se relaciona tu consulta con las actividades de BELLAARTE BOUTIQUE? As\u00ed podr\u00e9 orientarte con el contexto adecuado.",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "ambiguous",
+        "reason": "contextual_ambiguous",
+        "verdict": "pending",
+        "outcome": "policy",
+        "counts": {
+          "topic_questions": 0
+        },
+        "durations_seconds": {
+          "routing": 3.8429999999934807,
+          "total": 3.9839999999967404
+        }
+      },
+      "ram_available_before_bytes": 4665442304,
+      "ram_available_after_bytes": 3725402112,
+      "human_review": null,
+      "sent_fragment_ids": [],
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-literal-09",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 23125.0,
+      "request_id": "546e1bf0-b7e9-45fb-9266-7c902f316a63",
+      "latency_scope": "generation_request",
+      "response_text": "La evidencia disponible es parcial; esta respuesta se limita a los puntos documentados.\n\nLa gu\u00eda indica que se deben usar cuentas individuales, comprobar permisos en el servidor y revisar registros sin compartir contrase\u00f1as. [S1]",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "contextual_business",
+        "verdict": "partial",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "selected": 1,
+          "evidence_bytes": 134,
+          "prompt_bytes": 1234,
+          "citations": 1,
+          "prompt_eval_count": 298,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 29
+        },
+        "durations_seconds": {
+          "routing": 8.437999999994645,
+          "embedding_and_release": 4.264999999999418,
+          "search": 0.0,
+          "context": 0.0,
+          "review": 5.89100000000326,
+          "generation": 4.280999999988126,
+          "load": 3.5184488,
+          "prompt_eval": 0.197371,
+          "eval": 0.543298,
+          "provider_total": 4.2599205,
+          "total": 23.093999999997322
+        }
+      },
+      "ram_available_before_bytes": 4127772672,
+      "ram_available_after_bytes": 3898667008,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "sec-1",
+        "stock-1",
+        "price-1",
+        "proc-2",
+        "proc-4",
+        "proc-1",
+        "conflict-2",
+        "proc-3",
+        "work-1",
+        "conflict-1"
+      ],
+      "selected_fragment_ids": [
+        "sec-1"
+      ],
+      "sent_fragment_ids": [
+        "sec-1"
+      ],
+      "sent_evidence_basis": "provider_completion_received",
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [
+        "sec-1"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-literal-10",
+      "status": "completed",
+      "route": "ambiguous",
+      "latency_ms": 4358.99999999674,
+      "request_id": "7b684eee-31d1-40ce-b049-651d81603724",
+      "latency_scope": "generation_request",
+      "response_text": "\u00bfPuedes precisar c\u00f3mo se relaciona tu consulta con las actividades de BELLAARTE BOUTIQUE? As\u00ed podr\u00e9 orientarte con el contexto adecuado.",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "ambiguous",
+        "reason": "contextual_ambiguous",
+        "verdict": "pending",
+        "outcome": "policy",
+        "counts": {
+          "topic_questions": 0
+        },
+        "durations_seconds": {
+          "routing": 4.2189999999973224,
+          "total": 4.3439999999973224
+        }
+      },
+      "ram_available_before_bytes": 4522590208,
+      "ram_available_after_bytes": 3693944832,
+      "human_review": null,
+      "sent_fragment_ids": [],
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-followup-01",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 18391.00000000326,
+      "request_id": "2aae270c-d504-4565-ba56-ded728d1a3d0",
+      "latency_scope": "generation_request",
+      "response_text": "Despu\u00e9s de confirmar el dise\u00f1o aprobado y tomar las medidas con consentimiento, se procede a trazar el patr\u00f3n antes del corte [S1]. Posteriormente, se corta \u00fanicamente la tela del pedido identificado y se hilvanan las piezas para la primera prueba; si hay diferencias en la prueba de ajuste, se corrigen antes de coser [S2][S4]. Una vez cosidas las piezas aprobadas, se revisan las costuras, limpieza y cierre [S3]. Finalmente, el vestido se entrega solo despu\u00e9s de la aprobaci\u00f3n final, momento en el que se registra la entrega [S1][S3].",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "rag_followup",
+        "verdict": "sufficient",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 1,
+          "candidates": 10,
+          "selected": 5,
+          "evidence_bytes": 714,
+          "prompt_bytes": 2448,
+          "citations": 4,
+          "prompt_eval_count": 638,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 126
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.139999999999418,
+          "search": 0.01600000000325963,
+          "context": 0.0,
+          "review": 6.25,
+          "first_content": 17.01600000000326,
+          "generation": 7.672000000005937,
+          "load": 4.8887128,
+          "prompt_eval": 0.389813,
+          "eval": 2.365875,
+          "provider_total": 7.6503403,
+          "total": 18.39100000000326
+        }
+      },
+      "ram_available_before_bytes": 3845586944,
+      "ram_available_after_bytes": 3620331520,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-1",
+        "proc-3",
+        "proc-4",
+        "proc-2",
+        "work-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-1",
+        "proc-3",
+        "proc-4",
+        "proc-2",
+        "work-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-1",
+        "proc-3",
+        "proc-4",
+        "proc-2",
+        "work-1"
+      ],
+      "sent_evidence_basis": "provider_completion_received",
+      "observed_turn": 1,
+      "target_turn": 1,
+      "target_executed": true,
+      "citation_fragment_ids": [
+        "proc-1",
+        "proc-3",
+        "proc-2",
+        "proc-4"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-followup-03",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 20280.999999988126,
+      "request_id": "579a7f3f-83cf-4026-9efd-d7b4eb3a506e",
+      "latency_scope": "generation_request",
+      "response_text": "1. Confirmar el dise\u00f1o aprobado [S4].\n2. Tomar medidas con consentimiento [S4].\n3. Trazar el patr\u00f3n antes del corte [S4].\n4. Cortar \u00fanicamente la tela del pedido identificado [S1] y separar piezas por pedido, identificar cada paquete y revisar la disponibilidad del material antes de programar el corte [S5].\n5. Hilvanar las piezas para la primera prueba [S1], realizar la prueba de ajuste corrigiendo diferencias antes de coser [S2], coser las piezas aprobadas [S2], revisar costuras, limpieza y cierre [S3] y entregar solo despu\u00e9s de la aprobaci\u00f3n final registrando la entrega [S3].",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "rag_followup",
+        "verdict": "sufficient",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 1,
+          "candidates": 10,
+          "selected": 5,
+          "evidence_bytes": 714,
+          "prompt_bytes": 2423,
+          "citations": 5,
+          "prompt_eval_count": 632,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 150
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.922000000005937,
+          "search": 0.014999999999417923,
+          "context": 0.0,
+          "review": 6.546999999991385,
+          "first_content": 18.687999999994645,
+          "generation": 8.514999999999418,
+          "load": 5.2508987,
+          "prompt_eval": 0.397186,
+          "eval": 2.819101,
+          "provider_total": 8.4874658,
+          "total": 20.280999999988126
+        }
+      },
+      "ram_available_before_bytes": 4187758592,
+      "ram_available_after_bytes": 2683994112,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "proc-1",
+        "work-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "proc-1",
+        "work-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "proc-1",
+        "work-1"
+      ],
+      "sent_evidence_basis": "provider_completion_received",
+      "observed_turn": 1,
+      "target_turn": 1,
+      "target_executed": true,
+      "citation_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "work-1",
+        "proc-3",
+        "proc-4"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-followup-07",
+      "status": "failed",
+      "route": "rag",
+      "latency_ms": 29906.000000002678,
+      "request_id": "0b905350-82d4-4894-9caf-efe7dc48ec1b",
+      "latency_scope": "generation_request",
+      "response_text": "La evidencia disponible es parcial; esta respuesta se limita a los puntos documentados.\n\nLa evidencia disponible indica una tarifa ficticia para evaluaci\u00f3n",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "leny_rag_citation_missing",
+        "verdict": "partial",
+        "outcome": "failed",
+        "counts": {
+          "topic_questions": 0,
+          "candidates": 10,
+          "selected": 1,
+          "evidence_bytes": 126,
+          "prompt_bytes": 1230
+        },
+        "durations_seconds": {
+          "routing": 11.952999999994063,
+          "embedding_and_release": 4.313000000009197,
+          "search": 0.014999999999417923,
+          "context": 0.0,
+          "review": 6.0789999999979045,
+          "first_content": 29.656000000002678,
+          "total": 29.89100000000326
+        }
+      },
+      "ram_available_before_bytes": 3476979712,
+      "ram_available_after_bytes": 3001712640,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "price-1",
+        "proc-3",
+        "proc-4",
+        "proc-2",
+        "work-1",
+        "stock-1",
+        "proc-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "selected_fragment_ids": [
+        "price-1"
+      ],
+      "sent_fragment_ids": [
+        "price-1"
+      ],
+      "sent_evidence_basis": "provider_completion_received",
+      "observed_turn": 0,
+      "target_turn": 1,
+      "target_executed": false,
+      "failure_stage": "prerequisite",
+      "citation_fragment_ids": [],
+      "review": null,
+      "abstained": false,
+      "error_code": "LENY_RAG_CITATION_MISSING"
+    },
+    {
+      "case_id": "rag04-out_capabilities-07",
+      "status": "completed",
+      "route": "general",
+      "latency_ms": 13640.999999988708,
+      "request_id": "f6e9e068-4098-49f4-907a-c7b8654627b3",
+      "latency_scope": "generation_request",
+      "response_text": "Hola, soy **LENY**, tu agente de anal\u00edtica aumentada en BELLAARTE BOUTIQUE.\n\nPara calcular el **margen de utilidad** (tambi\u00e9n conocido como margen neto), utilizamos una f\u00f3rmula sencilla basada en los resultados financieros del periodo:\n\n1.  **Identificar la Utilidad Neta**: Es el dinero que queda despu\u00e9s de restar todos los gastos y costos (incluyendo impuestos) al ingreso total.\n    *   *F\u00f3rmula*: `Utilidad Neta = Ingresos Totales - Gastos Totales`\n2.  **Identificar los Ingresos Totales**: Son las ventas realizadas menos cualquier descuento o devoluci\u00f3n.\n3.  **Aplicar el c\u00e1lculo del margen**: Dividimos la utilidad neta entre los ingresos totales y multiplicamos por 100 para obtener un porcentaje.\n\n**F\u00f3rmula final en texto:**\n`(Utilidad Neta / Ingresos Totales) * 100 = Margen de Utilidad %`\n\n**Ejemplo pr\u00e1ctico con moneda local (Bs):**\nImagina que tu taller y confecci\u00f3n generaron **5,000 Bs** en ventas este mes. Despu\u00e9s de pagar todos los costos de tela, sueldos, luz e impuestos, quedaste con una utilidad neta de **1,500 Bs**.\n\n*   Paso 1: `1,500 / 5,000 = 0.3`\n*   Paso 2: `0.3 * 100 = 30%`\n\nTu margen de utilidad es del **30%**. Esto significa que por cada Bol\u00edvio vendido, te quedas con 30 centavos de ganancia neta para reinvertir o distribuir.\n\n\u00bfTe gustar\u00eda que apliquemos este c\u00e1lculo a los datos reales de ventas o costos de tu empresa?",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "business",
+        "reason": "business_context",
+        "verdict": "pending",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 0,
+          "prompt_eval_count": 331,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 401
+        },
+        "durations_seconds": {
+          "first_content": 7.25,
+          "generation": 13.453000000008615,
+          "load": 5.6064934,
+          "prompt_eval": 0.273586,
+          "eval": 7.550533,
+          "provider_total": 13.4384256,
+          "total": 13.609000000011292
+        }
+      },
+      "ram_available_before_bytes": 3324817408,
+      "ram_available_after_bytes": 3033391104,
+      "human_review": null,
+      "sent_fragment_ids": [],
+      "sent_evidence_basis": "provider_completion_received",
+      "observed_turn": 0,
+      "target_turn": 0,
+      "target_executed": true,
+      "citation_fragment_ids": [],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    }
+  ],
+  "human_review_complete": false,
+  "business_e2e_executed": false,
+  "holdout_executed": false,
+  "extraction_formats_evaluated": false,
+  "settings": {
+    "leny_enabled": true,
+    "leny_documents_enabled": true,
+    "leny_rag_enabled": true,
+    "leny_rag_chat_enabled": true,
+    "leny_keep_alive": "0",
+    "leny_num_ctx": 4096,
+    "leny_num_predict": 768,
+    "leny_temperature": 0.0,
+    "leny_rate_limit": 5,
+    "leny_rate_window_seconds": 60,
+    "leny_rag_min_ram_bytes": 2147483648,
+    "leny_rag_min_resident_ram_bytes": 1073741824,
+    "leny_rag_cpu_threads": 4,
+    "leny_rag_batch_size": 2,
+    "leny_rag_top_k": 5,
+    "leny_rag_candidates": 20,
+    "leny_rag_profile": "rag4_v1",
+    "leny_rag_evidence_mode": "adaptive",
+    "leny_rag_max_context_bytes": 2048,
+    "leny_rag_ranking": "hybrid",
+    "leny_rag_adaptive_token_probe": true,
+    "leny_rag_neighbor_chunks": false
+  },
+  "runner_mode": "diagnostic",
+  "original_representation": "generated synthetic originals with fixture source types; extraction not evaluated by this runner",
+  "created_at_utc": "2026-10-20T15:44:12.830296+00:00",
+  "source_files_sha256": {
+    "backend/app/core/config.py": "255d9f75fc82305d7d226840f2b42a5069168e8d285f728082a2b4bae28736c1",
+    "backend/app/services/leny_coordination.py": "b171770ebd63b568aa58b5c2279b2bc5bca8bc24abe771cdcc9a9127139958b5",
+    "backend/app/services/leny_document_backup.py": "d9e1c6017f88bcbb56332f43425308b2f5ed48dded95e89a59dedf0e21dba841",
+    "backend/app/services/leny_document_maintenance.py": "5641fdc19b799973ed1a1cf1ddbfb82fcb14fb6e67c1243fd3a0ee635aecec82",
+    "backend/app/services/leny_document_service.py": "4d4a92270425f73f7f2bed4c576f980584e86f363d1c0370a94188fe69a5b248",
+    "backend/app/services/leny_document_storage.py": "223508eb4132df2eaad9278ea03091a745051a051c2f5b38d0c95af92b96fe58",
+    "backend/app/services/leny_document_validation.py": "f308f43588151c2a7486fb084c812edc1243625954dcc3775fac1b7f790f0397",
+    "backend/app/services/leny_guard.py": "ba74e106b6ed020837e8cbcca08179c3aa7cbdee76b0b5329f40a64999d29a01",
+    "backend/app/services/leny_inference_state.py": "851fcef019370000a372c9841120412cd49ab7489c2207924bdb2530336f4fb2",
+    "backend/app/services/leny_ollama.py": "d03765e1b1ec83d33333122100807366207fbeb334dba8c73adffadbf65a2d85",
+    "backend/app/services/leny_policy.py": "c2fb1eda757aa9d35c1902c026cd0769b759dd65ffa0a844043471f44b6a0fbd",
+    "backend/app/services/leny_rag_chunking.py": "02860cd76bc90608cd8dd86a9157e837995a527cab8169b4ad429c107f4e8ad5",
+    "backend/app/services/leny_rag_common.py": "bd7489fa48291c2de77cf507a2755514317eec6ffeed1436cf3cf928795d66cc",
+    "backend/app/services/leny_rag_diagnostics.py": "38f0673706b995fc602f1de72120c84f7eb319256ae3c376c57df77acbd40abd",
+    "backend/app/services/leny_rag_embeddings.py": "00f9b633c68afc0ecbde6df74fa8aa6c6b941c3068c78b26456ed4e0b7b38db1",
+    "backend/app/services/leny_rag_evaluation.py": "dab81f7613084e66fd9e7f26b1b1d832b6794ce53378101b1319eff0569fd5c8",
+    "backend/app/services/leny_rag_extraction.py": "aa50c998a24e83267323c2ad750d4060a7260a7a66620b67dfa5ee4113f2fa54",
+    "backend/app/services/leny_rag_publication.py": "13137d3aca1ab3ea8e77810bcc5b21b734bb2aacd652a80efa188473842e5717",
+    "backend/app/services/leny_rag_retrieval.py": "2f851539593018c460b9280d9bb5d11ac29a8897fa8f92da1ef05736e7d3f5bf",
+    "backend/app/services/leny_rag_routing.py": "d364adce64a5a2d14d7e3fb33aecd202b58f0a0e243cc3af21b28543e54dcfb4",
+    "backend/app/services/leny_rag_service.py": "01c320001d8fdb679c2636c3bb404d11b6a812fa9a1e0f4244d874a52f9f2dd1",
+    "backend/app/services/leny_rag_sources.py": "2895fff0d04a6efbeab1e7222a6e683a9dc18e67bab7e198299e3de91534d19c",
+    "backend/app/services/leny_rag_worker.py": "d0588f175ea57ced1874b9cb69aa437808a06f8643e694a78095f1042e17ab80",
+    "backend/app/services/leny_rate_limit.py": "7c4a0c01c3219f7243d27e27b404e095974b76c0c8b0ee8a4af5d4521d96f4ef",
+    "backend/app/services/leny_service.py": "8642c7a8ebcbf83a9d9d3ada66c0a23b8caaa16916b8a3af9f4b3591c4a45a29",
+    "backend/app/services/leny_store.py": "4c6af318b25871d4bcad4217ce753f06f47e38c52614f6cf1787944ddf700e6d",
+    "backend/scripts/run_leny_rag_quality.py": "9aa6489882edbfd8acf9ff7d07f4c04a82f42a7bb0af834c4fd6873d130e2d55"
+  },
+  "cleanup_confirmed": true
+}

@@ -1,3 +1,4 @@
+from app.services.economic_write_service import economic_write
 from datetime import date
 
 from fastapi import APIRouter, Depends, Query, Request, status
@@ -155,13 +156,15 @@ def create_output(
     db: Session = Depends(get_db),
     account: Cuenta = Depends(require_permission("flete_outputs:create")),
 ) -> SalidaFleteDetailResponse:
-    return create_flete_output(
+    return economic_write(db,account=account,operation="rental_create",key=request.headers.get("Idempotency-Key"),
+        payload=payload,execute=lambda: create_flete_output(
         db,
         payload=payload,
         created_by=account,
         ip_address=request.client.host if request.client else None,
         user_agent=request.headers.get("user-agent"),
-    )
+        commit=False,
+    ))
 
 
 @router.patch("/salidas/{salida_id}/deliver", response_model=SalidaFleteDetailResponse)
@@ -208,14 +211,16 @@ def annul_output(
     db: Session = Depends(get_db),
     account: Cuenta = Depends(require_permission("flete_outputs:annul")),
 ) -> SalidaFleteDetailResponse:
-    return annul_flete_output(
+    return economic_write(db,account=account,operation="annul_output",key=request.headers.get("Idempotency-Key"),
+        payload={"resource_id":salida_id,"body":payload.model_dump(mode="python")},execute=lambda: annul_flete_output(
         db,
         salida_id=salida_id,
         payload=payload,
         changed_by=account,
         ip_address=request.client.host if request.client else None,
         user_agent=request.headers.get("user-agent"),
-    )
+        commit=False,
+    ))
 
 
 @router.get("/{flete_id}", response_model=FleteDetailResponse)

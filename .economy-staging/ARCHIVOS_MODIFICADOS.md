@@ -1,0 +1,67 @@
+# Archivos de la entrega económica
+
+Diferencias sobre la copia local inicial; el código activo original no fue promovido.
+
+- `backend/alembic/versions/20261018_0015_economy_integrity.py` (nuevo)
+- `backend/alembic/versions/20261018_0016_custody_settlement.py` (nuevo)
+- `backend/app/api/routers/boutique.py`
+- `backend/app/api/routers/economia.py`
+- `backend/app/api/routers/fletes.py`
+- `backend/app/api/routers/orders.py`
+- `backend/app/core/audit.py`
+- `backend/app/models/__init__.py`
+- `backend/app/models/boutique_sale.py`
+- `backend/app/models/economy.py`
+- `backend/app/models/flete.py`
+- `backend/app/models/order.py`
+- `backend/app/schemas/boutique.py`
+- `backend/app/schemas/economy.py`
+- `backend/app/schemas/flete.py`
+- `backend/app/schemas/order.py`
+- `backend/app/services/boutique_entry_service.py`
+- `backend/app/services/boutique_sale_service.py`
+- `backend/app/services/boutique_service.py`
+- `backend/app/services/cash_cut_service.py`
+- `backend/app/services/economic_idempotency_service.py` (nuevo)
+- `backend/app/services/economic_ledger_service.py` (nuevo)
+- `backend/app/services/economic_write_service.py` (nuevo)
+- `backend/app/services/economy_query_service.py` (nuevo)
+- `backend/app/services/economy_report_service.py`
+- `backend/app/services/expense_service.py`
+- `backend/app/services/financial_source_service.py` (nuevo)
+- `backend/app/services/flete_service.py`
+- `backend/app/services/income_service.py`
+- `backend/app/services/module_report_service.py`
+- `backend/app/services/order_payment_service.py`
+- `backend/app/services/order_report_service.py`
+- `backend/app/services/order_service.py`
+- `backend/app/services/refund_flow_service.py`
+- `backend/README.md`
+- `backend/scripts/provision_notification_test_postgres.ps1`
+- `backend/tests/integration/conftest.py`
+- `backend/tests/integration/test_economy_transactions.py` (nuevo)
+- `backend/tests/test_economy_contracts.py`
+- `backend/tests/test_notification_reliability.py`
+- `frontend/src/api/client.js`
+- `frontend/src/api/economicIntent.js` (nuevo)
+- `frontend/src/api/economicIntent.test.js` (nuevo)
+- `frontend/src/api/tokenStore.js`
+- `frontend/src/pages/boutique/BoutiqueSalesPage.jsx`
+- `frontend/src/pages/economia/CashCutsPage.jsx`
+- `frontend/src/pages/economia/EconomyDashboardPage.jsx`
+- `frontend/src/pages/economia/EconomyExpensesPage.jsx`
+- `frontend/src/pages/economia/EconomyExpensesPage.test.jsx` (nuevo)
+- `frontend/src/pages/economia/EconomyReportsPage.jsx`
+- `frontend/src/pages/economia/economyUtils.js`
+- `frontend/src/pages/economia/economyUtils.test.js` (nuevo)
+- `frontend/src/pages/economia/GuaranteeMovementDrawer.jsx` (nuevo)
+- `frontend/src/pages/economia/RefundReceiptDocument.jsx` (nuevo)
+- `frontend/src/pages/fletes/FleteOutputsPage.jsx`
+- `frontend/src/pages/pedidos/OrderPaymentsPage.jsx`
+- `frontend/src/pages/pedidos/OrderReportsPage.jsx`
+- `frontend/src/pages/pedidos/OrdersPage.jsx`
+- `documentacion/CONTRATOS_API_ECONOMIA.md` (nuevo)
+- `documentacion/DESPLIEGUE_ECONOMIA.md` (nuevo)
+- `documentacion/ESTRATEGIA_PRUEBAS.md`
+- `documentacion/MODULO_INGRESOS_EGRESOS_CORTE_CAJA.md`
+- `documentacion/REPORTE_IMPLEMENTACION_ECONOMIA.md` (nuevo)

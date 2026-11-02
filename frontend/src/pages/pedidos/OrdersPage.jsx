@@ -246,7 +246,7 @@ export function OrdersPage() {
         const reason = values.reason
         modal.confirm({
           title: 'Confirmación final de cancelación',
-          content: 'Este pedido tiene pagos registrados. Si continúas, quedará cancelado y la acción no se podrá revertir.',
+          content: 'Este pedido tiene dinero cobrado. La cancelación conserva los cobros históricos y deja el neto cobrado pendiente de devolución. No se devuelve dinero automáticamente ni se exige el saldo contractual restante.',
           okText: 'Sí, cancelar pedido',
           cancelText: 'Volver',
           okButtonProps: { danger: true },
@@ -279,15 +279,16 @@ export function OrdersPage() {
       render: (value) => formatConvertedMoney(value, visualCurrency, visualExchangeRate),
     },
     {
-      title: `PAGADO ${visualCurrency?.codigo || 'BOB'}`,
+      title: `ACREDITADO NETO ${visualCurrency?.codigo || 'BOB'}`,
       dataIndex: 'total_pagado',
       render: (value) => formatConvertedMoney(value, visualCurrency, visualExchangeRate),
     },
     {
-      title: `SALDO ${visualCurrency?.codigo || 'BOB'}`,
-      dataIndex: 'saldo',
+      title: `SALDO EXIGIBLE ${visualCurrency?.codigo || 'BOB'}`,
+      dataIndex: 'saldo_exigible_bob',
       render: (value) => formatConvertedMoney(value, visualCurrency, visualExchangeRate),
     },
+    { title: 'DEVOLUCIÓN PENDIENTE BOB', dataIndex: 'devolucion_pendiente_bob', render: formatBs },
     { title: 'ESTADO', dataIndex: 'estado_general', render: (value) => <Tag color={orderStateColor(value)}>{labelFromOptions(ESTADO_PEDIDO_OPTIONS, value)}</Tag> },
     {
       title: 'ACCIONES',
@@ -474,9 +475,10 @@ function OrderDetail({ detail, visualCurrency, visualExchangeRate }) {
     <>
       <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
         <Col xs={24} md={8}><Card size="small"><strong>TOTAL</strong><div>{formatBs(detail.precio_total)}</div><div>{formatConvertedMoney(detail.precio_total, visualCurrency, visualExchangeRate)}</div></Card></Col>
-        <Col xs={24} md={8}><Card size="small"><strong>PAGADO</strong><div>{formatBs(detail.total_pagado)}</div><div>{formatConvertedMoney(detail.total_pagado, visualCurrency, visualExchangeRate)}</div></Card></Col>
-        <Col xs={24} md={8}><Card size="small"><strong>SALDO</strong><div>{formatBs(detail.saldo)}</div><div>{formatConvertedMoney(detail.saldo, visualCurrency, visualExchangeRate)}</div></Card></Col>
+        <Col xs={24} md={8}><Card size="small"><strong>ACREDITADO NETO</strong><div>{formatBs(detail.total_pagado)}</div><div>{formatConvertedMoney(detail.total_pagado, visualCurrency, visualExchangeRate)}</div></Card></Col>
+        <Col xs={24} md={8}><Card size="small"><strong>SALDO EXIGIBLE</strong><div>{formatBs(detail.saldo_exigible_bob)}</div><div>{formatConvertedMoney(detail.saldo_exigible_bob, visualCurrency, visualExchangeRate)}</div></Card></Col>
       </Row>
+      <Alert type="info" showIcon message={`COBRADO BRUTO: ${formatBs(detail.total_cobrado_bruto_bob)} · DEVUELTO: ${formatBs(detail.total_devuelto_bob)} · PENDIENTE DE DEVOLUCIÓN: ${formatBs(detail.devolucion_pendiente_bob)}`} description={`Saldo contractual histórico: ${formatBs(detail.saldo)}. Un pedido cancelado no exige ese saldo; el dinero cobrado no devuelto permanece pendiente.`} style={{ marginBottom: 16 }} />
       <Descriptions bordered column={2} size="small">
         <Descriptions.Item label="Código">{detail.codigo}</Descriptions.Item>
         <Descriptions.Item label="Cliente">{detail.client.full_name}</Descriptions.Item>
@@ -500,7 +502,7 @@ function OrderDetail({ detail, visualCurrency, visualExchangeRate }) {
       <Space direction="vertical" style={{ width: '100%' }} size={8}>
         {detail.pagos.length ? detail.pagos.map((payment) => (
           <Card key={payment.id} size="small">
-            <strong>{payment.metodo_pago.toUpperCase()}</strong> | {payment.fecha} | {formatBs(payment.monto_bob)} | {payment.estado.toUpperCase()}
+            <strong>{payment.metodo_pago.toUpperCase()}</strong> | {payment.fecha} | BRUTO {formatBs(payment.gross_amount_bob)} | DEVUELTO {formatBs(payment.refunded_amount_bob)} | NETO {formatBs(payment.effective_amount_bob)} | {payment.estado.toUpperCase()}
           </Card>
         )) : <Alert type="info" showIcon message="Este pedido todavía no tiene pagos registrados." />}
       </Space>

@@ -40,6 +40,9 @@ import { WorkshopOutputsPage } from '../pages/taller/WorkshopOutputsPage'
 import { WorkshopReportsPage, WorkshopReportsPrintPage } from '../pages/taller/WorkshopReportsPage'
 import { WorkshopTypesPage } from '../pages/taller/WorkshopTypesPage'
 import { UsersPage } from '../pages/users/UsersPage'
+import { LenyPage } from '../pages/leny/LenyPage'
+import { LenyDocumentsPage } from '../pages/leny/documents/LenyDocumentsPage'
+import { DocumentAdminRoute } from '../pages/leny/documents/DocumentAdminRoute'
 import { PermissionRoute, ProtectedRoute, PublicRoute } from './RouteGuards'
 
 export function AppRoutes() {
@@ -53,6 +56,12 @@ export function AppRoutes() {
         <Route path="/app" element={<AuthenticatedLayout />}>
           <Route index element={<DashboardHomePage />} />
           <Route path="cambiar-clave" element={<ChangePasswordPage />} />
+          <Route element={<DocumentAdminRoute />}>
+            <Route path="leny/documents" element={<LenyDocumentsPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="leny:chat" />}>
+            <Route path="leny" element={<LenyPage />} />
+          </Route>
           <Route element={<PermissionRoute permission="roles:list" />}>
             <Route path="seguridad/roles" element={<RolesPage />} />
           </Route>

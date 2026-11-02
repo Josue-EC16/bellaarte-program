@@ -1,0 +1,19 @@
+{
+  "scope": "Real local CPU embedding; synthetic inputs; system available RAM includes other applications",
+  "model": "qwen3-embedding:0.6b",
+  "dimension": 1024,
+  "before_bytes": 3146276864,
+  "after_load_bytes": 2013380608,
+  "after_second_batch_bytes": 2020667392,
+  "after_release_bytes": 3173175296,
+  "first_batch_seconds": 1.015,
+  "ollama_model_size_bytes": 1237875425,
+  "ollama_model_size_vram_bytes": 0,
+  "chosen_cold_available_ram_floor_bytes": 2147483648,
+  "chosen_resident_available_ram_floor_bytes": 1073741824,
+  "notes": [
+    "This is an observed laptop sample, not a peak-memory or sustained-load guarantee.",
+    "A business processing attempt safely failed at the original fixed 2 GiB floor; its source was preserved.",
+    "The revised warm floor remains an explicit configurable resource guard."
+  ]
+}

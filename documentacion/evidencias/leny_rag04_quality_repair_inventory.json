@@ -1,0 +1,189 @@
+{
+  "scope": "spec04_quality_repair_owned_source_inventory",
+  "timestamp_utc": "2026-10-21T00:30:23.978086+00:00",
+  "files": [
+    {
+      "path": "backend/app/services/leny_service.py",
+      "change": "modified_existing",
+      "before_sha256": "a8037645726e1ad23cc0432b34871da9f2ef7f5e0d97931e005e9e03aa3e4d81",
+      "after_sha256": "426e215bfc6eabfdaf28ba8bea648d37a05e92d8c4861a61628c6ca76663936b"
+    },
+    {
+      "path": "backend/app/services/leny_store.py",
+      "change": "modified_existing",
+      "before_sha256": "4c6af318b25871d4bcad4217ce753f06f47e38c52614f6cf1787944ddf700e6d",
+      "after_sha256": "d6053c9ee5d36bcad0c608ff793df8b35011de84509dae5cdc0cdf5c48f97201"
+    },
+    {
+      "path": "backend/app/services/leny_rag_retrieval.py",
+      "change": "modified_existing",
+      "before_sha256": "fe3401b15fa88b75ea2022b8d2dd2ecbb5fd2a448515553d174dc76f03ffc003",
+      "after_sha256": "0147d35ad84fbb2e670d33f44d596e48bb4cc7bb9ab5c2cc6e0f2512c3116b84"
+    },
+    {
+      "path": "backend/app/services/leny_rag_routing.py",
+      "change": "modified_existing",
+      "before_sha256": "b562ab1f04d0dd199e4937ca0c25f03843bebdf4b7ec708cdcd9671f198fdc18",
+      "after_sha256": "1c62eb8bf677dc187e9a007edcaf06de54f912e159e0f2579a74058ed832752e"
+    },
+    {
+      "path": "backend/app/services/leny_rag_followup.py",
+      "change": "modified_existing",
+      "before_sha256": "a427d2a4dcd784b76196fb1ae59d5badfef67bffd24d2df8966efa30690cee97",
+      "after_sha256": "0709ae9e659c244aae6b0741227ca70236f2ae5af28a2a6590bb8cfba52643c9"
+    },
+    {
+      "path": "backend/app/services/leny_rag_diagnostics.py",
+      "change": "modified_existing",
+      "before_sha256": "27dbb4abded817f759b8bf39f081978b8a2b00ebdcc05535e00eea01e690b357",
+      "after_sha256": "0de0e8cdd2cd9b7f44a8a5ee5c95807f39261ac440720bffe5d3cb06023d0f85"
+    },
+    {
+      "path": "backend/scripts/run_leny_rag_quality.py",
+      "change": "modified_existing",
+      "before_sha256": "9ad8f73467c7a52586677b57a30d0075aab7908795da351327640beb7c56d16f",
+      "after_sha256": "c6be74588c5ce5e2bd9011d40c127d52d7e19820c8d88c3d9c63ed95930a3a8a"
+    },
+    {
+      "path": "backend/scripts/run_leny_rag_quality.ps1",
+      "change": "modified_existing",
+      "before_sha256": "ee3056e5f9a4c5bfcd3b6b9bf4801ce32d9c9aebabe000907a7a8c2134033226",
+      "after_sha256": "043516ab595d91f8c6931dfc8e602bddc19571b57b343253c95961f493a099e5"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_quality.py",
+      "change": "modified_existing",
+      "before_sha256": null,
+      "after_sha256": "4c568b321b72c3be0c43c807a6e846d8387903ed1c4273061acc8ddb92890c5f"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_quality_runner.py",
+      "change": "modified_existing",
+      "before_sha256": null,
+      "after_sha256": "ed8b5972e05228e4421d38307b5f6554f0ea64493a870c1225a48ce0f77f4250"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_followup.py",
+      "change": "modified_existing",
+      "before_sha256": null,
+      "after_sha256": "b53657ffced364c80a7e0120370b31e3569ff2f9eb89bbb4d26bfce6bb9ec7a5"
+    },
+    {
+      "path": "backend/tests/integration/test_leny_rag_quality.py",
+      "change": "modified_existing",
+      "before_sha256": null,
+      "after_sha256": "a2ae346ef03dbbb993b403fd8ba48c503a34dcff31f08341e7d789c1302a7f73"
+    },
+    {
+      "path": "frontend/src/pages/leny/lenyTransport.js",
+      "change": "modified_existing",
+      "before_sha256": null,
+      "after_sha256": "e9d3127400ff0deaad99f5bd39a52bb31881b6df27767c42dbb1336184f6075d"
+    },
+    {
+      "path": "frontend/src/pages/leny/lenyTransport.test.js",
+      "change": "modified_existing",
+      "before_sha256": null,
+      "after_sha256": "abe8369b6055d88a556b90cc2ba144974ef8bf671fbed98d423e3b8046aa9347"
+    },
+    {
+      "path": "frontend/src/pages/leny/LenyPage.test.jsx",
+      "change": "modified_existing",
+      "before_sha256": null,
+      "after_sha256": "1957621454452118bc5c362131bc702b77ddef05715194ab2aa5fa91ed3cd72c"
+    },
+    {
+      "path": "documentacion/MODULO_LENY.md",
+      "change": "modified_existing",
+      "before_sha256": null,
+      "after_sha256": "5e9fd9c4baa7b3b8fce26764cc4118f839acda2c3a54f4a968fd0e872b721b92"
+    },
+    {
+      "path": "documentacion/LENY_RAG04_EVALUACION.md",
+      "change": "modified_existing",
+      "before_sha256": null,
+      "after_sha256": "8ad29db21145702280cf96d2af64f394efa843fe3b11dc258d5292f9e3c644ab"
+    },
+    {
+      "path": "documentacion/REPORTE_IMPLEMENTACION_LENY.md",
+      "change": "modified_existing",
+      "before_sha256": null,
+      "after_sha256": "2d24855f862e4711ce6ec4a62ef016d26f86e595e5fb2c0d76662a805ea96864"
+    },
+    {
+      "path": "backend/app/services/leny_rag_grounding.py",
+      "change": "created_this_round",
+      "before_sha256": null,
+      "after_sha256": "6d53a4368e6db94817eb636dbbaac3ab60744662897680912a4c56b42245ac14"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_grounding.py",
+      "change": "created_this_round",
+      "before_sha256": null,
+      "after_sha256": "29b804e7a4a303fe6e567ff4733bc84c70f75d74f89d86190b9f953887f995a9"
+    }
+  ],
+  "before_hash_coverage": "Only paths explicitly fingerprinted before this round; null is not reconstructed from dirty HEAD.",
+  "versions": {
+    "candidate_profile": "rag4_v1",
+    "context_policy": "rag4-v2",
+    "documentary_output": "document-excerpts-v2"
+  },
+  "new_dependencies": [],
+  "new_migrations": [],
+  "new_endpoints": [],
+  "new_official_roles": [],
+  "business_configuration_modified": false,
+  "business_documents_read": false,
+  "business_services_restarted": false,
+  "candidate_activated": false,
+  "final_real_model_evaluation_executed": false,
+  "reason": "Owner deferred after cold RAM safety rejection.",
+  "holdout_executed": false,
+  "human_review_completed": false,
+  "tests": {
+    "base": {
+      "passed": 788,
+      "skipped": 1,
+      "warnings": 1,
+      "seconds": 14.53
+    },
+    "postgresql_existing_schema": {
+      "passed": 100,
+      "deselected_migration_tests": 5,
+      "seconds": 47.55,
+      "ddl_attempts": 0,
+      "source_freeze_verified": true
+    },
+    "frontend": {
+      "passed": 117,
+      "files": 18,
+      "seconds": 45.81
+    },
+    "lint": "passed",
+    "temporary_build": {
+      "passed": true,
+      "seconds": 39.8,
+      "bundle_js_kb": 2692.24,
+      "gzip_kb": 805.59,
+      "existing_large_bundle_warning": true
+    }
+  },
+  "evidence": {
+    "paired_diagnostics": "leny_rag04_quality_diagnostics_comparison.json",
+    "final_code_snapshot": "leny_rag04_quality_repair_final_snapshot.json",
+    "postgresql": "leny_rag04_repair_pg_frozen.json",
+    "human_priority_cases": "leny_rag04_quality_revision_prioridades.md",
+    "human_template": "leny_rag04_quality_revision_plantilla.json"
+  },
+  "acceptance": "not_accepted_pending_final_models_human_review_holdout_business_e2e",
+  "activation_allowed": false,
+  "end_state": {
+    "ollama_responding": true,
+    "resident_models": 0,
+    "test_55432_listening": false,
+    "usual_8000_listening": true,
+    "usual_5173_listening": true,
+    "synthetic_inference_window_closed": true
+  }
+}

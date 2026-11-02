@@ -1,0 +1,1286 @@
+{
+  "schema_version": "rag04-coverage-controls-proposed-v1",
+  "data_classification": "synthetic",
+  "description": "Doce controles laterales redactados para revisar cobertura semántica. Todos los documentos, entidades, cifras y procedimientos son ficticios.",
+  "human_review_complete": false,
+  "human_reviewed": false,
+  "runtime_executed": false,
+  "expectations_status": "proposed_pending_owner_review_not_human_gold",
+  "provenance": {
+    "author_type": "assistant",
+    "development_questions_or_gold_read_for_this_authoring_task": false,
+    "prior_context_exposure": "El autor participó previamente en una auditoría de casos de desarrollo. No se afirma independencia, condición no vista ni validez de holdout.",
+    "business_documents_used": false,
+    "notes": "No se ejecutaron modelos, aplicación ni base de datos. Los controles no son evidencia de calidad del candidato."
+  },
+  "decision_semantics": {
+    "approved": "Propuesta: la evidencia elegible respalda el aspecto y alcance de la consulta, conservando sus condiciones. No significa aprobación humana del manifiesto ni autorización para ejecutar una operación.",
+    "not_covered": "Propuesta: la evidencia elegible no respalda el alcance o la operación solicitados. No equivale a falsedad de la consulta ni a un permiso o prohibición inversos.",
+    "unresolved_interpretation": "uncertain: solicitar aclaración. El intérprete debe trabajar desde pregunta original y contexto legítimo, no desde estas etiquetas ni la firma propuesta.",
+    "revocation": "Excluir del contexto objetivo toda fuente sin acceso vigente, aunque el fixture conserve texto histórico para auditar el control."
+  },
+  "span_convention": "Índices de caracteres Unicode, base cero, end exclusivo, sobre el texto original indicado por origin. Hash SHA-256 del fragmento UTF-8 sin normalización.",
+  "proposed_control_vocabulary": {
+    "human_reviewed": false,
+    "production_configuration": false,
+    "concepts": [
+      {
+        "id": "skirt_panels",
+        "kind": "topic",
+        "aliases": [
+          "falda de paneles"
+        ],
+        "parents": []
+      },
+      {
+        "id": "simple_mending",
+        "kind": "topic",
+        "aliases": [
+          "zurcido sencillo"
+        ],
+        "parents": []
+      },
+      {
+        "id": "fastener_kit",
+        "kind": "topic",
+        "aliases": [
+          "kit de broches",
+          "kit ficticio Lirio"
+        ],
+        "parents": []
+      },
+      {
+        "id": "packaging_lot",
+        "kind": "topic",
+        "aliases": [
+          "lote de empaque"
+        ],
+        "parents": []
+      },
+      {
+        "id": "sample_books",
+        "kind": "topic",
+        "aliases": [
+          "muestrarios Alba y Brisa",
+          "muestrarios"
+        ],
+        "parents": []
+      },
+      {
+        "id": "folding_box",
+        "kind": "topic",
+        "aliases": [
+          "caja plegable Nube"
+        ],
+        "parents": []
+      },
+      {
+        "id": "sequence",
+        "kind": "aspect",
+        "aliases": [
+          "secuencia",
+          "orden de montaje"
+        ],
+        "parents": []
+      },
+      {
+        "id": "price",
+        "kind": "aspect",
+        "aliases": [
+          "precio",
+          "tarifa",
+          "importe"
+        ],
+        "parents": []
+      },
+      {
+        "id": "quantity",
+        "kind": "aspect",
+        "aliases": [
+          "cuántos broches",
+          "cuántas unidades",
+          "cantidad"
+        ],
+        "parents": []
+      },
+      {
+        "id": "duration",
+        "kind": "aspect",
+        "aliases": [
+          "cuántos días",
+          "duración"
+        ],
+        "parents": []
+      },
+      {
+        "id": "approval_actor",
+        "kind": "aspect",
+        "aliases": [
+          "quién autoriza"
+        ],
+        "parents": []
+      },
+      {
+        "id": "quantity_comparison",
+        "kind": "aspect",
+        "aliases": [
+          "cuál tiene más fichas"
+        ],
+        "parents": []
+      },
+      {
+        "id": "movement_record",
+        "kind": "aspect",
+        "aliases": [
+          "registra un traslado"
+        ],
+        "parents": []
+      },
+      {
+        "id": "included_items",
+        "kind": "aspect",
+        "aliases": [
+          "qué trae incluido"
+        ],
+        "parents": []
+      },
+      {
+        "id": "thermal_rhinestones",
+        "kind": "qualifier",
+        "aliases": [
+          "pedrería aplicada por calor"
+        ],
+        "parents": []
+      },
+      {
+        "id": "cover_required",
+        "kind": "qualifier",
+        "aliases": [
+          "requiere funda protectora"
+        ],
+        "parents": []
+      },
+      {
+        "id": "cover_not_required",
+        "kind": "qualifier",
+        "aliases": [
+          "no requiere funda protectora"
+        ],
+        "parents": []
+      }
+    ],
+    "alias_resolution_requirement": "Resolver alcance, negación y solapamientos completos; no hacer coincidencia ciega por subcadena. cover_not_required no puede convertirse en cover_required."
+  },
+  "cases": [
+    {
+      "id": "coverage-control-01",
+      "pair_id": "general_specialty",
+      "polarity": "positive",
+      "human_reviewed": false,
+      "question": "¿Qué orden de montaje describe la ficha para la falda de paneles?",
+      "query_signature": {
+        "subject": "skirt_panels",
+        "operation": "read",
+        "aspect": "sequence",
+        "qualifiers": [],
+        "spans": [
+          {
+            "field": "subject",
+            "origin": "question",
+            "start": 48,
+            "end": 64,
+            "quote": "falda de paneles"
+          },
+          {
+            "field": "aspect",
+            "origin": "question",
+            "start": 5,
+            "end": 21,
+            "quote": "orden de montaje"
+          }
+        ],
+        "status": "proposed_for_human_review"
+      },
+      "context": {
+        "prior_user_questions": [],
+        "state_change": null
+      },
+      "evidence": {
+        "fragments": [
+          {
+            "document_id": "synthetic-control-assembly",
+            "version": 1,
+            "indexation_id": "synthetic-control-assembly-index-1",
+            "fragment_id": "assembly-fragment-1",
+            "text": "Ficha sintética: para el montaje general de una falda de paneles, identificar los paneles, unir sus laterales y revisar la unión antes del remate.",
+            "text_sha256_utf8": "0b2405f74c3e029ac278a1c2656f0947da475fc003020476bbc6027d81c7bde3",
+            "published_at_target": true,
+            "authorized_at_target": true,
+            "proposed_coverage": {
+              "human_reviewed": false,
+              "topics": [
+                "skirt_panels"
+              ],
+              "operations": [
+                "read"
+              ],
+              "aspects": [
+                "sequence"
+              ],
+              "qualifiers": [],
+              "spans": [
+                {
+                  "start": 0,
+                  "end": 146,
+                  "quote": "Ficha sintética: para el montaje general de una falda de paneles, identificar los paneles, unir sus laterales y revisar la unión antes del remate."
+                }
+              ],
+              "required_fragment_ids": [],
+              "scope_rule": "Sólo el alcance expresado; sin heredar cobertura a especialidades ni al complemento de una condición."
+            }
+          }
+        ],
+        "eligible_fragment_ids_at_target": [
+          "assembly-fragment-1"
+        ]
+      },
+      "expected_decision": "approved",
+      "proposed_expected_support": {
+        "fragment_ids": [
+          "assembly-fragment-1"
+        ],
+        "supported_scope": "Secuencia general de identificación, unión lateral y revisión previa al remate.",
+        "essential_conditions": [
+          "Revisar la unión antes del remate."
+        ],
+        "unsupported_scope": []
+      },
+      "proposed_reason": "La consulta general coincide con el proceso expresamente descrito; conservar la revisión antes del remate.",
+      "human_review": null,
+      "interpretation_contract": "La firma es una propuesta de evaluación, nunca una entrada autoritativa al intérprete. Si la pregunta original y el contexto legítimo no permiten resolverla, registrar uncertain y pedir aclaración; no imponer la decisión esperada."
+    },
+    {
+      "id": "coverage-control-02",
+      "pair_id": "general_specialty",
+      "polarity": "negative",
+      "human_reviewed": false,
+      "question": "¿Qué orden de montaje documenta la ficha para la falda de paneles con pedrería aplicada por calor?",
+      "query_signature": {
+        "subject": "skirt_panels",
+        "operation": "read",
+        "aspect": "sequence",
+        "qualifiers": [
+          "thermal_rhinestones"
+        ],
+        "spans": [
+          {
+            "field": "subject",
+            "origin": "question",
+            "start": 49,
+            "end": 65,
+            "quote": "falda de paneles"
+          },
+          {
+            "field": "aspect",
+            "origin": "question",
+            "start": 5,
+            "end": 21,
+            "quote": "orden de montaje"
+          },
+          {
+            "field": "qualifiers",
+            "origin": "question",
+            "start": 70,
+            "end": 97,
+            "quote": "pedrería aplicada por calor"
+          }
+        ],
+        "status": "proposed_for_human_review"
+      },
+      "context": {
+        "prior_user_questions": [],
+        "state_change": null
+      },
+      "evidence": {
+        "fragments": [
+          {
+            "document_id": "synthetic-control-assembly",
+            "version": 1,
+            "indexation_id": "synthetic-control-assembly-index-1",
+            "fragment_id": "assembly-fragment-1",
+            "text": "Ficha sintética: para el montaje general de una falda de paneles, identificar los paneles, unir sus laterales y revisar la unión antes del remate.",
+            "text_sha256_utf8": "0b2405f74c3e029ac278a1c2656f0947da475fc003020476bbc6027d81c7bde3",
+            "published_at_target": true,
+            "authorized_at_target": true,
+            "proposed_coverage": {
+              "human_reviewed": false,
+              "topics": [
+                "skirt_panels"
+              ],
+              "operations": [
+                "read"
+              ],
+              "aspects": [
+                "sequence"
+              ],
+              "qualifiers": [],
+              "spans": [
+                {
+                  "start": 0,
+                  "end": 146,
+                  "quote": "Ficha sintética: para el montaje general de una falda de paneles, identificar los paneles, unir sus laterales y revisar la unión antes del remate."
+                }
+              ],
+              "required_fragment_ids": [],
+              "scope_rule": "Sólo el alcance expresado; sin heredar cobertura a especialidades ni al complemento de una condición."
+            }
+          }
+        ],
+        "eligible_fragment_ids_at_target": [
+          "assembly-fragment-1"
+        ]
+      },
+      "expected_decision": "not_covered",
+      "proposed_expected_support": {
+        "fragment_ids": [],
+        "supported_scope": null,
+        "essential_conditions": [],
+        "unsupported_scope": [
+          "Secuencia específica para pedrería aplicada por calor."
+        ]
+      },
+      "proposed_reason": "La ficha general no documenta la técnica de aplicación por calor. La cobertura de la falda general no se hereda a esa especialidad.",
+      "human_review": null,
+      "interpretation_contract": "La firma es una propuesta de evaluación, nunca una entrada autoritativa al intérprete. Si la pregunta original y el contexto legítimo no permiten resolverla, registrar uncertain y pedir aclaración; no imponer la decisión esperada."
+    },
+    {
+      "id": "coverage-control-03",
+      "pair_id": "inventory_tariff",
+      "polarity": "positive",
+      "human_reviewed": false,
+      "question": "¿Qué precio figura para el zurcido sencillo?",
+      "query_signature": {
+        "subject": "simple_mending",
+        "operation": "read",
+        "aspect": "price",
+        "qualifiers": [],
+        "spans": [
+          {
+            "field": "subject",
+            "origin": "question",
+            "start": 27,
+            "end": 43,
+            "quote": "zurcido sencillo"
+          },
+          {
+            "field": "aspect",
+            "origin": "question",
+            "start": 5,
+            "end": 11,
+            "quote": "precio"
+          }
+        ],
+        "status": "proposed_for_human_review"
+      },
+      "context": {
+        "prior_user_questions": [],
+        "state_change": null
+      },
+      "evidence": {
+        "fragments": [
+          {
+            "document_id": "synthetic-control-mending",
+            "version": 1,
+            "indexation_id": "synthetic-control-mending-index-1",
+            "fragment_id": "mending-fragment-1",
+            "text": "Lista sintética: el precio del zurcido sencillo es Bs 74 por servicio; incluye un parche liso. Esta lista no informa existencias de parches.",
+            "text_sha256_utf8": "badebeb71f84f3faa5d0ed35b2553e7229e3e6c47d9725bb71683fabb9b8ce55",
+            "published_at_target": true,
+            "authorized_at_target": true,
+            "proposed_coverage": {
+              "human_reviewed": false,
+              "topics": [
+                "simple_mending"
+              ],
+              "operations": [
+                "read"
+              ],
+              "aspects": [
+                "price",
+                "included_items"
+              ],
+              "qualifiers": [],
+              "spans": [
+                {
+                  "start": 0,
+                  "end": 140,
+                  "quote": "Lista sintética: el precio del zurcido sencillo es Bs 74 por servicio; incluye un parche liso. Esta lista no informa existencias de parches."
+                }
+              ],
+              "required_fragment_ids": [],
+              "scope_rule": "Sólo el alcance expresado; sin heredar cobertura a especialidades ni al complemento de una condición."
+            }
+          }
+        ],
+        "eligible_fragment_ids_at_target": [
+          "mending-fragment-1"
+        ]
+      },
+      "expected_decision": "approved",
+      "proposed_expected_support": {
+        "fragment_ids": [
+          "mending-fragment-1"
+        ],
+        "supported_scope": "Precio ficticio de Bs 74 por servicio de zurcido sencillo.",
+        "essential_conditions": [
+          "Unidad del importe: por servicio."
+        ],
+        "unsupported_scope": []
+      },
+      "proposed_reason": "La cifra está vinculada al precio por servicio; no representa unidades disponibles.",
+      "human_review": null,
+      "interpretation_contract": "La firma es una propuesta de evaluación, nunca una entrada autoritativa al intérprete. Si la pregunta original y el contexto legítimo no permiten resolverla, registrar uncertain y pedir aclaración; no imponer la decisión esperada."
+    },
+    {
+      "id": "coverage-control-04",
+      "pair_id": "inventory_tariff",
+      "polarity": "negative",
+      "human_reviewed": false,
+      "question": "¿Cuántas unidades de parches hay disponibles para el zurcido sencillo?",
+      "query_signature": {
+        "subject": "simple_mending",
+        "operation": "read",
+        "aspect": "quantity",
+        "qualifiers": [],
+        "spans": [
+          {
+            "field": "subject",
+            "origin": "question",
+            "start": 53,
+            "end": 69,
+            "quote": "zurcido sencillo"
+          },
+          {
+            "field": "aspect",
+            "origin": "question",
+            "start": 1,
+            "end": 17,
+            "quote": "Cuántas unidades"
+          }
+        ],
+        "status": "proposed_for_human_review"
+      },
+      "context": {
+        "prior_user_questions": [],
+        "state_change": null
+      },
+      "evidence": {
+        "fragments": [
+          {
+            "document_id": "synthetic-control-mending",
+            "version": 1,
+            "indexation_id": "synthetic-control-mending-index-1",
+            "fragment_id": "mending-fragment-1",
+            "text": "Lista sintética: el precio del zurcido sencillo es Bs 74 por servicio; incluye un parche liso. Esta lista no informa existencias de parches.",
+            "text_sha256_utf8": "badebeb71f84f3faa5d0ed35b2553e7229e3e6c47d9725bb71683fabb9b8ce55",
+            "published_at_target": true,
+            "authorized_at_target": true,
+            "proposed_coverage": {
+              "human_reviewed": false,
+              "topics": [
+                "simple_mending"
+              ],
+              "operations": [
+                "read"
+              ],
+              "aspects": [
+                "price",
+                "included_items"
+              ],
+              "qualifiers": [],
+              "spans": [
+                {
+                  "start": 0,
+                  "end": 140,
+                  "quote": "Lista sintética: el precio del zurcido sencillo es Bs 74 por servicio; incluye un parche liso. Esta lista no informa existencias de parches."
+                }
+              ],
+              "required_fragment_ids": [],
+              "scope_rule": "Sólo el alcance expresado; sin heredar cobertura a especialidades ni al complemento de una condición."
+            }
+          }
+        ],
+        "eligible_fragment_ids_at_target": [
+          "mending-fragment-1"
+        ]
+      },
+      "expected_decision": "not_covered",
+      "proposed_expected_support": {
+        "fragment_ids": [],
+        "supported_scope": null,
+        "essential_conditions": [],
+        "unsupported_scope": [
+          "Cantidad de parches disponibles."
+        ]
+      },
+      "proposed_reason": "El documento permitido sólo contiene precio e inclusión de un parche; ni Bs 74 ni el parche incluido acreditan existencias disponibles.",
+      "human_review": null,
+      "interpretation_contract": "La firma es una propuesta de evaluación, nunca una entrada autoritativa al intérprete. Si la pregunta original y el contexto legítimo no permiten resolverla, registrar uncertain y pedir aclaración; no imponer la decisión esperada."
+    },
+    {
+      "id": "coverage-control-05",
+      "pair_id": "quantity_duration",
+      "polarity": "positive",
+      "human_reviewed": false,
+      "question": "¿Cuántos broches contiene cada kit de broches Lirio?",
+      "query_signature": {
+        "subject": "fastener_kit",
+        "operation": "read",
+        "aspect": "quantity",
+        "qualifiers": [],
+        "spans": [
+          {
+            "field": "subject",
+            "origin": "question",
+            "start": 31,
+            "end": 45,
+            "quote": "kit de broches"
+          },
+          {
+            "field": "aspect",
+            "origin": "question",
+            "start": 1,
+            "end": 16,
+            "quote": "Cuántos broches"
+          }
+        ],
+        "status": "proposed_for_human_review"
+      },
+      "context": {
+        "prior_user_questions": [],
+        "state_change": null
+      },
+      "evidence": {
+        "fragments": [
+          {
+            "document_id": "synthetic-control-kit",
+            "version": 1,
+            "indexation_id": "synthetic-control-kit-index-1",
+            "fragment_id": "kit-fragment-1",
+            "text": "Inventario sintético: cada kit de broches Lirio contiene 12 broches. La ficha describe el contenido del kit, sin plazo de preparación.",
+            "text_sha256_utf8": "61e1bbf4bb2097f47c101b0d485c226fa9c809c9f0595fb3b4ab3d2e0a17ac64",
+            "published_at_target": true,
+            "authorized_at_target": true,
+            "proposed_coverage": {
+              "human_reviewed": false,
+              "topics": [
+                "fastener_kit"
+              ],
+              "operations": [
+                "read"
+              ],
+              "aspects": [
+                "quantity"
+              ],
+              "qualifiers": [],
+              "spans": [
+                {
+                  "start": 0,
+                  "end": 134,
+                  "quote": "Inventario sintético: cada kit de broches Lirio contiene 12 broches. La ficha describe el contenido del kit, sin plazo de preparación."
+                }
+              ],
+              "required_fragment_ids": [],
+              "scope_rule": "Sólo el alcance expresado; sin heredar cobertura a especialidades ni al complemento de una condición."
+            }
+          }
+        ],
+        "eligible_fragment_ids_at_target": [
+          "kit-fragment-1"
+        ]
+      },
+      "expected_decision": "approved",
+      "proposed_expected_support": {
+        "fragment_ids": [
+          "kit-fragment-1"
+        ],
+        "supported_scope": "12 broches por kit Lirio.",
+        "essential_conditions": [
+          "La cantidad es por kit."
+        ],
+        "unsupported_scope": []
+      },
+      "proposed_reason": "El número 12 está unido al contenido de cada kit y a la unidad broches.",
+      "human_review": null,
+      "interpretation_contract": "La firma es una propuesta de evaluación, nunca una entrada autoritativa al intérprete. Si la pregunta original y el contexto legítimo no permiten resolverla, registrar uncertain y pedir aclaración; no imponer la decisión esperada."
+    },
+    {
+      "id": "coverage-control-06",
+      "pair_id": "quantity_duration",
+      "polarity": "negative",
+      "human_reviewed": false,
+      "question": "¿Cuántos días dura la preparación de cada kit de broches Lirio?",
+      "query_signature": {
+        "subject": "fastener_kit",
+        "operation": "read",
+        "aspect": "duration",
+        "qualifiers": [],
+        "spans": [
+          {
+            "field": "subject",
+            "origin": "question",
+            "start": 42,
+            "end": 56,
+            "quote": "kit de broches"
+          },
+          {
+            "field": "aspect",
+            "origin": "question",
+            "start": 1,
+            "end": 13,
+            "quote": "Cuántos días"
+          }
+        ],
+        "status": "proposed_for_human_review"
+      },
+      "context": {
+        "prior_user_questions": [],
+        "state_change": null
+      },
+      "evidence": {
+        "fragments": [
+          {
+            "document_id": "synthetic-control-kit",
+            "version": 1,
+            "indexation_id": "synthetic-control-kit-index-1",
+            "fragment_id": "kit-fragment-1",
+            "text": "Inventario sintético: cada kit de broches Lirio contiene 12 broches. La ficha describe el contenido del kit, sin plazo de preparación.",
+            "text_sha256_utf8": "61e1bbf4bb2097f47c101b0d485c226fa9c809c9f0595fb3b4ab3d2e0a17ac64",
+            "published_at_target": true,
+            "authorized_at_target": true,
+            "proposed_coverage": {
+              "human_reviewed": false,
+              "topics": [
+                "fastener_kit"
+              ],
+              "operations": [
+                "read"
+              ],
+              "aspects": [
+                "quantity"
+              ],
+              "qualifiers": [],
+              "spans": [
+                {
+                  "start": 0,
+                  "end": 134,
+                  "quote": "Inventario sintético: cada kit de broches Lirio contiene 12 broches. La ficha describe el contenido del kit, sin plazo de preparación."
+                }
+              ],
+              "required_fragment_ids": [],
+              "scope_rule": "Sólo el alcance expresado; sin heredar cobertura a especialidades ni al complemento de una condición."
+            }
+          }
+        ],
+        "eligible_fragment_ids_at_target": [
+          "kit-fragment-1"
+        ]
+      },
+      "expected_decision": "not_covered",
+      "proposed_expected_support": {
+        "fragment_ids": [],
+        "supported_scope": null,
+        "essential_conditions": [],
+        "unsupported_scope": [
+          "Duración de preparación del kit."
+        ]
+      },
+      "proposed_reason": "12 broches es una cantidad, no una duración. No convertir esa cifra a días ni inferir un plazo.",
+      "human_review": null,
+      "interpretation_contract": "La firma es una propuesta de evaluación, nunca una entrada autoritativa al intérprete. Si la pregunta original y el contexto legítimo no permiten resolverla, registrar uncertain y pedir aclaración; no imponer la decisión esperada."
+    },
+    {
+      "id": "coverage-control-07",
+      "pair_id": "condition_negation",
+      "polarity": "positive",
+      "human_reviewed": false,
+      "question": "Si el lote de empaque requiere funda protectora, ¿quién autoriza el embalaje?",
+      "query_signature": {
+        "subject": "packaging_lot",
+        "operation": "read",
+        "aspect": "approval_actor",
+        "qualifiers": [
+          "cover_required"
+        ],
+        "spans": [
+          {
+            "field": "subject",
+            "origin": "question",
+            "start": 6,
+            "end": 21,
+            "quote": "lote de empaque"
+          },
+          {
+            "field": "aspect",
+            "origin": "question",
+            "start": 50,
+            "end": 64,
+            "quote": "quién autoriza"
+          },
+          {
+            "field": "qualifiers",
+            "origin": "question",
+            "start": 22,
+            "end": 47,
+            "quote": "requiere funda protectora"
+          }
+        ],
+        "status": "proposed_for_human_review"
+      },
+      "context": {
+        "prior_user_questions": [],
+        "state_change": null
+      },
+      "evidence": {
+        "fragments": [
+          {
+            "document_id": "synthetic-control-packaging",
+            "version": 1,
+            "indexation_id": "synthetic-control-packaging-index-1",
+            "fragment_id": "packaging-fragment-1",
+            "text": "Instrucción sintética: si el lote de empaque requiere funda protectora, la coordinadora autoriza el embalaje. Este fragmento sólo describe ese supuesto.",
+            "text_sha256_utf8": "778dbd36c11ad7c3925d00d06604ccb4251161207c7054a57a0ff68b5c64aeb6",
+            "published_at_target": true,
+            "authorized_at_target": true,
+            "proposed_coverage": {
+              "human_reviewed": false,
+              "topics": [
+                "packaging_lot"
+              ],
+              "operations": [
+                "read"
+              ],
+              "aspects": [
+                "approval_actor"
+              ],
+              "qualifiers": [
+                "cover_required"
+              ],
+              "spans": [
+                {
+                  "start": 0,
+                  "end": 152,
+                  "quote": "Instrucción sintética: si el lote de empaque requiere funda protectora, la coordinadora autoriza el embalaje. Este fragmento sólo describe ese supuesto."
+                }
+              ],
+              "required_fragment_ids": [],
+              "scope_rule": "Sólo el alcance expresado; sin heredar cobertura a especialidades ni al complemento de una condición."
+            }
+          }
+        ],
+        "eligible_fragment_ids_at_target": [
+          "packaging-fragment-1"
+        ]
+      },
+      "expected_decision": "approved",
+      "proposed_expected_support": {
+        "fragment_ids": [
+          "packaging-fragment-1"
+        ],
+        "supported_scope": "La coordinadora autoriza el embalaje cuando se requiere funda protectora.",
+        "essential_conditions": [
+          "El lote requiere funda protectora."
+        ],
+        "unsupported_scope": []
+      },
+      "proposed_reason": "Se puede atribuir la autorización a la coordinadora únicamente dentro del supuesto expresado.",
+      "human_review": null,
+      "interpretation_contract": "La firma es una propuesta de evaluación, nunca una entrada autoritativa al intérprete. Si la pregunta original y el contexto legítimo no permiten resolverla, registrar uncertain y pedir aclaración; no imponer la decisión esperada."
+    },
+    {
+      "id": "coverage-control-08",
+      "pair_id": "condition_negation",
+      "polarity": "negative",
+      "human_reviewed": false,
+      "question": "Si el lote de empaque no requiere funda protectora, ¿quién autoriza el embalaje?",
+      "query_signature": {
+        "subject": "packaging_lot",
+        "operation": "read",
+        "aspect": "approval_actor",
+        "qualifiers": [
+          "cover_not_required"
+        ],
+        "spans": [
+          {
+            "field": "subject",
+            "origin": "question",
+            "start": 6,
+            "end": 21,
+            "quote": "lote de empaque"
+          },
+          {
+            "field": "aspect",
+            "origin": "question",
+            "start": 53,
+            "end": 67,
+            "quote": "quién autoriza"
+          },
+          {
+            "field": "qualifiers",
+            "origin": "question",
+            "start": 22,
+            "end": 50,
+            "quote": "no requiere funda protectora"
+          }
+        ],
+        "status": "proposed_for_human_review"
+      },
+      "context": {
+        "prior_user_questions": [],
+        "state_change": null
+      },
+      "evidence": {
+        "fragments": [
+          {
+            "document_id": "synthetic-control-packaging",
+            "version": 1,
+            "indexation_id": "synthetic-control-packaging-index-1",
+            "fragment_id": "packaging-fragment-1",
+            "text": "Instrucción sintética: si el lote de empaque requiere funda protectora, la coordinadora autoriza el embalaje. Este fragmento sólo describe ese supuesto.",
+            "text_sha256_utf8": "778dbd36c11ad7c3925d00d06604ccb4251161207c7054a57a0ff68b5c64aeb6",
+            "published_at_target": true,
+            "authorized_at_target": true,
+            "proposed_coverage": {
+              "human_reviewed": false,
+              "topics": [
+                "packaging_lot"
+              ],
+              "operations": [
+                "read"
+              ],
+              "aspects": [
+                "approval_actor"
+              ],
+              "qualifiers": [
+                "cover_required"
+              ],
+              "spans": [
+                {
+                  "start": 0,
+                  "end": 152,
+                  "quote": "Instrucción sintética: si el lote de empaque requiere funda protectora, la coordinadora autoriza el embalaje. Este fragmento sólo describe ese supuesto."
+                }
+              ],
+              "required_fragment_ids": [],
+              "scope_rule": "Sólo el alcance expresado; sin heredar cobertura a especialidades ni al complemento de una condición."
+            }
+          }
+        ],
+        "eligible_fragment_ids_at_target": [
+          "packaging-fragment-1"
+        ]
+      },
+      "expected_decision": "not_covered",
+      "proposed_expected_support": {
+        "fragment_ids": [],
+        "supported_scope": null,
+        "essential_conditions": [],
+        "unsupported_scope": [
+          "Responsable de autorización cuando no se requiere funda protectora."
+        ]
+      },
+      "proposed_reason": "La pregunta niega el antecedente del único supuesto descrito. No permite inferir quién autoriza fuera de él, ni que el embalaje está permitido o prohibido. No es una pregunta cuya respuesta documental sea simplemente no.",
+      "human_review": null,
+      "interpretation_contract": "La firma es una propuesta de evaluación, nunca una entrada autoritativa al intérprete. Si la pregunta original y el contexto legítimo no permiten resolverla, registrar uncertain y pedir aclaración; no imponer la decisión esperada."
+    },
+    {
+      "id": "coverage-control-09",
+      "pair_id": "comparison_operation",
+      "polarity": "positive",
+      "human_reviewed": false,
+      "question": "Entre los muestrarios Alba y Brisa, ¿cuál tiene más fichas?",
+      "query_signature": {
+        "subject": "sample_books",
+        "operation": "compare",
+        "aspect": "quantity_comparison",
+        "qualifiers": [],
+        "spans": [
+          {
+            "field": "subject",
+            "origin": "question",
+            "start": 10,
+            "end": 34,
+            "quote": "muestrarios Alba y Brisa"
+          },
+          {
+            "field": "aspect",
+            "origin": "question",
+            "start": 37,
+            "end": 58,
+            "quote": "cuál tiene más fichas"
+          }
+        ],
+        "status": "proposed_for_human_review"
+      },
+      "context": {
+        "prior_user_questions": [],
+        "state_change": null
+      },
+      "evidence": {
+        "fragments": [
+          {
+            "document_id": "synthetic-control-samples",
+            "version": 1,
+            "indexation_id": "synthetic-control-samples-index-1",
+            "fragment_id": "samples-fragment-1",
+            "text": "Registro sintético de muestrarios: Alba tiene 9 fichas y Brisa tiene 6 fichas. Alba tiene más fichas que Brisa. El registro es informativo y no autoriza movimientos.",
+            "text_sha256_utf8": "5bf8493d94e7ad960e258ec4dce951ae50c5722a8ce9a6aaaea95a494a84e82c",
+            "published_at_target": true,
+            "authorized_at_target": true,
+            "proposed_coverage": {
+              "human_reviewed": false,
+              "topics": [
+                "sample_books"
+              ],
+              "operations": [
+                "read",
+                "compare"
+              ],
+              "aspects": [
+                "quantity",
+                "quantity_comparison"
+              ],
+              "qualifiers": [],
+              "spans": [
+                {
+                  "start": 0,
+                  "end": 165,
+                  "quote": "Registro sintético de muestrarios: Alba tiene 9 fichas y Brisa tiene 6 fichas. Alba tiene más fichas que Brisa. El registro es informativo y no autoriza movimientos."
+                }
+              ],
+              "required_fragment_ids": [],
+              "scope_rule": "Sólo el alcance expresado; sin heredar cobertura a especialidades ni al complemento de una condición."
+            }
+          }
+        ],
+        "eligible_fragment_ids_at_target": [
+          "samples-fragment-1"
+        ]
+      },
+      "expected_decision": "approved",
+      "proposed_expected_support": {
+        "fragment_ids": [
+          "samples-fragment-1"
+        ],
+        "supported_scope": "Alba tiene más fichas que Brisa: 9 frente a 6.",
+        "essential_conditions": [
+          "Comparación del registro sintético, sin modificar cantidades."
+        ],
+        "unsupported_scope": []
+      },
+      "proposed_reason": "La comparación se afirma explícitamente; no requiere consultar datos reales ni efectuar movimientos.",
+      "human_review": null,
+      "interpretation_contract": "La firma es una propuesta de evaluación, nunca una entrada autoritativa al intérprete. Si la pregunta original y el contexto legítimo no permiten resolverla, registrar uncertain y pedir aclaración; no imponer la decisión esperada."
+    },
+    {
+      "id": "coverage-control-10",
+      "pair_id": "comparison_operation",
+      "polarity": "negative",
+      "human_reviewed": false,
+      "question": "En los muestrarios Alba y Brisa, registra un traslado de 3 fichas de Alba a Brisa.",
+      "query_signature": {
+        "subject": "sample_books",
+        "operation": "write_requested",
+        "aspect": "movement_record",
+        "qualifiers": [],
+        "spans": [
+          {
+            "field": "subject",
+            "origin": "question",
+            "start": 7,
+            "end": 31,
+            "quote": "muestrarios Alba y Brisa"
+          },
+          {
+            "field": "operation",
+            "origin": "question",
+            "start": 33,
+            "end": 53,
+            "quote": "registra un traslado"
+          },
+          {
+            "field": "aspect",
+            "origin": "question",
+            "start": 33,
+            "end": 53,
+            "quote": "registra un traslado"
+          }
+        ],
+        "status": "proposed_for_human_review"
+      },
+      "context": {
+        "prior_user_questions": [],
+        "state_change": null
+      },
+      "evidence": {
+        "fragments": [
+          {
+            "document_id": "synthetic-control-samples",
+            "version": 1,
+            "indexation_id": "synthetic-control-samples-index-1",
+            "fragment_id": "samples-fragment-1",
+            "text": "Registro sintético de muestrarios: Alba tiene 9 fichas y Brisa tiene 6 fichas. Alba tiene más fichas que Brisa. El registro es informativo y no autoriza movimientos.",
+            "text_sha256_utf8": "5bf8493d94e7ad960e258ec4dce951ae50c5722a8ce9a6aaaea95a494a84e82c",
+            "published_at_target": true,
+            "authorized_at_target": true,
+            "proposed_coverage": {
+              "human_reviewed": false,
+              "topics": [
+                "sample_books"
+              ],
+              "operations": [
+                "read",
+                "compare"
+              ],
+              "aspects": [
+                "quantity",
+                "quantity_comparison"
+              ],
+              "qualifiers": [],
+              "spans": [
+                {
+                  "start": 0,
+                  "end": 165,
+                  "quote": "Registro sintético de muestrarios: Alba tiene 9 fichas y Brisa tiene 6 fichas. Alba tiene más fichas que Brisa. El registro es informativo y no autoriza movimientos."
+                }
+              ],
+              "required_fragment_ids": [],
+              "scope_rule": "Sólo el alcance expresado; sin heredar cobertura a especialidades ni al complemento de una condición."
+            }
+          }
+        ],
+        "eligible_fragment_ids_at_target": [
+          "samples-fragment-1"
+        ]
+      },
+      "expected_decision": "not_covered",
+      "proposed_expected_support": {
+        "fragment_ids": [],
+        "supported_scope": null,
+        "essential_conditions": [],
+        "unsupported_scope": [
+          "Registro o ejecución del traslado solicitado."
+        ]
+      },
+      "proposed_reason": "Una comparación documentada no habilita ejecutar una operación. No producir confirmación de traslado ni cambiar cantidades. La respuesta puede explicar la limitación de capacidad sin presentarla como una operación realizada.",
+      "human_review": null,
+      "interpretation_contract": "La firma es una propuesta de evaluación, nunca una entrada autoritativa al intérprete. Si la pregunta original y el contexto legítimo no permiten resolverla, registrar uncertain y pedir aclaración; no imponer la decisión esperada."
+    },
+    {
+      "id": "coverage-control-11",
+      "pair_id": "followup_revocation",
+      "polarity": "positive",
+      "human_reviewed": false,
+      "question": "¿Qué trae incluido ese importe?",
+      "query_signature": {
+        "subject": "folding_box",
+        "operation": "read",
+        "aspect": "included_items",
+        "qualifiers": [],
+        "spans": [
+          {
+            "field": "subject",
+            "origin": "prior_user_question",
+            "start": 28,
+            "end": 46,
+            "quote": "caja plegable Nube"
+          },
+          {
+            "field": "aspect",
+            "origin": "question",
+            "start": 1,
+            "end": 18,
+            "quote": "Qué trae incluido"
+          }
+        ],
+        "status": "proposed_for_human_review"
+      },
+      "context": {
+        "prior_user_questions": [
+          "¿Qué importe figura para la caja plegable Nube?"
+        ],
+        "prior_documentary_anchor": {
+          "subject": "folding_box",
+          "operation": "read",
+          "aspect": "price",
+          "fragment_ids": [
+            "box-fragment-1"
+          ],
+          "authorized_when_created": true,
+          "proposed_fixture_precondition": true,
+          "human_reviewed": false,
+          "requires_reauthorization_at_target": true
+        },
+        "state_change": null,
+        "document_authorized_at_target": true,
+        "role": "CAJA",
+        "context_origin": "Original user question plus proposed legitimate prior documentary anchor; never the selector label or generated response."
+      },
+      "evidence": {
+        "fragments": [
+          {
+            "document_id": "synthetic-control-box",
+            "version": 1,
+            "indexation_id": "synthetic-control-box-index-1",
+            "fragment_id": "box-fragment-1",
+            "text": "Catálogo sintético: la caja plegable Nube cuesta Bs 37 e incluye una funda de tela. No describe precios reales.",
+            "text_sha256_utf8": "9d57eb9363e06bf3e0d6730cca8a59a718a30e39a3e0a7565f7c7ab453d77b55",
+            "published_at_target": true,
+            "authorized_at_target": true,
+            "proposed_coverage": {
+              "human_reviewed": false,
+              "topics": [
+                "folding_box"
+              ],
+              "operations": [
+                "read"
+              ],
+              "aspects": [
+                "price",
+                "included_items"
+              ],
+              "qualifiers": [],
+              "spans": [
+                {
+                  "start": 0,
+                  "end": 111,
+                  "quote": "Catálogo sintético: la caja plegable Nube cuesta Bs 37 e incluye una funda de tela. No describe precios reales."
+                }
+              ],
+              "required_fragment_ids": [],
+              "scope_rule": "Sólo el alcance expresado; sin heredar cobertura a especialidades ni al complemento de una condición."
+            }
+          }
+        ],
+        "eligible_fragment_ids_at_target": [
+          "box-fragment-1"
+        ]
+      },
+      "expected_decision": "approved",
+      "proposed_expected_support": {
+        "fragment_ids": [
+          "box-fragment-1"
+        ],
+        "supported_scope": "El importe de la caja Nube incluye una funda de tela.",
+        "essential_conditions": [
+          "Acceso vigente al documento en el turno objetivo."
+        ],
+        "unsupported_scope": []
+      },
+      "proposed_reason": "El referente procede de la pregunta original previa y la fuente continúa autorizada; se puede consultar la inclusión documentada.",
+      "human_review": null,
+      "interpretation_contract": "La firma es una propuesta de evaluación, nunca una entrada autoritativa al intérprete. Si la pregunta original y el contexto legítimo no permiten resolverla, registrar uncertain y pedir aclaración; no imponer la decisión esperada."
+    },
+    {
+      "id": "coverage-control-12",
+      "pair_id": "followup_revocation",
+      "polarity": "negative",
+      "human_reviewed": false,
+      "question": "¿Qué trae incluido ese importe?",
+      "query_signature": {
+        "subject": "folding_box",
+        "operation": "read",
+        "aspect": "included_items",
+        "qualifiers": [],
+        "spans": [
+          {
+            "field": "subject",
+            "origin": "prior_user_question",
+            "start": 28,
+            "end": 46,
+            "quote": "caja plegable Nube"
+          },
+          {
+            "field": "aspect",
+            "origin": "question",
+            "start": 1,
+            "end": 18,
+            "quote": "Qué trae incluido"
+          }
+        ],
+        "status": "proposed_for_human_review"
+      },
+      "context": {
+        "prior_user_questions": [
+          "¿Qué importe figura para la caja plegable Nube?"
+        ],
+        "prior_documentary_anchor": {
+          "subject": "folding_box",
+          "operation": "read",
+          "aspect": "price",
+          "fragment_ids": [
+            "box-fragment-1"
+          ],
+          "authorized_when_created": true,
+          "proposed_fixture_precondition": true,
+          "human_reviewed": false,
+          "requires_reauthorization_at_target": true
+        },
+        "state_change": "revoke_document_acl",
+        "document_authorized_at_target": false,
+        "role": "CAJA",
+        "context_origin": "Original user question plus proposed legitimate prior documentary anchor; never the selector label or generated response."
+      },
+      "evidence": {
+        "fragments": [
+          {
+            "document_id": "synthetic-control-box",
+            "version": 1,
+            "indexation_id": "synthetic-control-box-index-1",
+            "fragment_id": "box-fragment-1",
+            "text": "Catálogo sintético: la caja plegable Nube cuesta Bs 37 e incluye una funda de tela. No describe precios reales.",
+            "text_sha256_utf8": "9d57eb9363e06bf3e0d6730cca8a59a718a30e39a3e0a7565f7c7ab453d77b55",
+            "published_at_target": true,
+            "authorized_at_target": false,
+            "proposed_coverage": {
+              "human_reviewed": false,
+              "topics": [
+                "folding_box"
+              ],
+              "operations": [
+                "read"
+              ],
+              "aspects": [
+                "price",
+                "included_items"
+              ],
+              "qualifiers": [],
+              "spans": [
+                {
+                  "start": 0,
+                  "end": 111,
+                  "quote": "Catálogo sintético: la caja plegable Nube cuesta Bs 37 e incluye una funda de tela. No describe precios reales."
+                }
+              ],
+              "required_fragment_ids": [],
+              "scope_rule": "Sólo el alcance expresado; sin heredar cobertura a especialidades ni al complemento de una condición."
+            }
+          }
+        ],
+        "eligible_fragment_ids_at_target": []
+      },
+      "expected_decision": "not_covered",
+      "proposed_expected_support": {
+        "fragment_ids": [],
+        "supported_scope": null,
+        "essential_conditions": [],
+        "unsupported_scope": [
+          "Contenido del documento después de la revocación de acceso."
+        ]
+      },
+      "proposed_reason": "La ACL del documento se revocó después del ancla previa. Reautorizar deja evidencia elegible vacía; no repetir la inclusión ni el precio desde historial. La presencia del texto en este fixture no lo vuelve contexto permitido.",
+      "human_review": null,
+      "interpretation_contract": "La firma es una propuesta de evaluación, nunca una entrada autoritativa al intérprete. Si la pregunta original y el contexto legítimo no permiten resolverla, registrar uncertain y pedir aclaración; no imponer la decisión esperada."
+    }
+  ]
+}

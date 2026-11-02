@@ -1,3 +1,5 @@
+import { clearEconomicIntents } from './economicIntent'
+
 let accessToken = null
 let refreshHandler = null
 
@@ -10,6 +12,7 @@ export function setAccessToken(token) {
 }
 
 export function clearAccessToken() {
+  clearEconomicIntents()
   accessToken = null
 }
 
