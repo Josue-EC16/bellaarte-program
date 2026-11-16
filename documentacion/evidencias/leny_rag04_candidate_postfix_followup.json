@@ -1,0 +1,301 @@
+{
+  "schema_version": "rag04-real-synthetic-observations-v1",
+  "data_classification": "synthetic",
+  "profile": "rag4_v1",
+  "corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "model_identity": {
+    "chat_digest": "d8b0f5e9760cd1682034f292d7ef72ec46f432149be0df7574bf2d6e92e38c04",
+    "embedding_digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d"
+  },
+  "configuration_sha256": "6b09c48deb82b8f418f447348e652abae76cf484b1a0a584130944f33c1acb31",
+  "snapshot_manifest_sha256": "184fab362de056ffeb90b4ce3020bd7f92280659e96553640bba232bc1c8d329",
+  "comparison_contract_sha256": "6ed167daf5aaaf6dafff1fa4cb9d3f64b1a2e08af769c5eb034b4c6af3c24429",
+  "cases": [
+    {
+      "case_id": "rag04-followup-01",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 9219.000000011874,
+      "request_id": "b5e7dbc6-9d27-4237-80e0-ece1b73d25e9",
+      "latency_scope": "generation_request",
+      "response_text": "El siguiente punto numerado de la gu\u00eda es:\n\n3. Trazar el patr\u00f3n antes del corte. [S1]",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "rag_followup",
+        "verdict": "sufficient",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 1,
+          "candidates": 10,
+          "selected": 5,
+          "evidence_bytes": 714,
+          "prompt_bytes": 2925,
+          "documented_excerpt": 1,
+          "citations": 1
+        },
+        "durations_seconds": {
+          "embedding_and_release": 3.9840000000112923,
+          "search": 0.015999999988707714,
+          "context": 0.0,
+          "review": 4.922000000005937,
+          "render": 0.0,
+          "total": 9.219000000011874
+        }
+      },
+      "ram_available_before_bytes": 4926312448,
+      "ram_available_after_bytes": 5648023552,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-1",
+        "proc-3",
+        "proc-4",
+        "proc-2",
+        "work-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-1",
+        "proc-3",
+        "proc-4",
+        "proc-2",
+        "work-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-1",
+        "proc-3",
+        "proc-4",
+        "proc-2",
+        "work-1"
+      ],
+      "sent_evidence_basis": "confirmed_relevance_prompt_for_documented_excerpt",
+      "response_origin": "backend_documented_excerpt",
+      "observed_turn": 1,
+      "target_turn": 1,
+      "target_executed": true,
+      "citation_fragment_ids": [
+        "proc-1"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-followup-02",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 9032.00000000652,
+      "request_id": "cf4bdc96-6004-46d0-a3e1-75c1fc7da289",
+      "latency_scope": "generation_request",
+      "response_text": "El siguiente punto numerado de la gu\u00eda es:\n\n3. Trazar el patr\u00f3n antes del corte. [S1]",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "rag_followup",
+        "verdict": "sufficient",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 1,
+          "candidates": 10,
+          "selected": 1,
+          "evidence_bytes": 143,
+          "prompt_bytes": 1769,
+          "documented_excerpt": 1,
+          "citations": 1
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.1560000000026776,
+          "search": 0.0,
+          "context": 0.0,
+          "review": 4.6560000000026776,
+          "render": 0.014999999999417923,
+          "total": 9.01600000000326
+        }
+      },
+      "ram_available_before_bytes": 4502085632,
+      "ram_available_after_bytes": 5638922240,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-1",
+        "proc-3",
+        "proc-4",
+        "proc-2",
+        "work-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "sec-1",
+        "conflict-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-1"
+      ],
+      "sent_evidence_basis": "confirmed_relevance_prompt_for_documented_excerpt",
+      "response_origin": "backend_documented_excerpt",
+      "observed_turn": 1,
+      "target_turn": 1,
+      "target_executed": true,
+      "citation_fragment_ids": [
+        "proc-1"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    },
+    {
+      "case_id": "rag04-followup-03",
+      "status": "completed",
+      "route": "rag",
+      "latency_ms": 15889.999999999418,
+      "request_id": "f2cff8e4-7f72-48bd-9c8a-0f19effdc1c9",
+      "latency_scope": "generation_request",
+      "response_text": "Para la fabricaci\u00f3n de los vestidos en BELLAARTE BOUTIQUE, se siguen estos cinco pasos documentados:\n\n1. Confirmar el dise\u00f1o aprobado [S4].\n2. Tomar medidas con consentimiento del cliente [S4].\n3. Trazar el patr\u00f3n antes del corte de la tela [S4].\n4. Cortar \u00fanicamente la tela correspondiente al pedido identificado y hilvanar las piezas para la primera prueba [S1].\n5. Realizar la prueba de ajuste, corrigiendo diferencias antes de coser; luego coser las piezas aprobadas, revisar costuras, limpieza y cierre, y entregar solo despu\u00e9s de la aprobaci\u00f3n final con registro [S2] [S3].",
+      "http_status": 200,
+      "diagnostics": {
+        "profile": "rag4_v1",
+        "route": "documentary",
+        "reason": "rag_followup",
+        "verdict": "sufficient",
+        "outcome": "completed",
+        "counts": {
+          "topic_questions": 1,
+          "candidates": 10,
+          "selected": 4,
+          "evidence_bytes": 569,
+          "prompt_bytes": 2504,
+          "citations": 4,
+          "prompt_eval_count": 645,
+          "prompt_eval_cached_count": 0,
+          "eval_count": 146
+        },
+        "durations_seconds": {
+          "embedding_and_release": 4.0789999999979045,
+          "search": 0.014999999999417923,
+          "context": 0.0,
+          "review": 4.985000000000582,
+          "first_content": 14.5,
+          "generation": 6.64100000000326,
+          "load": 3.5239355,
+          "prompt_eval": 0.34667,
+          "eval": 2.748492,
+          "provider_total": 6.6215216,
+          "total": 15.889999999999418
+        }
+      },
+      "ram_available_before_bytes": 4501499904,
+      "ram_available_after_bytes": 4474658816,
+      "human_review": null,
+      "candidate_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "proc-1",
+        "work-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "selected_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "proc-1"
+      ],
+      "sent_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "proc-1"
+      ],
+      "sent_evidence_basis": "provider_completion_received",
+      "response_origin": "model_or_policy",
+      "observed_turn": 1,
+      "target_turn": 1,
+      "target_executed": true,
+      "citation_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "review": null,
+      "abstained": false,
+      "error_code": null
+    }
+  ],
+  "human_review_complete": false,
+  "business_e2e_executed": false,
+  "holdout_executed": false,
+  "extraction_formats_evaluated": false,
+  "settings": {
+    "leny_enabled": true,
+    "leny_documents_enabled": true,
+    "leny_rag_enabled": true,
+    "leny_rag_chat_enabled": true,
+    "leny_keep_alive": "0",
+    "leny_num_ctx": 4096,
+    "leny_num_predict": 768,
+    "leny_temperature": 0.0,
+    "leny_rate_limit": 5,
+    "leny_rate_window_seconds": 60,
+    "leny_rag_min_ram_bytes": 2147483648,
+    "leny_rag_min_resident_ram_bytes": 1073741824,
+    "leny_rag_cpu_threads": 4,
+    "leny_rag_batch_size": 2,
+    "leny_rag_top_k": 5,
+    "leny_rag_candidates": 20,
+    "leny_rag_profile": "rag4_v1",
+    "leny_rag_evidence_mode": "adaptive",
+    "leny_rag_max_context_bytes": 2048,
+    "leny_rag_ranking": "hybrid",
+    "leny_rag_adaptive_token_probe": true,
+    "leny_rag_neighbor_chunks": false
+  },
+  "runner_mode": "followup",
+  "original_representation": "generated synthetic originals with fixture source types; extraction not evaluated by this runner",
+  "created_at_utc": "2026-10-20T17:13:22.573502+00:00",
+  "source_files_sha256": {
+    "backend/app/core/config.py": "255d9f75fc82305d7d226840f2b42a5069168e8d285f728082a2b4bae28736c1",
+    "backend/app/services/leny_coordination.py": "b171770ebd63b568aa58b5c2279b2bc5bca8bc24abe771cdcc9a9127139958b5",
+    "backend/app/services/leny_document_backup.py": "d9e1c6017f88bcbb56332f43425308b2f5ed48dded95e89a59dedf0e21dba841",
+    "backend/app/services/leny_document_maintenance.py": "5641fdc19b799973ed1a1cf1ddbfb82fcb14fb6e67c1243fd3a0ee635aecec82",
+    "backend/app/services/leny_document_service.py": "4d4a92270425f73f7f2bed4c576f980584e86f363d1c0370a94188fe69a5b248",
+    "backend/app/services/leny_document_storage.py": "223508eb4132df2eaad9278ea03091a745051a051c2f5b38d0c95af92b96fe58",
+    "backend/app/services/leny_document_validation.py": "f308f43588151c2a7486fb084c812edc1243625954dcc3775fac1b7f790f0397",
+    "backend/app/services/leny_guard.py": "646aedcf45d6b84c50a170ce1ea19c0b8af517e1bfd6bdab0dbaccfb2db58749",
+    "backend/app/services/leny_inference_state.py": "851fcef019370000a372c9841120412cd49ab7489c2207924bdb2530336f4fb2",
+    "backend/app/services/leny_ollama.py": "d03765e1b1ec83d33333122100807366207fbeb334dba8c73adffadbf65a2d85",
+    "backend/app/services/leny_policy.py": "c2fb1eda757aa9d35c1902c026cd0769b759dd65ffa0a844043471f44b6a0fbd",
+    "backend/app/services/leny_rag_chunking.py": "02860cd76bc90608cd8dd86a9157e837995a527cab8169b4ad429c107f4e8ad5",
+    "backend/app/services/leny_rag_common.py": "bd7489fa48291c2de77cf507a2755514317eec6ffeed1436cf3cf928795d66cc",
+    "backend/app/services/leny_rag_diagnostics.py": "27dbb4abded817f759b8bf39f081978b8a2b00ebdcc05535e00eea01e690b357",
+    "backend/app/services/leny_rag_embeddings.py": "00f9b633c68afc0ecbde6df74fa8aa6c6b941c3068c78b26456ed4e0b7b38db1",
+    "backend/app/services/leny_rag_evaluation.py": "ba1478d0c21c1ce5195b9d608877950d07e65a391c9567142ff6ff397c1fd4e1",
+    "backend/app/services/leny_rag_extraction.py": "aa50c998a24e83267323c2ad750d4060a7260a7a66620b67dfa5ee4113f2fa54",
+    "backend/app/services/leny_rag_followup.py": "a427d2a4dcd784b76196fb1ae59d5badfef67bffd24d2df8966efa30690cee97",
+    "backend/app/services/leny_rag_publication.py": "13137d3aca1ab3ea8e77810bcc5b21b734bb2aacd652a80efa188473842e5717",
+    "backend/app/services/leny_rag_retrieval.py": "fe3401b15fa88b75ea2022b8d2dd2ecbb5fd2a448515553d174dc76f03ffc003",
+    "backend/app/services/leny_rag_routing.py": "b562ab1f04d0dd199e4937ca0c25f03843bebdf4b7ec708cdcd9671f198fdc18",
+    "backend/app/services/leny_rag_service.py": "01c320001d8fdb679c2636c3bb404d11b6a812fa9a1e0f4244d874a52f9f2dd1",
+    "backend/app/services/leny_rag_sources.py": "2895fff0d04a6efbeab1e7222a6e683a9dc18e67bab7e198299e3de91534d19c",
+    "backend/app/services/leny_rag_worker.py": "d0588f175ea57ced1874b9cb69aa437808a06f8643e694a78095f1042e17ab80",
+    "backend/app/services/leny_rate_limit.py": "7c4a0c01c3219f7243d27e27b404e095974b76c0c8b0ee8a4af5d4521d96f4ef",
+    "backend/app/services/leny_service.py": "a8037645726e1ad23cc0432b34871da9f2ef7f5e0d97931e005e9e03aa3e4d81",
+    "backend/app/services/leny_store.py": "4c6af318b25871d4bcad4217ce753f06f47e38c52614f6cf1787944ddf700e6d",
+    "backend/scripts/run_leny_rag_quality.py": "9ad8f73467c7a52586677b57a30d0075aab7908795da351327640beb7c56d16f"
+  },
+  "source_freeze_verified": true,
+  "model_identity_verified": true,
+  "cleanup_confirmed": true
+}

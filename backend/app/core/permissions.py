@@ -52,6 +52,8 @@ ADMIN_PERMISSIONS = (
     "exchange_rates:create",
     "exchange_rates:update",
     "exchange_rates:update_status",
+    "exchange_rates_sync:list",
+    "exchange_rates_sync:view",
     "boutique_sales:list",
     "boutique_sales:view",
     "boutique_sales:create",
@@ -322,7 +324,10 @@ MODISTA_PERMISSIONS = (
 
 def build_permissions_for_role(role_code: str) -> list[str]:
     permissions = list(AUTHENTICATED_PERMISSIONS)
+    if role_code in {"ADMIN", "INV_BOUTIQUE", "INV_TALLER", "CAJA", "MODISTA"}:
+        permissions.append("leny:chat")
     if role_code == "ADMIN":
+        permissions.append("leny:admin")
         permissions.extend(ADMIN_PERMISSIONS)
     if role_code == "INV_BOUTIQUE":
         permissions.extend(INV_BOUTIQUE_PERMISSIONS)

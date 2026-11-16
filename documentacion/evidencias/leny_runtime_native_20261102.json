@@ -1,0 +1,13 @@
+{
+  "scope": "native_windows_synthetic_children_only",
+  "created_utc": "2026-11-02T22:27:33.256815+00:00",
+  "results": {
+    "exclusive_lease_releases_without_deleting_lock_file": true,
+    "suspended_start_unicode_paths_environment_venv_and_descendant_cleanup": true,
+    "kill_on_close_removes_owned_child_when_parent_dies": true
+  },
+  "database_accessed": false,
+  "ollama_invoked": false,
+  "models_invoked": false,
+  "foreign_processes_stopped": false
+}

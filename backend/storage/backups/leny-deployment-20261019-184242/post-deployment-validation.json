@@ -1,0 +1,28 @@
+{
+  "database": "bellaarte_db",
+  "revision": "20261019_0018",
+  "leny_tables": [
+    "admissions",
+    "conversaciones",
+    "mensajes",
+    "rate_users"
+  ],
+  "role_codes_unchanged_from_backup": true,
+  "preexisting_extra_role_codes": [
+    "DOC"
+  ],
+  "extra_roles_leny_access_denied": true,
+  "policy_version": "01.1-v4",
+  "status": "LENY_READY",
+  "model": "qwen3.5:4b-q4_K_M",
+  "global_generation_locks": 0,
+  "rate_limit": 5,
+  "rate_window_seconds": 60,
+  "read_only_runtime_validation": true,
+  "live_api_anonymous_status": 401,
+  "policy_csv_sha256_unchanged": true,
+  "authenticated_browser_verified": true,
+  "real_qwen_conversation_verified": true,
+  "browser_history_recovered_after_reload": true,
+  "browser_503_resolved": true
+}

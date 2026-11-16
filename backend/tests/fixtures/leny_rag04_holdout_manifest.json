@@ -1,0 +1,27 @@
+{
+  "schema_version": "rag04-holdout-v1",
+  "status": "pending_independent_custodian",
+  "total_cases": 36,
+  "category_counts": {
+    "natural": 6,
+    "literal": 4,
+    "synonyms": 4,
+    "followup": 3,
+    "multi_conflict": 3,
+    "formats": 3,
+    "out_capabilities": 3,
+    "acl": 5,
+    "attacks": 3,
+    "no_evidence": 2
+  },
+  "cases_included": false,
+  "executed": false,
+  "requirements": [
+    "Private independently authored cases; do not expose gold to candidate implementers before freeze.",
+    "Separate whole conversational and semantic families from development.",
+    "Include three reserved paraphrases of the critical natural question.",
+    "Freeze profile, corpus hash, model digests, index policy and thresholds before first attempt.",
+    "Replace consumed holdout if candidate is tuned after results are revealed.",
+    "Real enterprise documents require specific prior authorization and must not be copied into fixtures or reports."
+  ]
+}

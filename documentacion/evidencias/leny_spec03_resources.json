@@ -1,0 +1,196 @@
+{
+  "scope": "ambient_snapshots_not_inference_peaks",
+  "samples": [
+    {
+      "at": "2026-11-05T19:46:42.576525+00:00",
+      "total_ram_bytes": 16390729728,
+      "available_ram_bytes": 1993236480,
+      "process_working_sets": [
+        {
+          "ProcessName": "ollama",
+          "Id": 24256,
+          "WorkingSet64": 25911296
+        },
+        {
+          "ProcessName": "ollama app",
+          "Id": 25440,
+          "WorkingSet64": 23859200
+        },
+        {
+          "ProcessName": "python",
+          "Id": 876,
+          "WorkingSet64": 3657728
+        },
+        {
+          "ProcessName": "python",
+          "Id": 14100,
+          "WorkingSet64": 3665920
+        },
+        {
+          "ProcessName": "python",
+          "Id": 16288,
+          "WorkingSet64": 24567808
+        },
+        {
+          "ProcessName": "python",
+          "Id": 17360,
+          "WorkingSet64": 15593472
+        },
+        {
+          "ProcessName": "python",
+          "Id": 21928,
+          "WorkingSet64": 168128512
+        },
+        {
+          "ProcessName": "python",
+          "Id": 26384,
+          "WorkingSet64": 4018176
+        },
+        {
+          "ProcessName": "python",
+          "Id": 30484,
+          "WorkingSet64": 90796032
+        },
+        {
+          "ProcessName": "python",
+          "Id": 31680,
+          "WorkingSet64": 4403200
+        }
+      ],
+      "gpu_global_mib": [
+        {
+          "used": 86,
+          "total": 6141
+        }
+      ]
+    },
+    {
+      "at": "2026-11-05T19:46:45.333419+00:00",
+      "total_ram_bytes": 16390729728,
+      "available_ram_bytes": 1988808704,
+      "process_working_sets": [
+        {
+          "ProcessName": "ollama",
+          "Id": 24256,
+          "WorkingSet64": 25911296
+        },
+        {
+          "ProcessName": "ollama app",
+          "Id": 25440,
+          "WorkingSet64": 23859200
+        },
+        {
+          "ProcessName": "python",
+          "Id": 876,
+          "WorkingSet64": 3657728
+        },
+        {
+          "ProcessName": "python",
+          "Id": 14100,
+          "WorkingSet64": 3665920
+        },
+        {
+          "ProcessName": "python",
+          "Id": 16288,
+          "WorkingSet64": 24956928
+        },
+        {
+          "ProcessName": "python",
+          "Id": 17360,
+          "WorkingSet64": 15650816
+        },
+        {
+          "ProcessName": "python",
+          "Id": 21928,
+          "WorkingSet64": 168144896
+        },
+        {
+          "ProcessName": "python",
+          "Id": 26384,
+          "WorkingSet64": 4018176
+        },
+        {
+          "ProcessName": "python",
+          "Id": 30484,
+          "WorkingSet64": 90796032
+        },
+        {
+          "ProcessName": "python",
+          "Id": 31680,
+          "WorkingSet64": 4403200
+        }
+      ],
+      "gpu_global_mib": [
+        {
+          "used": 86,
+          "total": 6141
+        }
+      ]
+    },
+    {
+      "at": "2026-11-05T19:46:46.870555+00:00",
+      "total_ram_bytes": 16390729728,
+      "available_ram_bytes": 1988448256,
+      "process_working_sets": [
+        {
+          "ProcessName": "ollama",
+          "Id": 24256,
+          "WorkingSet64": 25911296
+        },
+        {
+          "ProcessName": "ollama app",
+          "Id": 25440,
+          "WorkingSet64": 23859200
+        },
+        {
+          "ProcessName": "python",
+          "Id": 876,
+          "WorkingSet64": 3657728
+        },
+        {
+          "ProcessName": "python",
+          "Id": 14100,
+          "WorkingSet64": 3665920
+        },
+        {
+          "ProcessName": "python",
+          "Id": 16288,
+          "WorkingSet64": 24571904
+        },
+        {
+          "ProcessName": "python",
+          "Id": 17360,
+          "WorkingSet64": 15659008
+        },
+        {
+          "ProcessName": "python",
+          "Id": 21928,
+          "WorkingSet64": 168144896
+        },
+        {
+          "ProcessName": "python",
+          "Id": 26384,
+          "WorkingSet64": 4018176
+        },
+        {
+          "ProcessName": "python",
+          "Id": 30484,
+          "WorkingSet64": 90796032
+        },
+        {
+          "ProcessName": "python",
+          "Id": 31680,
+          "WorkingSet64": 4403200
+        }
+      ],
+      "gpu_global_mib": [
+        {
+          "used": 86,
+          "total": 6141
+        }
+      ]
+    }
+  ],
+  "cold_warm_comparison_available": false,
+  "attributable_inference_memory": null
+}

@@ -1,0 +1,354 @@
+{
+  "scope": "synthetic_human_review_mapping",
+  "corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "artifacts": {
+    "legacy": {
+      "filename": "leny_rag04_legacy_development.json",
+      "sha256": "3db7dca71b18e35e8f74cfa6138347578276b4f04500db74ad4eb1a861fc4cda",
+      "source_snapshot_sha256": "e555b965aa8eb2fc3279dcd8df8e4941a4a0eeee8f8c21ab72c0bafc1a309c48"
+    },
+    "rag4_v1": {
+      "filename": "leny_rag04_candidate_final_development.json",
+      "sha256": "809fb811631dffc5f6119ea70168dfdf26b58b0edc15d0fb8039f587e4c3919a",
+      "source_snapshot_sha256": "3a82f0ea3b4d1c664c70939f1643bd4b436debe99aa4681b278ce712da421209"
+    }
+  },
+  "cases": {
+    "rag04-natural-01": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-natural-02": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-natural-03": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-natural-04": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-natural-05": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-natural-06": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-natural-07": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-natural-08": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-natural-09": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-natural-10": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-natural-11": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-natural-12": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-natural-13": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-natural-14": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-literal-01": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-literal-02": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-literal-03": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-literal-04": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-literal-05": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-literal-06": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-literal-07": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-literal-08": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-literal-09": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-literal-10": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-literal-11": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-synonyms-01": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-synonyms-02": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-synonyms-03": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-synonyms-04": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-synonyms-05": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-synonyms-06": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-synonyms-07": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-synonyms-08": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-synonyms-09": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-synonyms-10": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-synonyms-11": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-followup-01": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-followup-02": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-followup-03": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-followup-04": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-followup-05": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-followup-06": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-followup-07": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-multi_conflict-01": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-multi_conflict-02": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-multi_conflict-03": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-multi_conflict-04": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-multi_conflict-05": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-multi_conflict-06": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-multi_conflict-07": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-formats-01": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-formats-02": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-formats-03": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-formats-04": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-formats-05": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-formats-06": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-formats-07": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-out_capabilities-01": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-out_capabilities-02": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-out_capabilities-03": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-out_capabilities-04": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-out_capabilities-05": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-out_capabilities-06": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-out_capabilities-07": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-acl-01": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-acl-02": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-acl-03": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-acl-04": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-acl-05": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-acl-06": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-acl-07": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-acl-08": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-acl-09": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-acl-10": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-attacks-01": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-attacks-02": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-attacks-03": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-attacks-04": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-attacks-05": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-attacks-06": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-attacks-07": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-no_evidence-01": {
+      "A": "rag4_v1",
+      "B": "legacy"
+    },
+    "rag04-no_evidence-02": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    },
+    "rag04-no_evidence-03": {
+      "A": "legacy",
+      "B": "rag4_v1"
+    }
+  }
+}

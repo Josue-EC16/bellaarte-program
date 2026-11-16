@@ -1,0 +1,537 @@
+;
+; Archive created at 2026-10-19 18:42:42
+;     dbname: bellaarte_db
+;     TOC Entries: 526
+;     Compression: gzip
+;     Dump Version: 1.16-0
+;     Format: CUSTOM
+;     Integer: 4 bytes
+;     Offset: 8 bytes
+;     Dumped from database version: 17.9
+;     Dumped by pg_dump version: 17.9
+;
+;
+; Selected TOC Entries:
+;
+7; 2615 27760 SCHEMA - leny MARCELO
+6; 2615 18005 SCHEMA - public MARCELO
+5948; 0 0 COMMENT - SCHEMA public MARCELO
+5949; 0 0 ACL - SCHEMA public MARCELO
+2; 3079 19269 EXTENSION - pgcrypto 
+5950; 0 0 COMMENT - EXTENSION pgcrypto 
+992; 1247 18104 TYPE public copa_talla_vestido_boutique MARCELO
+1169; 1247 19418 TYPE public estado_backup_bd MARCELO
+1079; 1247 18618 TYPE public estado_comprobante MARCELO
+1151; 1247 19148 TYPE public estado_corte_caja MARCELO
+1148; 1247 19142 TYPE public estado_egreso MARCELO
+1064; 1247 18563 TYPE public estado_flete MARCELO
+1076; 1247 18608 TYPE public estado_flete_devolucion MARCELO
+1073; 1247 18600 TYPE public estado_flete_entrega MARCELO
+1106; 1247 18826 TYPE public estado_pago_pedido MARCELO
+1103; 1247 18816 TYPE public estado_pedido_general MARCELO
+1070; 1247 18586 TYPE public estado_salida_flete MARCELO
+1025; 1247 18286 TYPE public estado_venta_boutique MARCELO
+1019; 1247 18264 TYPE public metodo_pago MARCELO
+1067; 1247 18576 TYPE public motivo_desc_flete MARCELO
+1022; 1247 18276 TYPE public motivo_desc_venta_boutique MARCELO
+1100; 1247 18806 TYPE public motivo_descuento_pedido MARCELO
+1037; 1247 18375 TYPE public motivo_entrada_item MARCELO
+1043; 1247 18410 TYPE public motivo_entrada_taller MARCELO
+1139; 1247 19074 TYPE public prioridad_notificacion MARCELO
+1109; 1247 18832 TYPE public prueba_estado_pedido MARCELO
+995; 1247 18124 TYPE public talla_vestido_boutique MARCELO
+1160; 1247 19307 TYPE public tipo_accion_auditoria MARCELO
+1166; 1247 19411 TYPE public tipo_backup_bd MARCELO
+1145; 1247 19110 TYPE public tipo_egreso MARCELO
+1097; 1247 18793 TYPE public tipo_pedido MARCELO
+989; 1247 18089 TYPE public tipo_vestido MARCELO
+1040; 1247 18388 TYPE public unidad_medida MARCELO
+357; 1255 27754 FUNCTION public economic_cut_guard() MARCELO
+343; 1255 27751 FUNCTION public economic_immutable_record() MARCELO
+359; 1255 27756 FUNCTION public economic_movement_cut_guard() MARCELO
+358; 1255 27758 FUNCTION public economic_request_guard() MARCELO
+355; 1255 19347 FUNCTION public fn_auditoria_mask_value(text, text) MARCELO
+356; 1255 19348 FUNCTION public fn_auditoria_trazabilidad() MARCELO
+305; 1259 27761 TABLE leny conversaciones MARCELO
+306; 1259 27779 TABLE leny mensajes MARCELO
+219; 1259 18006 TABLE public alembic_version MARCELO
+293; 1259 19326 TABLE public auditoria_sistema MARCELO
+292; 1259 19325 SEQUENCE public auditoria_sistema_aud_id_seq MARCELO
+295; 1259 19426 TABLE public backup_bd MARCELO
+294; 1259 19425 SEQUENCE public backup_bd_bkp_id_seq MARCELO
+239; 1259 18248 TABLE public cliente MARCELO
+238; 1259 18247 SEQUENCE public cliente_cli_id_seq MARCELO
+265; 1259 18717 TABLE public comprobante_interno MARCELO
+264; 1259 18716 SEQUENCE public comprobante_interno_coi_id_seq MARCELO
+302; 1259 27714 TABLE public constancia_devolucion MARCELO
+301; 1259 27713 SEQUENCE public constancia_devolucion_id_seq MARCELO
+289; 1259 19156 TABLE public corte_caja MARCELO
+288; 1259 19155 SEQUENCE public corte_caja_cco_id_seq MARCELO
+225; 1259 18042 TABLE public cuentas MARCELO
+224; 1259 18041 SEQUENCE public cuentas_id_seq MARCELO
+5951; 0 0 SEQUENCE OWNED BY public cuentas_id_seq MARCELO
+237; 1259 18233 TABLE public detalle_bouquet_boutique MARCELO
+236; 1259 18232 SEQUENCE public detalle_bouquet_boutique_dbo_id_seq MARCELO
+247; 1259 18422 TABLE public detalle_brassier_boutique MARCELO
+246; 1259 18421 SEQUENCE public detalle_brassier_boutique_dbb_id_seq MARCELO
+267; 1259 18774 TABLE public detalle_comprobante MARCELO
+266; 1259 18773 SEQUENCE public detalle_comprobante_dco_id_seq MARCELO
+235; 1259 18217 TABLE public detalle_velo_boutique MARCELO
+234; 1259 18216 SEQUENCE public detalle_velo_boutique_dve_id_seq MARCELO
+233; 1259 18198 TABLE public detalle_vestido_boutique MARCELO
+232; 1259 18197 SEQUENCE public detalle_vestido_boutique_dvb_id_seq MARCELO
+291; 1259 19182 TABLE public egreso MARCELO
+290; 1259 19181 SEQUENCE public egreso_egr_id_seq MARCELO
+255; 1259 18509 TABLE public entrada_inventario_taller MARCELO
+254; 1259 18508 SEQUENCE public entrada_inventario_taller_emt_id_seq MARCELO
+249; 1259 18438 TABLE public entrada_item_boutique MARCELO
+248; 1259 18437 SEQUENCE public entrada_item_boutique_eib_id_seq MARCELO
+298; 1259 19480 TABLE public envio_notificacion_correo MARCELO
+297; 1259 19479 SEQUENCE public envio_notificacion_correo_id_seq MARCELO
+259; 1259 18624 TABLE public flete_vestido MARCELO
+258; 1259 18623 SEQUENCE public flete_vestido_fle_id_seq MARCELO
+253; 1259 18479 TABLE public inventario_taller MARCELO
+252; 1259 18478 SEQUENCE public inventario_taller_int_id_seq MARCELO
+231; 1259 18166 TABLE public item_boutique MARCELO
+230; 1259 18165 SEQUENCE public item_boutique_itb_id_seq MARCELO
+241; 1259 18294 TABLE public moneda MARCELO
+240; 1259 18293 SEQUENCE public moneda_mon_id_seq MARCELO
+300; 1259 27669 TABLE public movimiento_economico MARCELO
+299; 1259 27668 SEQUENCE public movimiento_economico_id_seq MARCELO
+287; 1259 19084 TABLE public notificacion MARCELO
+286; 1259 19083 SEQUENCE public notificacion_not_id_seq MARCELO
+285; 1259 19011 TABLE public pago_pedido MARCELO
+284; 1259 19010 SEQUENCE public pago_pedido_ppd_id_seq MARCELO
+269; 1259 18844 TABLE public pedido MARCELO
+279; 1259 18960 TABLE public pedido_bouquet MARCELO
+278; 1259 18959 SEQUENCE public pedido_bouquet_pdb_id_seq MARCELO
+275; 1259 18925 TABLE public pedido_cola MARCELO
+274; 1259 18924 SEQUENCE public pedido_cola_pdco_id_seq MARCELO
+277; 1259 18942 TABLE public pedido_manga MARCELO
+276; 1259 18941 SEQUENCE public pedido_manga_pdma_id_seq MARCELO
+281; 1259 18977 TABLE public pedido_otro MARCELO
+280; 1259 18976 SEQUENCE public pedido_otro_pdot_id_seq MARCELO
+268; 1259 18843 SEQUENCE public pedido_ped_id_seq MARCELO
+273; 1259 18907 TABLE public pedido_velo MARCELO
+272; 1259 18906 SEQUENCE public pedido_velo_pdve_id_seq MARCELO
+271; 1259 18881 TABLE public pedido_vestido MARCELO
+270; 1259 18880 SEQUENCE public pedido_vestido_pdv_id_seq MARCELO
+296; 1259 19469 TABLE public preferencia_notificacion MARCELO
+227; 1259 18142 TABLE public proveedor MARCELO
+226; 1259 18141 SEQUENCE public proveedor_pro_id_seq MARCELO
+283; 1259 18994 TABLE public prueba_pedido MARCELO
+282; 1259 18993 SEQUENCE public prueba_pedido_prp_id_seq MARCELO
+221; 1259 18012 TABLE public roles MARCELO
+220; 1259 18011 SEQUENCE public roles_id_seq MARCELO
+5952; 0 0 SEQUENCE OWNED BY public roles_id_seq MARCELO
+261; 1259 18652 TABLE public salida_flete MARCELO
+260; 1259 18651 SEQUENCE public salida_flete_sfl_id_seq MARCELO
+257; 1259 18540 TABLE public salida_material_taller MARCELO
+256; 1259 18539 SEQUENCE public salida_material_taller_smt_id_seq MARCELO
+304; 1259 27735 TABLE public solicitud_economica MARCELO
+303; 1259 27734 SEQUENCE public solicitud_economica_id_seq MARCELO
+243; 1259 18306 TABLE public tipo_cambio_moneda MARCELO
+242; 1259 18305 SEQUENCE public tipo_cambio_moneda_tcm_id_seq MARCELO
+263; 1259 18706 TABLE public tipo_comprobante MARCELO
+262; 1259 18705 SEQUENCE public tipo_comprobante_tco_id_seq MARCELO
+251; 1259 18469 TABLE public tipo_inventario_taller MARCELO
+250; 1259 18468 SEQUENCE public tipo_inventario_taller_tit_id_seq MARCELO
+229; 1259 18156 TABLE public tipo_item_boutique MARCELO
+228; 1259 18155 SEQUENCE public tipo_item_boutique_tib_id_seq MARCELO
+223; 1259 18027 TABLE public usuarios MARCELO
+222; 1259 18026 SEQUENCE public usuarios_id_seq MARCELO
+5953; 0 0 SEQUENCE OWNED BY public usuarios_id_seq MARCELO
+245; 1259 18328 TABLE public venta_boutique MARCELO
+244; 1259 18327 SEQUENCE public venta_boutique_veb_id_seq MARCELO
+5095; 2604 18045 DEFAULT public cuentas id MARCELO
+5088; 2604 18015 DEFAULT public roles id MARCELO
+5091; 2604 18030 DEFAULT public usuarios id MARCELO
+5940; 0 27761 TABLE DATA leny conversaciones MARCELO
+5941; 0 27779 TABLE DATA leny mensajes MARCELO
+5854; 0 18006 TABLE DATA public alembic_version MARCELO
+5928; 0 19326 TABLE DATA public auditoria_sistema MARCELO
+5930; 0 19426 TABLE DATA public backup_bd MARCELO
+5874; 0 18248 TABLE DATA public cliente MARCELO
+5900; 0 18717 TABLE DATA public comprobante_interno MARCELO
+5937; 0 27714 TABLE DATA public constancia_devolucion MARCELO
+5924; 0 19156 TABLE DATA public corte_caja MARCELO
+5860; 0 18042 TABLE DATA public cuentas MARCELO
+5872; 0 18233 TABLE DATA public detalle_bouquet_boutique MARCELO
+5882; 0 18422 TABLE DATA public detalle_brassier_boutique MARCELO
+5902; 0 18774 TABLE DATA public detalle_comprobante MARCELO
+5870; 0 18217 TABLE DATA public detalle_velo_boutique MARCELO
+5868; 0 18198 TABLE DATA public detalle_vestido_boutique MARCELO
+5926; 0 19182 TABLE DATA public egreso MARCELO
+5890; 0 18509 TABLE DATA public entrada_inventario_taller MARCELO
+5884; 0 18438 TABLE DATA public entrada_item_boutique MARCELO
+5933; 0 19480 TABLE DATA public envio_notificacion_correo MARCELO
+5894; 0 18624 TABLE DATA public flete_vestido MARCELO
+5888; 0 18479 TABLE DATA public inventario_taller MARCELO
+5866; 0 18166 TABLE DATA public item_boutique MARCELO
+5876; 0 18294 TABLE DATA public moneda MARCELO
+5935; 0 27669 TABLE DATA public movimiento_economico MARCELO
+5922; 0 19084 TABLE DATA public notificacion MARCELO
+5920; 0 19011 TABLE DATA public pago_pedido MARCELO
+5904; 0 18844 TABLE DATA public pedido MARCELO
+5914; 0 18960 TABLE DATA public pedido_bouquet MARCELO
+5910; 0 18925 TABLE DATA public pedido_cola MARCELO
+5912; 0 18942 TABLE DATA public pedido_manga MARCELO
+5916; 0 18977 TABLE DATA public pedido_otro MARCELO
+5908; 0 18907 TABLE DATA public pedido_velo MARCELO
+5906; 0 18881 TABLE DATA public pedido_vestido MARCELO
+5931; 0 19469 TABLE DATA public preferencia_notificacion MARCELO
+5862; 0 18142 TABLE DATA public proveedor MARCELO
+5918; 0 18994 TABLE DATA public prueba_pedido MARCELO
+5856; 0 18012 TABLE DATA public roles MARCELO
+5896; 0 18652 TABLE DATA public salida_flete MARCELO
+5892; 0 18540 TABLE DATA public salida_material_taller MARCELO
+5939; 0 27735 TABLE DATA public solicitud_economica MARCELO
+5878; 0 18306 TABLE DATA public tipo_cambio_moneda MARCELO
+5898; 0 18706 TABLE DATA public tipo_comprobante MARCELO
+5886; 0 18469 TABLE DATA public tipo_inventario_taller MARCELO
+5864; 0 18156 TABLE DATA public tipo_item_boutique MARCELO
+5858; 0 18027 TABLE DATA public usuarios MARCELO
+5880; 0 18328 TABLE DATA public venta_boutique MARCELO
+5954; 0 0 SEQUENCE SET public auditoria_sistema_aud_id_seq MARCELO
+5955; 0 0 SEQUENCE SET public backup_bd_bkp_id_seq MARCELO
+5956; 0 0 SEQUENCE SET public cliente_cli_id_seq MARCELO
+5957; 0 0 SEQUENCE SET public comprobante_interno_coi_id_seq MARCELO
+5958; 0 0 SEQUENCE SET public constancia_devolucion_id_seq MARCELO
+5959; 0 0 SEQUENCE SET public corte_caja_cco_id_seq MARCELO
+5960; 0 0 SEQUENCE SET public cuentas_id_seq MARCELO
+5961; 0 0 SEQUENCE SET public detalle_bouquet_boutique_dbo_id_seq MARCELO
+5962; 0 0 SEQUENCE SET public detalle_brassier_boutique_dbb_id_seq MARCELO
+5963; 0 0 SEQUENCE SET public detalle_comprobante_dco_id_seq MARCELO
+5964; 0 0 SEQUENCE SET public detalle_velo_boutique_dve_id_seq MARCELO
+5965; 0 0 SEQUENCE SET public detalle_vestido_boutique_dvb_id_seq MARCELO
+5966; 0 0 SEQUENCE SET public egreso_egr_id_seq MARCELO
+5967; 0 0 SEQUENCE SET public entrada_inventario_taller_emt_id_seq MARCELO
+5968; 0 0 SEQUENCE SET public entrada_item_boutique_eib_id_seq MARCELO
+5969; 0 0 SEQUENCE SET public envio_notificacion_correo_id_seq MARCELO
+5970; 0 0 SEQUENCE SET public flete_vestido_fle_id_seq MARCELO
+5971; 0 0 SEQUENCE SET public inventario_taller_int_id_seq MARCELO
+5972; 0 0 SEQUENCE SET public item_boutique_itb_id_seq MARCELO
+5973; 0 0 SEQUENCE SET public moneda_mon_id_seq MARCELO
+5974; 0 0 SEQUENCE SET public movimiento_economico_id_seq MARCELO
+5975; 0 0 SEQUENCE SET public notificacion_not_id_seq MARCELO
+5976; 0 0 SEQUENCE SET public pago_pedido_ppd_id_seq MARCELO
+5977; 0 0 SEQUENCE SET public pedido_bouquet_pdb_id_seq MARCELO
+5978; 0 0 SEQUENCE SET public pedido_cola_pdco_id_seq MARCELO
+5979; 0 0 SEQUENCE SET public pedido_manga_pdma_id_seq MARCELO
+5980; 0 0 SEQUENCE SET public pedido_otro_pdot_id_seq MARCELO
+5981; 0 0 SEQUENCE SET public pedido_ped_id_seq MARCELO
+5982; 0 0 SEQUENCE SET public pedido_velo_pdve_id_seq MARCELO
+5983; 0 0 SEQUENCE SET public pedido_vestido_pdv_id_seq MARCELO
+5984; 0 0 SEQUENCE SET public proveedor_pro_id_seq MARCELO
+5985; 0 0 SEQUENCE SET public prueba_pedido_prp_id_seq MARCELO
+5986; 0 0 SEQUENCE SET public roles_id_seq MARCELO
+5987; 0 0 SEQUENCE SET public salida_flete_sfl_id_seq MARCELO
+5988; 0 0 SEQUENCE SET public salida_material_taller_smt_id_seq MARCELO
+5989; 0 0 SEQUENCE SET public solicitud_economica_id_seq MARCELO
+5990; 0 0 SEQUENCE SET public tipo_cambio_moneda_tcm_id_seq MARCELO
+5991; 0 0 SEQUENCE SET public tipo_comprobante_tco_id_seq MARCELO
+5992; 0 0 SEQUENCE SET public tipo_inventario_taller_tit_id_seq MARCELO
+5993; 0 0 SEQUENCE SET public tipo_item_boutique_tib_id_seq MARCELO
+5994; 0 0 SEQUENCE SET public usuarios_id_seq MARCELO
+5995; 0 0 SEQUENCE SET public venta_boutique_veb_id_seq MARCELO
+5605; 2606 27767 CONSTRAINT leny conversaciones conversaciones_pkey MARCELO
+5609; 2606 27790 CONSTRAINT leny mensajes mensajes_pkey MARCELO
+5611; 2606 27792 CONSTRAINT leny mensajes uq_leny_message_sequence MARCELO
+5613; 2606 27794 CONSTRAINT leny mensajes uq_leny_request_role MARCELO
+5329; 2606 18010 CONSTRAINT public alembic_version alembic_version_pkc MARCELO
+5564; 2606 19333 CONSTRAINT public auditoria_sistema auditoria_sistema_pkey1 MARCELO
+5574; 2606 19437 CONSTRAINT public backup_bd backup_bd_pkey MARCELO
+5374; 2606 18256 CONSTRAINT public cliente cliente_pkey MARCELO
+5458; 2606 18738 CONSTRAINT public comprobante_interno comprobante_interno_pkey MARCELO
+5597; 2606 27723 CONSTRAINT public constancia_devolucion constancia_devolucion_egreso_id_key MARCELO
+5599; 2606 27721 CONSTRAINT public constancia_devolucion constancia_devolucion_pkey MARCELO
+5547; 2606 19167 CONSTRAINT public corte_caja corte_caja_pkey MARCELO
+5342; 2606 18051 CONSTRAINT public cuentas cuentas_pkey MARCELO
+5344; 2606 18053 CONSTRAINT public cuentas cuentas_usuario_id_key MARCELO
+5370; 2606 18239 CONSTRAINT public detalle_bouquet_boutique detalle_bouquet_boutique_pkey MARCELO
+5407; 2606 18429 CONSTRAINT public detalle_brassier_boutique detalle_brassier_boutique_pkey MARCELO
+5477; 2606 18783 CONSTRAINT public detalle_comprobante detalle_comprobante_pkey MARCELO
+5366; 2606 18224 CONSTRAINT public detalle_velo_boutique detalle_velo_boutique_pkey MARCELO
+5362; 2606 18208 CONSTRAINT public detalle_vestido_boutique detalle_vestido_boutique_pkey MARCELO
+5555; 2606 19195 CONSTRAINT public egreso egreso_pkey MARCELO
+5423; 2606 18521 CONSTRAINT public entrada_inventario_taller entrada_inventario_taller_pkey MARCELO
+5411; 2606 18450 CONSTRAINT public entrada_item_boutique entrada_item_boutique_pkey MARCELO
+5584; 2606 19490 CONSTRAINT public envio_notificacion_correo envio_notificacion_correo_pkey MARCELO
+5431; 2606 18636 CONSTRAINT public flete_vestido flete_vestido_pkey MARCELO
+5419; 2606 18495 CONSTRAINT public inventario_taller inventario_taller_pkey MARCELO
+5358; 2606 18184 CONSTRAINT public item_boutique item_boutique_pkey MARCELO
+5382; 2606 18301 CONSTRAINT public moneda moneda_pkey MARCELO
+5592; 2606 27686 CONSTRAINT public movimiento_economico movimiento_economico_pkey MARCELO
+5544; 2606 19095 CONSTRAINT public notificacion notificacion_pkey MARCELO
+5533; 2606 19024 CONSTRAINT public pago_pedido pago_pedido_pkey MARCELO
+5509; 2606 18968 CONSTRAINT public pedido_bouquet pedido_bouquet_pkey MARCELO
+5501; 2606 18933 CONSTRAINT public pedido_cola pedido_cola_pkey MARCELO
+5505; 2606 18951 CONSTRAINT public pedido_manga pedido_manga_pkey MARCELO
+5513; 2606 18985 CONSTRAINT public pedido_otro pedido_otro_pkey MARCELO
+5489; 2606 18865 CONSTRAINT public pedido pedido_pkey MARCELO
+5497; 2606 18916 CONSTRAINT public pedido_velo pedido_velo_pkey MARCELO
+5493; 2606 18898 CONSTRAINT public pedido_vestido pedido_vestido_pkey MARCELO
+5582; 2606 19473 CONSTRAINT public preferencia_notificacion preferencia_notificacion_pkey MARCELO
+5348; 2606 18150 CONSTRAINT public proveedor proveedor_pkey MARCELO
+5520; 2606 19001 CONSTRAINT public prueba_pedido prueba_pedido_pkey MARCELO
+5333; 2606 18021 CONSTRAINT public roles roles_pkey MARCELO
+5450; 2606 18680 CONSTRAINT public salida_flete salida_flete_pkey MARCELO
+5429; 2606 18549 CONSTRAINT public salida_material_taller salida_material_taller_pkey MARCELO
+5601; 2606 27743 CONSTRAINT public solicitud_economica solicitud_economica_pkey MARCELO
+5387; 2606 18315 CONSTRAINT public tipo_cambio_moneda tipo_cambio_moneda_pkey MARCELO
+5454; 2606 18713 CONSTRAINT public tipo_comprobante tipo_comprobante_pkey MARCELO
+5415; 2606 18475 CONSTRAINT public tipo_inventario_taller tipo_inventario_taller_pkey MARCELO
+5354; 2606 18162 CONSTRAINT public tipo_item_boutique tipo_item_boutique_pkey MARCELO
+5376; 2606 18262 CONSTRAINT public cliente uq_cliente_ci MARCELO
+5378; 2606 18258 CONSTRAINT public cliente uq_cliente_cod MARCELO
+5380; 2606 18260 CONSTRAINT public cliente uq_cliente_cor MARCELO
+5472; 2606 18740 CONSTRAINT public comprobante_interno uq_comprobante_cod MARCELO
+5409; 2606 18431 CONSTRAINT public detalle_brassier_boutique uq_dbb_itb_id MARCELO
+5372; 2606 18241 CONSTRAINT public detalle_bouquet_boutique uq_dbo_itb_id MARCELO
+5364; 2606 18210 CONSTRAINT public detalle_vestido_boutique uq_dvb_itb_id MARCELO
+5368; 2606 18226 CONSTRAINT public detalle_velo_boutique uq_dve_itb_id MARCELO
+5587; 2606 19492 CONSTRAINT public envio_notificacion_correo uq_envio_notificacion_cuenta_destino MARCELO
+5435; 2606 18638 CONSTRAINT public flete_vestido uq_flete_vestido_itb_id MARCELO
+5421; 2606 18497 CONSTRAINT public inventario_taller uq_int_cod MARCELO
+5360; 2606 18186 CONSTRAINT public item_boutique uq_item_boutique_cod MARCELO
+5385; 2606 18303 CONSTRAINT public moneda uq_moneda_cod MARCELO
+5594; 2606 27688 CONSTRAINT public movimiento_economico uq_mov_evento_origen MARCELO
+5511; 2606 18970 CONSTRAINT public pedido_bouquet uq_pdb_ped_id MARCELO
+5503; 2606 18935 CONSTRAINT public pedido_cola uq_pdco_ped_id MARCELO
+5507; 2606 18953 CONSTRAINT public pedido_manga uq_pdma_ped_id MARCELO
+5515; 2606 18987 CONSTRAINT public pedido_otro uq_pdot_ped_id MARCELO
+5495; 2606 18900 CONSTRAINT public pedido_vestido uq_pdv_ped_id MARCELO
+5499; 2606 18918 CONSTRAINT public pedido_velo uq_pdve_ped_id MARCELO
+5491; 2606 18867 CONSTRAINT public pedido uq_pedido_cod MARCELO
+5350; 2606 18152 CONSTRAINT public proveedor uq_proveedor_cel MARCELO
+5352; 2606 18154 CONSTRAINT public proveedor uq_proveedor_cor MARCELO
+5522; 2606 19003 CONSTRAINT public prueba_pedido uq_prueba_pedido_num MARCELO
+5335; 2606 18025 CONSTRAINT public roles uq_roles_nombre MARCELO
+5452; 2606 18682 CONSTRAINT public salida_flete uq_salida_flete_num MARCELO
+5603; 2606 27745 CONSTRAINT public solicitud_economica uq_solicitud_actor_operacion_clave MARCELO
+5456; 2606 18715 CONSTRAINT public tipo_comprobante uq_tipo_comprobante_nom MARCELO
+5356; 2606 18164 CONSTRAINT public tipo_item_boutique uq_tipo_item_boutique_nom MARCELO
+5417; 2606 18477 CONSTRAINT public tipo_inventario_taller uq_tit_nom MARCELO
+5340; 2606 18037 CONSTRAINT public usuarios usuarios_pkey MARCELO
+5405; 2606 18345 CONSTRAINT public venta_boutique venta_boutique_pkey MARCELO
+5606; 1259 27778 INDEX leny ix_leny_conversation_owner_updated MARCELO
+5607; 1259 27800 INDEX leny ix_leny_message_conversation_created MARCELO
+5548; 1259 19408 INDEX public idx_cco_admin_apertura MARCELO
+5549; 1259 19407 INDEX public idx_cco_cajero_apertura MARCELO
+5550; 1259 19406 INDEX public idx_cco_estado_apertura MARCELO
+5459; 1259 19400 INDEX public idx_coi_cli_fec MARCELO
+5460; 1259 19403 INDEX public idx_coi_metodo_fec MARCELO
+5461; 1259 19402 INDEX public idx_coi_mon_fec MARCELO
+5462; 1259 19399 INDEX public idx_coi_tco_fec MARCELO
+5463; 1259 19401 INDEX public idx_coi_usu_fec MARCELO
+5556; 1259 19405 INDEX public idx_egr_cco_fec MARCELO
+5557; 1259 19404 INDEX public idx_egr_estado_fec MARCELO
+5585; 1259 19498 INDEX public idx_envio_notificacion_reintento MARCELO
+5534; 1259 19468 INDEX public idx_notificacion_escritorio MARCELO
+5535; 1259 19105 INDEX public idx_notificacion_modulo_fecha MARCELO
+5536; 1259 19108 INDEX public idx_notificacion_no_resuelta MARCELO
+5537; 1259 19107 INDEX public idx_notificacion_pendientes MARCELO
+5538; 1259 19104 INDEX public idx_notificacion_prioridad_fecha MARCELO
+5539; 1259 19106 INDEX public idx_notificacion_referencia MARCELO
+5540; 1259 19103 INDEX public idx_notificacion_tipo_fecha MARCELO
+5541; 1259 19101 INDEX public idx_notificacion_usuario_fecha MARCELO
+5542; 1259 19102 INDEX public idx_notificacion_usuario_leida MARCELO
+5479; 1259 19393 INDEX public idx_ped_estado_cambio_fec MARCELO
+5480; 1259 19392 INDEX public idx_ped_estado_entrega MARCELO
+5481; 1259 19391 INDEX public idx_ped_estado_fec_reg MARCELO
+5482; 1259 19390 INDEX public idx_ped_fec_reg MARCELO
+5483; 1259 19394 INDEX public idx_ped_tipo_fec_reg MARCELO
+5484; 1259 19395 INDEX public idx_ped_usu_estado MARCELO
+5485; 1259 19396 INDEX public idx_ped_viaje_estado MARCELO
+5523; 1259 19375 INDEX public idx_ppd_estado_cambio_fec MARCELO
+5524; 1259 19374 INDEX public idx_ppd_estado_fec MARCELO
+5525; 1259 19373 INDEX public idx_ppd_fec MARCELO
+5526; 1259 19379 INDEX public idx_ppd_metodo_fec MARCELO
+5527; 1259 19378 INDEX public idx_ppd_mon_fec MARCELO
+5528; 1259 19376 INDEX public idx_ppd_ped_fec MARCELO
+5529; 1259 19377 INDEX public idx_ppd_usu_fec MARCELO
+5516; 1259 19397 INDEX public idx_prp_estado_fec MARCELO
+5517; 1259 19398 INDEX public idx_prp_ped_fec MARCELO
+5436; 1259 19385 INDEX public idx_sfl_cli_fec_reg MARCELO
+5437; 1259 19382 INDEX public idx_sfl_estado_cambio_fec MARCELO
+5438; 1259 19381 INDEX public idx_sfl_estado_fec_reg MARCELO
+5439; 1259 19384 INDEX public idx_sfl_fec_devol_prev MARCELO
+5440; 1259 19380 INDEX public idx_sfl_fec_reg MARCELO
+5441; 1259 19383 INDEX public idx_sfl_fec_salida MARCELO
+5442; 1259 19386 INDEX public idx_sfl_fle_fec_reg MARCELO
+5443; 1259 19389 INDEX public idx_sfl_metodo_fec_reg MARCELO
+5444; 1259 19388 INDEX public idx_sfl_mon_fec_reg MARCELO
+5445; 1259 19387 INDEX public idx_sfl_usu_fec_reg MARCELO
+5389; 1259 19370 INDEX public idx_veb_cli_fec MARCELO
+5390; 1259 19367 INDEX public idx_veb_estado_cambio_fec MARCELO
+5391; 1259 19366 INDEX public idx_veb_estado_fec MARCELO
+5392; 1259 19368 INDEX public idx_veb_itb_fec MARCELO
+5393; 1259 19372 INDEX public idx_veb_metodo_fec MARCELO
+5394; 1259 19371 INDEX public idx_veb_mon_fec MARCELO
+5395; 1259 19369 INDEX public idx_veb_usu_fec MARCELO
+5565; 1259 19343 INDEX public ix_auditoria_sistema_accion_fec MARCELO
+5566; 1259 19344 INDEX public ix_auditoria_sistema_evento MARCELO
+5567; 1259 19339 INDEX public ix_auditoria_sistema_fec MARCELO
+5568; 1259 19345 INDEX public ix_auditoria_sistema_ip MARCELO
+5569; 1259 19341 INDEX public ix_auditoria_sistema_modulo_fec MARCELO
+5570; 1259 19346 INDEX public ix_auditoria_sistema_registro MARCELO
+5571; 1259 19342 INDEX public ix_auditoria_sistema_tabla_fec MARCELO
+5572; 1259 19340 INDEX public ix_auditoria_sistema_usu_fec MARCELO
+5575; 1259 19444 INDEX public ix_backup_bd_estado_fec_inicio MARCELO
+5576; 1259 19443 INDEX public ix_backup_bd_fec_inicio MARCELO
+5577; 1259 19448 INDEX public ix_backup_bd_nombre_archivo MARCELO
+5578; 1259 19446 INDEX public ix_backup_bd_origen_fec_inicio MARCELO
+5579; 1259 19445 INDEX public ix_backup_bd_tipo_fec_inicio MARCELO
+5580; 1259 19447 INDEX public ix_backup_bd_usu_fec_inicio MARCELO
+5551; 1259 19179 INDEX public ix_cco_apertura_cierre MARCELO
+5552; 1259 19178 INDEX public ix_cco_cajero_estado MARCELO
+5464; 1259 19049 INDEX public ix_coi_cli_id MARCELO
+5465; 1259 19046 INDEX public ix_coi_cod MARCELO
+5466; 1259 19047 INDEX public ix_coi_fec MARCELO
+5467; 1259 19048 INDEX public ix_coi_mon_id MARCELO
+5468; 1259 19050 INDEX public ix_coi_usu_id MARCELO
+5469; 1259 18771 INDEX public ix_comprobante_estado_fec MARCELO
+5470; 1259 18772 INDEX public ix_comprobante_sfl_id MARCELO
+5345; 1259 18064 INDEX public ix_cuentas_id MARCELO
+5346; 1259 18065 INDEX public ix_cuentas_username MARCELO
+5478; 1259 18789 INDEX public ix_detalle_comprobante_coi_id MARCELO
+5558; 1259 19207 INDEX public ix_egr_cco_id MARCELO
+5559; 1259 19206 INDEX public ix_egr_fec_estado MARCELO
+5560; 1259 19210 INDEX public ix_egr_ref MARCELO
+5561; 1259 19209 INDEX public ix_egr_tipo_fec MARCELO
+5562; 1259 19208 INDEX public ix_egr_usu_fec MARCELO
+5412; 1259 18467 INDEX public ix_eib_fec MARCELO
+5413; 1259 18466 INDEX public ix_eib_itb_id MARCELO
+5424; 1259 18538 INDEX public ix_emt_fec MARCELO
+5425; 1259 18537 INDEX public ix_emt_int_id MARCELO
+5432; 1259 18650 INDEX public ix_flete_vestido_estado_hab MARCELO
+5433; 1259 18649 INDEX public ix_flete_vestido_itb_id MARCELO
+5588; 1259 27709 INDEX public ix_mov_corte_fecha MARCELO
+5589; 1259 27711 INDEX public ix_mov_fecha_evento MARCELO
+5590; 1259 27710 INDEX public ix_mov_origen MARCELO
+5530; 1259 27660 INDEX public ix_pago_pedido_corte_id MARCELO
+5486; 1259 18878 INDEX public ix_pedido_cliente_estado MARCELO
+5487; 1259 18879 INDEX public ix_pedido_entrega MARCELO
+5531; 1259 19040 INDEX public ix_ppd_pedido_estado_fec MARCELO
+5518; 1259 19009 INDEX public ix_prp_fec_estado MARCELO
+5330; 1259 18022 INDEX public ix_roles_codigo MARCELO
+5331; 1259 18023 INDEX public ix_roles_id MARCELO
+5446; 1259 27666 INDEX public ix_salida_flete_corte_id MARCELO
+5447; 1259 18704 INDEX public ix_salida_flete_estado_fechas MARCELO
+5448; 1259 18703 INDEX public ix_salida_flete_fle_id_sfl_num MARCELO
+5426; 1259 18561 INDEX public ix_smt_fec MARCELO
+5427; 1259 18560 INDEX public ix_smt_int_id MARCELO
+5336; 1259 18039 INDEX public ix_usuarios_ci MARCELO
+5337; 1259 18040 INDEX public ix_usuarios_correo MARCELO
+5338; 1259 18038 INDEX public ix_usuarios_id MARCELO
+5396; 1259 18370 INDEX public ix_veb_cli_id MARCELO
+5397; 1259 18367 INDEX public ix_veb_estado MARCELO
+5398; 1259 18366 INDEX public ix_veb_fec MARCELO
+5399; 1259 18369 INDEX public ix_veb_itb_id MARCELO
+5400; 1259 18368 INDEX public ix_veb_metodo_pago MARCELO
+5401; 1259 18372 INDEX public ix_veb_mon_id MARCELO
+5402; 1259 18371 INDEX public ix_veb_usu_id MARCELO
+5403; 1259 27654 INDEX public ix_venta_boutique_corte_id MARCELO
+5473; 1259 19052 INDEX public uq_comprobante_ppd_id MARCELO
+5474; 1259 19053 INDEX public uq_comprobante_sfl_id MARCELO
+5475; 1259 19051 INDEX public uq_comprobante_veb_id MARCELO
+5553; 1259 19180 INDEX public uq_corte_abierto_cajero MARCELO
+5383; 1259 18304 INDEX public uq_moneda_base MARCELO
+5595; 1259 27712 INDEX public uq_mov_evento_unico MARCELO
+5388; 1259 18326 INDEX public uq_tipo_cambio_activo_moneda MARCELO
+5545; 1259 19467 INDEX public ux_notificacion_abierta MARCELO
+5699; 2620 19353 TRIGGER public comprobante_interno trg_auditoria_comprobante_interno MARCELO
+5688; 2620 19365 TRIGGER public cuentas trg_auditoria_cuentas MARCELO
+5704; 2620 19361 TRIGGER public egreso trg_auditoria_egreso MARCELO
+5695; 2620 19359 TRIGGER public entrada_inventario_taller trg_auditoria_entrada_inventario_taller MARCELO
+5693; 2620 19357 TRIGGER public entrada_item_boutique trg_auditoria_entrada_item_boutique MARCELO
+5697; 2620 19355 TRIGGER public flete_vestido trg_auditoria_flete_vestido MARCELO
+5694; 2620 19358 TRIGGER public inventario_taller trg_auditoria_inventario_taller MARCELO
+5689; 2620 19356 TRIGGER public item_boutique trg_auditoria_item_boutique MARCELO
+5690; 2620 19362 TRIGGER public moneda trg_auditoria_moneda MARCELO
+5702; 2620 19350 TRIGGER public pago_pedido trg_auditoria_pago_pedido MARCELO
+5700; 2620 19351 TRIGGER public pedido trg_auditoria_pedido MARCELO
+5701; 2620 19352 TRIGGER public prueba_pedido trg_auditoria_prueba_pedido MARCELO
+5698; 2620 19354 TRIGGER public salida_flete trg_auditoria_salida_flete MARCELO
+5696; 2620 19360 TRIGGER public salida_material_taller trg_auditoria_salida_material_taller MARCELO
+5691; 2620 19363 TRIGGER public tipo_cambio_moneda trg_auditoria_tipo_cambio_moneda MARCELO
+5687; 2620 19364 TRIGGER public usuarios trg_auditoria_usuarios MARCELO
+5692; 2620 19349 TRIGGER public venta_boutique trg_auditoria_venta_boutique MARCELO
+5707; 2620 27753 TRIGGER public constancia_devolucion trg_constancia_immutable MARCELO
+5703; 2620 27755 TRIGGER public corte_caja trg_corte_controlled MARCELO
+5705; 2620 27757 TRIGGER public movimiento_economico trg_movimiento_cut MARCELO
+5706; 2620 27752 TRIGGER public movimiento_economico trg_movimiento_immutable MARCELO
+5708; 2620 27759 TRIGGER public solicitud_economica trg_solicitud_immutable MARCELO
+5684; 2606 27773 FK CONSTRAINT leny conversaciones conversaciones_account_id_fkey MARCELO
+5685; 2606 27768 FK CONSTRAINT leny conversaciones conversaciones_user_id_fkey MARCELO
+5686; 2606 27795 FK CONSTRAINT leny mensajes mensajes_conversation_id_fkey MARCELO
+5673; 2606 19334 FK CONSTRAINT public auditoria_sistema auditoria_sistema_usu_id_fkey MARCELO
+5674; 2606 19438 FK CONSTRAINT public backup_bd backup_bd_usu_id_fkey MARCELO
+5681; 2606 27729 FK CONSTRAINT public constancia_devolucion constancia_devolucion_actor_id_fkey MARCELO
+5682; 2606 27724 FK CONSTRAINT public constancia_devolucion constancia_devolucion_egreso_id_fkey MARCELO
+5669; 2606 19173 FK CONSTRAINT public corte_caja corte_caja_usu_id_admin_fkey MARCELO
+5670; 2606 19168 FK CONSTRAINT public corte_caja corte_caja_usu_id_cajero_fkey MARCELO
+5614; 2606 18054 FK CONSTRAINT public cuentas cuentas_rol_id_fkey MARCELO
+5615; 2606 18059 FK CONSTRAINT public cuentas cuentas_usuario_id_fkey MARCELO
+5671; 2606 19201 FK CONSTRAINT public egreso egreso_cco_id_fkey MARCELO
+5672; 2606 19196 FK CONSTRAINT public egreso egreso_usu_id_fkey MARCELO
+5676; 2606 19493 FK CONSTRAINT public envio_notificacion_correo envio_notificacion_correo_cuenta_id_fkey MARCELO
+5646; 2606 18746 FK CONSTRAINT public comprobante_interno fk_comprobante_cliente MARCELO
+5647; 2606 18756 FK CONSTRAINT public comprobante_interno fk_comprobante_moneda MARCELO
+5648; 2606 19041 FK CONSTRAINT public comprobante_interno fk_comprobante_pago_pedido MARCELO
+5649; 2606 18766 FK CONSTRAINT public comprobante_interno fk_comprobante_salida_flete MARCELO
+5650; 2606 18741 FK CONSTRAINT public comprobante_interno fk_comprobante_tipo MARCELO
+5651; 2606 18751 FK CONSTRAINT public comprobante_interno fk_comprobante_usuario MARCELO
+5652; 2606 18761 FK CONSTRAINT public comprobante_interno fk_comprobante_venta MARCELO
+5628; 2606 18432 FK CONSTRAINT public detalle_brassier_boutique fk_dbb_itb MARCELO
+5620; 2606 18242 FK CONSTRAINT public detalle_bouquet_boutique fk_dbo_itb MARCELO
+5653; 2606 18784 FK CONSTRAINT public detalle_comprobante fk_detalle_comprobante MARCELO
+5618; 2606 18211 FK CONSTRAINT public detalle_vestido_boutique fk_dvb_itb MARCELO
+5619; 2606 18227 FK CONSTRAINT public detalle_velo_boutique fk_dve_itb MARCELO
+5629; 2606 18451 FK CONSTRAINT public entrada_item_boutique fk_eib_itb MARCELO
+5630; 2606 18461 FK CONSTRAINT public entrada_item_boutique fk_eib_pro MARCELO
+5631; 2606 18456 FK CONSTRAINT public entrada_item_boutique fk_eib_usu MARCELO
+5634; 2606 18522 FK CONSTRAINT public entrada_inventario_taller fk_emt_int MARCELO
+5635; 2606 18532 FK CONSTRAINT public entrada_inventario_taller fk_emt_pro MARCELO
+5636; 2606 18527 FK CONSTRAINT public entrada_inventario_taller fk_emt_usu MARCELO
+5639; 2606 18639 FK CONSTRAINT public flete_vestido fk_flete_vestido_itb MARCELO
+5640; 2606 18644 FK CONSTRAINT public flete_vestido fk_flete_vestido_usuario MARCELO
+5632; 2606 18498 FK CONSTRAINT public inventario_taller fk_int_pro MARCELO
+5633; 2606 18503 FK CONSTRAINT public inventario_taller fk_int_tit MARCELO
+5616; 2606 18192 FK CONSTRAINT public item_boutique fk_itb_pro MARCELO
+5617; 2606 18187 FK CONSTRAINT public item_boutique fk_itb_tib MARCELO
+5667; 2606 19457 FK CONSTRAINT public notificacion fk_notificacion_duplicada_de MARCELO
+5663; 2606 27655 FK CONSTRAINT public pago_pedido fk_pago_pedido_corte MARCELO
+5660; 2606 18971 FK CONSTRAINT public pedido_bouquet fk_pdb_ped MARCELO
+5658; 2606 18936 FK CONSTRAINT public pedido_cola fk_pdco_ped MARCELO
+5659; 2606 18954 FK CONSTRAINT public pedido_manga fk_pdma_ped MARCELO
+5661; 2606 18988 FK CONSTRAINT public pedido_otro fk_pdot_ped MARCELO
+5656; 2606 18901 FK CONSTRAINT public pedido_vestido fk_pdv_ped MARCELO
+5657; 2606 18919 FK CONSTRAINT public pedido_velo fk_pdve_ped MARCELO
+5654; 2606 18868 FK CONSTRAINT public pedido fk_ped_cli MARCELO
+5655; 2606 18873 FK CONSTRAINT public pedido fk_ped_usu MARCELO
+5664; 2606 19035 FK CONSTRAINT public pago_pedido fk_ppd_moneda MARCELO
+5665; 2606 19025 FK CONSTRAINT public pago_pedido fk_ppd_ped MARCELO
+5666; 2606 19030 FK CONSTRAINT public pago_pedido fk_ppd_usu MARCELO
+5662; 2606 19004 FK CONSTRAINT public prueba_pedido fk_prp_ped MARCELO
+5641; 2606 18688 FK CONSTRAINT public salida_flete fk_salida_flete_cliente MARCELO
+5642; 2606 27661 FK CONSTRAINT public salida_flete fk_salida_flete_corte MARCELO
+5643; 2606 18683 FK CONSTRAINT public salida_flete fk_salida_flete_flete MARCELO
+5644; 2606 18693 FK CONSTRAINT public salida_flete fk_salida_flete_usuario MARCELO
+5645; 2606 18698 FK CONSTRAINT public salida_flete fk_sfl_moneda MARCELO
+5637; 2606 18550 FK CONSTRAINT public salida_material_taller fk_smt_int MARCELO
+5638; 2606 18555 FK CONSTRAINT public salida_material_taller fk_smt_usu MARCELO
+5621; 2606 18316 FK CONSTRAINT public tipo_cambio_moneda fk_tcm_moneda MARCELO
+5622; 2606 18321 FK CONSTRAINT public tipo_cambio_moneda fk_tcm_usuario MARCELO
+5623; 2606 18356 FK CONSTRAINT public venta_boutique fk_veb_cli MARCELO
+5624; 2606 18346 FK CONSTRAINT public venta_boutique fk_veb_itb MARCELO
+5625; 2606 18361 FK CONSTRAINT public venta_boutique fk_veb_moneda MARCELO
+5626; 2606 18351 FK CONSTRAINT public venta_boutique fk_veb_usu MARCELO
+5627; 2606 27649 FK CONSTRAINT public venta_boutique fk_venta_boutique_corte MARCELO
+5677; 2606 27694 FK CONSTRAINT public movimiento_economico movimiento_economico_actor_id_fkey MARCELO
+5678; 2606 27689 FK CONSTRAINT public movimiento_economico movimiento_economico_corte_id_fkey MARCELO
+5679; 2606 27699 FK CONSTRAINT public movimiento_economico movimiento_economico_egreso_id_fkey MARCELO
+5680; 2606 27704 FK CONSTRAINT public movimiento_economico movimiento_economico_salida_flete_id_fkey MARCELO
+5668; 2606 19096 FK CONSTRAINT public notificacion notificacion_usu_id_fkey MARCELO
+5675; 2606 19474 FK CONSTRAINT public preferencia_notificacion preferencia_notificacion_usuario_id_fkey MARCELO
+5683; 2606 27746 FK CONSTRAINT public solicitud_economica solicitud_economica_actor_id_fkey MARCELO

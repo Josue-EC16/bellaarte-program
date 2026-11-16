@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+import logging
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -13,13 +14,48 @@ from app.services.backup_service import cleanup_stale_backup_lock
 
 
 @asynccontextmanager
-async def app_lifespan(_app: FastAPI):
+async def app_lifespan(app: FastAPI):
+    from app.services.leny_runtime import LenyRuntime
+    import anyio
+    runtime=LenyRuntime(settings)
+    app.state.leny_runtime=runtime
+    try:
+        await runtime.start()
+        async with erp_lifespan(app):
+            yield
+    finally:
+        # Uvicorn reload/Ctrl+C must finish owned child cleanup, including if
+        # another startup step failed or ASGI is cancelling its task group.
+        with anyio.CancelScope(shield=True):
+            await runtime.close()
+
+
+@asynccontextmanager
+async def erp_lifespan(_app: FastAPI):
     db = SessionLocal()
     try:
         cleanup_stale_backup_lock(db)
     finally:
         db.close()
-    yield
+    if settings.leny_enabled:
+        from app.api.routers.leny import get_leny_service
+        try:
+            await get_leny_service().reconcile()
+        except Exception:
+            # Missing migration or another active generator must not stop the ERP.
+            logging.getLogger(__name__).warning("LENY_STARTUP_RECONCILIATION_DEFERRED")
+    if settings.leny_documents_enabled:
+        import anyio
+        from app.api.routers.leny_documents import get_document_service
+        from app.services.leny_document_maintenance import maintenance_loop
+        async with anyio.create_task_group() as tasks:
+            tasks.start_soon(maintenance_loop, get_document_service(), settings.leny_documents_maintenance_seconds)
+            try:
+                yield
+            finally:
+                tasks.cancel_scope.cancel()
+    else:
+        yield
 
 
 def create_app() -> FastAPI:
@@ -37,6 +73,7 @@ def create_app() -> FastAPI:
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
+        expose_headers=["Retry-After", "Content-Disposition"],
     )
 
     @app.middleware("http")

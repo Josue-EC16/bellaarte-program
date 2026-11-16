@@ -1,0 +1,82 @@
+{
+  "scope": "real_focused_backend_phase_measurements_not_browser_latency",
+  "phases": {
+    "routing": {
+      "samples": 5,
+      "mean_seconds": 8.825000000000728,
+      "max_seconds": 10.1720000000023,
+      "p95_seconds": null
+    },
+    "embedding_and_release": {
+      "samples": 46,
+      "mean_seconds": 3.949391304347876,
+      "max_seconds": 4.71900000000096,
+      "p95_seconds": 4.389999999999418
+    },
+    "search": {
+      "samples": 46,
+      "mean_seconds": 0.011869565217278685,
+      "max_seconds": 0.030999999999039574,
+      "p95_seconds": 0.01600000000325963
+    },
+    "review": {
+      "samples": 46,
+      "mean_seconds": 5.189217391304302,
+      "max_seconds": 6.765999999999622,
+      "p95_seconds": 6.110000000000582
+    },
+    "selection": {
+      "samples": 46,
+      "mean_seconds": 0.0,
+      "max_seconds": 0.0,
+      "p95_seconds": 0.0
+    },
+    "context": {
+      "samples": 46,
+      "mean_seconds": 5.584652173913049,
+      "max_seconds": 13.56300000000192,
+      "p95_seconds": 6.765999999999622
+    },
+    "context_probe": {
+      "samples": 0,
+      "mean_seconds": null,
+      "max_seconds": null,
+      "p95_seconds": null
+    },
+    "generation": {
+      "samples": 0,
+      "mean_seconds": null,
+      "max_seconds": null,
+      "p95_seconds": null
+    },
+    "render": {
+      "samples": 40,
+      "mean_seconds": 0.029724999999962164,
+      "max_seconds": 0.13999999999941792,
+      "p95_seconds": 0.046999999998661224
+    },
+    "first_content": {
+      "samples": 33,
+      "mean_seconds": 10.190333333333525,
+      "max_seconds": 20.01599999999962,
+      "p95_seconds": 19.28099999999904
+    },
+    "total": {
+      "samples": 47,
+      "mean_seconds": 10.507000000000033,
+      "max_seconds": 20.56300000000192,
+      "p95_seconds": 19.781999999999243
+    }
+  },
+  "context_contains_subphases_not_additive": true,
+  "resources": {
+    "scope": "whole_system_spot_samples_not_continuous_peak_or_model_exclusive",
+    "sample_count": 139,
+    "start_utc": "2026-10-21T03:22:50.907254+00:00",
+    "end_utc": "2026-10-21T03:34:44.850202+00:00",
+    "minimum_observed_available_ram_bytes": 1296846848,
+    "maximum_observed_gpu_used_mib": 5902
+  },
+  "cold_start_available_ram_mib": 4105,
+  "freeform_documentary_generation_invoked": false
+}

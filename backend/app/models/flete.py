@@ -111,7 +111,7 @@ class SalidaFlete(Base):
         CheckConstraint("sfl_monto_arreglo >= 0", name="ck_salida_flete_monto_arreglo"),
         CheckConstraint("sfl_tipo_cambio_usado > 0", name="ck_sfl_tipo_cambio"),
         CheckConstraint("sfl_fec_devolucion_prevista >= sfl_fec_salida", name="ck_salida_flete_fechas"),
-        CheckConstraint("sfl_num between 1 and 4", name="ck_salida_flete_num"),
+        CheckConstraint("sfl_num > 0", name="ck_salida_flete_num"),
         CheckConstraint(
             "("
             "(sfl_requiere_arreglo = false and sfl_monto_arreglo = 0 and sfl_descripcion_arreglo is null)"
@@ -147,6 +147,7 @@ class SalidaFlete(Base):
     )
 
     id: Mapped[int] = mapped_column("sfl_id", BigInteger, Identity(always=True), primary_key=True)
+    corte_id: Mapped[int | None] = mapped_column(ForeignKey("corte_caja.cco_id", ondelete="RESTRICT"), index=True)
     flete_id: Mapped[int] = mapped_column(
         "fle_id",
         ForeignKey("flete_vestido.fle_id", onupdate="CASCADE", ondelete="RESTRICT"),

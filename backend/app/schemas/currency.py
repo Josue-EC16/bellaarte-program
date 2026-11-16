@@ -1,6 +1,8 @@
 from datetime import datetime
+from decimal import Decimal
+from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.schemas.common import ORMBaseModel
 
@@ -32,19 +34,22 @@ class MonedaResponse(ORMBaseModel):
 
 
 class TipoCambioCreateRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     moneda_id: int = Field(gt=0)
-    valor_bob: float = Field(gt=0)
+    valor_bob: Decimal = Field(gt=0, max_digits=12, decimal_places=4, allow_inf_nan=False)
     observaciones: str | None = None
-    activo: bool = True
+    activo: Literal[True] = True
 
 
 class TipoCambioUpdateRequest(BaseModel):
-    valor_bob: float = Field(gt=0)
+    model_config = ConfigDict(extra="forbid")
+    valor_bob: Decimal | None = Field(default=None, gt=0, max_digits=12, decimal_places=4, allow_inf_nan=False)
     observaciones: str | None = None
-    activo: bool = True
+    activo: bool | None = None
 
 
 class TipoCambioStatusUpdateRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     activo: bool
 
 
@@ -53,17 +58,23 @@ class TipoCambioListItem(ORMBaseModel):
     moneda_id: int
     moneda_codigo: str
     moneda_nombre: str
-    valor_bob: float
+    valor_bob: Decimal
     activo: bool
     registrado_por: str
     fecha_registro: datetime
+    origen: Literal["MANUAL", "AUTOMATICO"]
+    fuente: str | None
+    fecha_consulta: datetime | None
 
 
 class TipoCambioDetailResponse(ORMBaseModel):
     id: int
     moneda: MonedaResponse
-    valor_bob: float
+    valor_bob: Decimal
     observaciones: str | None
     activo: bool
     registrado_por: str
     fecha_registro: datetime
+    origen: Literal["MANUAL", "AUTOMATICO"]
+    fuente: str | None
+    fecha_consulta: datetime | None

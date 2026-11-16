@@ -1,0 +1,78 @@
+{
+  "scope": "final_grouped_four_variant_budget_diagnostic",
+  "source_artifact": "leny_rag04_budget_grouped_final.json",
+  "source_sha256": "816128c4d785efc52c0d28fc373df6a0767774669d72daf01c2123594d4e3574",
+  "source_snapshot_sha256": "184fab362de056ffeb90b4ce3020bd7f92280659e96553640bba232bc1c8d329",
+  "same_invocation": true,
+  "num_ctx": 4096,
+  "num_predict": 768,
+  "cases_per_variant": 1,
+  "latency_p95_ms": null,
+  "p95_unavailable_reason": "one_case_per_variant",
+  "acceptance_certified": false,
+  "semantic_review_complete": false,
+  "cases": [
+    {
+      "case_id": "budget-fixed-2048",
+      "status": "completed",
+      "selected_fragment_ids": [
+        "proc-4",
+        "work-1"
+      ],
+      "evidence_bytes": 1090,
+      "prompt_tokens": 563,
+      "probe_count": 0,
+      "probe_tokens": null,
+      "probe_ms": 0,
+      "request_ms": 14016.00000000326,
+      "verdict": "sufficient"
+    },
+    {
+      "case_id": "budget-fixed-2304",
+      "status": "completed",
+      "selected_fragment_ids": [
+        "proc-4",
+        "work-1"
+      ],
+      "evidence_bytes": 1090,
+      "prompt_tokens": 563,
+      "probe_count": 0,
+      "probe_tokens": null,
+      "probe_ms": 0,
+      "request_ms": 13796.999999991385,
+      "verdict": "sufficient"
+    },
+    {
+      "case_id": "budget-fixed-2560",
+      "status": "completed",
+      "selected_fragment_ids": [
+        "proc-4",
+        "work-1"
+      ],
+      "evidence_bytes": 1090,
+      "prompt_tokens": 563,
+      "probe_count": 0,
+      "probe_tokens": null,
+      "probe_ms": 0,
+      "request_ms": 13937.000000005355,
+      "verdict": "sufficient"
+    },
+    {
+      "case_id": "budget-adaptive",
+      "status": "completed",
+      "selected_fragment_ids": [
+        "proc-4",
+        "proc-1",
+        "proc-2",
+        "proc-3"
+      ],
+      "evidence_bytes": 3761,
+      "prompt_tokens": 1177,
+      "probe_count": 2,
+      "probe_tokens": 1254,
+      "probe_ms": 8047.000000005937,
+      "request_ms": 23500.0,
+      "verdict": "contradictory"
+    }
+  ]
+}

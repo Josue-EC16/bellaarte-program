@@ -1,0 +1,21 @@
+{
+  "approved_indices": 3,
+  "fragments": 50,
+  "source_types": [
+    "DOCX_PARAGRAPH",
+    "PDF_TEXT"
+  ],
+  "explicit_role_heading_counts": {
+    "modista": 0,
+    "asesor(?:a)?(?: de moda)?": 0,
+    "encargada(?: de(?: la)? boutique)?": 1
+  },
+  "styled_heading_fragments": 0,
+  "fragments_with_heading_locator": 0,
+  "fragment_characters": {
+    "min": 7,
+    "max": 1589,
+    "median": 138.5
+  },
+  "private_content_exported": false
+}

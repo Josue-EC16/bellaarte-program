@@ -1,0 +1,95 @@
+{
+  "captured_at": "2026-11-05T16:22:44.227179+00:00",
+  "expected_project": {
+    "name": "Default Gemini Project",
+    "resource": "projects/520466165333",
+    "id": "gen-lang-client-0646047379",
+    "source": "owner_confirmation",
+    "independently_verified": false
+  },
+  "quota": {
+    "rpm": 5,
+    "tpm": 250000,
+    "rpd": 20,
+    "source": "owner_AI_Studio_confirmation"
+  },
+  "configuration": {
+    "leny_llm_provider": "ollama",
+    "leny_gemini_enabled": false,
+    "leny_gemini_model": "gemini-3.8-flash",
+    "leny_gemini_thinking_level": "medium",
+    "leny_gemini_input_token_budget": 32678,
+    "leny_gemini_output_tokens": 8192,
+    "leny_gemini_timeout_seconds": 60.0,
+    "leny_gemini_total_timeout_seconds": 300.0,
+    "leny_gemini_free_tier_confirmed": false,
+    "leny_model": "qwen3.5:4b-q4_K_M",
+    "leny_num_ctx": 4096,
+    "leny_num_predict": 768,
+    "leny_temperature": 0.0,
+    "leny_keep_alive": "0",
+    "leny_rag_profile": "rag4_v1",
+    "leny_rag_ranking": "hybrid",
+    "leny_rag_response_mode": "controlled-synthesis-v1",
+    "leny_rag_neighbor_chunks": false
+  },
+  "original_env_prefix_preserved": true,
+  "key_present": true,
+  "sdk": "2.33.0",
+  "migration_executed_on_production": false,
+  "human_acceptance": null,
+  "health": 200,
+  "unauthenticated_leny": 401,
+  "qwen_model_installed": true,
+  "qwen_model_local": true,
+  "database_revision": "20261105_0024",
+  "inference_state": "idle",
+  "google_technical_ledger": [
+    {
+      "phase": "diag_a",
+      "status": "failed",
+      "error_code": "GOOGLE_HTTP_503",
+      "attempts": 1
+    },
+    {
+      "phase": "diag_a",
+      "status": "failed",
+      "error_code": "GOOGLE_HTTP_504",
+      "attempts": 1
+    },
+    {
+      "phase": "diag_model",
+      "status": "completed",
+      "error_code": null,
+      "attempts": 2
+    },
+    {
+      "phase": "generate",
+      "status": "failed",
+      "error_code": "LENY_GEMINI_UNAVAILABLE",
+      "attempts": 9
+    },
+    {
+      "phase": "model",
+      "status": "completed",
+      "error_code": null,
+      "attempts": 1
+    }
+  ],
+  "source_files_sha256": {
+    "backend/app/core/config.py": "c97480b55f501ee57378c5e01092130c1e375afce27dc2ef5ef91e686ea813f1",
+    "backend/.env.example": "53d621f76df51d9bc16462dd0d95e137a30a654af9802a2d7fd0dc973d527238",
+    "backend/scripts/diagnose_leny_gemini_spec021.py": "b35d525bb1c0c9046228c4e997de3d2bc055a89c40d87a34183a812a077d70eb",
+    "backend/scripts/test_leny_gemini_schema.py": "6143b7441d5273635e1b261a0527a9ac68a6685e5a06af3c59dc66adb7b7f43b",
+    "backend/scripts/test_leny_gemini_schema.ps1": "cadd2d1bd50c07246f6769b9fee93e70d4de833a8b68ed9bf4de51ba45b4dff4",
+    "backend/tests/test_leny_gemini_diagnostics.py": "1b73e1aa99c51ed9f3e535605a2834acb3edb8846943a67b5d755c20ebd29011",
+    "backend/app/services/leny_gemini.py": "bc5dad12faeef9b80ece183e425dcc3c2c28b0a9d9d438aeddb71ce4efb236bc",
+    "backend/app/services/leny_gemini_usage.py": "2eb3e7912c3fd8d41ac2d7d5857f18af70ead37733353b16a6946b58706aa3a4"
+  },
+  "installed_sdk_source_sha256": {
+    "_api_client.py": "26ea3189d3ba09bbf16208d2a46a9846bd19bc7c478ae9d61bc479a90dd831fb",
+    "models.py": "a8b72e280fdd8eff5a4501baf6cfcbdc2d58efbed474798de37668a510159bc0",
+    "types.py": "8c99743a9c1bc5e54e5e62e3caa695cb9daffc87713d683d348a08ef8693e7d5"
+  },
+  "source_reverse_patch_valid": true
+}

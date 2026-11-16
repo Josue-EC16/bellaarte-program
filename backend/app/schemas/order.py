@@ -1,3 +1,4 @@
+from decimal import Decimal
 from datetime import date, datetime, time
 from typing import Any
 
@@ -165,8 +166,8 @@ class OrderBasePayload(BaseModel):
     viaje: bool = False
     pais_destino: str | None = Field(default=None, max_length=50)
     ciudad_destino: str | None = Field(default=None, max_length=50)
-    precio: float = Field(default=0, ge=0)
-    descuento: float | None = Field(default=None, ge=0)
+    precio: Decimal = Field(default=Decimal(0),ge=0,max_digits=12,decimal_places=2)
+    descuento: Decimal | None = Field(default=None,ge=0,max_digits=12,decimal_places=2)
     motivo_descuento: MotivoDescuentoPedidoEnum | None = None
     observaciones: str | None = None
 
@@ -225,6 +226,10 @@ class OrderDeliverRequest(BaseModel):
 
 
 class OrderListItem(ORMBaseModel):
+    total_cobrado_bruto_bob: float | None = None
+    total_devuelto_bob: float | None = None
+    saldo_exigible_bob: float | None = None
+    devolucion_pendiente_bob: float | None = None
     id: int
     codigo: str
     tipo: TipoPedidoEnum
@@ -240,6 +245,9 @@ class OrderListItem(ORMBaseModel):
 
 
 class OrderPaymentSummary(ORMBaseModel):
+    gross_amount_bob: float = 0
+    refunded_amount_bob: float = 0
+    effective_amount_bob: float = 0
     id: int
     fecha: datetime
     monto: float
@@ -257,6 +265,10 @@ class OrderTestSummary(ORMBaseModel):
 
 
 class OrderDetailResponse(ORMBaseModel):
+    total_cobrado_bruto_bob: float | None = None
+    total_devuelto_bob: float | None = None
+    saldo_exigible_bob: float | None = None
+    devolucion_pendiente_bob: float | None = None
     id: int
     codigo: str
     tipo: TipoPedidoEnum
@@ -286,7 +298,7 @@ class OrderDetailResponse(ORMBaseModel):
 
 class OrderPaymentCreateRequest(BaseModel):
     currency_id: int = Field(gt=0)
-    monto: float = Field(gt=0)
+    monto: Decimal = Field(gt=0,max_digits=12,decimal_places=2)
     metodo_pago: MetodoPagoEnum
     observaciones: str | None = None
     receipt_customer_snapshot: ReceiptCustomerSnapshotPayload | None = None
@@ -309,6 +321,9 @@ class OrderPaymentAnnulRequest(BaseModel):
 
 
 class OrderPaymentListItem(ORMBaseModel):
+    gross_amount_bob: float = 0
+    refunded_amount_bob: float = 0
+    effective_amount_bob: float = 0
     id: int
     pedido_id: int
     pedido_codigo: str

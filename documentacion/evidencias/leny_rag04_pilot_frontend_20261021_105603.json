@@ -1,0 +1,412 @@
+{
+  "schema_version": 1,
+  "kind": "LENY_RAG04_PILOT_FRONTEND",
+  "date": "2026-10-21",
+  "timezone": "America/La_Paz",
+  "started_local": "2026-10-21T10:55:20-04:00",
+  "completed_local": "2026-10-21T10:57:10-04:00",
+  "scope": "Validación reproducible de fuentes frontend existentes; sin modificaciones funcionales.",
+  "runtime": {
+    "os": "Windows native",
+    "shell": "PowerShell",
+    "node": "22.12.0",
+    "pnpm": "10.33.0",
+    "react": "19.0.0",
+    "react_dom": "19.0.0",
+    "antd": "5.29.3",
+    "axios": "1.14.0",
+    "react_router_dom": "7.14.0",
+    "react_markdown": "10.1.0",
+    "vite": "6.4.1",
+    "vitest": "3.2.4",
+    "eslint": "9.39.4",
+    "jsdom": "27.4.0"
+  },
+  "working_directory": "frontend",
+  "commands": [
+    {
+      "command": "pnpm.cmd lint",
+      "exit_code": 0,
+      "result": "passed",
+      "changes_applied": false
+    },
+    {
+      "command": "pnpm.cmd exec vitest run --no-cache",
+      "exit_code": 0,
+      "result": "passed",
+      "test_files": 18,
+      "tests": 117,
+      "passed": 117,
+      "failed": 0,
+      "skipped": 0,
+      "reported_wall_seconds": 30.89,
+      "network_transport": "Mocks, fake XHR/fetch; no backend/DB/model requests executed."
+    },
+    {
+      "command": "pnpm.cmd exec vite build --outDir <new TEMP directory>",
+      "exit_code": 0,
+      "result": "passed",
+      "modules_transformed": 4081,
+      "reported_wall_seconds": 41.37,
+      "output_directory_token": "%TEMP%/bab-leny-rag04-pilot-20261021-4052cc16",
+      "existing_dist_modified": false,
+      "main_javascript_bytes": 2692244,
+      "main_javascript_gzip_kb": 805.59,
+      "main_css_bytes": 16415,
+      "main_css_gzip_kb": 4.2,
+      "warnings": [
+        "Output directory is outside project root and will not be emptied (new dedicated directory; no emptyOutDir used).",
+        "Minified chunk exceeds 500 kB; no code splitting or bundle optimization was performed."
+      ]
+    }
+  ],
+  "test_files": [
+    {
+      "path": "src/pages/notificaciones/notificationTransport.test.js",
+      "tests": 10,
+      "passed": 10
+    },
+    {
+      "path": "src/pages/leny/lenyTransport.test.js",
+      "tests": 8,
+      "passed": 8
+    },
+    {
+      "path": "src/pages/leny/lenyAxios.test.js",
+      "tests": 4,
+      "passed": 4
+    },
+    {
+      "path": "src/pages/leny/documents/documentApi.test.js",
+      "tests": 4,
+      "passed": 4
+    },
+    {
+      "path": "src/pages/leny/documents/documentUtils.test.js",
+      "tests": 6,
+      "passed": 6
+    },
+    {
+      "path": "src/components/forms/formErrorUtils.test.js",
+      "tests": 3,
+      "passed": 3
+    },
+    {
+      "path": "src/api/economicIntent.test.js",
+      "tests": 4,
+      "passed": 4
+    },
+    {
+      "path": "src/pages/economia/economyUtils.test.js",
+      "tests": 2,
+      "passed": 2
+    },
+    {
+      "path": "src/pages/leny/documents/documentAxios.test.js",
+      "tests": 2,
+      "passed": 2
+    },
+    {
+      "path": "src/pages/leny/LenySources.test.jsx",
+      "tests": 9,
+      "passed": 9
+    },
+    {
+      "path": "src/pages/leny/documents/DocumentPreview.test.jsx",
+      "tests": 4,
+      "passed": 4
+    },
+    {
+      "path": "src/pages/leny/documents/PublicationPanel.test.jsx",
+      "tests": 5,
+      "passed": 5
+    },
+    {
+      "path": "src/pages/leny/documents/DocumentUploadModal.test.jsx",
+      "tests": 4,
+      "passed": 4
+    },
+    {
+      "path": "src/pages/leny/documents/ContextualizationPanel.test.jsx",
+      "tests": 13,
+      "passed": 13
+    },
+    {
+      "path": "src/pages/leny/documents/DocumentsPage.test.jsx",
+      "tests": 8,
+      "passed": 8
+    },
+    {
+      "path": "src/pages/notificaciones/NotificationsPage.test.jsx",
+      "tests": 7,
+      "passed": 7
+    },
+    {
+      "path": "src/pages/economia/EconomyExpensesPage.test.jsx",
+      "tests": 4,
+      "passed": 4
+    },
+    {
+      "path": "src/pages/leny/LenyPage.test.jsx",
+      "tests": 20,
+      "passed": 20
+    }
+  ],
+  "integrity": {
+    "files_checked": 134,
+    "changed": [],
+    "removed": [],
+    "algorithm": "SHA-256",
+    "checked_scope": "All frontend/src files plus package.json, pnpm-lock.yaml, vite.config.js and eslint.config.js",
+    "baseline_capture": "Before lint/Vitest/build",
+    "comparison_capture": "After lint/Vitest/build",
+    "source_changes_by_agent": 0,
+    "dependencies_installed": 0,
+    "configuration_changes": 0,
+    "existing_test_changes": 0,
+    "relevant_file_hashes": [
+      {
+        "path": "src/api/client.js",
+        "sha256": "08633195ee6f40fd4803d19936be14edf1ad59e6575f385ce812f0246162d090"
+      },
+      {
+        "path": "src/api/economicIntent.js",
+        "sha256": "cebb9cf2f1d5d69a0abc16b7d4015ff8aa26eea36743184a64767c7b0c66b039"
+      },
+      {
+        "path": "src/api/economicIntent.test.js",
+        "sha256": "42c46b02d166352b3d7d47a5eed384e35cf896ad3df45e80a3e111544f40037f"
+      },
+      {
+        "path": "src/api/lenyDocuments.js",
+        "sha256": "0a628caaf6922198ee411b96af8082086117dae31548d50057c3af12a41cd72c"
+      },
+      {
+        "path": "src/api/lenySources.js",
+        "sha256": "3370a59a3094744452e70a1989944f02386663cfeb4f1d28d41672d476d30f66"
+      },
+      {
+        "path": "src/api/tokenStore.js",
+        "sha256": "2c47517ee211a63412e05ff17cbfa68b8fda065bc3bb4857fbca4ac52af196f1"
+      },
+      {
+        "path": "src/auth/AuthProvider.jsx",
+        "sha256": "8af043dfd87a555195d8d1b2ff9bfc593bf8c11fd534cfa3c3ad19ff1afc4bc2"
+      },
+      {
+        "path": "src/components/forms/formErrorUtils.test.js",
+        "sha256": "d0c67cb4ca29a69c3abf987267f5f69f4b88e2e04eab15122f03b12cc762f64a"
+      },
+      {
+        "path": "src/layout/AuthenticatedLayout.jsx",
+        "sha256": "7511ae4f006a2602acde7eeb50ee8522b12841627fd0204dc1c4c91dd5617355"
+      },
+      {
+        "path": "src/pages/backups/backupUtils.js",
+        "sha256": "a80f3fbc6f9b2f511420c8078b2ad265ba4bc14bd1f42e6a83173e8a3c598420"
+      },
+      {
+        "path": "src/pages/economia/EconomyExpensesPage.test.jsx",
+        "sha256": "b1e260249d88e67b6a16c049f2a7a50c0b0c20b81e374bb4afd1a165760d8d3b"
+      },
+      {
+        "path": "src/pages/economia/economyUtils.test.js",
+        "sha256": "a23195d20df9b03d9bc2c1d76433ac77ac71dde390108d9ea5c950c09c038d04"
+      },
+      {
+        "path": "src/pages/leny/leny.css",
+        "sha256": "67f63a39c8a56400c920a6a82f74ceb8e589baca048c684916f67942767ca4bc"
+      },
+      {
+        "path": "src/pages/leny/lenyAxios.test.js",
+        "sha256": "221caf17ecdd7f6c04f3b1ab2dd1dc51cda5884ee917641110560ade1b7353d9"
+      },
+      {
+        "path": "src/pages/leny/LenyMarkdown.jsx",
+        "sha256": "a5fbc5a4794975f7148bab31853325f3ac0399743318bef7ef6d6d72416e7f7f"
+      },
+      {
+        "path": "src/pages/leny/LenyPage.jsx",
+        "sha256": "2d227ee6fe002fc2e35eb7de126fde7d8002eb34539eb256cd2c40b5762b68bd"
+      },
+      {
+        "path": "src/pages/leny/LenyPage.test.jsx",
+        "sha256": "1957621454452118bc5c362131bc702b77ddef05715194ab2aa5fa91ed3cd72c"
+      },
+      {
+        "path": "src/pages/leny/LenySources.jsx",
+        "sha256": "dbc782c57a1f4849d39ed4a79f6ed442d4faad6cd60f1520bbcf82e1827a9a73"
+      },
+      {
+        "path": "src/pages/leny/LenySources.test.jsx",
+        "sha256": "215ea7b379d5f6cda3f310aee9e15a5f4ecda116b8a4a4c05b34e27afee8c80b"
+      },
+      {
+        "path": "src/pages/leny/lenySourceUtils.js",
+        "sha256": "f737c8473be420785fbb0939490cdcd197ecb8ca506ba2c976f261537a573d98"
+      },
+      {
+        "path": "src/pages/leny/lenyTransport.js",
+        "sha256": "e9d3127400ff0deaad99f5bd39a52bb31881b6df27767c42dbb1336184f6075d"
+      },
+      {
+        "path": "src/pages/leny/lenyTransport.test.js",
+        "sha256": "abe8369b6055d88a556b90cc2ba144974ef8bf671fbed98d423e3b8046aa9347"
+      },
+      {
+        "path": "src/pages/leny/useLenyChat.js",
+        "sha256": "a62333fd366e89879bd364f9e14cb9ea37925cb1e5af788612d4889d55d3e083"
+      },
+      {
+        "path": "src/pages/leny/documents/ContextualizationPanel.jsx",
+        "sha256": "07e73c7dcd9dc29386961291dd067aa27e3774a625e3ad7052d5144e446d5b70"
+      },
+      {
+        "path": "src/pages/leny/documents/ContextualizationPanel.test.jsx",
+        "sha256": "2fa5e61cb956eddd547b6991c7c20129627722aa20e4b4e965abc3a59ac9da47"
+      },
+      {
+        "path": "src/pages/leny/documents/contextualizationUtils.js",
+        "sha256": "618fcbca257c00c9172484a8073fd3bf0a70f89bc94d9c3dab688940d84210a7"
+      },
+      {
+        "path": "src/pages/leny/documents/DocumentAdminRoute.jsx",
+        "sha256": "309bd43ed64b937b1b4f8ab161b00d0bf6917069c00dccccd8410e8d8dbf353a"
+      },
+      {
+        "path": "src/pages/leny/documents/documentApi.test.js",
+        "sha256": "0b33961fbfdc6fd1a33e7a7e7281811c1372440e5ee2c7b04ec396a3e3a24f91"
+      },
+      {
+        "path": "src/pages/leny/documents/documentAxios.test.js",
+        "sha256": "2b4a3d6a5384ac8c53a22fdb32ccdc6cb78b6d1089ccbc12c6228ff67bed73f5"
+      },
+      {
+        "path": "src/pages/leny/documents/DocumentDetailDrawer.jsx",
+        "sha256": "4a74e950d1de3bfd76c2d92a161872e69de3448292f3e879af92ebf85c33dc03"
+      },
+      {
+        "path": "src/pages/leny/documents/DocumentPreview.test.jsx",
+        "sha256": "da59453a86543a504fada21b83b9e9171eb1407c90a167745823cad1bcd0162e"
+      },
+      {
+        "path": "src/pages/leny/documents/documents.css",
+        "sha256": "f51dffe12adcb31a70b211efed3ec351022700c734a9925b0ee873a81d3c4ea5"
+      },
+      {
+        "path": "src/pages/leny/documents/DocumentsPage.test.jsx",
+        "sha256": "0e48f42107af44a71d7dda3851d3e34771f0b0cab003783b2e7ac34c187b3416"
+      },
+      {
+        "path": "src/pages/leny/documents/DocumentUploadModal.jsx",
+        "sha256": "a1a21ea1beff66fb35ba47243e1b2fedd6cf536449ceadbe3c5c870d46f37190"
+      },
+      {
+        "path": "src/pages/leny/documents/DocumentUploadModal.test.jsx",
+        "sha256": "9b4d13863b125f12ae6a2bd44c7218d39b57d3ff916b87133b2dc72850474518"
+      },
+      {
+        "path": "src/pages/leny/documents/documentUtils.js",
+        "sha256": "45e7af14c02fe9665a7c72b834d972c2a00ea4cb14268e1f82b5d90e734b4e75"
+      },
+      {
+        "path": "src/pages/leny/documents/documentUtils.test.js",
+        "sha256": "50951ee6569992576fc64b58f43045ea4ef73131170d7560c80e9772de122e38"
+      },
+      {
+        "path": "src/pages/leny/documents/LenyDocumentsPage.jsx",
+        "sha256": "49bd357d4e97d2ed3a57c1f718a434d962e5b70472608305ce25213aeec40a70"
+      },
+      {
+        "path": "src/pages/leny/documents/PublicationPanel.jsx",
+        "sha256": "adee793c07b4543345b07d412154956996ac44e02c746039e713d5225cb09b70"
+      },
+      {
+        "path": "src/pages/leny/documents/PublicationPanel.test.jsx",
+        "sha256": "7d34d2589eac5d272c62925ab6a7f5137ec8ff57a5a49f8f5cf8002a76173ec8"
+      },
+      {
+        "path": "src/pages/notificaciones/NotificationsPage.test.jsx",
+        "sha256": "5b00f41c11f9d84d5dfe19693946a561fa861b9ec6ec0fd2afaf5f14881e958b"
+      },
+      {
+        "path": "src/pages/notificaciones/notificationTransport.test.js",
+        "sha256": "4c9e6a9f9e6e0b7cbe45da1356dc27fac6534493a905aa1fbb4a21b89162d4ee"
+      },
+      {
+        "path": "src/routes/AppRoutes.jsx",
+        "sha256": "f9b630cf677cc2ac35b45fa73ac2d380be23392e786c93032ff4e6d8c6351534"
+      },
+      {
+        "path": "src/routes/RouteGuards.jsx",
+        "sha256": "5209f1c2b215055eae90fd2fb8daa1284cc4798627e6f74e531693376d44520f"
+      },
+      {
+        "path": "package.json",
+        "sha256": "203e2a1bc7ce0040046e1e579dec2f2ac4e40534b5dac38b00abe11ae1f0e77a"
+      },
+      {
+        "path": "pnpm-lock.yaml",
+        "sha256": "9b99f08474da1bed982a5fb6cdb153c1c817f5dcd37d8ac6dad029f2e2a7b8a6"
+      },
+      {
+        "path": "vite.config.js",
+        "sha256": "4d36db3522a7b2dd10e0936e1004373c7ee65f10f7cd7920cd76410459c15a45"
+      },
+      {
+        "path": "eslint.config.js",
+        "sha256": "af46c4208b39e0e9cdeed4109391dfd7053294d0f32a06a646b4b07d4abc4a96"
+      }
+    ]
+  },
+  "build_artifacts": [
+    {
+      "path": "fondo_bellaarte.png",
+      "bytes": 2129431,
+      "sha256": "4098b228acba064bcef303aafa316639ba898e9e5e2bedc8ad5ab9e61a3df29b"
+    },
+    {
+      "path": "index.html",
+      "bytes": 459,
+      "sha256": "cbd848b7694cc59d2d254498222405efe18cfdcde007c7d0d60c6f3a87c70070"
+    },
+    {
+      "path": "logo_bellaarte1.png",
+      "bytes": 823822,
+      "sha256": "5ab4f6cad9e621e97a6a6d285a5d18cd7681928fb0228e09ac725d8b52fac67b"
+    },
+    {
+      "path": "logo_bellaarte2.png",
+      "bytes": 100933,
+      "sha256": "034a297d42518dfc1c4969f831254f74457a62b1d00a434a1ffc8e734112cd10"
+    },
+    {
+      "path": "vite.svg",
+      "bytes": 1497,
+      "sha256": "4a748afd443918bb16591c834c401dae33e87861ab5dbad0811c3a3b4a9214fb"
+    },
+    {
+      "path": "assets/index-BfZDLfef.js",
+      "bytes": 2692244,
+      "sha256": "d0ab4ccd19d30e7cf3d76449269101e2f4182da19a5e575e8d3362e6457e8b28"
+    },
+    {
+      "path": "assets/index-YjjCH8MB.css",
+      "bytes": 16415,
+      "sha256": "96ade4940b5162bec7fa4139ea73b925cdcb6215a0bba7675ee6ff13b65e0973"
+    }
+  ],
+  "limits": [
+    "No E2E navigation, visual screenshot, accessibility audit or real ERP/API session executed.",
+    "No backend, PostgreSQL, Ollama or worker availability verified.",
+    "Passing mocked security scenarios is not a global security certification.",
+    "No sustained-load, RAG quality, OCR accuracy or model-answer quality measured.",
+    "Parallel lint/test/build execution shares machine resources; observed durations are not isolated latency benchmarks.",
+    "Installed-node_modules reads required execution outside the sandbox after EPERM; no packages were installed and no permission settings changed.",
+    "Build artifacts remain in the dedicated temporary directory, outside Git."
+  ],
+  "writes": [
+    "This new evidence JSON and its paired Markdown only."
+  ],
+  "status": "Frontend automated checks passed; pilot operational acceptance remains the responsibility of separate backend/integration evaluation."
+}

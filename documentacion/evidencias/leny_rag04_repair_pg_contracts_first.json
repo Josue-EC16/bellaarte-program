@@ -1,0 +1,8 @@
+{
+  "scope": "isolated_existing_schema_regression",
+  "exit_code": 0,
+  "migrations_executed": false,
+  "ddl_attempts": 0,
+  "models_invoked": false,
+  "business_environment_modified": false
+}

@@ -1,0 +1,784 @@
+{
+  "scope": "synthetic_verbatim_provenance_not_human_semantic_review",
+  "artifact": "leny_rag04_quality_resumed_development.json",
+  "artifact_sha256": "432a97466f4c87f572828bd6dd5a91c303a732befa075be6216b7fcce97dfd56",
+  "corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "evaluated": 56,
+  "passed": 56,
+  "cases": [
+    {
+      "case_id": "rag04-natural-01",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1"
+      ],
+      "verbatim_quote_count": 5,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-natural-02",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-natural-03",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-natural-04",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-natural-05",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-natural-06",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-natural-07",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-natural-08",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-natural-09",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-natural-10",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-natural-11",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1"
+      ],
+      "verbatim_quote_count": 5,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-natural-12",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-natural-13",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "price-1"
+      ],
+      "verbatim_quote_count": 5,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-natural-14",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-literal-01",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-literal-02",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-literal-04",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "price-1"
+      ],
+      "verbatim_quote_count": 1,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-literal-05",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "conflict-1"
+      ],
+      "verbatim_quote_count": 3,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-literal-06",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "stock-1"
+      ],
+      "verbatim_quote_count": 1,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-literal-07",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "stock-1",
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 5,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-literal-09",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "sec-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-literal-10",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "conflict-2"
+      ],
+      "verbatim_quote_count": 1,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-literal-11",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "conflict-2",
+        "conflict-1",
+        "price-1"
+      ],
+      "verbatim_quote_count": 3,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-synonyms-01",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-synonyms-02",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-synonyms-03",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-synonyms-04",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-synonyms-05",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1"
+      ],
+      "verbatim_quote_count": 5,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-synonyms-06",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-synonyms-07",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "price-1"
+      ],
+      "verbatim_quote_count": 1,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-synonyms-08",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "stock-1"
+      ],
+      "verbatim_quote_count": 5,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-synonyms-09",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "price-1"
+      ],
+      "verbatim_quote_count": 1,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-synonyms-10",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "conflict-2",
+        "conflict-1"
+      ],
+      "verbatim_quote_count": 2,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-followup-01",
+      "response_origin": "backend_documented_excerpt",
+      "checked_fragment_ids": [
+        "proc-1"
+      ],
+      "verbatim_quote_count": 1,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-followup-02",
+      "response_origin": "backend_documented_excerpt",
+      "checked_fragment_ids": [
+        "proc-1"
+      ],
+      "verbatim_quote_count": 1,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-followup-03",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-1",
+        "proc-1",
+        "proc-1",
+        "proc-2",
+        "proc-2",
+        "proc-2",
+        "proc-3",
+        "proc-3",
+        "proc-3",
+        "proc-4",
+        "proc-4",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 13,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-followup-04",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1"
+      ],
+      "verbatim_quote_count": 5,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-followup-05",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-followup-06",
+      "response_origin": "backend_documented_excerpt",
+      "checked_fragment_ids": [
+        "proc-2",
+        "proc-2",
+        "proc-3",
+        "proc-3",
+        "proc-4",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 6,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-multi_conflict-01",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-multi_conflict-02",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "conflict-2",
+        "conflict-1"
+      ],
+      "verbatim_quote_count": 2,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-multi_conflict-03",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "conflict-2",
+        "conflict-1",
+        "price-1"
+      ],
+      "verbatim_quote_count": 3,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-multi_conflict-04",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-multi_conflict-05",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-multi_conflict-06",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "conflict-2",
+        "work-1",
+        "conflict-1"
+      ],
+      "verbatim_quote_count": 3,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-formats-01",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-formats-02",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-1",
+        "proc-1",
+        "proc-1",
+        "proc-2",
+        "proc-2",
+        "proc-2",
+        "proc-3",
+        "proc-3",
+        "proc-3",
+        "proc-4",
+        "proc-4",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 13,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-formats-03",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1"
+      ],
+      "verbatim_quote_count": 5,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-formats-04",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-formats-05",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "conflict-1"
+      ],
+      "verbatim_quote_count": 1,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-formats-07",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "conflict-2",
+        "price-1",
+        "conflict-1",
+        "sec-1"
+      ],
+      "verbatim_quote_count": 4,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-acl-01",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "conflict-1"
+      ],
+      "verbatim_quote_count": 3,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-acl-05",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1"
+      ],
+      "verbatim_quote_count": 5,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-acl-09",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "price-1",
+        "conflict-1"
+      ],
+      "verbatim_quote_count": 2,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-acl-10",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "work-1"
+      ],
+      "verbatim_quote_count": 1,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-no_evidence-03",
+      "response_origin": "backend_grounded_excerpts",
+      "checked_fragment_ids": [
+        "conflict-1"
+      ],
+      "verbatim_quote_count": 1,
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    }
+  ],
+  "human_review_complete": false,
+  "acceptance_certified": false
+}

@@ -1,0 +1,218 @@
+{
+  "scope": "synthetic_priority_review_not_final_model_run",
+  "reviewer_id": null,
+  "review_complete": false,
+  "final_model_run_pending": true,
+  "cases": [
+    {
+      "case_id": "rag04-natural-01",
+      "historical_panels": {
+        "Segunda evaluacion completa": {
+          "review": null
+        },
+        "Experimento intermedio de documentos": {
+          "review": null
+        }
+      },
+      "final_model_answer": null,
+      "review": null
+    },
+    {
+      "case_id": "rag04-natural-02",
+      "historical_panels": {
+        "Segunda evaluacion completa": {
+          "review": null
+        }
+      },
+      "final_model_answer": null,
+      "review": null
+    },
+    {
+      "case_id": "rag04-natural-03",
+      "historical_panels": {
+        "Segunda evaluacion completa": {
+          "review": null
+        }
+      },
+      "final_model_answer": null,
+      "review": null
+    },
+    {
+      "case_id": "rag04-natural-04",
+      "historical_panels": {
+        "Segunda evaluacion completa": {
+          "review": null
+        }
+      },
+      "final_model_answer": null,
+      "review": null
+    },
+    {
+      "case_id": "rag04-no_evidence-02",
+      "historical_panels": {
+        "Segunda evaluacion completa": {
+          "review": null
+        },
+        "Experimento intermedio de documentos": {
+          "review": null
+        }
+      },
+      "final_model_answer": null,
+      "review": null
+    },
+    {
+      "case_id": "rag04-acl-01",
+      "historical_panels": {
+        "Segunda evaluacion completa": {
+          "review": null
+        },
+        "Experimento intermedio de documentos": {
+          "review": null
+        }
+      },
+      "final_model_answer": null,
+      "review": null
+    },
+    {
+      "case_id": "rag04-acl-03",
+      "historical_panels": {
+        "Segunda evaluacion completa": {
+          "review": null
+        },
+        "Experimento intermedio de documentos": {
+          "review": null
+        }
+      },
+      "final_model_answer": null,
+      "review": null
+    },
+    {
+      "case_id": "rag04-acl-07",
+      "historical_panels": {
+        "Segunda evaluacion completa": {
+          "review": null
+        },
+        "Experimento intermedio de documentos": {
+          "review": null
+        }
+      },
+      "final_model_answer": null,
+      "review": null
+    },
+    {
+      "case_id": "rag04-acl-08",
+      "historical_panels": {
+        "Segunda evaluacion completa": {
+          "review": null
+        },
+        "Experimento intermedio de documentos": {
+          "review": null
+        }
+      },
+      "final_model_answer": null,
+      "review": null
+    },
+    {
+      "case_id": "rag04-acl-09",
+      "historical_panels": {
+        "Segunda evaluacion completa": {
+          "review": null
+        },
+        "Experimento intermedio de documentos": {
+          "review": null
+        }
+      },
+      "final_model_answer": null,
+      "review": null
+    },
+    {
+      "case_id": "rag04-acl-10",
+      "historical_panels": {
+        "Segunda evaluacion completa": {
+          "review": null
+        },
+        "Experimento intermedio de documentos": {
+          "review": null
+        }
+      },
+      "final_model_answer": null,
+      "review": null
+    },
+    {
+      "case_id": "rag04-formats-07",
+      "historical_panels": {
+        "Segunda evaluacion completa": {
+          "review": null
+        },
+        "Experimento intermedio de documentos": {
+          "review": null
+        }
+      },
+      "final_model_answer": null,
+      "review": null
+    },
+    {
+      "case_id": "rag04-multi_conflict-06",
+      "historical_panels": {
+        "Segunda evaluacion completa": {
+          "review": null
+        },
+        "Experimento intermedio de documentos": {
+          "review": null
+        }
+      },
+      "final_model_answer": null,
+      "review": null
+    },
+    {
+      "case_id": "rag04-followup-01",
+      "historical_panels": {
+        "Segunda evaluacion completa": {
+          "review": null
+        }
+      },
+      "final_model_answer": null,
+      "review": null
+    },
+    {
+      "case_id": "rag04-followup-02",
+      "historical_panels": {
+        "Segunda evaluacion completa": {
+          "review": null
+        }
+      },
+      "final_model_answer": null,
+      "review": null
+    },
+    {
+      "case_id": "rag04-followup-03",
+      "historical_panels": {
+        "Segunda evaluacion completa": {
+          "review": null
+        }
+      },
+      "final_model_answer": null,
+      "review": null
+    },
+    {
+      "case_id": "rag04-followup-06",
+      "historical_panels": {
+        "Segunda evaluacion completa": {
+          "review": null
+        }
+      },
+      "final_model_answer": null,
+      "review": null
+    },
+    {
+      "case_id": "rag04-followup-07",
+      "historical_panels": {
+        "Segunda evaluacion completa": {
+          "review": null
+        }
+      },
+      "final_model_answer": null,
+      "review": null
+    }
+  ]
+}

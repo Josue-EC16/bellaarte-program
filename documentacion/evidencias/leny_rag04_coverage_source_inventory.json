@@ -1,0 +1,60 @@
+{
+  "scope": "source_and_fixtures_this_prototype_vs_semantic_round",
+  "files": [
+    {
+      "path": "backend/app/services/leny_rag_coverage.py",
+      "before_sha256": null,
+      "after_sha256": "cdc1267906f4f6ab0f4d864daa57103df152ceff8772e2949adde9f05f295825",
+      "change": "created"
+    },
+    {
+      "path": "backend/app/services/leny_rag_diagnostics.py",
+      "before_sha256": "86c943f4004181fae67640a4205e1a7b4adf257a53491b35d3d612508052122c",
+      "after_sha256": "0c50ae366e2e61ad3e657b929bfe3b88b5ff0e3f97398d9ed1fb58b5911f2bb2",
+      "change": "modified"
+    },
+    {
+      "path": "backend/app/services/leny_service.py",
+      "before_sha256": "19d0413ef3ce0c3d3b9c76ffedf0e6c34ad3f5a4d92e9071f3e18ecf76657799",
+      "after_sha256": "57331e2a2964d29476f3bebe90668c579677ce88c44dceab289e6c78103bbc42",
+      "change": "modified"
+    },
+    {
+      "path": "backend/scripts/replay_leny_rag_coverage.py",
+      "before_sha256": null,
+      "after_sha256": "65d311936220f936bc479a4e9cba76dfb5eabd246415060dffac8310f79fe117",
+      "change": "created"
+    },
+    {
+      "path": "backend/tests/fixtures/leny_rag04_coverage_controls.json",
+      "before_sha256": null,
+      "after_sha256": "2ad9a709dd37b8436da397f6ffc53c7c356232510671a510df14d126dc28d27f",
+      "change": "created"
+    },
+    {
+      "path": "backend/tests/fixtures/leny_rag04_coverage_draft.json",
+      "before_sha256": null,
+      "after_sha256": "b49001815d859d76cbcf25d293f235e48e9b4b35f13e1de21adadf22d7c026f4",
+      "change": "created"
+    },
+    {
+      "path": "backend/tests/integration/test_leny_rag_quality.py",
+      "before_sha256": "7cf8d95033d4966bd8930e4df9a51434fc1aeca0a32ac78ee2015b24e9a2b34a",
+      "after_sha256": "5a5c143a4af618df5f6c5d267d1706089469865b9ed052f9387a56bc669567d0",
+      "change": "modified"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_coverage.py",
+      "before_sha256": null,
+      "after_sha256": "7d3a5d00b505f1425e8e487a62f886b4568d52a969820f7354d2a5eab9dc87d2",
+      "change": "created"
+    }
+  ],
+  "dependencies_added": [],
+  "migrations_added": [],
+  "endpoints_added": [],
+  "business_profile_modified": false,
+  "retrieval_sql_changed": false,
+  "existing_gold_changed": false,
+  "frontend_changed": false
+}

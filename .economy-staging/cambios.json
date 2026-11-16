@@ -1,0 +1,380 @@
+[
+  {
+    "path": "backend/alembic/versions/20261018_0015_economy_integrity.py",
+    "baseline_sha256": null,
+    "prepared_sha256": "cc783ab8e7e5242523f38ddd328ac0edc3b93a8c382797d9e018c71b6e6876bc",
+    "new": true
+  },
+  {
+    "path": "backend/alembic/versions/20261018_0016_custody_settlement.py",
+    "baseline_sha256": null,
+    "prepared_sha256": "0ba81c963319ccf29f3cfbd19263203f204dc70b9e2ec77dc9a6fa087eb3a1ac",
+    "new": true
+  },
+  {
+    "path": "backend/app/api/routers/boutique.py",
+    "baseline_sha256": "fd0d561a2aff7d35c8f05f8d4865bd8d280adf628fe94dcdac9891982603aae3",
+    "prepared_sha256": "2439226cf29b5bf902752e8cad5950dedebf4a3cb48e9bd01a230f606ffbb8e7",
+    "new": false
+  },
+  {
+    "path": "backend/app/api/routers/economia.py",
+    "baseline_sha256": "f8ae7d1204fd14522c90f4bcdc55e3b2d249c16f93b17dfdc61f8f08dec2d49f",
+    "prepared_sha256": "f82084e1eb6496afc5235f4c88a780e08aa41cf938d467eb14d3309a0c07b539",
+    "new": false
+  },
+  {
+    "path": "backend/app/api/routers/fletes.py",
+    "baseline_sha256": "482f605ad0f8eda28eb22a7a9b6097ae74d825aace85f4e15fe7a2b6e5a03079",
+    "prepared_sha256": "acbae0b8722b3d2465cc2331cc363f7e4e3f2f194591e426c432c9628bfb9d6e",
+    "new": false
+  },
+  {
+    "path": "backend/app/api/routers/orders.py",
+    "baseline_sha256": "da3c89094023b053523593f568c7e915a159c123b734dcdd97ed583a78f55ab3",
+    "prepared_sha256": "64ca9b1b17c90bc42d4258aa7a543ae0a2d416dba957fd0e408aa84ac55f350b",
+    "new": false
+  },
+  {
+    "path": "backend/app/core/audit.py",
+    "baseline_sha256": "cdaf01621c6e80cb3687e515712c352d0ba77db5d42fc6fce09e8a0f2ce8350b",
+    "prepared_sha256": "72caaa4e82a0efe3047fd63ceeb3c81127223023adf3fd91f7cc89789e70f625",
+    "new": false
+  },
+  {
+    "path": "backend/app/models/__init__.py",
+    "baseline_sha256": "f99dcd119e2b189caf491cdfa3141b99ec5f0394333bcaca050c67fc2467b78c",
+    "prepared_sha256": "a9aba5a9893063320ef92ec27fbdeee943bd9ced3a9f3df9d2ccf53fccb241f7",
+    "new": false
+  },
+  {
+    "path": "backend/app/models/boutique_sale.py",
+    "baseline_sha256": "d4e41392ec18e4372c0d7e45f8ef8446c5b7ac2bcdd47f8bf2c2c3aec622f06e",
+    "prepared_sha256": "a08e373a9672e1b8acb70b1a637a2ab1001686b76d3c6d66e44f59fb1de866cd",
+    "new": false
+  },
+  {
+    "path": "backend/app/models/economy.py",
+    "baseline_sha256": "b038b74f953b3c14466ada3e40a66bcdae76415df0c9855ada34ee85edaf7625",
+    "prepared_sha256": "320aabfb3c686058ca2628711dc7f6467a6cce569b81ba7e031bab2be10de1d7",
+    "new": false
+  },
+  {
+    "path": "backend/app/models/flete.py",
+    "baseline_sha256": "a68c9dd63538dc11b404d384631252a42670d281b5b1d0ec109009aae37fa4d4",
+    "prepared_sha256": "d39c0e1fc584e30e6c5b1e86bd3249eb32c5176d7d5789ed6d6cb21fb4827647",
+    "new": false
+  },
+  {
+    "path": "backend/app/models/order.py",
+    "baseline_sha256": "22f2a03120ff650651ce45ecfe05f1c23e2ca08066e1e52a4d5382cac18bac90",
+    "prepared_sha256": "09484ac8795cc11c5af5df8709367a028ec1d00c855672778a3cebffefbd6a7f",
+    "new": false
+  },
+  {
+    "path": "backend/app/schemas/boutique.py",
+    "baseline_sha256": "2e996e832528a0785ae6ca38deba95e67344ed40ccbabbac301bf15c4c3dd9f0",
+    "prepared_sha256": "ee6bb47781b37a2c1dfa3ef0983583ac60cfb38e440822c8e3e07663a24aff98",
+    "new": false
+  },
+  {
+    "path": "backend/app/schemas/economy.py",
+    "baseline_sha256": "721d210a08a2a5be907a6a2d0fd3aa775020fed6a82c2748bf6bb61cf9a73ee1",
+    "prepared_sha256": "b76e785bdafc754a42eaeeb825f9f9fb1e1687147b6b885dafe681c85203c674",
+    "new": false
+  },
+  {
+    "path": "backend/app/schemas/flete.py",
+    "baseline_sha256": "32a0b364464e0a0e8d3ea5b2857183ee8b8ed31625a63d143653b5bd6fc48e7b",
+    "prepared_sha256": "7cf97b69b0f4fbf9b93f7caabde706cc8ab20db85d5bc3bae7b9eef6cc4752a6",
+    "new": false
+  },
+  {
+    "path": "backend/app/schemas/order.py",
+    "baseline_sha256": "9619354053ae766f4d9588a1e138e4dca0014228389a3fc8295f765199d114f9",
+    "prepared_sha256": "632fefe553d132be0ad97bbbab8373bea50fbf9a63e808b79ff0ca9653d4fce6",
+    "new": false
+  },
+  {
+    "path": "backend/app/services/boutique_entry_service.py",
+    "baseline_sha256": "aa61c548aa594997c59a15b4ad3158b235d5539e59c6d87ff33d546c25c03fea",
+    "prepared_sha256": "37fc6ea59634fd10b533501ac8ff19d6b0b22d236823913677c1dd4af40b74f0",
+    "new": false
+  },
+  {
+    "path": "backend/app/services/boutique_sale_service.py",
+    "baseline_sha256": "3272bb2f8d74858ecb576fcd4d31de0b8acaae12f3316bca6d48cfc129a97ebf",
+    "prepared_sha256": "4cef9ab8ac69a04b608841d5fc2f9292956f273efb31b310a749e25431ad7ea4",
+    "new": false
+  },
+  {
+    "path": "backend/app/services/boutique_service.py",
+    "baseline_sha256": "22a1d96ed8c4f4febbe2588ef7e16a676264d3131e7b1d344c5ef78ec2653723",
+    "prepared_sha256": "39a017af88f8191623fe8b56d8c49dc100b9338517e88bc9dc8e7f8381beba20",
+    "new": false
+  },
+  {
+    "path": "backend/app/services/cash_cut_service.py",
+    "baseline_sha256": "b7328808234238091261a43a95354cd61120d3ed8761c22eaa1c90f5a6b6a275",
+    "prepared_sha256": "8692a336388aadae49fbbf22494a390e906371a40490ef9e592cbf9d13dcc54f",
+    "new": false
+  },
+  {
+    "path": "backend/app/services/economic_idempotency_service.py",
+    "baseline_sha256": null,
+    "prepared_sha256": "1de1daeb37bb1f12aa0773c29a3444349b5c3c84aa2dca7af5e0ad841804eb6a",
+    "new": true
+  },
+  {
+    "path": "backend/app/services/economic_ledger_service.py",
+    "baseline_sha256": null,
+    "prepared_sha256": "a59034bd5724bb564c3c31650a679f8b732098cbc56a9577af67ccba4fb0f2c0",
+    "new": true
+  },
+  {
+    "path": "backend/app/services/economic_write_service.py",
+    "baseline_sha256": null,
+    "prepared_sha256": "056966b0d543f83753a0a45ded70dbc13238ab2b9d1c1dfa904ff2c5104f0b1b",
+    "new": true
+  },
+  {
+    "path": "backend/app/services/economy_query_service.py",
+    "baseline_sha256": null,
+    "prepared_sha256": "5f4d358cc329b894afe9335b8661c385ac9ad7ac218779bc36c86855c9b5b054",
+    "new": true
+  },
+  {
+    "path": "backend/app/services/economy_report_service.py",
+    "baseline_sha256": "2aba69c3f9782bfd3f3d0207d011537154caf7b12be8960d47ba620f5e08551c",
+    "prepared_sha256": "3b6bd7462f3efbffe46737154ecf63e7ee9690add0bd9cf3f0b9a9a10606e6ec",
+    "new": false
+  },
+  {
+    "path": "backend/app/services/expense_service.py",
+    "baseline_sha256": "0fbdc6726fc41d2ffbd98d84ae3fc108e6c064def0806f98d98b53a3f125f54e",
+    "prepared_sha256": "5adc66eccb200afd9fc8e460d26e041364d16524b0c2350cbb5c81992a036e90",
+    "new": false
+  },
+  {
+    "path": "backend/app/services/financial_source_service.py",
+    "baseline_sha256": null,
+    "prepared_sha256": "556e369220f4764a9bde39e475fd8337c0e1f3002e2b989b4656c78da92718ee",
+    "new": true
+  },
+  {
+    "path": "backend/app/services/flete_service.py",
+    "baseline_sha256": "c778d0d963437743be7a036891627107dc13e9f95f8445b7a6f2430bde8f13c8",
+    "prepared_sha256": "0d914d7905168c9de912908429199c08208248281c27c2263e4f442a11e8d586",
+    "new": false
+  },
+  {
+    "path": "backend/app/services/income_service.py",
+    "baseline_sha256": "3046550579999aa921c5284093ca33553b715226d77da8e27635070bf4589a81",
+    "prepared_sha256": "835b1f624af4aeebe18aad87b3179ac2a94f96f30946579a0de1e74450d3f034",
+    "new": false
+  },
+  {
+    "path": "backend/app/services/module_report_service.py",
+    "baseline_sha256": "12546f414382a51cf3c3e6936af6ed975e288de2804a4b9440f7eca1c80bef7b",
+    "prepared_sha256": "c19ef4bedfa09b6c40970f71673fd057887e0439f9794fc15efd7fb806360c32",
+    "new": false
+  },
+  {
+    "path": "backend/app/services/order_payment_service.py",
+    "baseline_sha256": "80d68ee5a8f75abeec9fef1258dd0c18c21c2a3ab714a7f22ac80131a4854b24",
+    "prepared_sha256": "10e122a365613669e13ac62ef01f2fdce41ea0ccabf0c3c30ed2945909129f12",
+    "new": false
+  },
+  {
+    "path": "backend/app/services/order_report_service.py",
+    "baseline_sha256": "81796a5eea372db561c1d0095a3728cd2017fd7e397a6ef77adce8f9cd9f1142",
+    "prepared_sha256": "33d6fa438247dc232b894d9ee14dfa8f165d24eda059327ef6bb84d6019ef92c",
+    "new": false
+  },
+  {
+    "path": "backend/app/services/order_service.py",
+    "baseline_sha256": "6ae9a21d067527d245abc224193debc1992cfb1d87de401222f76b5a91a8bcfd",
+    "prepared_sha256": "d48e76fae6b0afecf1752814cef24ada789ccd08af895ebff02de1e2437a10f3",
+    "new": false
+  },
+  {
+    "path": "backend/app/services/refund_flow_service.py",
+    "baseline_sha256": "dd5a9aee052d3aa531fe2d09a26985d66b6ea76018adb60572a9ed3fd913f112",
+    "prepared_sha256": "4c3440cb8e18c8f330874dd90466e81cd73f7e19ca67421b297c90c5508e48e4",
+    "new": false
+  },
+  {
+    "path": "backend/README.md",
+    "baseline_sha256": "88cee66370736f84d1e02f938a445113785e0758412818849c2e0d62bda0be74",
+    "prepared_sha256": "33cf4646a0119c6a1af44b1a3db3e7222012e5ec1d46ba40d57c5c645f55025f",
+    "new": false
+  },
+  {
+    "path": "backend/scripts/provision_notification_test_postgres.ps1",
+    "baseline_sha256": "9752841f70f6d5e6c28470dc4777b3724ff3ec6599e354754a0e6174c4acaf24",
+    "prepared_sha256": "b9a4e73824fb55e0f70458e1980084ca287eea11427e783c03afea5b478253ac",
+    "new": false
+  },
+  {
+    "path": "backend/tests/integration/conftest.py",
+    "baseline_sha256": "6280b321f094e967029561caa0e9ee07101c1b32f06be69bfe265c0d1e6fe248",
+    "prepared_sha256": "178e5893646eced235c002008ed83b67f97766a6f980642b00df284959cdbc3c",
+    "new": false
+  },
+  {
+    "path": "backend/tests/integration/test_economy_transactions.py",
+    "baseline_sha256": null,
+    "prepared_sha256": "942b52b73eb1c1d73d75db71856b9751081c6f46f1b64e0d44afd5c45e0422f5",
+    "new": true
+  },
+  {
+    "path": "backend/tests/test_economy_contracts.py",
+    "baseline_sha256": "02b8e337467d82f852a4043081118d112814c32021d0a965a4557cfc6b912c67",
+    "prepared_sha256": "9fdd2d556646835cba05ed993aec500248ec1b99d97392fd69c48fae7d2d12e7",
+    "new": false
+  },
+  {
+    "path": "backend/tests/test_notification_reliability.py",
+    "baseline_sha256": "4a55b88b4e8e4170f4fc79e612b060187426f26dc11101984a46e43d153658b0",
+    "prepared_sha256": "d5ebd4dd8127de52ddb652cc09a5ab575d15616d27ffebc6bebc12733b01ed25",
+    "new": false
+  },
+  {
+    "path": "frontend/src/api/client.js",
+    "baseline_sha256": "9dab9e2f7f67af6d18bddfdbfdb39de014dc3d35160cf846ed881abfbbeb91fb",
+    "prepared_sha256": "82193e08df97d67ad330738fdd59e1643fd22b8cc1f66d1e482c1269f40d6c57",
+    "new": false
+  },
+  {
+    "path": "frontend/src/api/economicIntent.js",
+    "baseline_sha256": null,
+    "prepared_sha256": "cebb9cf2f1d5d69a0abc16b7d4015ff8aa26eea36743184a64767c7b0c66b039",
+    "new": true
+  },
+  {
+    "path": "frontend/src/api/economicIntent.test.js",
+    "baseline_sha256": null,
+    "prepared_sha256": "42c46b02d166352b3d7d47a5eed384e35cf896ad3df45e80a3e111544f40037f",
+    "new": true
+  },
+  {
+    "path": "frontend/src/api/tokenStore.js",
+    "baseline_sha256": "c0b3b4ea993a172a641aa5c4e320e40b7c8867517898425bc5030509cbbfaa47",
+    "prepared_sha256": "2c47517ee211a63412e05ff17cbfa68b8fda065bc3bb4857fbca4ac52af196f1",
+    "new": false
+  },
+  {
+    "path": "frontend/src/pages/boutique/BoutiqueSalesPage.jsx",
+    "baseline_sha256": "2aa575ef1fac4bbf7bba708e4e33d6c70fa872ccc677a5813b2542a384d39107",
+    "prepared_sha256": "b9a3853267701ea0ee041d052558712b08b172ab24af5a98dabc09bb3b68ad6d",
+    "new": false
+  },
+  {
+    "path": "frontend/src/pages/economia/CashCutsPage.jsx",
+    "baseline_sha256": "3246d11a857aa4d79e4b3c0432d4e4bc69a8de26a83a6d9851849fbb17cc5bd6",
+    "prepared_sha256": "d179f92cd2f18cc54ebb53fa21288a6b867684b535162a0434fa03690fe5bb12",
+    "new": false
+  },
+  {
+    "path": "frontend/src/pages/economia/EconomyDashboardPage.jsx",
+    "baseline_sha256": "521c8e3d5686d119d881218aa51104e095a3238835b2b1dd5c427a35150dc350",
+    "prepared_sha256": "391dbb9f9e32e03395214dc3ffad383bc97cc821b44bfe4e4c43ac062effb2f8",
+    "new": false
+  },
+  {
+    "path": "frontend/src/pages/economia/EconomyExpensesPage.jsx",
+    "baseline_sha256": "2376636c3ebe6321de91398e644837fa2596fab9e290c8d01616c661661d8c86",
+    "prepared_sha256": "6cb577259c123ffc90fc301366a78bbe6080909239da0bc7e024bc3a5f2302c4",
+    "new": false
+  },
+  {
+    "path": "frontend/src/pages/economia/EconomyExpensesPage.test.jsx",
+    "baseline_sha256": null,
+    "prepared_sha256": "b1e260249d88e67b6a16c049f2a7a50c0b0c20b81e374bb4afd1a165760d8d3b",
+    "new": true
+  },
+  {
+    "path": "frontend/src/pages/economia/EconomyReportsPage.jsx",
+    "baseline_sha256": "acf3c756653b9f322526c9fdedfba8fe0d65950ee6c927c64c4bec4c7e0295ca",
+    "prepared_sha256": "e3e8edbfcc665c398dd04f660f8022bacd3419591dd67aad65c07a41e3cc763a",
+    "new": false
+  },
+  {
+    "path": "frontend/src/pages/economia/economyUtils.js",
+    "baseline_sha256": "33f8417a97c09ab91ea9439995e63d13ee4eac692767ff3349e5410049a8d298",
+    "prepared_sha256": "9554e43a484fbc57113c0f58076bddcc05bcddf525852a1a86455a7434b12365",
+    "new": false
+  },
+  {
+    "path": "frontend/src/pages/economia/economyUtils.test.js",
+    "baseline_sha256": null,
+    "prepared_sha256": "a23195d20df9b03d9bc2c1d76433ac77ac71dde390108d9ea5c950c09c038d04",
+    "new": true
+  },
+  {
+    "path": "frontend/src/pages/economia/GuaranteeMovementDrawer.jsx",
+    "baseline_sha256": null,
+    "prepared_sha256": "62bd5bdfa55b13da21dc0cda01ef0642f202612050af0e28419f6e73f947ace9",
+    "new": true
+  },
+  {
+    "path": "frontend/src/pages/economia/RefundReceiptDocument.jsx",
+    "baseline_sha256": null,
+    "prepared_sha256": "b9016d5d83af25a60701ed8603b6f8f314b9742a41c9b594a4c0efc8180bf04a",
+    "new": true
+  },
+  {
+    "path": "frontend/src/pages/fletes/FleteOutputsPage.jsx",
+    "baseline_sha256": "3005bc11870b1d7d0037be7a669ca370e27b9e795acc17311cf21595d68b6b24",
+    "prepared_sha256": "348f091becbc372a45c459cc082137dda1797f434cc049de9164788b30471c2a",
+    "new": false
+  },
+  {
+    "path": "frontend/src/pages/pedidos/OrderPaymentsPage.jsx",
+    "baseline_sha256": "3871d4ef8e02259c20b66fba47bbb1a36e81cc79d80f2ae9370e960c71810f86",
+    "prepared_sha256": "dfdbd291f1d29eba0f4a9af0920663014e3699edb556315710327d7d0ea2cb22",
+    "new": false
+  },
+  {
+    "path": "frontend/src/pages/pedidos/OrderReportsPage.jsx",
+    "baseline_sha256": "ce9011ae6a1428e2713bcc733698d547763c048f8a1f7a493f111a04446685ad",
+    "prepared_sha256": "412c9ac150b40345950674a339ca81459a4edb20c29228854c6db179fecb0be3",
+    "new": false
+  },
+  {
+    "path": "frontend/src/pages/pedidos/OrdersPage.jsx",
+    "baseline_sha256": "753d16800454137b2d049bd615427116400d89e475c8c17df5e2cda0255c8e9d",
+    "prepared_sha256": "d30776ff0c210df7ed2de00a3657c37a1fd1d6e7e92374ba5bac4f781f11a57c",
+    "new": false
+  },
+  {
+    "path": "documentacion/CONTRATOS_API_ECONOMIA.md",
+    "baseline_sha256": null,
+    "prepared_sha256": "8a3eeab0aa1424737ce04f67bc3b6491ee2f3ffacf88876f4fc629d21b680798",
+    "new": true
+  },
+  {
+    "path": "documentacion/DESPLIEGUE_ECONOMIA.md",
+    "baseline_sha256": null,
+    "prepared_sha256": "2ac581b3fb94671e6ccbf83061b01393867498fca228be2ca02a3330b4d21a88",
+    "new": true
+  },
+  {
+    "path": "documentacion/ESTRATEGIA_PRUEBAS.md",
+    "baseline_sha256": "0d2ea8bc9ef0bdf555574703ee596f3fcb6a30abd0bb4a268156a46e98c431f4",
+    "prepared_sha256": "dc1bc0850eb1e027a79b10f382e32d393c2e21fda1461dc051f6f8cd4e46e348",
+    "new": false
+  },
+  {
+    "path": "documentacion/MODULO_INGRESOS_EGRESOS_CORTE_CAJA.md",
+    "baseline_sha256": "0ec1ed927b0aa6e88ef59cbb5065bb0ed56f8d1bca40806571cd481d16dc8836",
+    "prepared_sha256": "56c5bbc8fce0bbd4cc37bc7f6315267d3d892073bc43402007b09ae9d2db4b5e",
+    "new": false
+  },
+  {
+    "path": "documentacion/REPORTE_IMPLEMENTACION_ECONOMIA.md",
+    "baseline_sha256": null,
+    "prepared_sha256": "201057c27e42b8a3c3a4d43744019cbde9c51d5d9a15ebbeb0ea064dd4f73853",
+    "new": true
+  }
+]

@@ -1,6 +1,10 @@
 # Módulo de Seguridad y Accesos - BellaArte Boutique
 
-Este documento unifica y actualiza todas las especificaciones operativas, técnicas y de seguridad del sistema BellaArte Boutique. Representa la versión definitiva del núcleo de gestión de usuarios, roles y autenticación.
+**Referencia histórica.** La revisión de Usuarios/Sesiones del 03/11/2026 está
+documentada en [Usuarios, roles y sesiones](MODULO_USUARIOS_SESIONES.md).
+Ese documento sustituye las reglas de clave temporal, reset, autorización y
+revocación siguientes. Migración 0022 desplegada con autorización el 03/11/2026,
+respaldo verificado y backend original reiniciado; se requiere nuevo login.
 
 ## 1. Objetivo del Módulo
 Proveer una base sólida, segura y automatizada para el control de acceso al sistema, garantizando la integridad de los datos y la trazabilidad de cada acción mediante auditoría.
@@ -25,7 +29,7 @@ Para simplificar la administración y reducir errores humanos, el sistema autoge
 
 *   **Nombre de Usuario**: Formado por la primera letra del Nombre + Primera letra del Apellido Paterno + CI (Ej: `ME12345678`).
     *   *Nota*: Se almacena y valida estrictamente en **MAYÚSCULAS**.
-*   **Contraseña Temporal**: Es exactamente el número de Cédula de Identidad (CI).
+*   **Contraseña temporal vigente**: inicial de nombres + inicial de apellido paterno + CI, en mayúsculas; CI de al menos siete dígitos.
 *   **Validación de Unicidad**: El sistema impide duplicados de CI, Correo Electrónico y Nombre de Usuario.
 
 ### 3.2. Notificación por Correo (Servicio SMTP)
@@ -54,7 +58,7 @@ Al crear o actualizar un usuario (si nunca ha ingresado), el sistema despacha un
 
 ### 4.3. Restablecimiento de Clave
 *   **Acción**: Botón "Reset Clave" en la lista de usuarios.
-*   **Flujo**: Abre un Modal de confirmación (Ant Design). Al confirmar, la contraseña se resetea automáticamente al número de CI del usuario y se le vuelve a marcar el cambio obligatorio de clave.
+*   **Flujo**: confirmación administrativa, clave temporal calculada en servidor con iniciales + CI, cambio obligatorio y revocación de todas las sesiones. Incluye autoreset de ADMIN y cuentas conectadas.
 
 ---
 

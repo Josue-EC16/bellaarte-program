@@ -1,4 +1,4 @@
-import { EditOutlined, PlusOutlined } from '@ant-design/icons'
+import { EditOutlined } from '@ant-design/icons'
 import { Alert, App as AntdApp, Button, Drawer, Form, Input, Switch, Table, Tag, Typography } from 'antd'
 import { useEffect, useState } from 'react'
 
@@ -10,6 +10,7 @@ import {
 } from '../../components/forms/formConfig'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
+import { cleanText, validateRequiredText } from '../users/userValidation'
 
 export function RolesPage() {
   const [roles, setRoles] = useState([])
@@ -23,7 +24,6 @@ export function RolesPage() {
   const { message } = AntdApp.useApp()
   const { user } = useAuth()
 
-  const canCreate = user?.permissions?.includes('roles:create')
   const canUpdate = user?.permissions?.includes('roles:update')
   const canChangeStatus = user?.permissions?.includes('roles:update_status')
 
@@ -44,38 +44,28 @@ export function RolesPage() {
     loadRoles()
   }, [])
 
-  const openCreate = () => {
-    setEditingRole(null)
-    setFormError(null)
-    form.resetFields()
-    setDrawerOpen(true)
-  }
-
-  const openEdit = (record) => {
-    setEditingRole(record)
-    setFormError(null)
-    form.setFieldsValue({
-      codigo: record.codigo,
-      nombre: record.nombre,
-      descripcion: record.descripcion,
-    })
-    setDrawerOpen(true)
+  const openEdit = async (record) => {
+    try {
+      const { data: role } = await apiClient.get(`/roles/${record.id}`)
+      setEditingRole(role)
+      setFormError(null)
+      form.setFieldsValue({ nombre: role.nombre, descripcion: role.descripcion })
+      setDrawerOpen(true)
+    } catch (requestError) {
+      message.error(requestError.normalizedError?.summary || 'No fue posible cargar el rol.')
+    }
   }
 
   const handleSubmit = async (values) => {
+    if (!editingRole) return
     setSaving(true)
     setFormError(null)
     try {
-      if (editingRole) {
-        await apiClient.patch(`/roles/${editingRole.id}`, {
-          nombre: values.nombre,
-          descripcion: values.descripcion,
-        })
-        message.success('Se guardaron los cambios del rol correctamente.')
-      } else {
-        await apiClient.post('/roles', values)
-        message.success('Se creó el rol correctamente.')
-      }
+      await apiClient.patch(`/roles/${editingRole.id}`, {
+        nombre: cleanText(values.nombre).toUpperCase(),
+        descripcion: cleanText(values.descripcion).toUpperCase() || null,
+      })
+      message.success('Se guardaron los cambios del rol correctamente.')
       setDrawerOpen(false)
       setEditingRole(null)
       form.resetFields()
@@ -101,7 +91,6 @@ export function RolesPage() {
   }
 
   const columns = [
-    { title: 'Código', dataIndex: 'codigo', key: 'codigo' },
     { title: 'Nombre', dataIndex: 'nombre', key: 'nombre' },
     { title: 'Descripción', dataIndex: 'descripcion', key: 'descripcion', render: (value) => value || 'Sin descripción' },
     {
@@ -123,7 +112,16 @@ export function RolesPage() {
       title: 'Registro',
       dataIndex: 'created_at',
       key: 'created_at',
-      render: (value) => (value ? new Date(value).toLocaleString() : 'Sin dato'),
+      render: (value) =>
+        value
+          ? new Date(value).toLocaleString('es-BO', {
+              year: 'numeric',
+              month: 'numeric',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+            })
+          : 'Sin dato',
     },
     {
       title: 'Acciones',
@@ -144,18 +142,12 @@ export function RolesPage() {
       <div className="page-header">
         <div>
           <Typography.Title level={2} style={{ margin: 0 }}>
-            Roles del sistema
+            Roles del Sistema
           </Typography.Title>
           <Typography.Paragraph type="secondary" style={{ marginBottom: 0 }}>
-            Administra catálogo, estado y descripciones de roles operativos.
           </Typography.Paragraph>
         </div>
 
-        {canCreate ? (
-          <Button type="primary" icon={<PlusOutlined />} onClick={openCreate}>
-            Nuevo Rol
-          </Button>
-        ) : null}
       </div>
 
       {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
@@ -171,7 +163,7 @@ export function RolesPage() {
       />
 
       <Drawer
-        title={editingRole ? 'Editar rol' : 'Crear rol'}
+        title="Editar rol"
         width={420}
         onClose={() => {
           setDrawerOpen(false)
@@ -180,42 +172,35 @@ export function RolesPage() {
           form.resetFields()
         }}
         open={drawerOpen}
+        maskClosable={false}
+        closable={!saving}
+        keyboard={!saving}
         destroyOnClose
       >
         <FormProcessAlert
           message={formError}
-          title={editingRole ? 'No fue posible actualizar el rol.' : 'No fue posible crear el rol.'}
+          title="No fue posible actualizar el rol."
         />
 
         <Form {...FORM_COMMON_PROPS} form={form} onFinish={handleSubmit}>
           <Form.Item
-            label="Código"
-            name="codigo"
-            rules={[{ required: true, message: 'Debe ingresar el código del rol.' }]}
-            extra="Usa solo letras mayúsculas y guiones bajos. No se podrá cambiar después de crear."
-            normalize={(value) => (value || '').toUpperCase().replace(/[^A-Z_]/g, '')}
-          >
-            <Input disabled={Boolean(editingRole)} placeholder="Ej. ADMIN o INV_BOUTIQUE" />
-          </Form.Item>
-          <Form.Item
             label="Nombre"
             name="nombre"
-            rules={[{ required: true, message: 'Debe ingresar el nombre del rol.' }]}
-            extra="Escribe un nombre claro para identificar la función operativa del rol."
-            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+            rules={[{ required: true, whitespace: true, message: 'Debe ingresar el nombre del rol.' },
+              { validator: validateRequiredText({ name: true, min: 2 }) }]}
+            normalize={(value) => (value || '').normalize('NFC').toUpperCase()}
           >
             <Input placeholder="Ej. ADMINISTRACIÓN GENERAL" />
           </Form.Item>
           <Form.Item
             label="Descripción"
             name="descripcion"
-            extra="Opcional. Describe brevemente las responsabilidades del rol."
             normalize={(value) => (value || '').toUpperCase()}
           >
             <Input.TextArea rows={3} placeholder="Ej. GESTIONA USUARIOS, ROLES Y CONFIGURACIONES CLAVE" />
           </Form.Item>
           <Button {...FORM_DRAWER_SUBMIT_PROPS} loading={saving}>
-            {editingRole ? 'Guardar cambios' : 'Crear rol'}
+            Guardar cambios
           </Button>
         </Form>
       </Drawer>

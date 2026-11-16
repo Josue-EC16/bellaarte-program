@@ -272,7 +272,12 @@ export function BackupsPage() {
       title: 'ARCHIVO',
       dataIndex: 'nombre_archivo',
       key: 'nombre_archivo',
-      render: (value) => <Typography.Text ellipsis={{ tooltip: value }}>{value}</Typography.Text>,
+      render: (value, row) => (
+        <div>
+          <Typography.Text ellipsis={{ tooltip: value }}>{value}</Typography.Text>
+          <div><Tag color={row.includes_documents ? 'green' : 'default'}>{row.includes_documents ? 'BD + DOCUMENTOS' : 'SOLO BASE DE DATOS'}</Tag></div>
+        </div>
+      ),
     },
     {
       title: 'TAMAÑO',
@@ -532,6 +537,9 @@ export function BackupsPage() {
               <Descriptions.Item label="FECHA FIN">{formatBackupDate(detail.fecha_fin)}</Descriptions.Item>
               <Descriptions.Item label="NOMBRE ARCHIVO" span={2}>
                 {detail.nombre_archivo}
+              </Descriptions.Item>
+              <Descriptions.Item label="CONTENIDO" span={2}>
+                {detail.includes_documents ? 'Base de datos, originales y vistas previas documentales verificadas.' : 'Solo base de datos. No contiene los archivos de la biblioteca.'}
               </Descriptions.Item>
               <Descriptions.Item label="RUTA ARCHIVO" span={2}>
                 <Typography.Text copyable>{detail.ruta_archivo}</Typography.Text>

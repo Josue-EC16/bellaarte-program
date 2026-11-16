@@ -1,5 +1,6 @@
 import logging
 import smtplib
+import socket
 from email.message import EmailMessage
 from pathlib import Path
 
@@ -9,12 +10,19 @@ logger = logging.getLogger(__name__)
 
 
 def send_welcome_email(recipient_email: str, full_name: str, username: str, initial_password: str) -> tuple[bool, str | None]:
+    try:
+        return _send_welcome_email(recipient_email, full_name, username, initial_password)
+    except Exception:
+        # Message/header construction happens before connecting. Never expose
+        # an address, message body, password or raw provider exception.
+        logger.warning("SMTP_CONFIGURACION")
+        return False, "SMTP_CONFIGURACION"
+
+
+def _send_welcome_email(recipient_email: str, full_name: str, username: str, initial_password: str) -> tuple[bool, str | None]:
     if not settings.smtp_username or not settings.smtp_password:
-        logger.warning(f"SMTP credentials not configured. Email to {recipient_email} aborted.")
-        print(f"--- MOCK EMAIL TO: {recipient_email} ---")
-        print(f"Username: {username}\nPassword: {initial_password}")
-        print("-----------------------------------------")
-        return True, None
+        logger.warning("SMTP_NO_CONFIGURADO")
+        return False, "SMTP_NO_CONFIGURADO"
 
     subject = "🎉 ¡BIENVENIDO A BELLAARTE BOUTIQUE! 💖"
     
@@ -67,7 +75,7 @@ def send_welcome_email(recipient_email: str, full_name: str, username: str, init
     msg.add_alternative(html_content, subtype="html")
 
     # Embeber la imagen del logo (CID)
-    logo_path = Path("c:/laragon/www/bellaarte-program/frontend/public/logo_bellaarte1.png")
+    logo_path = Path(__file__).resolve().parents[3] / "frontend" / "public" / "logo_bellaarte1.png"
     if logo_path.exists():
         try:
             with open(logo_path, "rb") as f:
@@ -78,21 +86,45 @@ def send_welcome_email(recipient_email: str, full_name: str, username: str, init
                     subtype="png", 
                     cid="logo_bellaarte"
                 )
-        except Exception as e:
-            logger.error(f"Could not attach logo to email: {e}")
+        except OSError:
+            logger.warning("SMTP_LOGO_NO_DISPONIBLE")
 
+    stage = "CONEXION"
+    accepted = False
     try:
         if settings.smtp_port == 465:
-            with smtplib.SMTP_SSL(settings.smtp_server, settings.smtp_port) as server:
+            with smtplib.SMTP_SSL(settings.smtp_server, settings.smtp_port, timeout=10) as server:
+                stage = "AUTENTICACION"
                 server.login(settings.smtp_username, settings.smtp_password)
-                server.send_message(msg)
+                stage = "ENVIO"
+                refused = server.send_message(msg)
+                if refused:
+                    return False, "SMTP_RECHAZADO"
+                accepted = True
         else:
-            with smtplib.SMTP(settings.smtp_server, settings.smtp_port) as server:
+            with smtplib.SMTP(settings.smtp_server, settings.smtp_port, timeout=10) as server:
+                stage = "AUTENTICACION"
                 server.starttls()
                 server.login(settings.smtp_username, settings.smtp_password)
-                server.send_message(msg)
-        logger.info(f"Welcome email sent successfully to {recipient_email}")
+                stage = "ENVIO"
+                refused = server.send_message(msg)
+                if refused:
+                    return False, "SMTP_RECHAZADO"
+                accepted = True
+        logger.info("SMTP_ACEPTADO")
         return True, None
-    except Exception as e:
-        logger.error(f"Failed to send email to {recipient_email}: {e}")
-        return False, str(e)
+    except smtplib.SMTPAuthenticationError:
+        category = "SMTP_AUTENTICACION"
+    except (smtplib.SMTPRecipientsRefused, smtplib.SMTPSenderRefused):
+        category = "SMTP_RECHAZADO"
+    except smtplib.SMTPResponseException as error:
+        category = "SMTP_TEMPORAL" if 400 <= error.smtp_code < 500 else "SMTP_RECHAZADO"
+    except (OSError, socket.timeout, smtplib.SMTPServerDisconnected):
+        category = "SMTP_INCIERTO" if stage == "ENVIO" else "SMTP_TEMPORAL"
+    except Exception:
+        category = "SMTP_INCIERTO" if stage == "ENVIO" else "SMTP_CONFIGURACION"
+    if accepted:
+        # A failed QUIT does not undo the server's successful DATA response.
+        return True, None
+    logger.warning("%s", category)
+    return False, category

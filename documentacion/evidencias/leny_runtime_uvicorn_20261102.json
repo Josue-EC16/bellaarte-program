@@ -1,0 +1,18 @@
+{
+  "cycles": [
+    {
+      "worker_started": true,
+      "worker_stopped": true,
+      "external_ollama_preserved": true
+    },
+    {
+      "worker_started": true,
+      "worker_stopped": true,
+      "external_ollama_preserved": true
+    }
+  ],
+  "actual_uvicorn_reload_flag_tested": false,
+  "database": "configured ERP",
+  "port": 18080,
+  "models_invoked": false
+}

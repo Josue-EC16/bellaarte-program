@@ -1,0 +1,39 @@
+{
+  "scope": "completed_test_results_summary_not_full_stdout",
+  "targeted_coverage": {
+    "passed": 38,
+    "seconds": 0.52
+  },
+  "final_backend_base": {
+    "passed": 883,
+    "skipped": 1,
+    "warnings": 1,
+    "seconds": 14.63
+  },
+  "previous_backend_before_last_contract_fixes": {
+    "passed": 881,
+    "skipped": 1,
+    "warnings": 1,
+    "seconds": 14.32
+  },
+  "final_postgres_contracts": {
+    "passed": 104,
+    "deselected_migration_tests": 5,
+    "seconds": 46.09,
+    "artifact": "leny_rag04_coverage_final_pg.json",
+    "models_invoked": false,
+    "ddl_attempts": 0
+  },
+  "previous_postgres_contracts": {
+    "passed": 104,
+    "seconds": 46.35,
+    "artifact": "leny_rag04_coverage_pg.json"
+  },
+  "local_development_test_failures_corrected_before_freeze": [
+    "incomplete-span test fixture hash",
+    "missing mocked topic history in new stream tests"
+  ],
+  "replay_executions": 1,
+  "real_model_executions": 0,
+  "frontend_reexecuted": false
+}

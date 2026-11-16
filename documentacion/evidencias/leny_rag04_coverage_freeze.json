@@ -1,0 +1,15 @@
+{
+  "scope": "pre_replay_freeze_no_semantic_result_observed",
+  "snapshot_sha256": "bd242a1a221875354a809c98b3bf5d6ef2f2a0af876442f6d71e5e2b2b7527bb",
+  "inputs_sha256": {
+    "backend/tests/fixtures/leny_rag04_development.json": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+    "backend/tests/fixtures/leny_rag04_coverage_draft.json": "b49001815d859d76cbcf25d293f235e48e9b4b35f13e1de21adadf22d7c026f4",
+    "backend/tests/fixtures/leny_rag04_coverage_controls.json": "2ad9a709dd37b8436da397f6ffc53c7c356232510671a510df14d126dc28d27f",
+    "documentacion/evidencias/leny_rag04_semantic_focused.json": "fb19faf3b67b23cfc90adf7b0c2b7891ba2e9f531c6a9398e1d992fa2dca35c3",
+    "documentacion/evidencias/leny_rag04_semantic_focused.json.jsonl": "1e10e2515124c9a178334cdf3cae248875bf165cd2437eee09d8ad242db98f9c"
+  },
+  "human_review_complete": false,
+  "qwen_calls_planned": 0,
+  "replay_attempts_planned": 1,
+  "no_post_result_tuning": true
+}

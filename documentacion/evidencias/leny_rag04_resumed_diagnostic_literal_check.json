@@ -1,0 +1,94 @@
+{
+  "scope": "synthetic_verbatim_provenance_not_human_semantic_review",
+  "artifact": "leny_rag04_quality_resumed_diagnostic.json",
+  "artifact_sha256": "a6195195dd32809962ae256e492fa120ce09b43775a5b9bc79c06e76664e29ce",
+  "corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "cases": [
+    {
+      "case_id": "rag04-natural-01",
+      "verbatim_quote_count": 5,
+      "checked_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-multi_conflict-06",
+      "verbatim_quote_count": 3,
+      "checked_fragment_ids": [
+        "conflict-2",
+        "work-1",
+        "conflict-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-formats-07",
+      "verbatim_quote_count": 4,
+      "checked_fragment_ids": [
+        "conflict-2",
+        "price-1",
+        "conflict-1",
+        "sec-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-acl-01",
+      "verbatim_quote_count": 3,
+      "checked_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "conflict-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-acl-09",
+      "verbatim_quote_count": 2,
+      "checked_fragment_ids": [
+        "price-1",
+        "conflict-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-acl-10",
+      "verbatim_quote_count": 1,
+      "checked_fragment_ids": [
+        "work-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    },
+    {
+      "case_id": "rag04-no_evidence-03",
+      "verbatim_quote_count": 1,
+      "checked_fragment_ids": [
+        "conflict-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_relevance_certified": false
+    }
+  ],
+  "passed": 7,
+  "evaluated": 7,
+  "human_review_complete": false,
+  "acceptance_certified": false
+}

@@ -1,0 +1,98 @@
+{
+  "scope": "whole_gpu_spot_samples_not_peak_or_model_exclusive",
+  "run": "leny_rag04_candidate_final_development.json",
+  "start_utc": "2026-10-20T17:02:12.520796+00:00",
+  "samples": [
+    {
+      "timestamp_utc": "2026-10-20T17:02:12.622057+00:00",
+      "used_mib": 8,
+      "total_mib": 6141,
+      "utilization_percent": 0
+    },
+    {
+      "timestamp_utc": "2026-10-20T17:02:14.680129+00:00",
+      "used_mib": 2859,
+      "total_mib": 6141,
+      "utilization_percent": 49
+    },
+    {
+      "timestamp_utc": "2026-10-20T17:02:16.721467+00:00",
+      "used_mib": 3739,
+      "total_mib": 6141,
+      "utilization_percent": 90
+    },
+    {
+      "timestamp_utc": "2026-10-20T17:02:18.906957+00:00",
+      "used_mib": 0,
+      "total_mib": 6141,
+      "utilization_percent": 0
+    },
+    {
+      "timestamp_utc": "2026-10-20T17:02:20.953791+00:00",
+      "used_mib": 1263,
+      "total_mib": 6141,
+      "utilization_percent": 33
+    },
+    {
+      "timestamp_utc": "2026-10-20T17:02:22.997704+00:00",
+      "used_mib": 73,
+      "total_mib": 6141,
+      "utilization_percent": 1
+    },
+    {
+      "timestamp_utc": "2026-10-20T17:02:25.064567+00:00",
+      "used_mib": 3743,
+      "total_mib": 6141,
+      "utilization_percent": 1
+    },
+    {
+      "timestamp_utc": "2026-10-20T17:02:27.128235+00:00",
+      "used_mib": 8,
+      "total_mib": 6141,
+      "utilization_percent": 0
+    },
+    {
+      "timestamp_utc": "2026-10-20T17:02:29.191534+00:00",
+      "used_mib": 3505,
+      "total_mib": 6141,
+      "utilization_percent": 4
+    },
+    {
+      "timestamp_utc": "2026-10-20T17:02:31.261513+00:00",
+      "used_mib": 3743,
+      "total_mib": 6141,
+      "utilization_percent": 93
+    },
+    {
+      "timestamp_utc": "2026-10-20T17:02:33.393763+00:00",
+      "used_mib": 2,
+      "total_mib": 6141,
+      "utilization_percent": 0
+    },
+    {
+      "timestamp_utc": "2026-10-20T17:02:35.443279+00:00",
+      "used_mib": 73,
+      "total_mib": 6141,
+      "utilization_percent": 0
+    },
+    {
+      "timestamp_utc": "2026-10-20T17:02:37.501079+00:00",
+      "used_mib": 73,
+      "total_mib": 6141,
+      "utilization_percent": 0
+    },
+    {
+      "timestamp_utc": "2026-10-20T17:02:39.561665+00:00",
+      "used_mib": 3737,
+      "total_mib": 6141,
+      "utilization_percent": 18
+    },
+    {
+      "timestamp_utc": "2026-10-20T17:02:41.625298+00:00",
+      "used_mib": 19,
+      "total_mib": 6141,
+      "utilization_percent": 0
+    }
+  ],
+  "max_observed_used_mib": 3743
+}

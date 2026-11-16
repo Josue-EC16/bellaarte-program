@@ -20,6 +20,7 @@ BACKUP_EXEMPT_PATHS = {
     "/api/v1/auth/logout",
     "/api/v1/auth/refresh",
     "/api/v1/auth/me",
+    "/api/v1/auth/events",
 }
 
 

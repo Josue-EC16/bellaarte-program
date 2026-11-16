@@ -1,16 +1,53 @@
 from fastapi import BackgroundTasks, HTTPException, status
-from sqlalchemy import func, or_, select
+from sqlalchemy import func, or_, select, text
 from sqlalchemy.orm import Session, joinedload
 
 from app.core.audit import register_audit_event
 from app.core.permissions import build_permissions_for_role
 from app.core.security import hash_password
+from app.core.user_validation import generate_temporary_password
 from app.models.account import Cuenta
 from app.models.role import Rol
 from app.models.user import Usuario
 from app.schemas.auth import CreateUserRequest, ResetPasswordRequest, UpdateUserRequest, UserSummary
 from app.schemas.role import RoleCreateRequest, RoleUpdateRequest
-from app.services.notification_service import send_welcome_email_with_tracking
+from app.services.notification_service import queue_welcome_email, reconcile_user_notification_eligibility, send_welcome_email_with_tracking
+from app.services.auth_session_service import notify_account_change, revoke_account_sessions, validate_session
+
+
+def _admin_write_guard(db: Session, actor: Cuenta) -> None:
+    """Serialize security edits, then reauthorize the actor after waiting.
+
+    All writers use this order: security gate -> Usuario -> Cuenta. Counting
+    enabled administrators without this gate permits concurrent demotions.
+    """
+    db.execute(text("SELECT pg_advisory_xact_lock(741092220)"))
+    db.refresh(actor)
+    db.refresh(actor.usuario)
+    db.refresh(actor.rol)
+    token = getattr(actor, "_auth_payload", None)
+    if token is not None:
+        validate_session(db, actor, token)
+    if (actor.rol.codigo != "ADMIN" or not actor.is_active or not actor.usuario.activo
+            or not actor.rol.activo or actor.must_change_password):
+        raise HTTPException(status_code=403, detail="Solo un ADMIN habilitado puede administrar usuarios y roles.")
+
+
+def _protect_account_change(db: Session, *, actor: Cuenta, target: Cuenta, role: Rol,
+                            user_active: bool, account_active: bool) -> None:
+    if actor.id == target.id:
+        if not user_active or not account_active:
+            raise HTTPException(status_code=409, detail="No puedes desactivar tu propia cuenta ni tu ficha de usuario.")
+        if role.id != target.rol_id:
+            raise HTTPException(status_code=409, detail="No puedes cambiar tu propio rol; debe hacerlo otro ADMIN.")
+    if role.codigo == "ADMIN" and role.activo and user_active and account_active:
+        return
+    remaining = db.execute(select(Cuenta.id).join(Cuenta.usuario).join(Cuenta.rol).where(
+        Cuenta.id != target.id, Cuenta.is_active.is_(True), Usuario.activo.is_(True),
+        Rol.activo.is_(True), Rol.codigo == "ADMIN",
+    ).limit(1)).scalar_one_or_none()
+    if remaining is None:
+        raise HTTPException(status_code=409, detail="Debe permanecer al menos un ADMIN habilitado para ingresar al sistema.")
 
 
 def build_user_summary(account: Cuenta) -> UserSummary:
@@ -56,7 +93,7 @@ def _ensure_role_uniqueness(db: Session, *, codigo: str | None, nombre: str, exc
     stmt = select(Rol).where(or_(*conditions))
     if exclude_id is not None:
         stmt = stmt.where(Rol.id != exclude_id)
-    duplicate = db.execute(stmt).scalar_one_or_none()
+    duplicate = db.execute(stmt.limit(1)).scalar_one_or_none()
     if duplicate is not None:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Ya existe un rol con el mismo codigo o nombre.")
 
@@ -69,6 +106,7 @@ def create_role(
     ip_address: str | None,
     user_agent: str | None,
 ) -> Rol:
+    _admin_write_guard(db, created_by)
     _ensure_role_uniqueness(db, codigo=payload.codigo, nombre=payload.nombre)
     role = Rol(
         codigo=payload.codigo.strip().upper(),
@@ -101,6 +139,7 @@ def update_role(
     ip_address: str | None,
     user_agent: str | None,
 ) -> Rol:
+    _admin_write_guard(db, updated_by)
     role = get_role(db, role_id)
     _ensure_role_uniqueness(db, codigo=None, nombre=payload.nombre, exclude_id=role.id)
     role.nombre = payload.nombre.strip().upper()
@@ -115,6 +154,11 @@ def update_role(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    db.flush()
+    affected_users = db.execute(select(Cuenta.usuario_id).where(Cuenta.rol_id == role.id)).scalars().all()
+    reconcile_user_notification_eligibility(db, user_ids=affected_users)
+    for account in db.execute(_account_base_query().where(Cuenta.rol_id == role.id)).scalars().all():
+        notify_account_change(db, account)
     db.commit()
     return get_role(db, role.id)
 
@@ -128,7 +172,10 @@ def set_role_status(
     ip_address: str | None,
     user_agent: str | None,
 ) -> Rol:
+    _admin_write_guard(db, changed_by)
     role = get_role(db, role_id)
+    if role.codigo == "ADMIN" and not activo:
+        raise HTTPException(status_code=409, detail="No puedes deshabilitar el rol ADMIN del sistema.")
     if not activo:
         active_accounts = db.execute(
             select(Cuenta.id).where(Cuenta.rol_id == role.id, Cuenta.is_active.is_(True)).limit(1)
@@ -149,6 +196,14 @@ def set_role_status(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    db.flush()
+    affected_users = db.execute(select(Cuenta.usuario_id).where(Cuenta.rol_id == role.id)).scalars().all()
+    reconcile_user_notification_eligibility(db, user_ids=affected_users)
+    for account in db.execute(_account_base_query().where(Cuenta.rol_id == role.id)).scalars().all():
+        if not activo:
+            revoke_account_sessions(db, account, "ROLE_DISABLED")
+        else:
+            notify_account_change(db, account)
     db.commit()
     return get_role(db, role.id)
 
@@ -184,14 +239,14 @@ def ensure_user_uniqueness(
     stmt_user = select(Usuario).where(or_(Usuario.ci == ci.strip(), Usuario.correo == correo.lower().strip()))
     if exclude_user_id is not None:
         stmt_user = stmt_user.where(Usuario.id != exclude_user_id)
-    duplicate_user = db.execute(stmt_user).scalar_one_or_none()
+    duplicate_user = db.execute(stmt_user.limit(1)).scalar_one_or_none()
     if duplicate_user:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Ya existe un usuario con el mismo CI o correo.",
         )
 
-    stmt_account = select(Cuenta).where(Cuenta.username == username.strip().lower())
+    stmt_account = select(Cuenta).where(Cuenta.username == username.strip())
     if exclude_account_id is not None:
         stmt_account = stmt_account.where(Cuenta.id != exclude_account_id)
     duplicate_account = db.execute(stmt_account).scalar_one_or_none()
@@ -208,8 +263,9 @@ def create_user(
     ip_address: str | None,
     user_agent: str | None,
 ) -> Cuenta:
-    username = f"{payload.nombres[0]}{payload.apellido_paterno[0]}{payload.ci}".upper()
-    password_temporal = payload.ci.upper()
+    _admin_write_guard(db, created_by)
+    password_temporal = generate_temporary_password(payload)
+    username = password_temporal
 
     ensure_user_uniqueness(db, ci=payload.ci, correo=payload.correo, username=username)
     role = get_role_by_code(db, payload.role_code)
@@ -251,15 +307,12 @@ def create_user(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    queue_welcome_email(db, account=cuenta)
     db.commit()
 
     background_tasks.add_task(
         send_welcome_email_with_tracking,
         user_id=usuario.id,
-        recipient_email=payload.correo,
-        full_name=f"{payload.nombres} {payload.apellido_paterno} {payload.apellido_materno or ''}".strip(),
-        username=username,
-        initial_password=password_temporal,
     )
 
     return get_account(db, cuenta.id)
@@ -275,10 +328,17 @@ def update_user(
     ip_address: str | None,
     user_agent: str | None,
 ) -> Cuenta:
+    _admin_write_guard(db, updated_by)
     account = get_account(db, account_id)
+    db.execute(select(Usuario).where(Usuario.id == account.usuario_id).with_for_update())
+    db.execute(select(Cuenta).where(Cuenta.id == account_id).with_for_update())
+    db.refresh(account)
+    db.refresh(account.usuario)
     role = get_role_by_code(db, payload.role_code)
     if not role.activo:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="El rol asignado esta deshabilitado.")
+    _protect_account_change(db, actor=updated_by, target=account, role=role,
+                            user_active=payload.user_is_active, account_active=payload.account_is_active)
     ensure_user_uniqueness(
         db,
         ci=payload.ci,
@@ -301,7 +361,12 @@ def update_user(
     account.usuario.direccion = payload.direccion
     account.usuario.activo = payload.user_is_active
     account.rol_id = role.id
+    account.rol = role
     account.is_active = payload.account_is_active
+    if not payload.user_is_active or not payload.account_is_active:
+        revoke_account_sessions(db, account, "ACCOUNT_DISABLED")
+    else:
+        notify_account_change(db, account)
 
     register_audit_event(
         db,
@@ -313,16 +378,15 @@ def update_user(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    reconcile_user_notification_eligibility(db, user_ids=(account.usuario_id,))
+    if should_resend_welcome:
+        queue_welcome_email(db, account=account)
     db.commit()
 
     if should_resend_welcome:
         background_tasks.add_task(
             send_welcome_email_with_tracking,
             user_id=account.usuario.id,
-            recipient_email=payload.correo,
-            full_name=f"{payload.nombres} {payload.apellido_paterno} {payload.apellido_materno or ''}".strip(),
-            username=account.username,
-            initial_password=payload.ci.upper(),
         )
 
     return get_account(db, account.id)
@@ -337,9 +401,20 @@ def set_account_status(
     ip_address: str | None,
     user_agent: str | None,
 ) -> Cuenta:
+    _admin_write_guard(db, changed_by)
     account = get_account(db, account_id)
+    db.execute(select(Usuario).where(Usuario.id == account.usuario_id).with_for_update())
+    db.execute(select(Cuenta).where(Cuenta.id == account_id).with_for_update())
+    db.refresh(account)
+    db.refresh(account.usuario)
+    _protect_account_change(db, actor=changed_by, target=account, role=account.rol,
+                            user_active=is_active, account_active=is_active)
     account.is_active = is_active
     account.usuario.activo = is_active
+    if not is_active:
+        revoke_account_sessions(db, account, "ACCOUNT_DISABLED")
+    else:
+        notify_account_change(db, account)
     register_audit_event(
         db,
         action="ACCOUNT_STATUS_CHANGED",
@@ -350,6 +425,7 @@ def set_account_status(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    reconcile_user_notification_eligibility(db, user_ids=(account.usuario_id,))
     db.commit()
     return get_account(db, account.id)
 
@@ -363,10 +439,19 @@ def reset_account_password(
     ip_address: str | None,
     user_agent: str | None,
 ) -> Cuenta:
+    _admin_write_guard(db, changed_by)
     account = get_account(db, account_id)
-    new_temporary_password = account.usuario.ci.upper()
+    db.execute(select(Usuario).where(Usuario.id == account.usuario_id).with_for_update())
+    db.execute(select(Cuenta).where(Cuenta.id == account_id).with_for_update())
+    db.refresh(account)
+    db.refresh(account.usuario)
+    try:
+        new_temporary_password = generate_temporary_password(account.usuario)
+    except ValueError:
+        raise HTTPException(status_code=409, detail="Corrige los nombres, apellido paterno y CI (mínimo 7 dígitos) antes de resetear la clave.") from None
     account.password_hash = hash_password(new_temporary_password)
     account.must_change_password = True
+    revoke_account_sessions(db, account, "PASSWORD_RESET")
     register_audit_event(
         db,
         action="PASSWORD_RESET",

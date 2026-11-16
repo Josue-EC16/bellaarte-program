@@ -24,7 +24,7 @@ Documentos funcionales vigentes del bloque comercial:
 - `MODULO_REPORTES.md`
 - `MODULO_BACKUP.md`
 
-### 🛠️ REQUISITOS PREVIOS (Versiones Dic-2025)
+### 🛠️ REQUISITOS PREVIOS (Versiones)
 
 Para que el sistema funcione correctamente en Bolivia, asegúrate de tener:
 
@@ -53,8 +53,8 @@ pip install -r requirements.txt
 uvicorn main:app --reload
 La API estará disponible en: http://localhost:8000.
 
-3. Levantar el Frontend (La Cara)
-   Abre una segunda terminal (sin venv de Python) y ejecuta:
+3. Levantar el Frontend
+   Abre una segunda terminal y ejecuta:
 
 PowerShell
 cd frontend
@@ -89,8 +89,12 @@ Si se ejecuta el script de emergencia `python scripts/seed_admin2.py`:
 Para cualquier usuario nuevo dado de alta desde el módulo de personal:
 
 - **Usuario:** Inicial del nombre + inicial del apellido paterno + CI en mayúsculas (Ej: `ME12345678`).
-- **Contraseña Temporal:** Número de Cédula de Identidad (`CI`).
+- **Contraseña temporal:** Inicial de nombres + inicial de apellido paterno + CI, en mayúsculas. CI de al menos siete dígitos.
 - **Primer Inicio:** También requiere cambio obligatorio de contraseña.
+
+Revisión de Usuarios y sesiones del 03/11/2026, desplegada con autorización y
+migración nueva 0022 en `bellaarte_db:5432`, con respaldo verificado y nuevo login:
+[contratos, reglas y verificación](documentacion/MODULO_USUARIOS_SESIONES.md).
 
 ### 🔧 MANTENIMIENTO E INGENIERÍA
 

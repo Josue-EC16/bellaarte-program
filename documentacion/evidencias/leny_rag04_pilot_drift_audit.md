@@ -1,0 +1,258 @@
+# Auditoría de deriva para el piloto supervisado
+
+Auditoría estática; no se activó el candidato ni se ejecutaron aplicación, modelos o base de datos. Se escriben exclusivamente estos dos archivos de evidencia.
+
+El candidato histórico rag4-v4 obtuvo 14/14 rutas naturales, evidencia 38/39 y rutas 44/48. Son resultados anteriores: no se transfieren automáticamente al árbol actual.
+
+Frente a semantic cambian seis archivos existentes: dos funcionales (servicio e instrumentación), uno de integración y tres del harness supervisado confirmados por el principal. Se añaden cinco archivos de cobertura, fixtures y pruebas. Frente al freeze de cobertura sólo cambian los tres archivos autorizados del harness.
+
+El router no inyecta coverage_verifier; el constructor usa None. Con None, effective_policy conserva rag4-v4 en modo candidato y el gate no evalúa ni libera metadatos draft. No se consultó el entorno efectivo ni la instancia cacheada en ejecución.
+
+No se encontró una copia exacta del servicio semántico en los candidatos locales inspeccionados. Sí se verificó en memoria la reconstrucción exacta de diagnostics y de la prueba de integración al retirar sus adiciones; no se restauró ningún archivo.
+
+Conclusión: conservar hooks OFF, congelar la nueva identidad del piloto y verificar esa ruta en el ejercicio sintético corto autorizado por separado. No afirmar identidad exacta de bytes ni reproducibilidad de las métricas anteriores.
+
+## Registro íntegro y huellas
+
+El siguiente JSON reproduce el archivo compañero, incluidos SHA previos/actuales y límites. Los resultados de pruebas comunicados por el principal se atribuyen expresamente; esta auditoría no los reejecutó.
+
+```json
+{
+  "schema_version": "rag04-supervised-pilot-drift-audit-v1",
+  "scope": "source_and_hash_audit_only_no_activation_no_runtime_validation",
+  "audited_at_utc": "2026-10-21T15:01:46.282787+00:00",
+  "historical_real_candidate": {
+    "policy": "rag4-v4",
+    "natural_routes_correct": "14/14",
+    "sent_hit": "38/39",
+    "routes_correct": "44/48",
+    "basis": "Existing semantic focused observations; historical results, not reexecuted or transferred to the current tree."
+  },
+  "snapshots": {
+    "semantic": {
+      "path": "documentacion/evidencias/leny_rag04_semantic_candidate_snapshot.json",
+      "sha256": "fbb09fb22322eb77c220fe057df05b090a3607804e433b3394397c8e9c6d9a11",
+      "files": 369
+    },
+    "coverage": {
+      "path": "documentacion/evidencias/leny_rag04_coverage_candidate_snapshot.json",
+      "sha256": "bd242a1a221875354a809c98b3bf5d6ef2f2a0af876442f6d71e5e2b2b7527bb",
+      "files": 374
+    }
+  },
+  "semantic_existing_file_drift_count": 6,
+  "coverage_existing_file_drift_count": 3,
+  "existing_files_different_from_semantic": [
+    {
+      "path": "backend/app/services/leny_rag_diagnostics.py",
+      "classification": "functional_instrumentation_allowlist",
+      "semantic_sha256": "86c943f4004181fae67640a4205e1a7b4adf257a53491b35d3d612508052122c",
+      "coverage_sha256": "0c50ae366e2e61ad3e657b929bfe3b88b5ff0e3f97398d9ed1fb58b5911f2bb2",
+      "current_sha256": "0c50ae366e2e61ad3e657b929bfe3b88b5ff0e3f97398d9ed1fb58b5911f2bb2"
+    },
+    {
+      "path": "backend/app/services/leny_service.py",
+      "classification": "functional_optional_coverage_hook_default_off",
+      "semantic_sha256": "19d0413ef3ce0c3d3b9c76ffedf0e6c34ad3f5a4d92e9071f3e18ecf76657799",
+      "coverage_sha256": "57331e2a2964d29476f3bebe90668c579677ce88c44dceab289e6c78103bbc42",
+      "current_sha256": "57331e2a2964d29476f3bebe90668c579677ce88c44dceab289e6c78103bbc42"
+    },
+    {
+      "path": "backend/scripts/run_leny_rag_quality.ps1",
+      "classification": "supervised_harness_only",
+      "semantic_sha256": "6bba53e099aea42d1aaaec339f7b9e28fd5758756342ce3b07a380f3cd28ed58",
+      "coverage_sha256": "6bba53e099aea42d1aaaec339f7b9e28fd5758756342ce3b07a380f3cd28ed58",
+      "current_sha256": "e2109f48a6ecbcba43ac5c83dfc7d86f945499140606c9e9c926edb64b337f79"
+    },
+    {
+      "path": "backend/scripts/run_leny_rag_quality.py",
+      "classification": "supervised_harness_only",
+      "semantic_sha256": "99c0699c86bb3db4274494fa5d97eb0bba19f16ffa94afee0383e3c09f72e080",
+      "coverage_sha256": "99c0699c86bb3db4274494fa5d97eb0bba19f16ffa94afee0383e3c09f72e080",
+      "current_sha256": "f28317cbcd99a8acb12c2a521d0e95827862a8dd550b99ae1a9359a0843093e4"
+    },
+    {
+      "path": "backend/tests/integration/test_leny_rag_quality.py",
+      "classification": "integration_tests_only",
+      "semantic_sha256": "7cf8d95033d4966bd8930e4df9a51434fc1aeca0a32ac78ee2015b24e9a2b34a",
+      "coverage_sha256": "5a5c143a4af618df5f6c5d267d1706089469865b9ed052f9387a56bc669567d0",
+      "current_sha256": "5a5c143a4af618df5f6c5d267d1706089469865b9ed052f9387a56bc669567d0"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_quality_runner.py",
+      "classification": "supervised_harness_tests_only",
+      "semantic_sha256": "b6c8ae46f56ed2b0d9480ab345c6c5d7537ba819e651128d37463b3be15ca60b",
+      "coverage_sha256": "b6c8ae46f56ed2b0d9480ab345c6c5d7537ba819e651128d37463b3be15ca60b",
+      "current_sha256": "078d18125d16e37b8e96747dd1959d43967c60e4f7db0cd6b3e4483a5e3d6328"
+    }
+  ],
+  "existing_files_different_from_coverage": [
+    {
+      "path": "backend/scripts/run_leny_rag_quality.ps1",
+      "classification": "supervised_harness_only",
+      "semantic_sha256": "6bba53e099aea42d1aaaec339f7b9e28fd5758756342ce3b07a380f3cd28ed58",
+      "coverage_sha256": "6bba53e099aea42d1aaaec339f7b9e28fd5758756342ce3b07a380f3cd28ed58",
+      "current_sha256": "e2109f48a6ecbcba43ac5c83dfc7d86f945499140606c9e9c926edb64b337f79"
+    },
+    {
+      "path": "backend/scripts/run_leny_rag_quality.py",
+      "classification": "supervised_harness_only",
+      "semantic_sha256": "99c0699c86bb3db4274494fa5d97eb0bba19f16ffa94afee0383e3c09f72e080",
+      "coverage_sha256": "99c0699c86bb3db4274494fa5d97eb0bba19f16ffa94afee0383e3c09f72e080",
+      "current_sha256": "f28317cbcd99a8acb12c2a521d0e95827862a8dd550b99ae1a9359a0843093e4"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_quality_runner.py",
+      "classification": "supervised_harness_tests_only",
+      "semantic_sha256": "b6c8ae46f56ed2b0d9480ab345c6c5d7537ba819e651128d37463b3be15ca60b",
+      "coverage_sha256": "b6c8ae46f56ed2b0d9480ab345c6c5d7537ba819e651128d37463b3be15ca60b",
+      "current_sha256": "078d18125d16e37b8e96747dd1959d43967c60e4f7db0cd6b3e4483a5e3d6328"
+    }
+  ],
+  "files_added_after_semantic": [
+    {
+      "path": "backend/app/services/leny_rag_coverage.py",
+      "classification": "new_optional_coverage_module_not_wired_by_router",
+      "semantic_sha256": null,
+      "coverage_sha256": "cdc1267906f4f6ab0f4d864daa57103df152ceff8772e2949adde9f05f295825",
+      "current_sha256": "cdc1267906f4f6ab0f4d864daa57103df152ceff8772e2949adde9f05f295825"
+    },
+    {
+      "path": "backend/scripts/replay_leny_rag_coverage.py",
+      "classification": "offline_replay_harness",
+      "semantic_sha256": null,
+      "coverage_sha256": "65d311936220f936bc479a4e9cba76dfb5eabd246415060dffac8310f79fe117",
+      "current_sha256": "65d311936220f936bc479a4e9cba76dfb5eabd246415060dffac8310f79fe117"
+    },
+    {
+      "path": "backend/tests/fixtures/leny_rag04_coverage_controls.json",
+      "classification": "synthetic_proposed_controls",
+      "semantic_sha256": null,
+      "coverage_sha256": "2ad9a709dd37b8436da397f6ffc53c7c356232510671a510df14d126dc28d27f",
+      "current_sha256": "2ad9a709dd37b8436da397f6ffc53c7c356232510671a510df14d126dc28d27f"
+    },
+    {
+      "path": "backend/tests/fixtures/leny_rag04_coverage_draft.json",
+      "classification": "synthetic_draft_manifest",
+      "semantic_sha256": null,
+      "coverage_sha256": "b49001815d859d76cbcf25d293f235e48e9b4b35f13e1de21adadf22d7c026f4",
+      "current_sha256": "b49001815d859d76cbcf25d293f235e48e9b4b35f13e1de21adadf22d7c026f4"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_coverage.py",
+      "classification": "coverage_contract_tests_only",
+      "semantic_sha256": null,
+      "coverage_sha256": "7d3a5d00b505f1425e8e487a62f886b4568d52a969820f7354d2a5eab9dc87d2",
+      "current_sha256": "7d3a5d00b505f1425e8e487a62f886b4568d52a969820f7354d2a5eab9dc87d2"
+    }
+  ],
+  "core_paths_unchanged_from_semantic": [
+    {
+      "path": "backend/app/api/routers/leny.py",
+      "sha256": "5fc43c0502169ae31bf1a8f9f62aec8de4054c4041b5f711cb40f784e1760de1",
+      "matches_semantic": true
+    },
+    {
+      "path": "backend/app/services/leny_rag_routing.py",
+      "sha256": "00ba6814e35231c3b79400f4cf1b066cd24c920647983993f7c405dd7925613a",
+      "matches_semantic": true
+    },
+    {
+      "path": "backend/app/services/leny_rag_selection.py",
+      "sha256": "00f8f7c742b2be396371cc4d8baaf0a1db95d68fb22826926f1a08231e36e564",
+      "matches_semantic": true
+    },
+    {
+      "path": "backend/app/services/leny_rag_retrieval.py",
+      "sha256": "0147d35ad84fbb2e670d33f44d596e48bb4cc7bb9ab5c2cc6e0f2512c3116b84",
+      "matches_semantic": true
+    },
+    {
+      "path": "backend/app/services/leny_store.py",
+      "sha256": "d6053c9ee5d36bcad0c608ff793df8b35011de84509dae5cdc0cdf5c48f97201",
+      "matches_semantic": true
+    }
+  ],
+  "default_coverage_wiring": {
+    "router_factory_injects_coverage_verifier": false,
+    "constructor_default": "None",
+    "constructor_assignment": "self.coverage_verifier = coverage_verifier",
+    "env_or_api_coverage_switch_found_in_inspected_app_sources": false,
+    "policy_with_candidate_enabled_and_verifier_none": "rag4-v4",
+    "policy_with_candidate_enabled_and_verifier_injected": "rag4-cov-p1",
+    "legacy_config_default": "legacy",
+    "scope_note": "Static construction and source path only. The cached running instance and effective environment were not queried."
+  },
+  "functional_changes_since_semantic": [
+    "LenyService accepts an optional verifier; effective_policy selects a separate policy only when candidate mode and injection are both present.",
+    "Optional gate checks final expanded/packed evidence before source persistence and rechecks the binding before emitted content; it can veto with a clarification.",
+    "When verifier is None, no verifier evaluation occurs, coverage_binding remains None and revalidation returns immediately; policy remains the ordinary policy_version(config).",
+    "Diagnostics adds coverage_checked, coverage_accepted and the coverage duration; normal diagnostic validation is unchanged, proved by exact in-memory reconstruction."
+  ],
+  "concurrent_harness_drift": {
+    "paths": [
+      "backend/scripts/run_leny_rag_quality.ps1",
+      "backend/scripts/run_leny_rag_quality.py",
+      "backend/tests/test_leny_rag_quality_runner.py"
+    ],
+    "principal_confirmed_authorized": true,
+    "purpose": "New supervised mode selects exactly six existing synthetic scenarios for a short preservation check; no new prompts or production injection.",
+    "principal_reported_tests": {
+      "passed": 136,
+      "independently_reexecuted_by_auditor": false
+    },
+    "new_pilot_snapshot_identity_required": true
+  },
+  "recoverability": {
+    "repository_exact_copy_search_candidates": 411,
+    "exact_existing_copies_found": [],
+    "git_tracked_history_found_for_original_three_paths": false,
+    "in_memory_reconstruction_proofs": [
+      {
+        "path": "backend/app/services/leny_rag_diagnostics.py",
+        "method": "Remove added coverage diagnostic count names and duration name in memory only",
+        "reconstructed_sha256": "86c943f4004181fae67640a4205e1a7b4adf257a53491b35d3d612508052122c",
+        "matches_semantic": true
+      },
+      {
+        "path": "backend/tests/integration/test_leny_rag_quality.py",
+        "method": "Remove added parameterized coverage metadata integration test in memory only",
+        "reconstructed_sha256": "7cf8d95033d4966bd8930e4df9a51434fc1aeca0a32ac78ee2015b24e9a2b34a",
+        "matches_semantic": true
+      }
+    ],
+    "semantic_leny_service_exact_copy_or_reconstruction_verified": false,
+    "restoration_attempted": false,
+    "limitation": "Search was repository-local source candidates, excluding private stores/dependencies. No claim is made about copies outside the inspected scope."
+  },
+  "conclusion": {
+    "current_tree_byte_identical_to_semantic_candidate": false,
+    "current_tree_byte_identical_to_coverage_freeze": false,
+    "optional_coverage_off_by_default_static_path_verified": true,
+    "no_unexplained_extra_drift_within_inspected_snapshot_paths": true,
+    "historical_semantic_metrics_revalidated_for_current_tree": false,
+    "recommendation": "Preserve the optional hooks OFF, freeze the new pilot tree and verify that path with the separately authorized short synthetic check. Report its own identity and results; do not claim original semantic byte identity."
+  },
+  "actions": {
+    "files_written": [
+      "documentacion/evidencias/leny_rag04_pilot_drift_audit.json",
+      "documentacion/evidencias/leny_rag04_pilot_drift_audit.md"
+    ],
+    "source_files_modified": false,
+    "private_env_or_credentials_read": false,
+    "business_document_contents_read": false,
+    "application_imported": false,
+    "models_invoked": false,
+    "database_connected": false,
+    "services_started_or_restarted": false,
+    "candidate_activated": false,
+    "behavior_tests_executed_by_auditor": false,
+    "human_metadata_approved": false
+  },
+  "limitations": [
+    "Static audit does not establish the active cached service instance or current runtime profile.",
+    "The optional-hook service file differs from the historical evaluated bytes; static bypass evidence is not a fresh model evaluation.",
+    "Concurrent harness changes are attributed to the principal and are included in the current hashes."
+  ]
+}
+```

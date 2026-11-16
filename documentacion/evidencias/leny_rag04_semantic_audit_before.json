@@ -1,0 +1,1918 @@
+{
+  "scope": "read_only_semantic_audit_of_frozen_synthetic_evidence_not_human_ratings",
+  "created_utc": "2026-10-21T03:18:16.873252+00:00",
+  "source_observations": "leny_rag04_layers_final_focused.json",
+  "source_observations_sha256": "40bf9822730647b42832aacd27cbba3b88930adb40a72635625d8a9775d3300d",
+  "corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "functional_source_modified_before_audit": false,
+  "files_before_sha256": {
+    "backend/app/services/leny_rag_selection.py": "4cfe03665c797ffd861e53b658846b5934933fcb899ba715ccfb0d76db3d0006",
+    "backend/app/services/leny_service.py": "19d0413ef3ce0c3d3b9c76ffedf0e6c34ad3f5a4d92e9071f3e18ecf76657799",
+    "backend/app/services/leny_rag_retrieval.py": "0147d35ad84fbb2e670d33f44d596e48bb4cc7bb9ab5c2cc6e0f2512c3116b84",
+    "backend/app/services/leny_rag_routing.py": "17080bb21c03aa07e047187b6538905623c189fc0b04d545031872e68b71018c",
+    "backend/scripts/run_leny_rag_quality.py": "b670a0841cad9c76affc8edc10b87399396bf73536e56d57134350846a261dbd",
+    "backend/scripts/run_leny_rag_quality.ps1": "6bba53e099aea42d1aaaec339f7b9e28fd5758756342ce3b07a380f3cd28ed58",
+    "backend\\tests\\fixtures\\leny_rag04_development.json": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661"
+  },
+  "cases": [
+    {
+      "case_id": "rag04-acl-01",
+      "question": "Consulta la tarifa como CAJA",
+      "intention": "Leer la tarifa documental disponible bajo la identidad CAJA real.",
+      "role": "CAJA",
+      "prior_user_questions": [],
+      "state_change": null,
+      "gold": {
+        "route": "rag",
+        "relevant_fragment_ids": [
+          "price-1"
+        ],
+        "authorized_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4",
+          "price-1",
+          "sec-1",
+          "conflict-1",
+          "conflict-2"
+        ],
+        "required_fact_ids": [
+          "price-250",
+          "advance-40",
+          "balance-before-delivery"
+        ],
+        "required_step_ids": [],
+        "required_numbers": [
+          "250.00",
+          "40%"
+        ],
+        "requires_capability_ack": false,
+        "required_condition_ids": [
+          "balance-before-delivery"
+        ],
+        "required_quantities": [
+          {
+            "value": "250.00",
+            "unit": "BOB",
+            "meaning": "simple-alteration-price"
+          },
+          {
+            "value": "40",
+            "unit": "percent",
+            "meaning": "advance-of-price"
+          }
+        ]
+      },
+      "gold_documentary_justification": "price-1 contiene importe, anticipo y saldo; la ACL del fixture admite CAJA. Debe explicarse como tarifa ficticia, no como precio empresarial real.",
+      "gold_review_question": "El gold es razonable en este corpus de una tarifa; fuera del corpus la tarifa sin servicio identificado podria requerir aclaracion.",
+      "gold_changed": false,
+      "sql_authorized_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "proc-2",
+        "proc-4",
+        "conflict-1",
+        "proc-1",
+        "proc-3",
+        "sec-1"
+      ],
+      "sql_identities": [
+        {
+          "rank": 1,
+          "fragment": "price-1",
+          "document_id": "102ed5ba-d4ef-4666-83fe-0d57ccb73205",
+          "version_id": "c4beaca4-8578-4819-b777-adc2cc27a774",
+          "version": 1,
+          "indexation_id": "5e992b1b-58a2-4f74-ab7e-53728a833e9d",
+          "distance": 0.47341919262177046,
+          "rrf_score": 0.01639344262295082
+        },
+        {
+          "rank": 2,
+          "fragment": "conflict-2",
+          "document_id": "67dda349-2635-4746-bd6d-884c58cc5364",
+          "version_id": "b6c2dd6f-30a7-4631-9cc1-62a048e68d79",
+          "version": 1,
+          "indexation_id": "7e156d3a-851e-4a82-952a-48faaff8d802",
+          "distance": 0.6576923201863609,
+          "rrf_score": 0.016129032258064516
+        },
+        {
+          "rank": 3,
+          "fragment": "proc-2",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.6837445935594066,
+          "rrf_score": 0.015873015873015872
+        },
+        {
+          "rank": 4,
+          "fragment": "proc-4",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.6882206797599704,
+          "rrf_score": 0.015625
+        },
+        {
+          "rank": 5,
+          "fragment": "conflict-1",
+          "document_id": "f18c59ee-08c1-442e-bbd8-40ec21bc5baf",
+          "version_id": "c46cd20c-195f-4a52-84a8-12490aadf28e",
+          "version": 1,
+          "indexation_id": "b237b843-edac-401b-91c3-9dc5b6ab3c57",
+          "distance": 0.692144884425624,
+          "rrf_score": 0.015384615384615385
+        },
+        {
+          "rank": 6,
+          "fragment": "proc-1",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.7229557866944758,
+          "rrf_score": 0.015151515151515152
+        },
+        {
+          "rank": 7,
+          "fragment": "proc-3",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.7239379255697619,
+          "rrf_score": 0.014925373134328358
+        },
+        {
+          "rank": 8,
+          "fragment": "sec-1",
+          "document_id": "47ee98d4-eb4f-4acf-907a-d723b9e09a36",
+          "version_id": "af13d8ef-4425-4f40-bd7d-c326eafdbf28",
+          "version": 1,
+          "indexation_id": "2dc157f8-87e3-4eb5-a424-ea8765c78e43",
+          "distance": 0.81424347332042,
+          "rrf_score": 0.014705882352941176
+        }
+      ],
+      "sql_missing_means_not_executed": false,
+      "review_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "review_decisions": [
+        {
+          "fragment_ids": [
+            "price-1",
+            "conflict-2",
+            "proc-1",
+            "proc-2",
+            "proc-3",
+            "proc-4"
+          ],
+          "decision": {
+            "relation": "absent",
+            "sources": []
+          }
+        }
+      ],
+      "evidence_for_output": [],
+      "generator_invoked": false,
+      "selected_fragment_ids": null,
+      "response": "No encontr\u00e9 informaci\u00f3n documental disponible para tu consulta. Puedes precisar la pregunta o solicitar al administrador que revise la documentaci\u00f3n publicada.",
+      "status": "completed",
+      "route": "no_evidence",
+      "confirmed_failure": "Gold llega a SQL puesto1 y al pool; relation=absent contradice la disponibilidad documental. No hay razonamiento interno del modelo registrado; no se puede probar que la palabra ficticia sea su causa psicologica.",
+      "internal_model_reason_observed": false,
+      "relevant_synthetic_fragments": {
+        "price-1": {
+          "id": "price-1",
+          "text": "Tarifa ficticia para evaluaci\u00f3n: arreglo simple Bs 250.00; anticipo 40%; saldo antes de entregar. No describe tarifas reales.",
+          "fact_ids": [
+            "price-250",
+            "advance-40",
+            "balance-before-delivery"
+          ],
+          "step_ids": [],
+          "condition_ids": [
+            "balance-before-delivery"
+          ],
+          "document_id": "synthetic-prices-v1",
+          "document_roles": [
+            "ADMIN",
+            "CAJA"
+          ]
+        }
+      },
+      "prior_turn_diagnostics": [
+        {
+          "event": "turn",
+          "case_id": "rag04-acl-01",
+          "turn": 0,
+          "http_status": 200,
+          "status": "completed",
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "rag_evidence_insufficient",
+            "verdict": "none",
+            "outcome": "no_evidence",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 8,
+              "review_documents": 3,
+              "selected": 0,
+              "evidence_bytes": 0
+            },
+            "durations_seconds": {
+              "embedding_and_release": 4.03099999999904,
+              "search": 0.0,
+              "review": 5.532000000002881,
+              "selection": 0.0,
+              "context": 5.547000000002299,
+              "first_content": 9.687000000001717,
+              "total": 9.687000000001717
+            }
+          },
+          "latency_ms": 9703.000000001339
+        }
+      ]
+    },
+    {
+      "case_id": "rag04-acl-09",
+      "question": "Consulta tarifa como ADMIN",
+      "intention": "Leer la tarifa documental disponible con identidad ADMIN real.",
+      "role": "ADMIN",
+      "prior_user_questions": [],
+      "state_change": null,
+      "gold": {
+        "route": "rag",
+        "relevant_fragment_ids": [
+          "price-1"
+        ],
+        "authorized_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4",
+          "price-1",
+          "stock-1",
+          "work-1",
+          "sec-1",
+          "conflict-1",
+          "conflict-2"
+        ],
+        "required_fact_ids": [
+          "price-250",
+          "advance-40",
+          "balance-before-delivery"
+        ],
+        "required_step_ids": [],
+        "required_numbers": [
+          "250.00",
+          "40%"
+        ],
+        "requires_capability_ack": false,
+        "required_condition_ids": [
+          "balance-before-delivery"
+        ],
+        "required_quantities": [
+          {
+            "value": "250.00",
+            "unit": "BOB",
+            "meaning": "simple-alteration-price"
+          },
+          {
+            "value": "40",
+            "unit": "percent",
+            "meaning": "advance-of-price"
+          }
+        ]
+      },
+      "gold_documentary_justification": "Mismo respaldo documental price-1; ADMIN puede leerlo.",
+      "gold_review_question": "Misma salvedad sobre contexto de una tarifa; sin discrepancia material en este fixture.",
+      "gold_changed": false,
+      "sql_authorized_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "proc-2",
+        "conflict-1",
+        "proc-4",
+        "stock-1",
+        "proc-1",
+        "proc-3",
+        "work-1",
+        "sec-1"
+      ],
+      "sql_identities": [
+        {
+          "rank": 1,
+          "fragment": "price-1",
+          "document_id": "102ed5ba-d4ef-4666-83fe-0d57ccb73205",
+          "version_id": "c4beaca4-8578-4819-b777-adc2cc27a774",
+          "version": 1,
+          "indexation_id": "5e992b1b-58a2-4f74-ab7e-53728a833e9d",
+          "distance": 0.4868081259221544,
+          "rrf_score": 0.01639344262295082
+        },
+        {
+          "rank": 2,
+          "fragment": "conflict-2",
+          "document_id": "67dda349-2635-4746-bd6d-884c58cc5364",
+          "version_id": "b6c2dd6f-30a7-4631-9cc1-62a048e68d79",
+          "version": 1,
+          "indexation_id": "7e156d3a-851e-4a82-952a-48faaff8d802",
+          "distance": 0.6488245709679448,
+          "rrf_score": 0.016129032258064516
+        },
+        {
+          "rank": 3,
+          "fragment": "proc-2",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.67789450287818,
+          "rrf_score": 0.015873015873015872
+        },
+        {
+          "rank": 4,
+          "fragment": "conflict-1",
+          "document_id": "f18c59ee-08c1-442e-bbd8-40ec21bc5baf",
+          "version_id": "c46cd20c-195f-4a52-84a8-12490aadf28e",
+          "version": 1,
+          "indexation_id": "b237b843-edac-401b-91c3-9dc5b6ab3c57",
+          "distance": 0.6853060678559291,
+          "rrf_score": 0.015625
+        },
+        {
+          "rank": 5,
+          "fragment": "proc-4",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.6863679441528454,
+          "rrf_score": 0.015384615384615385
+        },
+        {
+          "rank": 6,
+          "fragment": "stock-1",
+          "document_id": "9eba58e2-24ea-4d7e-bb6d-5b1f77b0a853",
+          "version_id": "0e23387b-c24b-4da6-bc3a-710a8c3574a4",
+          "version": 1,
+          "indexation_id": "7a6db4c8-860e-48da-8592-501a175dbc70",
+          "distance": 0.6901678627629313,
+          "rrf_score": 0.015151515151515152
+        },
+        {
+          "rank": 7,
+          "fragment": "proc-1",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.7178016602992932,
+          "rrf_score": 0.014925373134328358
+        },
+        {
+          "rank": 8,
+          "fragment": "proc-3",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.7240323157271943,
+          "rrf_score": 0.014705882352941176
+        },
+        {
+          "rank": 9,
+          "fragment": "work-1",
+          "document_id": "53ce2419-31f4-4b01-ac7c-265db57a1969",
+          "version_id": "3b5bfce1-22a2-436f-bad2-d742b31a3bcf",
+          "version": 1,
+          "indexation_id": "716f0cce-078e-4d0d-970d-d2bfbd232de7",
+          "distance": 0.7579930857432327,
+          "rrf_score": 0.014492753623188406
+        },
+        {
+          "rank": 10,
+          "fragment": "sec-1",
+          "document_id": "47ee98d4-eb4f-4acf-907a-d723b9e09a36",
+          "version_id": "af13d8ef-4425-4f40-bd7d-c326eafdbf28",
+          "version": 1,
+          "indexation_id": "2dc157f8-87e3-4eb5-a424-ea8765c78e43",
+          "distance": 0.8080530395444571,
+          "rrf_score": 0.014285714285714285
+        }
+      ],
+      "sql_missing_means_not_executed": false,
+      "review_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "review_decisions": [
+        {
+          "fragment_ids": [
+            "price-1",
+            "conflict-2",
+            "proc-1",
+            "proc-2",
+            "proc-3",
+            "proc-4"
+          ],
+          "decision": {
+            "relation": "absent",
+            "sources": []
+          }
+        }
+      ],
+      "evidence_for_output": [],
+      "generator_invoked": false,
+      "selected_fragment_ids": null,
+      "response": "No encontr\u00e9 informaci\u00f3n documental disponible para tu consulta. Puedes precisar la pregunta o solicitar al administrador que revise la documentaci\u00f3n publicada.",
+      "status": "completed",
+      "route": "no_evidence",
+      "confirmed_failure": "El gold llega a SQL puesto1 y al pool; el plan lo rechaza como absent. El problema confirmado es la decision de pertinencia, no un filtro ACL.",
+      "internal_model_reason_observed": false,
+      "relevant_synthetic_fragments": {
+        "price-1": {
+          "id": "price-1",
+          "text": "Tarifa ficticia para evaluaci\u00f3n: arreglo simple Bs 250.00; anticipo 40%; saldo antes de entregar. No describe tarifas reales.",
+          "fact_ids": [
+            "price-250",
+            "advance-40",
+            "balance-before-delivery"
+          ],
+          "step_ids": [],
+          "condition_ids": [
+            "balance-before-delivery"
+          ],
+          "document_id": "synthetic-prices-v1",
+          "document_roles": [
+            "ADMIN",
+            "CAJA"
+          ]
+        }
+      },
+      "prior_turn_diagnostics": [
+        {
+          "event": "turn",
+          "case_id": "rag04-acl-09",
+          "turn": 0,
+          "http_status": 200,
+          "status": "completed",
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "rag_evidence_insufficient",
+            "verdict": "none",
+            "outcome": "no_evidence",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 3,
+              "selected": 0,
+              "evidence_bytes": 0
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.9059999999990396,
+              "search": 0.01599999999962165,
+              "review": 5.71900000000096,
+              "selection": 0.0,
+              "context": 5.71900000000096,
+              "first_content": 9.764999999999418,
+              "total": 9.764999999999418
+            }
+          },
+          "latency_ms": 9780.99999999904
+        }
+      ]
+    },
+    {
+      "case_id": "rag04-formats-05",
+      "question": "Explica la tarifa con cifras exactas y cita la fuente",
+      "intention": "Explicar importe y condiciones de la tarifa, conservando cifras y citas.",
+      "role": "ADMIN",
+      "prior_user_questions": [],
+      "state_change": null,
+      "gold": {
+        "route": "rag",
+        "relevant_fragment_ids": [
+          "price-1"
+        ],
+        "authorized_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4",
+          "price-1",
+          "stock-1",
+          "work-1",
+          "sec-1",
+          "conflict-1",
+          "conflict-2"
+        ],
+        "required_fact_ids": [
+          "price-250",
+          "advance-40",
+          "balance-before-delivery"
+        ],
+        "required_step_ids": [],
+        "required_numbers": [
+          "250.00",
+          "40%"
+        ],
+        "requires_capability_ack": false,
+        "required_condition_ids": [
+          "balance-before-delivery"
+        ],
+        "required_quantities": [
+          {
+            "value": "250.00",
+            "unit": "BOB",
+            "meaning": "simple-alteration-price"
+          },
+          {
+            "value": "40",
+            "unit": "percent",
+            "meaning": "advance-of-price"
+          }
+        ]
+      },
+      "gold_documentary_justification": "price-1 contiene Bs250.00, anticipo40% y saldo antes de entregar.",
+      "gold_review_question": "No usar la cifra como tarifa real de la empresa: el propio fixture la declara ficticia.",
+      "gold_changed": false,
+      "sql_authorized_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "stock-1",
+        "proc-2",
+        "proc-4",
+        "conflict-1",
+        "proc-3",
+        "proc-1",
+        "work-1",
+        "sec-1"
+      ],
+      "sql_identities": [
+        {
+          "rank": 1,
+          "fragment": "price-1",
+          "document_id": "102ed5ba-d4ef-4666-83fe-0d57ccb73205",
+          "version_id": "c4beaca4-8578-4819-b777-adc2cc27a774",
+          "version": 1,
+          "indexation_id": "5e992b1b-58a2-4f74-ab7e-53728a833e9d",
+          "distance": 0.4666296402623824,
+          "rrf_score": 0.01639344262295082
+        },
+        {
+          "rank": 2,
+          "fragment": "conflict-2",
+          "document_id": "67dda349-2635-4746-bd6d-884c58cc5364",
+          "version_id": "b6c2dd6f-30a7-4631-9cc1-62a048e68d79",
+          "version": 1,
+          "indexation_id": "7e156d3a-851e-4a82-952a-48faaff8d802",
+          "distance": 0.6619442780977456,
+          "rrf_score": 0.016129032258064516
+        },
+        {
+          "rank": 3,
+          "fragment": "stock-1",
+          "document_id": "9eba58e2-24ea-4d7e-bb6d-5b1f77b0a853",
+          "version_id": "0e23387b-c24b-4da6-bc3a-710a8c3574a4",
+          "version": 1,
+          "indexation_id": "7a6db4c8-860e-48da-8592-501a175dbc70",
+          "distance": 0.6656400856602385,
+          "rrf_score": 0.015873015873015872
+        },
+        {
+          "rank": 4,
+          "fragment": "proc-2",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.6696088423042661,
+          "rrf_score": 0.015625
+        },
+        {
+          "rank": 5,
+          "fragment": "proc-4",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.6788107167610995,
+          "rrf_score": 0.015384615384615385
+        },
+        {
+          "rank": 6,
+          "fragment": "conflict-1",
+          "document_id": "f18c59ee-08c1-442e-bbd8-40ec21bc5baf",
+          "version_id": "c46cd20c-195f-4a52-84a8-12490aadf28e",
+          "version": 1,
+          "indexation_id": "b237b843-edac-401b-91c3-9dc5b6ab3c57",
+          "distance": 0.6976669624747631,
+          "rrf_score": 0.015151515151515152
+        },
+        {
+          "rank": 7,
+          "fragment": "proc-3",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.7050350289119776,
+          "rrf_score": 0.014925373134328358
+        },
+        {
+          "rank": 8,
+          "fragment": "proc-1",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.7105379943823189,
+          "rrf_score": 0.014705882352941176
+        },
+        {
+          "rank": 9,
+          "fragment": "work-1",
+          "document_id": "53ce2419-31f4-4b01-ac7c-265db57a1969",
+          "version_id": "3b5bfce1-22a2-436f-bad2-d742b31a3bcf",
+          "version": 1,
+          "indexation_id": "716f0cce-078e-4d0d-970d-d2bfbd232de7",
+          "distance": 0.7728044946200311,
+          "rrf_score": 0.014492753623188406
+        },
+        {
+          "rank": 10,
+          "fragment": "sec-1",
+          "document_id": "47ee98d4-eb4f-4acf-907a-d723b9e09a36",
+          "version_id": "af13d8ef-4425-4f40-bd7d-c326eafdbf28",
+          "version": 1,
+          "indexation_id": "2dc157f8-87e3-4eb5-a424-ea8765c78e43",
+          "distance": 0.8139209955169806,
+          "rrf_score": 0.014285714285714285
+        }
+      ],
+      "sql_missing_means_not_executed": false,
+      "review_fragment_ids": [
+        "price-1",
+        "conflict-2",
+        "stock-1"
+      ],
+      "review_decisions": [
+        {
+          "fragment_ids": [
+            "price-1",
+            "conflict-2",
+            "stock-1"
+          ],
+          "decision": {
+            "relation": "absent",
+            "sources": []
+          }
+        }
+      ],
+      "evidence_for_output": [],
+      "generator_invoked": false,
+      "selected_fragment_ids": null,
+      "response": "No encontr\u00e9 informaci\u00f3n documental disponible para tu consulta. Puedes precisar la pregunta o solicitar al administrador que revise la documentaci\u00f3n publicada.",
+      "status": "completed",
+      "route": "no_evidence",
+      "confirmed_failure": "Evidencia especifica presente SQL puesto1/pool; selector absent. La peticion de cifras exactas no exige datos externos ni cambiar la fuente.",
+      "internal_model_reason_observed": false,
+      "relevant_synthetic_fragments": {
+        "price-1": {
+          "id": "price-1",
+          "text": "Tarifa ficticia para evaluaci\u00f3n: arreglo simple Bs 250.00; anticipo 40%; saldo antes de entregar. No describe tarifas reales.",
+          "fact_ids": [
+            "price-250",
+            "advance-40",
+            "balance-before-delivery"
+          ],
+          "step_ids": [],
+          "condition_ids": [
+            "balance-before-delivery"
+          ],
+          "document_id": "synthetic-prices-v1",
+          "document_roles": [
+            "ADMIN",
+            "CAJA"
+          ]
+        }
+      },
+      "prior_turn_diagnostics": [
+        {
+          "event": "turn",
+          "case_id": "rag04-formats-05",
+          "turn": 0,
+          "http_status": 200,
+          "status": "completed",
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "rag_evidence_insufficient",
+            "verdict": "none",
+            "outcome": "no_evidence",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 3,
+              "selected": 0,
+              "evidence_bytes": 0
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.9680000000007567,
+              "search": 0.01599999999962165,
+              "review": 5.187000000001717,
+              "selection": 0.0,
+              "context": 5.203000000001339,
+              "first_content": 9.31300000000192,
+              "total": 9.31300000000192
+            }
+          },
+          "latency_ms": 9313.00000000192
+        }
+      ]
+    },
+    {
+      "case_id": "rag04-synonyms-07",
+      "question": "\u00bfCu\u00e1ndo se hacen los retoques?",
+      "intention": "Saber en que momento del proceso se realizan correcciones o retoques.",
+      "role": "ADMIN",
+      "prior_user_questions": [],
+      "state_change": null,
+      "gold": {
+        "route": "rag",
+        "relevant_fragment_ids": [
+          "proc-3"
+        ],
+        "authorized_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4",
+          "price-1",
+          "stock-1",
+          "work-1",
+          "sec-1",
+          "conflict-1",
+          "conflict-2"
+        ],
+        "required_fact_ids": [
+          "fit",
+          "correct-before-sewing"
+        ],
+        "required_step_ids": [
+          "step-6"
+        ],
+        "required_numbers": [],
+        "requires_capability_ack": false,
+        "required_condition_ids": [
+          "correct-differences-before-sewing"
+        ],
+        "required_quantities": []
+      },
+      "gold_documentary_justification": "proc-3 indica prueba de ajuste y corregir diferencias antes de coser. Respalda momento relativo y condicion, no fecha ni duracion.",
+      "gold_review_question": "Retoques puede significar acabados posteriores; la equivalencia con corregir diferencias es razonable, pero debe reconocerse como interpretacion contextual y someterse a revision humana.",
+      "gold_changed": false,
+      "sql_authorized_fragment_ids": [
+        "proc-3",
+        "proc-4",
+        "proc-2",
+        "work-1",
+        "proc-1",
+        "price-1",
+        "stock-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "sql_identities": [
+        {
+          "rank": 1,
+          "fragment": "proc-3",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.5494976580741782,
+          "rrf_score": 0.01639344262295082
+        },
+        {
+          "rank": 2,
+          "fragment": "proc-4",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.5552590655662857,
+          "rrf_score": 0.016129032258064516
+        },
+        {
+          "rank": 3,
+          "fragment": "proc-2",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.5882588028907658,
+          "rrf_score": 0.015873015873015872
+        },
+        {
+          "rank": 4,
+          "fragment": "work-1",
+          "document_id": "53ce2419-31f4-4b01-ac7c-265db57a1969",
+          "version_id": "3b5bfce1-22a2-436f-bad2-d742b31a3bcf",
+          "version": 1,
+          "indexation_id": "716f0cce-078e-4d0d-970d-d2bfbd232de7",
+          "distance": 0.6133431887609018,
+          "rrf_score": 0.015625
+        },
+        {
+          "rank": 5,
+          "fragment": "proc-1",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.6186223626136671,
+          "rrf_score": 0.015384615384615385
+        },
+        {
+          "rank": 6,
+          "fragment": "price-1",
+          "document_id": "102ed5ba-d4ef-4666-83fe-0d57ccb73205",
+          "version_id": "c4beaca4-8578-4819-b777-adc2cc27a774",
+          "version": 1,
+          "indexation_id": "5e992b1b-58a2-4f74-ab7e-53728a833e9d",
+          "distance": 0.6236836467920586,
+          "rrf_score": 0.015151515151515152
+        },
+        {
+          "rank": 7,
+          "fragment": "stock-1",
+          "document_id": "9eba58e2-24ea-4d7e-bb6d-5b1f77b0a853",
+          "version_id": "0e23387b-c24b-4da6-bc3a-710a8c3574a4",
+          "version": 1,
+          "indexation_id": "7a6db4c8-860e-48da-8592-501a175dbc70",
+          "distance": 0.6966582419479892,
+          "rrf_score": 0.014925373134328358
+        },
+        {
+          "rank": 8,
+          "fragment": "conflict-2",
+          "document_id": "67dda349-2635-4746-bd6d-884c58cc5364",
+          "version_id": "b6c2dd6f-30a7-4631-9cc1-62a048e68d79",
+          "version": 1,
+          "indexation_id": "7e156d3a-851e-4a82-952a-48faaff8d802",
+          "distance": 0.7123712938163687,
+          "rrf_score": 0.014705882352941176
+        },
+        {
+          "rank": 9,
+          "fragment": "conflict-1",
+          "document_id": "f18c59ee-08c1-442e-bbd8-40ec21bc5baf",
+          "version_id": "c46cd20c-195f-4a52-84a8-12490aadf28e",
+          "version": 1,
+          "indexation_id": "b237b843-edac-401b-91c3-9dc5b6ab3c57",
+          "distance": 0.746594115076659,
+          "rrf_score": 0.014492753623188406
+        },
+        {
+          "rank": 10,
+          "fragment": "sec-1",
+          "document_id": "47ee98d4-eb4f-4acf-907a-d723b9e09a36",
+          "version_id": "af13d8ef-4425-4f40-bd7d-c326eafdbf28",
+          "version": 1,
+          "indexation_id": "2dc157f8-87e3-4eb5-a424-ea8765c78e43",
+          "distance": 0.8239727826150902,
+          "rrf_score": 0.014285714285714285
+        }
+      ],
+      "sql_missing_means_not_executed": false,
+      "review_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1",
+        "price-1"
+      ],
+      "review_decisions": [
+        {
+          "fragment_ids": [
+            "proc-1",
+            "proc-2",
+            "proc-3",
+            "proc-4",
+            "work-1",
+            "price-1"
+          ],
+          "decision": {
+            "relation": "absent",
+            "sources": []
+          }
+        }
+      ],
+      "evidence_for_output": [],
+      "generator_invoked": false,
+      "selected_fragment_ids": null,
+      "response": "No encontr\u00e9 informaci\u00f3n documental disponible para tu consulta. Puedes precisar la pregunta o solicitar al administrador que revise la documentaci\u00f3n publicada.",
+      "status": "completed",
+      "route": "no_evidence",
+      "confirmed_failure": "proc-3 SQL puesto1/pool; selector absent. No falta un plazo numerico: la pregunta pide momento relativo.",
+      "internal_model_reason_observed": false,
+      "relevant_synthetic_fragments": {
+        "proc-3": {
+          "id": "proc-3",
+          "text": "Documento ficticio de evaluaci\u00f3n. 6. Realizar la prueba de ajuste. Si hay diferencias, corregir antes de coser. 7. Coser las piezas aprobadas.",
+          "fact_ids": [
+            "fit",
+            "correct-before-sewing",
+            "sew"
+          ],
+          "step_ids": [
+            "step-6",
+            "step-7"
+          ],
+          "condition_ids": [
+            "correct-differences-before-sewing",
+            "sew-approved-pieces"
+          ],
+          "document_id": "synthetic-procedure-v1",
+          "document_roles": [
+            "ADMIN",
+            "CAJA",
+            "INV_BOUTIQUE",
+            "INV_TALLER",
+            "MODISTA"
+          ]
+        }
+      },
+      "prior_turn_diagnostics": [
+        {
+          "event": "turn",
+          "case_id": "rag04-synonyms-07",
+          "turn": 0,
+          "http_status": 200,
+          "status": "completed",
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "rag_evidence_insufficient",
+            "verdict": "none",
+            "outcome": "no_evidence",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 3,
+              "selected": 0,
+              "evidence_bytes": 0
+            },
+            "durations_seconds": {
+              "routing": 12.390999999999622,
+              "embedding_and_release": 4.40599999999904,
+              "search": 0.014999999999417923,
+              "review": 5.4540000000015425,
+              "selection": 0.0,
+              "context": 5.4540000000015425,
+              "first_content": 22.375,
+              "total": 22.375
+            }
+          },
+          "latency_ms": 22405.99999999904
+        }
+      ]
+    },
+    {
+      "case_id": "rag04-multi_conflict-06",
+      "question": "\u00bfPuedo omitir una condici\u00f3n al resumir el procedimiento?",
+      "intention": "Saber si al resumir se pueden omitir condiciones del procedimiento.",
+      "role": "ADMIN",
+      "prior_user_questions": [],
+      "state_change": null,
+      "gold": {
+        "route": "rag",
+        "relevant_fragment_ids": [
+          "proc-3",
+          "proc-4"
+        ],
+        "authorized_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4",
+          "price-1",
+          "stock-1",
+          "work-1",
+          "sec-1",
+          "conflict-1",
+          "conflict-2"
+        ],
+        "required_fact_ids": [
+          "correct-before-sewing",
+          "approval-before-delivery"
+        ],
+        "required_step_ids": [],
+        "required_numbers": [],
+        "requires_capability_ack": false,
+        "required_condition_ids": [
+          "correct-differences-before-sewing",
+          "final-approval-before-delivery"
+        ],
+        "required_quantities": []
+      },
+      "gold_documentary_justification": "proc-3 exige corregir antes de coser; proc-4 condiciona entrega a aprobacion. Permiten exponer esas condiciones, sin autorizar su omision.",
+      "gold_review_question": "Los fragmentos no regulan literalmente el acto de resumir ni todas las condiciones posibles; exigir un NO absoluto excederia la fuente. Revisar si el gold debe evaluar exposicion fiel de condiciones como respuesta parcial. No se modifica.",
+      "gold_changed": false,
+      "sql_authorized_fragment_ids": [
+        "proc-2",
+        "proc-4",
+        "stock-1",
+        "conflict-2",
+        "proc-1",
+        "proc-3",
+        "work-1",
+        "price-1",
+        "conflict-1",
+        "sec-1"
+      ],
+      "sql_identities": [
+        {
+          "rank": 1,
+          "fragment": "proc-2",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.49828738035406006,
+          "rrf_score": 0.01639344262295082
+        },
+        {
+          "rank": 2,
+          "fragment": "proc-4",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.5167899627745065,
+          "rrf_score": 0.016129032258064516
+        },
+        {
+          "rank": 3,
+          "fragment": "stock-1",
+          "document_id": "9eba58e2-24ea-4d7e-bb6d-5b1f77b0a853",
+          "version_id": "0e23387b-c24b-4da6-bc3a-710a8c3574a4",
+          "version": 1,
+          "indexation_id": "7a6db4c8-860e-48da-8592-501a175dbc70",
+          "distance": 0.5307045748869683,
+          "rrf_score": 0.015873015873015872
+        },
+        {
+          "rank": 4,
+          "fragment": "conflict-2",
+          "document_id": "67dda349-2635-4746-bd6d-884c58cc5364",
+          "version_id": "b6c2dd6f-30a7-4631-9cc1-62a048e68d79",
+          "version": 1,
+          "indexation_id": "7e156d3a-851e-4a82-952a-48faaff8d802",
+          "distance": 0.5321961107919012,
+          "rrf_score": 0.015625
+        },
+        {
+          "rank": 5,
+          "fragment": "proc-1",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.5385569792185276,
+          "rrf_score": 0.015384615384615385
+        },
+        {
+          "rank": 6,
+          "fragment": "proc-3",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.5435718090191279,
+          "rrf_score": 0.015151515151515152
+        },
+        {
+          "rank": 7,
+          "fragment": "work-1",
+          "document_id": "53ce2419-31f4-4b01-ac7c-265db57a1969",
+          "version_id": "3b5bfce1-22a2-436f-bad2-d742b31a3bcf",
+          "version": 1,
+          "indexation_id": "716f0cce-078e-4d0d-970d-d2bfbd232de7",
+          "distance": 0.5883819582797154,
+          "rrf_score": 0.014925373134328358
+        },
+        {
+          "rank": 8,
+          "fragment": "price-1",
+          "document_id": "102ed5ba-d4ef-4666-83fe-0d57ccb73205",
+          "version_id": "c4beaca4-8578-4819-b777-adc2cc27a774",
+          "version": 1,
+          "indexation_id": "5e992b1b-58a2-4f74-ab7e-53728a833e9d",
+          "distance": 0.5961866882896154,
+          "rrf_score": 0.014705882352941176
+        },
+        {
+          "rank": 9,
+          "fragment": "conflict-1",
+          "document_id": "f18c59ee-08c1-442e-bbd8-40ec21bc5baf",
+          "version_id": "c46cd20c-195f-4a52-84a8-12490aadf28e",
+          "version": 1,
+          "indexation_id": "b237b843-edac-401b-91c3-9dc5b6ab3c57",
+          "distance": 0.5963123383334252,
+          "rrf_score": 0.014492753623188406
+        },
+        {
+          "rank": 10,
+          "fragment": "sec-1",
+          "document_id": "47ee98d4-eb4f-4acf-907a-d723b9e09a36",
+          "version_id": "af13d8ef-4425-4f40-bd7d-c326eafdbf28",
+          "version": 1,
+          "indexation_id": "2dc157f8-87e3-4eb5-a424-ea8765c78e43",
+          "distance": 0.7476077091179993,
+          "rrf_score": 0.014285714285714285
+        }
+      ],
+      "sql_missing_means_not_executed": false,
+      "review_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "stock-1",
+        "conflict-2"
+      ],
+      "review_decisions": [
+        {
+          "fragment_ids": [
+            "proc-1",
+            "proc-2",
+            "proc-3",
+            "proc-4",
+            "stock-1",
+            "conflict-2"
+          ],
+          "decision": {
+            "relation": "absent",
+            "sources": []
+          }
+        }
+      ],
+      "evidence_for_output": [],
+      "generator_invoked": false,
+      "selected_fragment_ids": null,
+      "response": "No encontr\u00e9 informaci\u00f3n documental disponible para tu consulta. Puedes precisar la pregunta o solicitar al administrador que revise la documentaci\u00f3n publicada.",
+      "status": "completed",
+      "route": "no_evidence",
+      "confirmed_failure": "Gold llega al pool; absent en el plan. Hay respaldo parcial para condiciones concretas, pero no norma documental sobre como resumir.",
+      "internal_model_reason_observed": false,
+      "relevant_synthetic_fragments": {
+        "proc-3": {
+          "id": "proc-3",
+          "text": "Documento ficticio de evaluaci\u00f3n. 6. Realizar la prueba de ajuste. Si hay diferencias, corregir antes de coser. 7. Coser las piezas aprobadas.",
+          "fact_ids": [
+            "fit",
+            "correct-before-sewing",
+            "sew"
+          ],
+          "step_ids": [
+            "step-6",
+            "step-7"
+          ],
+          "condition_ids": [
+            "correct-differences-before-sewing",
+            "sew-approved-pieces"
+          ],
+          "document_id": "synthetic-procedure-v1",
+          "document_roles": [
+            "ADMIN",
+            "CAJA",
+            "INV_BOUTIQUE",
+            "INV_TALLER",
+            "MODISTA"
+          ]
+        },
+        "proc-4": {
+          "id": "proc-4",
+          "text": "Documento ficticio de evaluaci\u00f3n. 8. Revisar costuras, limpieza y cierre. 9. Entregar solo despu\u00e9s de la aprobaci\u00f3n final; registrar la entrega.",
+          "fact_ids": [
+            "quality",
+            "approval-before-delivery",
+            "delivery-record"
+          ],
+          "step_ids": [
+            "step-8",
+            "step-9"
+          ],
+          "condition_ids": [
+            "final-approval-before-delivery"
+          ],
+          "document_id": "synthetic-procedure-v1",
+          "document_roles": [
+            "ADMIN",
+            "CAJA",
+            "INV_BOUTIQUE",
+            "INV_TALLER",
+            "MODISTA"
+          ]
+        }
+      },
+      "prior_turn_diagnostics": [
+        {
+          "event": "turn",
+          "case_id": "rag04-multi_conflict-06",
+          "turn": 0,
+          "http_status": 200,
+          "status": "completed",
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "rag_evidence_insufficient",
+            "verdict": "none",
+            "outcome": "no_evidence",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 3,
+              "selected": 0,
+              "evidence_bytes": 0
+            },
+            "durations_seconds": {
+              "embedding_and_release": 4.312999999998283,
+              "search": 0.014999999999417923,
+              "review": 5.078000000001339,
+              "selection": 0.0,
+              "context": 5.078000000001339,
+              "first_content": 9.53099999999904,
+              "total": 9.53099999999904
+            }
+          },
+          "latency_ms": 9530.99999999904
+        }
+      ]
+    },
+    {
+      "case_id": "rag04-multi_conflict-07",
+      "question": "Describe el proceso utilizando varios fragmentos",
+      "intention": "Describir un proceso mediante varios fragmentos, sin identificar el proceso.",
+      "role": "ADMIN",
+      "prior_user_questions": [],
+      "state_change": null,
+      "gold": {
+        "route": "rag",
+        "relevant_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4"
+        ],
+        "authorized_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4",
+          "price-1",
+          "stock-1",
+          "work-1",
+          "sec-1",
+          "conflict-1",
+          "conflict-2"
+        ],
+        "required_fact_ids": [
+          "design",
+          "measure",
+          "pattern",
+          "cut",
+          "baste",
+          "fit",
+          "correct-before-sewing",
+          "sew",
+          "quality",
+          "approval-before-delivery",
+          "delivery-record"
+        ],
+        "required_step_ids": [
+          "step-1",
+          "step-2",
+          "step-3",
+          "step-4",
+          "step-5",
+          "step-6",
+          "step-7",
+          "step-8",
+          "step-9"
+        ],
+        "required_numbers": [],
+        "requires_capability_ack": false,
+        "required_condition_ids": [
+          "approved-design",
+          "measurement-consent",
+          "pattern-before-cut",
+          "identified-order-fabric",
+          "correct-differences-before-sewing",
+          "sew-approved-pieces",
+          "final-approval-before-delivery"
+        ],
+        "required_quantities": []
+      },
+      "gold_documentary_justification": "El gold designa el procedimiento de confeccion proc1..4.",
+      "gold_review_question": "Discrepancia sustantiva: no hay pregunta previa ni entidad/proceso explicitado; el corpus contiene varios asuntos. Pedir aclaracion puede ser correcto. Solicitar anotacion humana independiente sin cambiar gold ni forzar ruta por la frase de prueba.",
+      "gold_changed": false,
+      "sql_authorized_fragment_ids": null,
+      "sql_identities": null,
+      "sql_missing_means_not_executed": true,
+      "review_fragment_ids": null,
+      "review_decisions": null,
+      "evidence_for_output": [],
+      "generator_invoked": false,
+      "selected_fragment_ids": null,
+      "response": "\u00bfPuedes precisar c\u00f3mo se relaciona tu consulta con las actividades de BELLAARTE BOUTIQUE? As\u00ed podr\u00e9 orientarte con el contexto adecuado.",
+      "status": "completed",
+      "route": "ambiguous",
+      "confirmed_failure": "Clasificador contextual ambiguo; no se ejecuta SQL/revisor en API. SQL independiente puede recuperar textos si se fuerza, pero no prueba que la intencion sea confeccion.",
+      "internal_model_reason_observed": false,
+      "relevant_synthetic_fragments": {
+        "proc-1": {
+          "id": "proc-1",
+          "text": "Documento ficticio de evaluaci\u00f3n. 1. Confirmar el dise\u00f1o aprobado. 2. Tomar medidas con consentimiento. 3. Trazar el patr\u00f3n antes del corte.",
+          "fact_ids": [
+            "design",
+            "measure",
+            "pattern"
+          ],
+          "step_ids": [
+            "step-1",
+            "step-2",
+            "step-3"
+          ],
+          "condition_ids": [
+            "approved-design",
+            "measurement-consent",
+            "pattern-before-cut"
+          ],
+          "document_id": "synthetic-procedure-v1",
+          "document_roles": [
+            "ADMIN",
+            "CAJA",
+            "INV_BOUTIQUE",
+            "INV_TALLER",
+            "MODISTA"
+          ]
+        },
+        "proc-2": {
+          "id": "proc-2",
+          "text": "Documento ficticio de evaluaci\u00f3n. 4. Cortar \u00fanicamente la tela del pedido identificado. 5. Hilvanar las piezas para la primera prueba.",
+          "fact_ids": [
+            "cut",
+            "baste"
+          ],
+          "step_ids": [
+            "step-4",
+            "step-5"
+          ],
+          "condition_ids": [
+            "identified-order-fabric"
+          ],
+          "document_id": "synthetic-procedure-v1",
+          "document_roles": [
+            "ADMIN",
+            "CAJA",
+            "INV_BOUTIQUE",
+            "INV_TALLER",
+            "MODISTA"
+          ]
+        },
+        "proc-3": {
+          "id": "proc-3",
+          "text": "Documento ficticio de evaluaci\u00f3n. 6. Realizar la prueba de ajuste. Si hay diferencias, corregir antes de coser. 7. Coser las piezas aprobadas.",
+          "fact_ids": [
+            "fit",
+            "correct-before-sewing",
+            "sew"
+          ],
+          "step_ids": [
+            "step-6",
+            "step-7"
+          ],
+          "condition_ids": [
+            "correct-differences-before-sewing",
+            "sew-approved-pieces"
+          ],
+          "document_id": "synthetic-procedure-v1",
+          "document_roles": [
+            "ADMIN",
+            "CAJA",
+            "INV_BOUTIQUE",
+            "INV_TALLER",
+            "MODISTA"
+          ]
+        },
+        "proc-4": {
+          "id": "proc-4",
+          "text": "Documento ficticio de evaluaci\u00f3n. 8. Revisar costuras, limpieza y cierre. 9. Entregar solo despu\u00e9s de la aprobaci\u00f3n final; registrar la entrega.",
+          "fact_ids": [
+            "quality",
+            "approval-before-delivery",
+            "delivery-record"
+          ],
+          "step_ids": [
+            "step-8",
+            "step-9"
+          ],
+          "condition_ids": [
+            "final-approval-before-delivery"
+          ],
+          "document_id": "synthetic-procedure-v1",
+          "document_roles": [
+            "ADMIN",
+            "CAJA",
+            "INV_BOUTIQUE",
+            "INV_TALLER",
+            "MODISTA"
+          ]
+        }
+      },
+      "prior_turn_diagnostics": [
+        {
+          "event": "turn",
+          "case_id": "rag04-multi_conflict-07",
+          "turn": 0,
+          "http_status": 200,
+          "status": "completed",
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "ambiguous",
+            "reason": "contextual_ambiguous",
+            "verdict": "pending",
+            "outcome": "policy",
+            "counts": {
+              "topic_questions": 0
+            },
+            "durations_seconds": {
+              "routing": 5.875,
+              "total": 6.047000000002299
+            }
+          },
+          "latency_ms": 6062.000000001717
+        }
+      ]
+    },
+    {
+      "case_id": "rag04-no_evidence-01",
+      "question": "\u00bfQu\u00e9 procedimiento publicado regula bordados con hilo de oro?",
+      "intention": "Encontrar regulacion publicada para una tecnica concreta y su material especializado.",
+      "role": "ADMIN",
+      "prior_user_questions": [],
+      "state_change": null,
+      "gold": {
+        "route": "no_evidence",
+        "relevant_fragment_ids": [],
+        "authorized_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4",
+          "price-1",
+          "stock-1",
+          "work-1",
+          "sec-1",
+          "conflict-1",
+          "conflict-2"
+        ],
+        "required_fact_ids": [],
+        "required_step_ids": [],
+        "required_numbers": [],
+        "requires_capability_ack": false,
+        "required_condition_ids": [],
+        "required_quantities": []
+      },
+      "gold_documentary_justification": "Ningun fragmento describe bordado con hilo de oro. El procedimiento general solo describe confeccion.",
+      "gold_review_question": "Gold no_evidence tiene respaldo: coincidencia del sector no acredita especialidad.",
+      "gold_changed": false,
+      "sql_authorized_fragment_ids": [
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "proc-1",
+        "stock-1",
+        "work-1",
+        "price-1",
+        "conflict-2",
+        "conflict-1",
+        "sec-1"
+      ],
+      "sql_identities": [
+        {
+          "rank": 1,
+          "fragment": "proc-2",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.5479295253753533,
+          "rrf_score": 0.01639344262295082
+        },
+        {
+          "rank": 2,
+          "fragment": "proc-3",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.5544625753804919,
+          "rrf_score": 0.016129032258064516
+        },
+        {
+          "rank": 3,
+          "fragment": "proc-4",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.567727162187776,
+          "rrf_score": 0.015873015873015872
+        },
+        {
+          "rank": 4,
+          "fragment": "proc-1",
+          "document_id": "8e3cb087-8510-45a5-9d3b-17f68173e8da",
+          "version_id": "ba0ba438-1cfb-4657-a805-bda72c3b033f",
+          "version": 1,
+          "indexation_id": "b4d2e1b7-e31b-4095-a931-3831bd7ea8f3",
+          "distance": 0.5709134042262909,
+          "rrf_score": 0.015625
+        },
+        {
+          "rank": 5,
+          "fragment": "stock-1",
+          "document_id": "9eba58e2-24ea-4d7e-bb6d-5b1f77b0a853",
+          "version_id": "0e23387b-c24b-4da6-bc3a-710a8c3574a4",
+          "version": 1,
+          "indexation_id": "7a6db4c8-860e-48da-8592-501a175dbc70",
+          "distance": 0.6241086945468906,
+          "rrf_score": 0.015384615384615385
+        },
+        {
+          "rank": 6,
+          "fragment": "work-1",
+          "document_id": "53ce2419-31f4-4b01-ac7c-265db57a1969",
+          "version_id": "3b5bfce1-22a2-436f-bad2-d742b31a3bcf",
+          "version": 1,
+          "indexation_id": "716f0cce-078e-4d0d-970d-d2bfbd232de7",
+          "distance": 0.640683774825851,
+          "rrf_score": 0.015151515151515152
+        },
+        {
+          "rank": 7,
+          "fragment": "price-1",
+          "document_id": "102ed5ba-d4ef-4666-83fe-0d57ccb73205",
+          "version_id": "c4beaca4-8578-4819-b777-adc2cc27a774",
+          "version": 1,
+          "indexation_id": "5e992b1b-58a2-4f74-ab7e-53728a833e9d",
+          "distance": 0.6426065054154948,
+          "rrf_score": 0.014925373134328358
+        },
+        {
+          "rank": 8,
+          "fragment": "conflict-2",
+          "document_id": "67dda349-2635-4746-bd6d-884c58cc5364",
+          "version_id": "b6c2dd6f-30a7-4631-9cc1-62a048e68d79",
+          "version": 1,
+          "indexation_id": "7e156d3a-851e-4a82-952a-48faaff8d802",
+          "distance": 0.677104474047209,
+          "rrf_score": 0.014705882352941176
+        },
+        {
+          "rank": 9,
+          "fragment": "conflict-1",
+          "document_id": "f18c59ee-08c1-442e-bbd8-40ec21bc5baf",
+          "version_id": "c46cd20c-195f-4a52-84a8-12490aadf28e",
+          "version": 1,
+          "indexation_id": "b237b843-edac-401b-91c3-9dc5b6ab3c57",
+          "distance": 0.7321201360583325,
+          "rrf_score": 0.014492753623188406
+        },
+        {
+          "rank": 10,
+          "fragment": "sec-1",
+          "document_id": "47ee98d4-eb4f-4acf-907a-d723b9e09a36",
+          "version_id": "af13d8ef-4425-4f40-bd7d-c326eafdbf28",
+          "version": 1,
+          "indexation_id": "2dc157f8-87e3-4eb5-a424-ea8765c78e43",
+          "distance": 0.8181557574086465,
+          "rrf_score": 0.014285714285714285
+        }
+      ],
+      "sql_missing_means_not_executed": false,
+      "review_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "stock-1",
+        "work-1"
+      ],
+      "review_decisions": [
+        {
+          "fragment_ids": [
+            "proc-1",
+            "proc-2",
+            "proc-3",
+            "proc-4",
+            "stock-1",
+            "work-1"
+          ],
+          "decision": {
+            "relation": "partial",
+            "sources": [
+              1,
+              2,
+              3,
+              4
+            ]
+          }
+        }
+      ],
+      "evidence_for_output": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "generator_invoked": false,
+      "selected_fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "response": "La evidencia disponible es parcial; esta respuesta se limita a los puntos documentados.\n\nExtractos de las fuentes publicadas, conservando sus condiciones:\n\n> Documento ficticio de evaluaci\u00f3n. 1. Confirmar el dise\u00f1o aprobado. 2. Tomar medidas con consentimiento. 3. Trazar el patr\u00f3n antes del corte. [S1]\n\n> Documento ficticio de evaluaci\u00f3n. 4. Cortar \u00fanicamente la tela del pedido identificado. 5. Hilvanar las piezas para la primera prueba. [S2]\n\n> Documento ficticio de evaluaci\u00f3n. 6. Realizar la prueba de ajuste. Si hay diferencias, corregir antes de coser. 7. Coser las piezas aprobadas. [S3]\n\n> Documento ficticio de evaluaci\u00f3n. 8. Revisar costuras, limpieza y cierre. 9. Entregar solo despu\u00e9s de la aprobaci\u00f3n final; registrar la entrega. [S4]",
+      "status": "completed",
+      "route": "rag",
+      "confirmed_failure": "Plan partial elige proc1..4 sin respaldo de la especialidad; expansion de procedimiento y renderizado conservan literalmente contenido tangencial. El fallo confirmado esta en el alcance semantico del selector; la cita valida no lo corrige.",
+      "internal_model_reason_observed": false,
+      "relevant_synthetic_fragments": {},
+      "prior_turn_diagnostics": [
+        {
+          "event": "turn",
+          "case_id": "rag04-no_evidence-01",
+          "turn": 0,
+          "http_status": 200,
+          "status": "completed",
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "documental_business",
+            "verdict": "partial",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 3,
+              "selected": 4,
+              "evidence_bytes": 569,
+              "prompt_bytes": 2256,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "citations": 4
+            },
+            "durations_seconds": {
+              "embedding_and_release": 4.625,
+              "search": 0.0,
+              "review": 5.53099999999904,
+              "selection": 0.0,
+              "context": 5.546999999998661,
+              "first_content": 10.468000000000757,
+              "render": 0.0319999999992433,
+              "total": 10.53099999999904
+            }
+          },
+          "latency_ms": 10530.99999999904
+        }
+      ]
+    },
+    {
+      "case_id": "rag04-followup-07",
+      "question": "\u00bfSigue siendo v\u00e1lido despu\u00e9s del cambio de permisos?",
+      "intention": "Revisar lo explicado previamente de tarifa tras cambio efectivo de rol a MODISTA.",
+      "role": "MODISTA",
+      "prior_user_questions": [
+        "Expl\u00edcame la tarifa de arreglos"
+      ],
+      "state_change": "change_role",
+      "gold": {
+        "route": "no_evidence",
+        "relevant_fragment_ids": [],
+        "authorized_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4",
+          "work-1",
+          "sec-1"
+        ],
+        "required_fact_ids": [],
+        "required_step_ids": [],
+        "required_numbers": [],
+        "requires_capability_ack": false,
+        "required_condition_ids": [],
+        "required_quantities": []
+      },
+      "gold_documentary_justification": "El tema previo price-1 era legible como ADMIN; luego MODISTA no tiene ACL. Gold exige recuperar de nuevo y abstenerse sin texto anterior.",
+      "gold_review_question": "Gold supone un ancla previa correcta. Si ese prerrequisito se abstiene, aclarar es seguro pero no demuestra prueba de revocacion ni satisface el escenario previsto. Mantener fallo y registrar dependencia.",
+      "gold_changed": false,
+      "sql_authorized_fragment_ids": null,
+      "sql_identities": null,
+      "sql_missing_means_not_executed": true,
+      "review_fragment_ids": null,
+      "review_decisions": null,
+      "evidence_for_output": [],
+      "generator_invoked": false,
+      "selected_fragment_ids": null,
+      "response": "\u00bfPuedes precisar c\u00f3mo se relaciona tu consulta con las actividades de BELLAARTE BOUTIQUE? As\u00ed podr\u00e9 orientarte con el contexto adecuado.",
+      "status": "completed",
+      "route": "ambiguous",
+      "confirmed_failure": "El journal muestra no_evidence en la pregunta previa. No se guarda ancla de ausencia por seguridad; objetivo posterior resulta followup_without_topic. No relajar memoria: corregir respuesta previa.",
+      "internal_model_reason_observed": false,
+      "relevant_synthetic_fragments": {},
+      "prior_turn_diagnostics": [
+        {
+          "event": "turn",
+          "case_id": "rag04-followup-07",
+          "turn": 0,
+          "http_status": 200,
+          "status": "completed",
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "rag_evidence_insufficient",
+            "verdict": "none",
+            "outcome": "no_evidence",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 3,
+              "selected": 0,
+              "evidence_bytes": 0
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.811999999998079,
+              "search": 0.0,
+              "review": 5.2810000000026776,
+              "selection": 0.0,
+              "context": 5.297000000002299,
+              "first_content": 9.235000000000582,
+              "total": 9.235000000000582
+            }
+          },
+          "latency_ms": 9235.000000000582
+        },
+        {
+          "event": "turn",
+          "case_id": "rag04-followup-07",
+          "turn": 1,
+          "http_status": 200,
+          "status": "completed",
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "ambiguous",
+            "reason": "followup_without_topic",
+            "verdict": "pending",
+            "outcome": "policy",
+            "counts": {
+              "topic_questions": 0
+            },
+            "durations_seconds": {
+              "total": 0.0779999999977008
+            }
+          },
+          "latency_ms": 92.99999999711872
+        }
+      ]
+    },
+    {
+      "case_id": "rag04-acl-07",
+      "question": "Contin\u00faa la tarifa despu\u00e9s de revocar la ACL",
+      "intention": "Continuar la tarifa previa despues de revocar su ACL en la base aislada.",
+      "role": "CAJA",
+      "prior_user_questions": [
+        "Expl\u00edcame la tarifa de arreglos"
+      ],
+      "state_change": "revoke_acl",
+      "gold": {
+        "route": "no_evidence",
+        "relevant_fragment_ids": [],
+        "authorized_fragment_ids": [
+          "proc-1",
+          "proc-2",
+          "proc-3",
+          "proc-4",
+          "sec-1",
+          "conflict-1",
+          "conflict-2"
+        ],
+        "required_fact_ids": [],
+        "required_step_ids": [],
+        "required_numbers": [],
+        "requires_capability_ack": false,
+        "required_condition_ids": [],
+        "required_quantities": []
+      },
+      "gold_documentary_justification": "price-1 estaba publicado/autorizado para CAJA; se elimina ACL antes del seguimiento. Fuentes restantes no son sustituto de esa tarifa.",
+      "gold_review_question": "Gold tambien presupone respuesta previa pertinente. La ausencia del ancla explica aclaracion segura sin validar el recorrido de revocacion.",
+      "gold_changed": false,
+      "sql_authorized_fragment_ids": null,
+      "sql_identities": null,
+      "sql_missing_means_not_executed": true,
+      "review_fragment_ids": null,
+      "review_decisions": null,
+      "evidence_for_output": [],
+      "generator_invoked": false,
+      "selected_fragment_ids": null,
+      "response": "\u00bfPuedes precisar c\u00f3mo se relaciona tu consulta con las actividades de BELLAARTE BOUTIQUE? As\u00ed podr\u00e9 orientarte con el contexto adecuado.",
+      "status": "completed",
+      "route": "ambiguous",
+      "confirmed_failure": "Prerrequisito de tarifa se abstuvo; topic_history vacio; objetivo ambiguo. No hay consulta SQL de seguimiento: la revocacion se aplica pero ese recorrido no se ejercio.",
+      "internal_model_reason_observed": false,
+      "relevant_synthetic_fragments": {},
+      "prior_turn_diagnostics": [
+        {
+          "event": "turn",
+          "case_id": "rag04-acl-07",
+          "turn": 0,
+          "http_status": 200,
+          "status": "completed",
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "rag_evidence_insufficient",
+            "verdict": "none",
+            "outcome": "no_evidence",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 8,
+              "review_documents": 3,
+              "selected": 0,
+              "evidence_bytes": 0
+            },
+            "durations_seconds": {
+              "embedding_and_release": 4.328000000001339,
+              "search": 0.01599999999962165,
+              "review": 5.15599999999904,
+              "selection": 0.0,
+              "context": 5.15599999999904,
+              "first_content": 9.7029999999977,
+              "total": 9.7029999999977
+            }
+          },
+          "latency_ms": 9718.999999997322
+        },
+        {
+          "event": "turn",
+          "case_id": "rag04-acl-07",
+          "turn": 1,
+          "http_status": 200,
+          "status": "completed",
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "ambiguous",
+            "reason": "followup_without_topic",
+            "verdict": "pending",
+            "outcome": "policy",
+            "counts": {
+              "topic_questions": 0
+            },
+            "durations_seconds": {
+              "total": 0.0790000000015425
+            }
+          },
+          "latency_ms": 79.0000000015425
+        }
+      ]
+    }
+  ],
+  "human_review_complete": false,
+  "holdout_executed": false
+}

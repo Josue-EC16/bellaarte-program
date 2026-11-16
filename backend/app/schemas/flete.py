@@ -1,3 +1,4 @@
+from decimal import Decimal
 from datetime import date, datetime
 from typing import Literal
 
@@ -126,11 +127,11 @@ class SalidaFleteCreateRequest(BaseModel):
     currency_id: int = Field(gt=0)
     fecha_salida: date
     fecha_devolucion_prevista: date
-    precio: float = Field(gt=0)
-    descuento: float | None = Field(default=None, ge=0)
+    precio: Decimal = Field(gt=0,max_digits=10,decimal_places=2)
+    descuento: Decimal | None = Field(default=None,ge=0,max_digits=10,decimal_places=2)
     motivo_desc: MotivoDescFleteEnum | None = None
     metodo_pago: MetodoPagoEnum
-    garantia: float = Field(default=0, ge=0)
+    garantia: Decimal = Field(default=Decimal(0),ge=0,max_digits=10,decimal_places=2)
     estado_entrega: EstadoFleteEntregaEnum
     observaciones_entrega: str | None = None
     receipt_customer_snapshot: ReceiptCustomerSnapshotPayload | None = None
@@ -159,7 +160,7 @@ class SalidaFleteReturnRequest(BaseModel):
     requiere_arreglo: bool = False
     monto_arreglo: float = Field(default=0, ge=0)
     descripcion_arreglo: str | None = Field(default=None, max_length=150)
-    garantia_devuelta: float = Field(default=0, ge=0)
+    garantia_devuelta: Decimal | None = Field(default=None,ge=0,max_digits=10,decimal_places=2)
     observaciones_devolucion: str | None = None
 
     @model_validator(mode="after")

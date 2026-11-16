@@ -1,0 +1,66 @@
+{
+  "time_utc": "2026-10-20T11:35:12.790851+00:00",
+  "revision_before": "20261019_0020",
+  "revision_after": "20261020_0021",
+  "backup_verified": true,
+  "backup_bytes": 4440515,
+  "backup_sha256": "12B733105271144252E349BAE176C7DB9F48E013F1354AAB05E48410A106BDF2",
+  "state": "enabled_publication_and_documental_chat_verified",
+  "business_restore_executed": false,
+  "keep_alive_before": "5m",
+  "keep_alive_after": "0",
+  "public_structure_unchanged": true,
+  "role_codes_unchanged": true,
+  "rag_chat_enabled": true,
+  "five_official_roles_verified": true,
+  "preexisting_extra_role_codes": [
+    "DOC"
+  ],
+  "extra_role_introduced_by_deployment": false,
+  "inference_idle_verified": true,
+  "memory_guards": {
+    "cold": 2147483648,
+    "resident": 1073741824
+  },
+  "complete_backup_reverified": true,
+  "unauthenticated_http": {
+    "status": 401,
+    "conversations": 401,
+    "rag/sources/00000000-0000-0000-0000-000000000001": 401
+  },
+  "worker_available": true,
+  "business_conversation_verified": true,
+  "general_chat_verified_from_react": true,
+  "documental_business_chat_verified": true,
+  "frontend_restart_authorized": true,
+  "frontend_session_preserved": true,
+  "frontend_restart_verified": true,
+  "backend_reloaded": true,
+  "deployment_checks": {
+    "passed": 26,
+    "seconds": 0.62,
+    "scope": "RAG chat contracts and deployment evidence gate"
+  },
+  "deployment_configuration_fix": "Shared backend services now load .env from backend before first import; incomplete database-only artifacts were rejected before any migration.",
+  "preexisting_role_drift": "DOC existed before deployment; role codes preserved; no LENY permission added",
+  "browser_evidence": "leny_rag03_business_chat.png",
+  "verified_at_utc": "2026-10-20T11:40:51.413013+00:00",
+  "publication_approval": "Explicit owner approval of version1 for ADMIN and CAJA",
+  "published_version_verified": 1,
+  "publication_acl_preserved": [
+    "ADMIN",
+    "CAJA"
+  ],
+  "source_reference_persisted": true,
+  "rag_history_context_excluded": true,
+  "source_opened_from_react": true,
+  "source_page_verified": 1,
+  "source_content_checks": {
+    "business_name": true,
+    "production_quality": true,
+    "teamwork": true
+  },
+  "private_document_content_saved_in_evidence": false,
+  "inference_idle_after_documental_chat": true,
+  "chat_model_resident_after_completion": false
+}

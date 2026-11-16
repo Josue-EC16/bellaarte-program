@@ -1,0 +1,251 @@
+{
+  "stage": "before",
+  "database": "bellaarte_db",
+  "port": 5432,
+  "read_only": true,
+  "created_utc": "2026-10-21T15:53:23.495930+00:00",
+  "env_sha256": "af3153226e1db483c81dc70b002d5cc8b46ec193df98624d7552195d703583cc",
+  "file_settings": {
+    "leny_rag_profile": "legacy",
+    "leny_rag_evidence_mode": "fixed",
+    "leny_rag_ranking": "semantic",
+    "leny_rag_adaptive_token_probe": false,
+    "leny_temperature": 0.3,
+    "leny_rag_chat_enabled": true,
+    "leny_num_ctx": 4096,
+    "leny_num_predict": 768,
+    "leny_keep_alive": "0"
+  },
+  "revision": "20261020_0021",
+  "library_fingerprints": {
+    "documentos": {
+      "count": 2,
+      "fingerprint": "6ec531d7a97315468ffc9571d882c513"
+    },
+    "documento_versiones": {
+      "count": 2,
+      "fingerprint": "331ca226a1e50e60dbe35247671614bf"
+    },
+    "documento_roles_lectura": {
+      "count": 4,
+      "fingerprint": "c36555e2905cb2658cedf70e35173e7b"
+    },
+    "carpetas": {
+      "count": 2,
+      "fingerprint": "7a3b6d9a3064264096c7ba7693f1f341"
+    },
+    "carpeta_roles_lectura": {
+      "count": 4,
+      "fingerprint": "ccbbac450509c4300f0e100a5b7a1b11"
+    },
+    "rag_indexaciones": {
+      "count": 3,
+      "fingerprint": "2e782ddaf0a28e238556e4442490723a"
+    },
+    "rag_fragmentos": {
+      "count": 51,
+      "fingerprint": "cbc7acb8627885e7fdadb72f076e0687"
+    },
+    "rag_embeddings": {
+      "count": 47,
+      "fingerprint": "530793d4a3384aa9000e34c29cd28f15"
+    }
+  },
+  "library_matches_verified_backup": true,
+  "role_codes": [
+    "ADMIN",
+    "CAJA",
+    "DOC",
+    "INV_BOUTIQUE",
+    "INV_TALLER",
+    "MODISTA"
+  ],
+  "inference_state": "idle",
+  "active_generations": 0,
+  "queued_running_jobs": 0,
+  "public_fingerprints": {
+    "alembic_version": {
+      "count": 1,
+      "fingerprint": "270739fff870f153dd080ceb4e4aec05"
+    },
+    "backup_bd": {
+      "count": 3,
+      "fingerprint": "f2699fe01ad79d56dcc23a05486d6a36"
+    },
+    "cliente": {
+      "count": 8,
+      "fingerprint": "e14615caf715fce72bed0b78a16420e8"
+    },
+    "comprobante_interno": {
+      "count": 25,
+      "fingerprint": "d8f387222f1e58a1af42f7460d067feb"
+    },
+    "constancia_devolucion": {
+      "count": 0,
+      "fingerprint": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "corte_caja": {
+      "count": 1,
+      "fingerprint": "8f4e8e1ec03d5e4899449c4294dd773e"
+    },
+    "detalle_bouquet_boutique": {
+      "count": 3,
+      "fingerprint": "cdf7bd86015ec5133fd7bb7f8f65b700"
+    },
+    "detalle_brassier_boutique": {
+      "count": 0,
+      "fingerprint": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "detalle_comprobante": {
+      "count": 25,
+      "fingerprint": "5cf1a92194156084a0ab7898d2e4e277"
+    },
+    "detalle_velo_boutique": {
+      "count": 0,
+      "fingerprint": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "detalle_vestido_boutique": {
+      "count": 8,
+      "fingerprint": "376556fdef1e89c2a1b9db18331183ba"
+    },
+    "egreso": {
+      "count": 10,
+      "fingerprint": "f69c652af480f28bbe6306bd157655ac"
+    },
+    "entrada_inventario_taller": {
+      "count": 2,
+      "fingerprint": "e25c4867037e85965e416adb8bcecc57"
+    },
+    "entrada_item_boutique": {
+      "count": 8,
+      "fingerprint": "09f8cf732f5410d1cd149ccaa9b26a04"
+    },
+    "envio_notificacion_correo": {
+      "count": 0,
+      "fingerprint": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "flete_vestido": {
+      "count": 4,
+      "fingerprint": "e28c0077cee8efecf540040ac3979a29"
+    },
+    "inventario_taller": {
+      "count": 3,
+      "fingerprint": "e91e31f4c3b43f84424cb32dd0c5abc2"
+    },
+    "item_boutique": {
+      "count": 15,
+      "fingerprint": "4b55be544cf16bb96c2ae19ae6c7e2f3"
+    },
+    "moneda": {
+      "count": 3,
+      "fingerprint": "223b0e67f8d000a7bfa067d06520a113"
+    },
+    "movimiento_economico": {
+      "count": 2,
+      "fingerprint": "10537189f80f1cd3a7cda97cb67a8743"
+    },
+    "notificacion": {
+      "count": 16,
+      "fingerprint": "2edbcc2f60706f017815b3203d61706f"
+    },
+    "pago_pedido": {
+      "count": 7,
+      "fingerprint": "21e81c40b57d5ca87707df6ef0ac70d1"
+    },
+    "pedido": {
+      "count": 11,
+      "fingerprint": "b73402de69cae8f7b08eabf5e64b4d49"
+    },
+    "pedido_bouquet": {
+      "count": 1,
+      "fingerprint": "05bfcc7fa132b1a592cf4548f449f845"
+    },
+    "pedido_cola": {
+      "count": 1,
+      "fingerprint": "6cc68fb398ce8e17c5cd411a868960c7"
+    },
+    "pedido_manga": {
+      "count": 0,
+      "fingerprint": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "pedido_otro": {
+      "count": 1,
+      "fingerprint": "9d4a20768c54463f7ab4f381825e3d2f"
+    },
+    "pedido_velo": {
+      "count": 1,
+      "fingerprint": "becdd844def25ba3cdd9befead36e7db"
+    },
+    "pedido_vestido": {
+      "count": 7,
+      "fingerprint": "ac0d52ae278744c11cd9af82797da8e0"
+    },
+    "preferencia_notificacion": {
+      "count": 1,
+      "fingerprint": "8cdb166b0d071e5d41d0bcb1eb30242b"
+    },
+    "proveedor": {
+      "count": 4,
+      "fingerprint": "4a2900120b4a2900d99904eecae0b2a1"
+    },
+    "prueba_pedido": {
+      "count": 7,
+      "fingerprint": "a5fe600aa4038b4057aaf1aade611710"
+    },
+    "roles": {
+      "count": 6,
+      "fingerprint": "690a42181dacd7851ef4bf5bfa8d17ec"
+    },
+    "salida_flete": {
+      "count": 4,
+      "fingerprint": "c147dcd192c6a9da323b9608a2527d81"
+    },
+    "salida_material_taller": {
+      "count": 1,
+      "fingerprint": "5198829055e62ebe9a3efa04bc73eedc"
+    },
+    "solicitud_economica": {
+      "count": 3,
+      "fingerprint": "d997d88a86907ff9835c6159f7c97ac7"
+    },
+    "tipo_cambio_moneda": {
+      "count": 3,
+      "fingerprint": "d63be2563c0f05fa78a29c807711c254"
+    },
+    "tipo_comprobante": {
+      "count": 3,
+      "fingerprint": "3733c2867642864d15972a01e0e1139c"
+    },
+    "tipo_inventario_taller": {
+      "count": 1,
+      "fingerprint": "bc75ef4e3ab9b94d64c0d7413ae60547"
+    },
+    "tipo_item_boutique": {
+      "count": 11,
+      "fingerprint": "89e1eece06967dc8135c3b025bccaeed"
+    },
+    "usuarios": {
+      "count": 3,
+      "fingerprint": "4a22a2bc527e1058bf60258c33088d79"
+    },
+    "venta_boutique": {
+      "count": 17,
+      "fingerprint": "d575ae3ac75451f0c91930d0af5eab5e"
+    }
+  },
+  "history_cutoff_utc": "2026-10-21T11:53:23.777612-04:00",
+  "preexisting_history": {
+    "conversaciones": {
+      "count": 7,
+      "fingerprint": "87238312b9b48239fac0a7f6288897fd"
+    },
+    "mensajes": {
+      "count": 72,
+      "fingerprint": "d6e787cd5e6d02fb7a86f7f24d019114"
+    }
+  },
+  "model_digests": {
+    "qwen3-embedding:0.6b": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d",
+    "qwen3.5:4b-q4_K_M": "d8b0f5e9760cd1682034f292d7ef72ec46f432149be0df7574bf2d6e92e38c04"
+  }
+}

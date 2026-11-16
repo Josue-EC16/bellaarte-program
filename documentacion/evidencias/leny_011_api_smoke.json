@@ -1,0 +1,14 @@
+{
+  "scope": "real HTTP / isolated ERP8001 / synthetic user / no model inference",
+  "results": {
+    "secret_422_no_echo": true,
+    "privileged_fields_422": true,
+    "five_policy_attempts_admitted": true,
+    "duplicate_after_quota_not_recharged": true,
+    "sixth_attempt_429": true,
+    "retry_after_seconds": 60,
+    "cors_retry_after_exposed": true,
+    "refusals_persisted_excluded_from_context": true,
+    "refresh_and_history": true
+  }
+}

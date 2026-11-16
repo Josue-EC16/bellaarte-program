@@ -1,0 +1,114 @@
+﻿{
+    "scope":  "whole_gpu_spot_sampling_during_first_candidate",
+    "interval_seconds":  2,
+    "samples":  [
+                    {
+                        "time_utc":  "2026-10-20T15:33:07.2921865Z",
+                        "used_mib":  0,
+                        "total_mib":  6141,
+                        "gpu_utilization_pct":  78,
+                        "memory_utilization_pct":  83
+                    },
+                    {
+                        "time_utc":  "2026-10-20T15:33:09.4202933Z",
+                        "used_mib":  0,
+                        "total_mib":  6141,
+                        "gpu_utilization_pct":  0,
+                        "memory_utilization_pct":  0
+                    },
+                    {
+                        "time_utc":  "2026-10-20T15:33:11.5507863Z",
+                        "used_mib":  0,
+                        "total_mib":  6141,
+                        "gpu_utilization_pct":  0,
+                        "memory_utilization_pct":  0
+                    },
+                    {
+                        "time_utc":  "2026-10-20T15:33:13.6181907Z",
+                        "used_mib":  2589,
+                        "total_mib":  6141,
+                        "gpu_utilization_pct":  0,
+                        "memory_utilization_pct":  0
+                    },
+                    {
+                        "time_utc":  "2026-10-20T15:33:15.6818702Z",
+                        "used_mib":  3505,
+                        "total_mib":  6141,
+                        "gpu_utilization_pct":  6,
+                        "memory_utilization_pct":  1
+                    },
+                    {
+                        "time_utc":  "2026-10-20T15:33:17.8121091Z",
+                        "used_mib":  8,
+                        "total_mib":  6141,
+                        "gpu_utilization_pct":  0,
+                        "memory_utilization_pct":  0
+                    },
+                    {
+                        "time_utc":  "2026-10-20T15:33:19.8835034Z",
+                        "used_mib":  2589,
+                        "total_mib":  6141,
+                        "gpu_utilization_pct":  0,
+                        "memory_utilization_pct":  0
+                    },
+                    {
+                        "time_utc":  "2026-10-20T15:33:21.9440453Z",
+                        "used_mib":  0,
+                        "total_mib":  6141,
+                        "gpu_utilization_pct":  91,
+                        "memory_utilization_pct":  97
+                    },
+                    {
+                        "time_utc":  "2026-10-20T15:33:24.2691482Z",
+                        "used_mib":  0,
+                        "total_mib":  6141,
+                        "gpu_utilization_pct":  0,
+                        "memory_utilization_pct":  0
+                    },
+                    {
+                        "time_utc":  "2026-10-20T15:33:26.3319603Z",
+                        "used_mib":  0,
+                        "total_mib":  6141,
+                        "gpu_utilization_pct":  0,
+                        "memory_utilization_pct":  0
+                    },
+                    {
+                        "time_utc":  "2026-10-20T15:33:28.3937763Z",
+                        "used_mib":  73,
+                        "total_mib":  6141,
+                        "gpu_utilization_pct":  0,
+                        "memory_utilization_pct":  0
+                    },
+                    {
+                        "time_utc":  "2026-10-20T15:33:30.4526556Z",
+                        "used_mib":  3505,
+                        "total_mib":  6141,
+                        "gpu_utilization_pct":  3,
+                        "memory_utilization_pct":  2
+                    },
+                    {
+                        "time_utc":  "2026-10-20T15:33:32.5475906Z",
+                        "used_mib":  3743,
+                        "total_mib":  6141,
+                        "gpu_utilization_pct":  92,
+                        "memory_utilization_pct":  98
+                    },
+                    {
+                        "time_utc":  "2026-10-20T15:33:34.6067795Z",
+                        "used_mib":  73,
+                        "total_mib":  6141,
+                        "gpu_utilization_pct":  9,
+                        "memory_utilization_pct":  1
+                    },
+                    {
+                        "time_utc":  "2026-10-20T15:33:36.6701632Z",
+                        "used_mib":  3743,
+                        "total_mib":  6141,
+                        "gpu_utilization_pct":  32,
+                        "memory_utilization_pct":  21
+                    }
+                ],
+    "true_peak_measured":  false,
+    "model_only_attribution":  false,
+    "private_content_copied":  false
+}

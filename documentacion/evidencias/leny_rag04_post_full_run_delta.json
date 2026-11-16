@@ -1,0 +1,29 @@
+{
+  "scope": "post_second_full_candidate_run_source_delta",
+  "full_run_artifact": "leny_rag04_candidate_final_development.json",
+  "full_run_representative_of_current_source": false,
+  "full_run_rewritten": false,
+  "changed_runtime_allowlist_sources": [
+    {
+      "path": "backend/app/services/leny_rag_evaluation.py",
+      "full_run_sha256": "ba1478d0c21c1ce5195b9d608877950d07e65a391c9567142ff6ff397c1fd4e1",
+      "current_sha256": "362571be57fe57a4b2c490c18a3e97d7187673603fd1ca382d28b92250806f1d",
+      "responsibility": "offline_scoring_only"
+    },
+    {
+      "path": "backend/app/services/leny_rag_followup.py",
+      "full_run_sha256": "923fa40422a10d416c88fb1fd96d9437d4aef570d7b54a1c3870810202e105c5",
+      "current_sha256": "a427d2a4dcd784b76196fb1ae59d5badfef67bffd24d2df8966efa30690cee97",
+      "responsibility": "bounded_documented_followup"
+    }
+  ],
+  "full_candidate_evaluations": 2,
+  "third_full_evaluation_executed": false,
+  "verification": {
+    "followup_unit_cases": 25,
+    "postfix_real_followup_cases": 3,
+    "postfix_real_followup_cleanup_confirmed": true,
+    "scoring_recalculated_for_both_profiles": true,
+    "scorer_and_followup_unit_cases": 68
+  }
+}

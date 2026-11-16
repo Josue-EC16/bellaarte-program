@@ -1,0 +1,147 @@
+{
+  "scope": "semantic_focused_round_stopped_for_architecture_decision_not_acceptance",
+  "timestamp_utc": "2026-10-21T03:46:25.459235+00:00",
+  "acceptance": "not_accepted",
+  "reason": "persistent_specialty_false_positive_and_new_inventory_tariff_regression",
+  "critical_cases": [
+    "rag04-no_evidence-01",
+    "rag04-acl-04"
+  ],
+  "critical_case_count": 2,
+  "candidate_activated": false,
+  "business_env_modified": false,
+  "business_database_targeted": false,
+  "business_documents_read": false,
+  "usual_services_manually_restarted": false,
+  "business_e2e_executed": false,
+  "migrations_executed": false,
+  "dependencies_added": [],
+  "official_roles_changed": false,
+  "evaluation_complete84_executed_this_round": false,
+  "holdout_executed": false,
+  "human_review_complete": false,
+  "architecture_decision_pending": true,
+  "functional_changes_frozen_after_focused_run": true,
+  "models_window_finished": true,
+  "real_focused_rounds_this_correction": 1,
+  "records": 48,
+  "target_executed": 47,
+  "target_completed": 47,
+  "not_exercised": [
+    "rag04-acl-06"
+  ],
+  "journal_events": {
+    "contract": 1,
+    "attempt": 69,
+    "turn": 56,
+    "case": 48,
+    "not_admitted_429": 13
+  },
+  "source_snapshot_file_count": 369,
+  "source_mismatches_at_close": [],
+  "historical_observations_preserved_sha256": "40bf9822730647b42832aacd27cbba3b88930adb40a72635625d8a9775d3300d",
+  "corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "model_identity": {
+    "chat_digest": "d8b0f5e9760cd1682034f292d7ef72ec46f432149be0df7574bf2d6e92e38c04",
+    "embedding_digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d"
+  },
+  "component_versions": {
+    "policy": "rag4-v4",
+    "documentary_output": "document-excerpts-v2",
+    "retrieval": "sql-acl-current-publication",
+    "ranking": "hybrid",
+    "selection": "aspect-scope-evidence-plan-v1"
+  },
+  "settings": {
+    "leny_enabled": true,
+    "leny_documents_enabled": true,
+    "leny_rag_enabled": true,
+    "leny_rag_chat_enabled": true,
+    "leny_keep_alive": "0",
+    "leny_num_ctx": 4096,
+    "leny_num_predict": 768,
+    "leny_temperature": 0.0,
+    "leny_rate_limit": 5,
+    "leny_rate_window_seconds": 60,
+    "leny_rag_min_ram_bytes": 2147483648,
+    "leny_rag_min_resident_ram_bytes": 1073741824,
+    "leny_rag_cpu_threads": 4,
+    "leny_rag_batch_size": 2,
+    "leny_rag_top_k": 5,
+    "leny_rag_candidates": 20,
+    "leny_rag_profile": "rag4_v1",
+    "leny_rag_evidence_mode": "adaptive",
+    "leny_rag_max_context_bytes": 2048,
+    "leny_rag_ranking": "hybrid",
+    "leny_rag_adaptive_token_probe": true,
+    "leny_rag_neighbor_chunks": false
+  },
+  "run_flags": {
+    "source_freeze_verified": true,
+    "model_identity_verified": true,
+    "cleanup_confirmed": true
+  },
+  "verification_at_close": {
+    "ollama_resident_models": 0,
+    "tcp_localhost": {
+      "5432": true,
+      "55432": false,
+      "8000": true,
+      "5173": false,
+      "5174": false,
+      "11434": true
+    },
+    "usual_profile_default": "legacy",
+    "usual_profile_modified": false,
+    "usual_runtime_profile_not_requeried": true
+  },
+  "tests": {
+    "scope": "summary_of_completed_tool_runs_not_reexecution_or_full_stdout",
+    "backend_base": {
+      "passed": 845,
+      "skipped": 1,
+      "warnings": 1,
+      "seconds": 13.17,
+      "command": ".\\backend\\venv\\Scripts\\python.exe -B backend/scripts/run_base_tests.py"
+    },
+    "targeted_before_base": {
+      "passed": 135,
+      "seconds": 1.02
+    },
+    "postgresql_contracts": {
+      "passed": 102,
+      "deselected_migration_tests": 5,
+      "seconds": 43.17,
+      "artifact": "leny_rag04_semantic_pg.json",
+      "models_invoked": false,
+      "migrations_executed": false
+    },
+    "frontend_changed_this_round": false,
+    "frontend_reexecuted_this_round": false,
+    "real_models_evaluation": "leny_rag04_semantic_focused.json"
+  },
+  "evidence_files_sha256": {
+    "leny_rag04_semantic_audit_before.json": "1cec74a130a37b23ebbff980700a1c6777538ffcaf0c0479001a85b6fddf6c2e",
+    "leny_rag04_semantic_audit_before.md": "7bac8720535ee2d5b4a6660b81e7f3ad53c26338a8ad40f0584aeedd04b60065",
+    "leny_rag04_semantic_candidate_snapshot.json": "fbb09fb22322eb77c220fe057df05b090a3607804e433b3394397c8e9c6d9a11",
+    "leny_rag04_semantic_case_results.json": "eea961cfdd71bd1afc7db5bb77bd969c7e7602385110e42eba9d168282fef240",
+    "leny_rag04_semantic_comparison.json": "e619e2276d823b632a5c9da8887c61487fb5dafdbbd2bb056be79426bd9b34fc",
+    "leny_rag04_semantic_decisions.md": "9f9cea0121b61f58a6badbc488379df5753e0109034802106a583fbfc1f5a0bf",
+    "leny_rag04_semantic_focused.json": "fb19faf3b67b23cfc90adf7b0c2b7891ba2e9f531c6a9398e1d992fa2dca35c3",
+    "leny_rag04_semantic_focused.json.jsonl": "1e10e2515124c9a178334cdf3cae248875bf165cd2437eee09d8ad242db98f9c",
+    "leny_rag04_semantic_gold_discrepancies.json": "533d561ac87d332a3ed3a4e6825e6eca7a7ce4c7878f405f6cb304f715390b07",
+    "leny_rag04_semantic_metrics.json": "ebbdefb0b93d622705066ccf71ac50a00ecef84addbe935c0f1045d3d3912dcd",
+    "leny_rag04_semantic_output_security.json": "a6f2376cf4f57422eb18fa71287c1f2bb7ca93a784a1ddba35c21cfb8bf192bb",
+    "leny_rag04_semantic_performance.json": "e668840c44eb483bcefdb2465ea4cd873f1376b1ae886fd0a0cb0a9c0cf8fd6b",
+    "leny_rag04_semantic_pg.json": "4a57fc11f6e62ca23df1c875cc6eb33814dd72869fc668092c628d1f8bcc5c17",
+    "leny_rag04_semantic_replay.json": "6b513cee96e663fefb2429dd0d0e0f7a1046aadb6a13e5560a61304a43449c6b",
+    "leny_rag04_semantic_resources.jsonl": "5eea59cfc0572ecc14f5637cdeec43dc13ebaad70d65810bdb1f5b3805388758",
+    "leny_rag04_semantic_resources.stop": "a0b28cdf92e250a1a93294d91144a0f893d27197d56b39991cc421768794005f",
+    "leny_rag04_semantic_resources.summary.json": "6c86e34a301426d5c513d40841587f858c538a97b4ec284bc1e99985f9be3149",
+    "leny_rag04_semantic_revision_clave.json": "40655fbae284fac1d45071aea5a09bb3aed039dd19f239e11ab028143829427e",
+    "leny_rag04_semantic_revision_humana.md": "736b9c743da8bc5b6bcc95e26e4c83f6e1432f5a0d429f9933ad78723ae4e05b",
+    "leny_rag04_semantic_revision_plantilla.json": "ed918b2142f2618768602e4f0a71fcd234329545c3ab94dd110c77280223c5e1",
+    "leny_rag04_semantic_source_inventory.json": "a5bd4d4d896008b228aa566b8552ddb1b93181607417fe46ef7ffc5272d13597",
+    "leny_rag04_semantic_tests.json": "8f950a8bf002c0b84b20ff8a66082e7ba2338ba3748a6cb8c2252ba04f0940b9"
+  }
+}

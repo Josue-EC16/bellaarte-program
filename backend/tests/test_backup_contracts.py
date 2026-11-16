@@ -1,5 +1,6 @@
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import Mock, call
 
 from fastapi.testclient import TestClient
 
@@ -93,9 +94,15 @@ def test_generate_backup_returns_failure_when_pg_dump_errors(tmp_path, monkeypat
 
 
 def test_backup_middleware_blocks_non_exempt_requests(monkeypatch) -> None:
+    session = SimpleNamespace(close=Mock())
+    session_factory = Mock(return_value=session)
+    cleanup_stale_lock = Mock()
+    monkeypatch.setattr("app.main.SessionLocal", session_factory)
+    monkeypatch.setattr("app.main.cleanup_stale_backup_lock", cleanup_stale_lock)
+    monkeypatch.setattr("app.main.is_backup_lock_active", lambda: True)
+
     app = create_app()
     client = TestClient(app)
-    monkeypatch.setattr("app.main.is_backup_lock_active", lambda: True)
 
     blocked = client.get("/api/v1/clientes")
     assert blocked.status_code == 503
@@ -103,3 +110,6 @@ def test_backup_middleware_blocks_non_exempt_requests(monkeypatch) -> None:
 
     allowed = client.get("/health")
     assert allowed.status_code == 200
+    assert session_factory.call_count == 2
+    assert cleanup_stale_lock.call_args_list == [call(session), call(session)]
+    assert session.close.call_count == 2

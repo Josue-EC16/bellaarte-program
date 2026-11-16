@@ -101,7 +101,7 @@ export function OrderReportsPage() {
   const balanceColumns = [
     { title: 'CLIENTE', dataIndex: 'client_name' },
     { title: 'CONTRATADO', dataIndex: 'total_contratado', render: formatBs },
-    { title: 'PAGADO', dataIndex: 'total_pagado', render: formatBs },
+    { title: 'ACREDITADO NETO', dataIndex: 'total_pagado', render: formatBs },
     { title: 'SALDO', dataIndex: 'saldo_pendiente', render: formatBs },
     { title: 'PEDIDOS ACTIVOS', dataIndex: 'active_orders' },
   ]
@@ -113,7 +113,9 @@ export function OrderReportsPage() {
     { title: 'MÉTODO', dataIndex: 'metodo_pago', render: (value) => labelFromOptions(METODO_PAGO_OPTIONS, value) },
     { title: 'MONEDA', dataIndex: ['currency', 'codigo'] },
     { title: 'MONTO ORIGEN', dataIndex: 'monto', render: (value) => Number(value || 0).toFixed(2) },
-    { title: 'MONTO BS', dataIndex: 'monto_bob', render: formatBs },
+    { title: 'COBRO BRUTO BS', dataIndex: 'gross_amount_bob', render: formatBs },
+    { title: 'DEVUELTO BS', dataIndex: 'refunded_amount_bob', render: formatBs },
+    { title: 'ACREDITADO NETO BS', dataIndex: 'effective_amount_bob', render: formatBs },
     { title: 'ESTADO', dataIndex: 'estado', render: (value) => <Tag color={value === 'registrado' ? 'green' : 'red'}>{labelFromOptions(ESTADO_PAGO_OPTIONS, value)}</Tag> },
     { title: 'REGISTRADO POR', dataIndex: 'registered_by' },
   ]
@@ -122,7 +124,8 @@ export function OrderReportsPage() {
     { title: 'PEDIDO', dataIndex: 'codigo' },
     { title: 'CLIENTE', dataIndex: 'client_name' },
     { title: 'ENTREGA', dataIndex: 'fecha_entrega' },
-    { title: 'SALDO', dataIndex: 'saldo', render: formatBs },
+    { title: 'SALDO EXIGIBLE', dataIndex: 'saldo_exigible_bob', render: formatBs },
+              { title: 'PENDIENTE DEVOLUCIÓN', dataIndex: 'devolucion_pendiente_bob', render: formatBs },
   ]
 
   const testColumns = [
@@ -141,7 +144,7 @@ export function OrderReportsPage() {
 
   const aggregateColumns = [
     { title: 'CRITERIO', dataIndex: 'label' },
-    { title: 'TOTAL BS', dataIndex: 'total_bob', render: formatBs },
+    { title: 'TOTAL NETO BS', dataIndex: 'total_bob', render: formatBs },
   ]
 
   return (
@@ -185,16 +188,21 @@ export function OrderReportsPage() {
       </Row>
       <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
         <Col xs={24} md={6}><Statistic title="SALDO PENDIENTE ACTIVO" value={balances.reduce((total, row) => total + Number(row.saldo_pendiente || 0), 0)} precision={2} prefix="Bs" /></Col>
-        <Col xs={24} md={6}><Statistic title="PAGOS DEL PERIODO" value={paymentReport?.total_bob || 0} precision={2} prefix="Bs" /></Col>
+        <Col xs={24} md={6}><Statistic title="ACREDITADO NETO DEL PERÍODO" value={paymentReport?.total_bob || 0} precision={2} prefix="Bs" /></Col>
         <Col xs={24} md={6}><Statistic title="PRUEBAS PRÓXIMAS" value={testReport?.upcoming?.length || 0} /></Col>
         <Col xs={24} md={6}><Statistic title="ENTREGAS PRÓXIMAS" value={deliveries.length} /></Col>
       </Row>
 
+      <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
+        <Col xs={24} md={12}><Statistic title="COBROS BRUTOS HISTÓRICOS DEL PERÍODO" value={paymentReport?.gross_total_bob ?? 0} precision={2} prefix="Bs" /></Col>
+        <Col xs={24} md={12}><Statistic title="DEVUELTO SOBRE ESOS COBROS" value={paymentReport?.refunded_total_bob ?? 0} precision={2} prefix="Bs" /></Col>
+      </Row>
+      <Alert type="info" showIcon message="EL ACREDITADO NETO DESCUENTA DEVOLUCIONES EFECTIVAS, INCLUSO SI EL PAGO FUE ANULADO OPERATIVAMENTE. EL INGRESO BRUTO HISTÓRICO SE CONSERVA." style={{ marginBottom: 16 }} />
       {clientSummary ? (
         <Card title={`Resumen de ${clientSummary.client.full_name}`} style={{ marginBottom: 16 }}>
           <Row gutter={[16, 16]} style={{ marginBottom: 12 }}>
             <Col xs={24} md={6}><Statistic title="TOTAL CONTRATADO" value={clientSummary.total_contratado} precision={2} prefix="Bs" /></Col>
-            <Col xs={24} md={6}><Statistic title="TOTAL PAGADO" value={clientSummary.total_pagado} precision={2} prefix="Bs" /></Col>
+            <Col xs={24} md={6}><Statistic title="TOTAL ACREDITADO NETO" value={clientSummary.total_pagado} precision={2} prefix="Bs" /></Col>
             <Col xs={24} md={6}><Statistic title="SALDO PENDIENTE" value={clientSummary.saldo_pendiente} precision={2} prefix="Bs" /></Col>
             <Col xs={24} md={6}><Statistic title="PEDIDOS ACTIVOS" value={clientSummary.pedidos_activos} /></Col>
           </Row>
@@ -214,8 +222,9 @@ export function OrderReportsPage() {
               { title: 'TIPO', dataIndex: 'tipo', render: (value) => String(value || '').toUpperCase() },
               { title: 'ESTADO', dataIndex: 'estado_general', render: (value) => <Tag>{String(value || '').toUpperCase()}</Tag> },
               { title: 'TOTAL', dataIndex: 'precio_total', render: formatBs },
-              { title: 'PAGADO', dataIndex: 'total_pagado', render: formatBs },
-              { title: 'SALDO', dataIndex: 'saldo', render: formatBs },
+              { title: 'ACREDITADO NETO', dataIndex: 'total_pagado', render: formatBs },
+              { title: 'SALDO EXIGIBLE', dataIndex: 'saldo_exigible_bob', render: formatBs },
+              { title: 'PENDIENTE DEVOLUCIÓN', dataIndex: 'devolucion_pendiente_bob', render: formatBs },
             ]}
             dataSource={clientSummary.orders}
             pagination={false}

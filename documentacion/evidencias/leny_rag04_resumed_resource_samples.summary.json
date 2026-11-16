@@ -1,0 +1,8 @@
+{
+  "scope": "whole_system_spot_samples_not_continuous_peak_or_model_exclusive",
+  "sample_count": 428,
+  "minimum_observed_available_ram_bytes": 3928637440,
+  "maximum_observed_gpu_used_mib": 5850,
+  "start_utc": "2026-10-21T00:40:26.016632+00:00",
+  "end_utc": "2026-10-21T01:16:52.714040+00:00"
+}

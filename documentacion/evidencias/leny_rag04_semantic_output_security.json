@@ -1,0 +1,2980 @@
+{
+  "scope": "recorded_synthetic_target_stage_checks_not_global_security_certification",
+  "target_records": 48,
+  "executed_targets": 47,
+  "known_counts": {
+    "candidate_fragment_ids": 46,
+    "review_fragment_ids": 41,
+    "selected_fragment_ids": 40,
+    "sent_fragment_ids": 47,
+    "render_fragment_ids": 40,
+    "generator_fragment_ids": 40,
+    "citation_fragment_ids": 47
+  },
+  "violation_cases": [],
+  "literal_responses": 40,
+  "all_literal_responses": 40,
+  "literal_quotes": 119,
+  "all_quotes_literal": true,
+  "semantic_fidelity_not_certified_by_literalness": true,
+  "checks": [
+    {
+      "case_id": "rag04-natural-01",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-natural-02",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-natural-03",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-natural-04",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-natural-05",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-natural-06",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-natural-07",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-natural-08",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-natural-09",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-natural-10",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-natural-11",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 2,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 2,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 2,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 2,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-natural-12",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-natural-13",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-natural-14",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-literal-03",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-literal-08",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 5,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 5,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 5,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 5,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-synonyms-07",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-synonyms-10",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-synonyms-11",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 2,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 2,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 2,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 2,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-followup-01",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-followup-02",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-followup-03",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-followup-04",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-followup-05",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-followup-06",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 3,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-followup-07",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-01",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-02",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 2,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 2,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 2,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 2,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-03",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 2,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 2,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 2,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 2,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-04",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-05",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 3,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 3,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 3,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 3,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-06",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-multi_conflict-07",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-formats-05",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 3,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-formats-06",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-acl-01",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 8,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-acl-02",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-acl-03",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-acl-04",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 8,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-acl-05",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 5,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 5,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 5,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 5,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-acl-06",
+      "target_executed": false,
+      "stages": {},
+      "violations": [],
+      "not_exercised_reason": "preexisting_unauthorized_role_absent"
+    },
+    {
+      "case_id": "rag04-acl-07",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-acl-08",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-acl-09",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-acl-10",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 7,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 1,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-no_evidence-01",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": true,
+          "count": 6,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 4,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-no_evidence-02",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    },
+    {
+      "case_id": "rag04-no_evidence-03",
+      "target_executed": true,
+      "stages": {
+        "candidate_fragment_ids": {
+          "known": true,
+          "count": 10,
+          "unauthorized": []
+        },
+        "review_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "selected_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "sent_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        },
+        "render_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "generator_fragment_ids": {
+          "known": false,
+          "count": null,
+          "unauthorized": []
+        },
+        "citation_fragment_ids": {
+          "known": true,
+          "count": 0,
+          "unauthorized": []
+        }
+      },
+      "violations": []
+    }
+  ],
+  "literal_checks": [
+    {
+      "case_id": "rag04-natural-01",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-natural-02",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-natural-03",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-natural-04",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-natural-05",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-natural-06",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-natural-07",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-natural-08",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-natural-09",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-natural-10",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-natural-11",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "work-1",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-natural-12",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-natural-13",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-natural-14",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-literal-03",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-literal-08",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S5",
+          "fragment_id": "work-1",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-synonyms-07",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-synonyms-10",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "stock-1",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-synonyms-11",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "work-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-followup-01",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-followup-02",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-followup-03",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-followup-04",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-followup-05",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-followup-06",
+      "quotes": [
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-multi_conflict-01",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-multi_conflict-02",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "conflict-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "conflict-1",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-multi_conflict-03",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "conflict-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "conflict-1",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-multi_conflict-04",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-multi_conflict-05",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-multi_conflict-06",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-formats-05",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "price-1",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-formats-06",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "stock-1",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-acl-01",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "price-1",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-acl-03",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "stock-1",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-acl-04",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "price-1",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-acl-05",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S5",
+          "fragment_id": "work-1",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-acl-09",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "price-1",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-acl-10",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "stock-1",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    },
+    {
+      "case_id": "rag04-no_evidence-01",
+      "quotes": [
+        {
+          "source_label": "S1",
+          "fragment_id": "proc-1",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S2",
+          "fragment_id": "proc-2",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S3",
+          "fragment_id": "proc-3",
+          "literal": true,
+          "format_valid": true
+        },
+        {
+          "source_label": "S4",
+          "fragment_id": "proc-4",
+          "literal": true,
+          "format_valid": true
+        }
+      ],
+      "all_quotes_literal": true
+    }
+  ],
+  "publication_version_and_lock_regression_basis": "leny_rag04_semantic_pg.json; mocked models on existing isolated schema; no migration or additional real concurrent inference",
+  "tariff_literal_value_spot_checks": [
+    {
+      "case_id": "rag04-formats-05",
+      "250.00_present": true,
+      "40_percent_present": true,
+      "basis": "whole literal price-1 quote, not a global human exact_numbers score"
+    },
+    {
+      "case_id": "rag04-acl-01",
+      "250.00_present": true,
+      "40_percent_present": true,
+      "basis": "whole literal price-1 quote, not a global human exact_numbers score"
+    },
+    {
+      "case_id": "rag04-acl-09",
+      "250.00_present": true,
+      "40_percent_present": true,
+      "basis": "whole literal price-1 quote, not a global human exact_numbers score"
+    }
+  ]
+}

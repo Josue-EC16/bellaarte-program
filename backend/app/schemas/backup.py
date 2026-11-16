@@ -33,6 +33,8 @@ class BackupListItem(ORMBaseModel):
     db_nombre: str | None
     usuario: BackupUserSummary | None
     file_exists: bool
+    artifact_format: str = 'postgresql_custom'
+    includes_documents: bool = False
 
 
 class BackupDetailResponse(BackupListItem):

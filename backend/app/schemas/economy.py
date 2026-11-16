@@ -1,9 +1,10 @@
 from datetime import date, datetime
+from decimal import Decimal
 from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
-from app.models.boutique_enums import EstadoCorteCajaEnum, EstadoEgresoEnum, TipoEgresoEnum
+from app.models.boutique_enums import EstadoCorteCajaEnum, EstadoEgresoEnum, TipoEgresoEnum, MetodoPagoEnum
 from app.schemas.common import ORMBaseModel
 
 
@@ -21,8 +22,9 @@ def _normalize_upper(value: str | None) -> str | None:
 class ExpenseCreateRequest(BaseModel):
     tipo: TipoEgresoEnum
     concepto: str = Field(min_length=3, max_length=150)
-    cantidad: float = Field(gt=0)
-    precio_unidad: float = Field(gt=0)
+    cantidad: Decimal = Field(gt=0, max_digits=12, decimal_places=2)
+    precio_unidad: Decimal = Field(gt=0, max_digits=12, decimal_places=2)
+    metodo_pago: MetodoPagoEnum
     beneficiario: str | None = Field(default=None, max_length=120)
     observaciones_1: str | None = None
     observaciones_2: str | None = None
@@ -34,6 +36,8 @@ class ExpenseCreateRequest(BaseModel):
 
 
 class ExpenseAnnulRequest(BaseModel):
+    money_did_not_leave: bool = False
+    adjustment_method: MetodoPagoEnum | None = None
     motivo: str = Field(min_length=5, max_length=300)
 
     @field_validator("motivo", mode="before")
@@ -44,7 +48,7 @@ class ExpenseAnnulRequest(BaseModel):
 
 class CashCutCreateRequest(BaseModel):
     cajero_id: int = Field(gt=0)
-    fondo_asignado: float = Field(default=0, ge=0)
+    fondo_asignado: Decimal = Field(default=Decimal("0"), ge=0, max_digits=12, decimal_places=2)
     observaciones_apertura: str | None = None
 
     @field_validator("observaciones_apertura", mode="before")
@@ -54,7 +58,9 @@ class CashCutCreateRequest(BaseModel):
 
 
 class CashCutCloseRequest(BaseModel):
-    estado: EstadoCorteCajaEnum
+    efectivo_recibido: dict[str, Decimal] = Field(default_factory=dict)
+    cierre_legado: bool = False
+    estado: Literal[EstadoCorteCajaEnum.CERRADO, EstadoCorteCajaEnum.CERRADO_OBSERVADO]
     observaciones_cierre: str | None = None
 
     @field_validator("observaciones_cierre", mode="before")
@@ -64,6 +70,11 @@ class CashCutCloseRequest(BaseModel):
 
     @model_validator(mode="after")
     def validate_observed_close(self) -> "CashCutCloseRequest":
+        for code, amount in self.efectivo_recibido.items():
+            if not code.isalpha() or len(code) != 3 or code != code.upper():
+                raise ValueError("Usa el código de moneda en mayúsculas (BOB, USD).")
+            if not amount.is_finite() or amount < 0 or amount.as_tuple().exponent < -2:
+                raise ValueError("El efectivo recibido debe ser no negativo y tener hasta dos decimales.")
         if self.estado == EstadoCorteCajaEnum.CERRADO_OBSERVADO and not self.observaciones_cierre:
             raise ValueError("Debes registrar la observación de cierre cuando el estado es CERRADO OBSERVADO.")
         return self
@@ -72,14 +83,15 @@ class CashCutCloseRequest(BaseModel):
 class RefundFlowRequest(BaseModel):
     origin_type: IncomeSourceType
     origin_id: int = Field(gt=0)
-    target_state: RefundTargetState
-    refund_amount: float = Field(gt=0)
+    target_state: None = None
+    payment_method: MetodoPagoEnum
+    refund_amount: Decimal = Field(gt=0, max_digits=12, decimal_places=2)
     reason: str = Field(min_length=5, max_length=300)
     concepto: str = Field(min_length=3, max_length=150)
     beneficiario: str | None = Field(default=None, max_length=120)
     observaciones: str | None = None
 
-    @field_validator("origin_type", "target_state", mode="before")
+    @field_validator("origin_type", mode="before")
     @classmethod
     def normalize_catalogs(cls, value: str) -> str:
         return (_normalize_upper(value) or "")
@@ -105,15 +117,40 @@ class RefundContextResponse(BaseModel):
     current_state: str
     refunded_amount_bob: float
     refundable_balance_bob: float
+    pending_refund_bob: float = 0
+    net_collected_bob: float = 0
+    can_refund: bool = True
+    refund_block_reason: str | None = None
     available_target_states: list[RefundTargetState]
     suggested_concept: str
     suggested_beneficiary: str | None
 
 
+class OperativeCancellationRequest(BaseModel):
+    origin_type: IncomeSourceType
+    origin_id: int = Field(gt=0)
+    target_state: RefundTargetState
+    reason: str = Field(min_length=5, max_length=300)
+
+    @field_validator("reason", mode="before")
+    @classmethod
+    def normalize_reason(cls, value):
+        return _normalize_upper(value)
+
+
+class GuaranteeMovementRequest(BaseModel):
+    action: Literal["RECEIVE", "RETURN", "RETAIN"]
+    amount: Decimal = Field(gt=0, max_digits=12, decimal_places=2)
+    payment_method: MetodoPagoEnum
+    reason: str = Field(min_length=5, max_length=300)
+
+
 class RefundFlowResponse(BaseModel):
     origin_type: IncomeSourceType
     origin_id: int
-    target_state: RefundTargetState
+    target_state: RefundTargetState | None = None
+    constancia_id: int | None = None
+    refundable_balance_bob: float = 0
     refund_amount_bob: float
     expense_id: int
     expense_amount_bob: float
@@ -135,6 +172,9 @@ class CashCutMiniSummary(ORMBaseModel):
 
 
 class ExpenseListItem(ORMBaseModel):
+    metodo_pago: str | None = None
+    adjusted_amount_bob: float = 0
+    net_amount_bob: float = 0
     id: int
     fecha: datetime
     tipo: TipoEgresoEnum
@@ -151,6 +191,7 @@ class ExpenseListItem(ORMBaseModel):
 
 
 class ExpenseDetailResponse(ExpenseListItem):
+    constancia_id: int | None = None
     observaciones_1: str | None
     observaciones_2: str | None
     fecha_cambio_estado: datetime | None
@@ -158,6 +199,13 @@ class ExpenseDetailResponse(ExpenseListItem):
 
 
 class CashCutListItem(ORMBaseModel):
+    control_version: int = 0
+    certified: bool = False
+    efectivo_esperado: dict[str, float] = Field(default_factory=dict)
+    efectivo_recibido: dict[str, float] = Field(default_factory=dict)
+    diferencias_efectivo: dict[str, float] = Field(default_factory=dict)
+    efectivo_libre_bob: float | None = None
+    garantias_reservadas_bob: float | None = None
     id: int
     cajero: UserMiniSummary
     admin: UserMiniSummary
@@ -167,7 +215,7 @@ class CashCutListItem(ORMBaseModel):
     estado: EstadoCorteCajaEnum
     ingresos_total_bob: float
     egresos_total_bob: float
-    resultado_bob: float
+    resultado_bob: float | None
 
 
 class CashCutDetailResponse(CashCutListItem):
@@ -186,6 +234,8 @@ class CashCutOwnActiveResponse(ORMBaseModel):
 
 
 class CashCutOwnHistoryItem(ORMBaseModel):
+    control_version: int = 0
+    certified: bool = False
     id: int
     fecha_apertura: datetime
     fecha_cierre: datetime | None
@@ -215,6 +265,9 @@ class IncomeListItem(ORMBaseModel):
     tipo_cambio_usado: float | None
     monto_bob: float
     estado_origen: str
+    corte_id: int | None = None
+    monto_neto_bob: float = 0
+    pendiente_devolucion_bob: float = 0
     monto_devuelto_bob: float
 
 
@@ -230,7 +283,7 @@ class TimeSeriesBucket(BaseModel):
     period: str
     ingresos_total_bob: float
     egresos_total_bob: float
-    resultado_bob: float
+    resultado_bob: float | None
     efectivo: float = 0
     qr: float = 0
     transaccion: float = 0
@@ -239,18 +292,22 @@ class TimeSeriesBucket(BaseModel):
 
 
 class IncomeStatementReportResponse(BaseModel):
+    comparable: bool = True
+    comparison_note: str | None = None
     ingresos_total_bob: float
     egresos_total_bob: float
-    resultado_bob: float
+    resultado_bob: float | None
     ingresos_por_fuente: list[NamedAmountBucket]
     egresos_por_tipo: list[NamedAmountBucket]
     serie_mensual: list[TimeSeriesBucket]
 
 
 class CashFlowReportResponse(BaseModel):
+    comparable: bool = True
+    comparison_note: str | None = None
     entradas_total_bob: float
     egresos_total_bob: float
-    flujo_neto_bob: float
+    flujo_neto_bob: float | None
     entradas_por_metodo: list[NamedAmountBucket]
     entradas_por_fuente: list[NamedAmountBucket]
     entradas_por_moneda: list[NamedAmountBucket]
@@ -289,6 +346,23 @@ class MyHistoryReportResponse(BaseModel):
     cuts: list[CashCutOwnHistoryItem]
 
 
+class IncomePageResponse(BaseModel):
+    items: list[IncomeListItem]
+    total: int
+    page: int
+    page_size: int
+    total_bob: float
+    refunded_total_bob: float
+
+
+class ExpensePageResponse(BaseModel):
+    items: list[ExpenseListItem]
+    total: int
+    page: int
+    page_size: int
+    total_bob: float
+
+
 class EconomyFilters(BaseModel):
     search: str | None = None
     date_from: date | None = None
@@ -305,5 +379,28 @@ class EconomyFilters(BaseModel):
     def normalize_optional_text(cls, value: str | None) -> str | None:
         return _normalize_upper(value)
 
+    @model_validator(mode="after")
+    def ordered_dates(self):
+        if self.date_from and self.date_to and self.date_from > self.date_to:
+            raise ValueError("La fecha inicial no puede ser posterior a la final.")
+        return self
+
 
 CashCutDetailResponse.model_rebuild()
+
+
+class CashCutPageResponse(BaseModel):
+    items: list[CashCutListItem]
+    total: int
+    page: int
+    page_size: int
+    open_count: int
+    closed_count: int
+    observed_count: int
+
+
+class CashCutOwnHistoryPageResponse(BaseModel):
+    items: list[CashCutOwnHistoryItem]
+    total: int
+    page: int
+    page_size: int

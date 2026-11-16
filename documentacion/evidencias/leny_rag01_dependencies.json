@@ -1,0 +1,11 @@
+{
+  "python": "3.10.6",
+  "changed_existing_versions": {},
+  "added": {
+    "defusedxml": "0.7.1",
+    "pypdf": "6.21.1",
+    "pyvips": "3.2.0",
+    "pyvips-binary": "8.18.7"
+  },
+  "requirements_sha256": "cc10e95caa433b93706370d26253871e3cd6e665400914a4b8e6f03669de1bf6"
+}

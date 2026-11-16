@@ -1,0 +1,132 @@
+{
+  "scope": "isolated PostgreSQL55432 / synthetic content / real OCR and CPU Ollama / TestClient HTTP",
+  "results": {
+    "real_formats": 4,
+    "idempotent_admission": true,
+    "cpu_embeddings_1024": true,
+    "publication_blocked": false,
+    "cancel_preserves_valid_index": true,
+    "http_authentication": true,
+    "admin_publication_and_caja_real_chat": true,
+    "real_backup_restore_vectors_and_originals": true
+  },
+  "native_extraction": {
+    "scan.pdf": {
+      "ocr_pages": 1,
+      "known_number_preserved": true,
+      "warnings": []
+    },
+    "rotated.png": {
+      "ocr_pages": 1,
+      "known_number_preserved": true,
+      "warnings": []
+    },
+    "too-many.pdf": "RAG_OCR_PAGE_LIMIT",
+    "blank.png": "RAG_NO_TEXT",
+    "parser_cancel": "confirmed"
+  },
+  "documents": [
+    {
+      "format": "pdf",
+      "elapsed_seconds": 12.156,
+      "chunk_count": 1,
+      "warnings": [],
+      "status": "completed"
+    },
+    {
+      "format": "docx",
+      "elapsed_seconds": 12.0,
+      "chunk_count": 2,
+      "warnings": [],
+      "status": "completed"
+    },
+    {
+      "format": "png",
+      "elapsed_seconds": 11.532,
+      "chunk_count": 1,
+      "warnings": [],
+      "status": "completed"
+    },
+    {
+      "format": "jpg",
+      "elapsed_seconds": 12.062,
+      "chunk_count": 1,
+      "warnings": [],
+      "status": "completed"
+    }
+  ],
+  "timings": [
+    {
+      "embedding_and_release_seconds": 5.969,
+      "search_seconds": 0.015,
+      "context_seconds": 0.0,
+      "total_seconds": 7.281
+    },
+    {
+      "embedding_and_release_seconds": 5.797,
+      "search_seconds": 0.0,
+      "context_seconds": 0.0,
+      "total_seconds": 7.187
+    },
+    {
+      "embedding_and_release_seconds": 5.828,
+      "search_seconds": 0.0,
+      "context_seconds": 0.0,
+      "total_seconds": 7.172
+    },
+    {
+      "embedding_and_release_seconds": 5.718,
+      "search_seconds": 0.016,
+      "context_seconds": 0.0,
+      "total_seconds": 7.218
+    }
+  ],
+  "real_documental_chat": [
+    {
+      "format": "pdf",
+      "elapsed_seconds": 7.344,
+      "source_type": "PDF_TEXT",
+      "answer_contains_known_price": true,
+      "original_download_verified": true
+    },
+    {
+      "format": "docx",
+      "elapsed_seconds": 7.266,
+      "source_type": "DOCX_PARAGRAPH",
+      "answer_contains_known_price": true,
+      "original_download_verified": true
+    },
+    {
+      "format": "png",
+      "elapsed_seconds": 7.25,
+      "source_type": "IMAGE_OCR",
+      "answer_contains_known_price": true,
+      "original_download_verified": true
+    },
+    {
+      "format": "jpg",
+      "elapsed_seconds": 7.328,
+      "source_type": "IMAGE_OCR",
+      "answer_contains_known_price": true,
+      "original_download_verified": true
+    }
+  ],
+  "backup_counts": {
+    "rag_embeddings": 5,
+    "rag_fragmentos": 5,
+    "rag_indexaciones": 4,
+    "rag_trabajos": 5
+  },
+  "resources": {
+    "scope": "System-wide sample; other applications included, not per-process peak attribution",
+    "samples": 231,
+    "interval_seconds": 0.25,
+    "available_ram_before_bytes": 3003965440,
+    "minimum_available_ram_bytes": 1524006912,
+    "system_cpu_busy_percent": 29.1,
+    "embeddings_gpu_bytes": 0,
+    "embeddings_gpu_check": "verified per real batch by provider",
+    "parser_job_memory_limit_mb": 1536,
+    "acceptance_job_timeout_seconds": 1800
+  }
+}

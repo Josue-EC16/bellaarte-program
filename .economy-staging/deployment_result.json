@@ -1,0 +1,19 @@
+{
+  "state": "activated_verified",
+  "revision": "20261018_0016",
+  "verification": {
+    "backend_base_passed": 160,
+    "isolated_postgresql_passed": 70,
+    "frontend_passed": 30,
+    "lint": "passed",
+    "build": "passed_large_bundle_warning",
+    "health": 200,
+    "frontend": 200,
+    "protected_unauthenticated_http": 401,
+    "cors": "valid",
+    "business_service_smoke": "enforced_read_only",
+    "preexisting_tables_preserved_during_migration": 40,
+    "legacy_open_cut_preserved": true
+  },
+  "completed_time_utc": "2026-10-19T15:38:46.348064+00:00"
+}

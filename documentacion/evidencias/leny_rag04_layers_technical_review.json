@@ -1,0 +1,17 @@
+{
+  "scope": "independent_technical_artifact_review_not_human_semantic_ratings",
+  "files_reviewed": [
+    "leny_rag04_layers_final_metrics.json",
+    "leny_rag04_layers_comparison.json",
+    "leny_rag04_layers_final_replay.json",
+    "../REPORTE_IMPLEMENTACION_LENY.md"
+  ],
+  "denominators_confirmed": true,
+  "material_reporting_errors_found": false,
+  "regressions_disclosed": true,
+  "literal_provenance_distinguished_from_semantics": true,
+  "decision": "not_accepted_stop_after_focused_review",
+  "human_review_complete": false,
+  "holdout_executed": false,
+  "candidate_activated": false
+}

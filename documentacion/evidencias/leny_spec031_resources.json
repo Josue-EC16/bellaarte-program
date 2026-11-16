@@ -1,0 +1,166 @@
+{
+  "scope": "ambient_snapshots_not_inference_peaks",
+  "samples": [
+    {
+      "at": "2026-11-15T02:59:26.012667+00:00",
+      "total_ram_bytes": 16390729728,
+      "available_ram_bytes": 2296479744,
+      "process_working_sets": [
+        {
+          "ProcessName": "ollama",
+          "Id": 19820,
+          "WorkingSet64": 43339776
+        },
+        {
+          "ProcessName": "ollama app",
+          "Id": 20164,
+          "WorkingSet64": 51466240
+        },
+        {
+          "ProcessName": "python",
+          "Id": 13740,
+          "WorkingSet64": 4354048
+        },
+        {
+          "ProcessName": "python",
+          "Id": 23676,
+          "WorkingSet64": 16187392
+        },
+        {
+          "ProcessName": "python",
+          "Id": 25816,
+          "WorkingSet64": 4325376
+        },
+        {
+          "ProcessName": "python",
+          "Id": 27480,
+          "WorkingSet64": 146173952
+        },
+        {
+          "ProcessName": "python",
+          "Id": 28568,
+          "WorkingSet64": 90931200
+        },
+        {
+          "ProcessName": "python",
+          "Id": 30316,
+          "WorkingSet64": 4358144
+        }
+      ],
+      "gpu_global_mib": [
+        {
+          "used": 0,
+          "total": 6141
+        }
+      ]
+    },
+    {
+      "at": "2026-11-15T02:59:28.992983+00:00",
+      "total_ram_bytes": 16390729728,
+      "available_ram_bytes": 2328608768,
+      "process_working_sets": [
+        {
+          "ProcessName": "ollama",
+          "Id": 19820,
+          "WorkingSet64": 43339776
+        },
+        {
+          "ProcessName": "ollama app",
+          "Id": 20164,
+          "WorkingSet64": 51466240
+        },
+        {
+          "ProcessName": "python",
+          "Id": 13740,
+          "WorkingSet64": 4354048
+        },
+        {
+          "ProcessName": "python",
+          "Id": 23676,
+          "WorkingSet64": 16338944
+        },
+        {
+          "ProcessName": "python",
+          "Id": 25816,
+          "WorkingSet64": 4325376
+        },
+        {
+          "ProcessName": "python",
+          "Id": 27480,
+          "WorkingSet64": 146173952
+        },
+        {
+          "ProcessName": "python",
+          "Id": 28568,
+          "WorkingSet64": 90931200
+        },
+        {
+          "ProcessName": "python",
+          "Id": 30316,
+          "WorkingSet64": 4358144
+        }
+      ],
+      "gpu_global_mib": [
+        {
+          "used": 0,
+          "total": 6141
+        }
+      ]
+    },
+    {
+      "at": "2026-11-15T02:59:30.791190+00:00",
+      "total_ram_bytes": 16390729728,
+      "available_ram_bytes": 2323234816,
+      "process_working_sets": [
+        {
+          "ProcessName": "ollama",
+          "Id": 19820,
+          "WorkingSet64": 43339776
+        },
+        {
+          "ProcessName": "ollama app",
+          "Id": 20164,
+          "WorkingSet64": 51466240
+        },
+        {
+          "ProcessName": "python",
+          "Id": 13740,
+          "WorkingSet64": 4354048
+        },
+        {
+          "ProcessName": "python",
+          "Id": 23676,
+          "WorkingSet64": 16355328
+        },
+        {
+          "ProcessName": "python",
+          "Id": 25816,
+          "WorkingSet64": 4325376
+        },
+        {
+          "ProcessName": "python",
+          "Id": 27480,
+          "WorkingSet64": 146169856
+        },
+        {
+          "ProcessName": "python",
+          "Id": 28568,
+          "WorkingSet64": 90931200
+        },
+        {
+          "ProcessName": "python",
+          "Id": 30316,
+          "WorkingSet64": 4358144
+        }
+      ],
+      "gpu_global_mib": [
+        {
+          "used": 0,
+          "total": 6141
+        }
+      ]
+    }
+  ],
+  "cold_warm_comparison_available": false,
+  "attributable_inference_memory": null
+}

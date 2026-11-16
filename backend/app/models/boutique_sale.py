@@ -65,6 +65,7 @@ class VentaBoutique(Base):
     )
 
     id: Mapped[int] = mapped_column("veb_id", BigInteger, Identity(always=True), primary_key=True)
+    corte_id: Mapped[int | None] = mapped_column(ForeignKey("corte_caja.cco_id", ondelete="RESTRICT"), index=True)
     item_id: Mapped[int] = mapped_column(
         "itb_id",
         ForeignKey("item_boutique.itb_id", onupdate="CASCADE", ondelete="RESTRICT"),

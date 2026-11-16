@@ -1,0 +1,45 @@
+{
+  "revision": "20261104_0023",
+  "rate_rows": 4,
+  "technical_records": 0,
+  "technical_columns": [
+    "tcs_id",
+    "mon_id",
+    "tcm_id",
+    "tcs_fecha_objetivo",
+    "tcs_num_intento",
+    "tcs_fec_intento",
+    "tcs_estado",
+    "tcs_codigo_http",
+    "tcs_proximo_intento",
+    "tcs_proveedor"
+  ],
+  "active_duplicate_groups": 0,
+  "general_rate_trigger_present": false,
+  "currency_audit_trigger_present": true,
+  "automation_enabled": false,
+  "historical_import_executed": false,
+  "deployment": {
+    "time_utc": "2026-11-05T02:19:30.464446+00:00",
+    "revision_before": "20261103_0022",
+    "revision_after": "20261104_0023",
+    "state": "deployed_health_verified",
+    "backup_sha256": "1c1ca094bb12b9848935a178b4777a4da0afa89fa8b06e5adccb33c8fef1a0ff",
+    "backup_bytes": 5099429,
+    "backup_offline_read": true,
+    "includes_private_originals": true,
+    "existing_rows_unchanged": true,
+    "existing_tables": 62,
+    "moneda_structure_unchanged": true,
+    "only_three_columns_added": true,
+    "legacy_rates_manual": true,
+    "historical_log_rows": 0,
+    "health_200": true
+  },
+  "http_checks": {
+    "GET /health": 200,
+    "GET /api/v1/monedas/tipos-cambio": 401,
+    "GET /api/v1/monedas": 401,
+    "POST /api/v1/monedas/tipos-cambio": 401
+  }
+}

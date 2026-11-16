@@ -18,6 +18,7 @@ from app.schemas.boutique import (
     BoutiqueEntryUserSummary,
     ProveedorNested,
 )
+from app.services.financial_source_service import _lock
 from app.services.notification_service import sync_boutique_stock_notification
 
 
@@ -165,6 +166,7 @@ def create_boutique_entry(
     ip_address: str | None,
     user_agent: str | None,
 ) -> BoutiqueEntryDetailResponse:
+    _lock(db, ItemBoutique, payload.item_id)
     item = _get_item(db, payload.item_id)
     provider = _get_provider(db, payload.provider_id)
 
@@ -207,6 +209,11 @@ def set_boutique_entry_status(
     ip_address: str | None,
     user_agent: str | None,
 ) -> BoutiqueEntryDetailResponse:
+    with db.no_autoflush:
+        item_id=db.scalar(select(EntradaItemBoutique.item_id).where(EntradaItemBoutique.id==entry_id))
+        if item_id is not None:
+            _lock(db,ItemBoutique,item_id)
+        _lock(db,EntradaItemBoutique,entry_id)
     entry = _get_entry(db, entry_id)
     if entry.estado == is_active:
         return _to_detail_response(entry)

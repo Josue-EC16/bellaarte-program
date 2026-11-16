@@ -67,6 +67,8 @@ def _to_list_item(entity: BackupBd) -> BackupListItem:
         db_nombre=entity.db_nombre,
         usuario=_user_summary(entity.usuario),
         file_exists=_file_exists(entity.ruta_archivo),
+        artifact_format='bab_bundle_v1' if entity.nombre_archivo.lower().endswith('.zip') else 'postgresql_custom',
+        includes_documents=entity.nombre_archivo.lower().endswith('.zip'),
     )
 
 

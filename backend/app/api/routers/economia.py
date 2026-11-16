@@ -2,15 +2,15 @@ import csv
 import io
 from datetime import date
 
-from fastapi import APIRouter, Depends, Query, Request, Response, status
+from fastapi import APIRouter, Depends, Query, Request, Response, status, HTTPException
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
-from app.deps.auth import get_enforcer, require_permission
+from app.deps.auth import get_enforcer, require_permission, get_current_account
 from app.models.account import Cuenta
 from app.models.boutique_enums import EstadoCorteCajaEnum, EstadoEgresoEnum, TipoEgresoEnum
 from app.schemas.economy import (
-    CashCutCloseRequest,
+    CashCutCloseRequest, CashCutPageResponse, CashCutOwnHistoryPageResponse,
     CashCutCreateRequest,
     CashCutDetailResponse,
     CashCutListItem,
@@ -20,7 +20,7 @@ from app.schemas.economy import (
     ExpenseCreateRequest,
     ExpenseDetailResponse,
     ExpenseListItem,
-    IncomeListItem,
+    IncomeListItem, IncomePageResponse, ExpensePageResponse, OperativeCancellationRequest, GuaranteeMovementRequest,
     IncomeStatementReportResponse,
     MyHistoryReportResponse,
     MyIncomeStatementResponse,
@@ -29,7 +29,7 @@ from app.schemas.economy import (
     RefundFlowRequest,
     RefundFlowResponse,
 )
-from app.services.cash_cut_service import close_cash_cut, get_cash_cut_detail, get_my_active_cut, get_my_cut_history, list_cash_cuts, open_cash_cut
+from app.services.cash_cut_service import close_cash_cut, get_cash_cut_detail, get_my_active_cut, get_my_cut_history, list_cash_cuts, open_cash_cut, get_my_cut_history_page
 from app.services.economy_report_service import (
     CashFlowReportResponse,
     CashierReportResponse,
@@ -42,7 +42,8 @@ from app.services.economy_report_service import (
 )
 from app.services.expense_service import annul_expense, create_expense, get_expense_detail, list_expenses
 from app.services.income_service import list_income_rows, get_income_refund_context
-from app.services.refund_flow_service import apply_refund_flow
+from app.services.refund_flow_service import apply_refund_flow, apply_operative_cancellation, apply_guarantee_movement
+from app.services.economic_write_service import economic_write
 
 
 router = APIRouter()
@@ -67,8 +68,10 @@ def _ensure_export_permission(account: Cuenta, enforcer_instance) -> None:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No tienes permisos para exportar reportes económicos.")
 
 
-@router.get("/ingresos", response_model=list[IncomeListItem])
+@router.get("/ingresos", response_model=IncomePageResponse)
 def get_income_rows(
+    page: int = Query(default=1,ge=1),
+    page_size: int = Query(default=25,ge=1,le=100),
     search: str | None = Query(default=None, min_length=1),
     source_type: str | None = Query(default=None),
     user_id: int | None = Query(default=None, gt=0),
@@ -78,9 +81,9 @@ def get_income_rows(
     date_to: date | None = Query(default=None),
     db: Session = Depends(get_db),
     account: Cuenta = Depends(require_permission("economy_income:view")),
-) -> list[IncomeListItem]:
+) -> IncomePageResponse:
     return list_income_rows(
-        db,
+        db,page=page,page_size=page_size,
         account=account,
         search=search,
         source_type=source_type.strip().upper() if source_type else None,
@@ -97,12 +100,12 @@ def get_refund_context(
     origin_type: str,
     origin_id: int,
     db: Session = Depends(get_db),
-    _account: Cuenta = Depends(require_permission("economy_refunds:create")),
+    account: Cuenta = Depends(require_permission("economy_refunds:create")),
 ) -> RefundContextResponse:
     return get_income_refund_context(
         db,
         origin_type=origin_type.strip().upper(),
-        origin_id=origin_id,
+        origin_id=origin_id,account=account,
     )
 
 
@@ -113,17 +116,22 @@ def create_refund_flow(
     db: Session = Depends(get_db),
     account: Cuenta = Depends(require_permission("economy_refunds:create")),
 ) -> RefundFlowResponse:
-    return apply_refund_flow(
+    return economic_write(db,account=account,operation="refund",
+        key=request.headers.get("Idempotency-Key"),payload={"body":payload.model_dump(mode="python"),"resource_id":None},
+        execute=lambda: apply_refund_flow(
         db,
         payload=payload,
         account=account,
         ip_address=request.client.host if request.client else None,
         user_agent=request.headers.get("user-agent"),
-    )
+        commit=False,
+    ))
 
 
-@router.get("/egresos", response_model=list[ExpenseListItem])
+@router.get("/egresos", response_model=ExpensePageResponse)
 def get_expenses(
+    page: int = Query(default=1,ge=1),
+    page_size: int = Query(default=25,ge=1,le=100),
     search: str | None = Query(default=None, min_length=1),
     expense_type: TipoEgresoEnum | None = Query(default=None, alias="type"),
     state: EstadoEgresoEnum | None = Query(default=None),
@@ -132,9 +140,9 @@ def get_expenses(
     date_to: date | None = Query(default=None),
     db: Session = Depends(get_db),
     account: Cuenta = Depends(require_permission("economy_expenses:list")),
-) -> list[ExpenseListItem]:
+) -> ExpensePageResponse:
     return list_expenses(
-        db,
+        db,page=page,page_size=page_size,
         account=account,
         search=search,
         expense_type=expense_type,
@@ -161,13 +169,16 @@ def post_expense(
     db: Session = Depends(get_db),
     account: Cuenta = Depends(require_permission("economy_expenses:create")),
 ) -> ExpenseDetailResponse:
-    return create_expense(
+    return economic_write(db,account=account,operation="expense_create",
+        key=request.headers.get("Idempotency-Key"),payload={"body":payload.model_dump(mode="python"),"resource_id":None},
+        execute=lambda: create_expense(
         db,
         payload=payload,
         created_by=account,
         ip_address=request.client.host if request.client else None,
         user_agent=request.headers.get("user-agent"),
-    )
+        commit=False,
+    ))
 
 
 @router.patch("/egresos/{expense_id}/annul", response_model=ExpenseDetailResponse)
@@ -178,14 +189,17 @@ def patch_expense_annul(
     db: Session = Depends(get_db),
     account: Cuenta = Depends(require_permission("economy_expenses:annul")),
 ) -> ExpenseDetailResponse:
-    return annul_expense(
+    return economic_write(db,account=account,operation="expense_annul",
+        key=request.headers.get("Idempotency-Key"),payload={"body":payload.model_dump(mode="python"),"resource_id":expense_id},
+        execute=lambda: annul_expense(
         db,
         expense_id=expense_id,
         payload=payload,
         changed_by=account,
         ip_address=request.client.host if request.client else None,
         user_agent=request.headers.get("user-agent"),
-    )
+        commit=False,
+    ))
 
 
 @router.get("/cortes-caja/me", response_model=CashCutOwnActiveResponse)
@@ -196,25 +210,29 @@ def get_my_cash_cut(
     return get_my_active_cut(db, account=account)
 
 
-@router.get("/cortes-caja/me/history", response_model=list[CashCutOwnHistoryItem])
+@router.get("/cortes-caja/me/history", response_model=CashCutOwnHistoryPageResponse)
 def get_my_cash_cut_history(
+    page: int = Query(default=1,ge=1),
+    page_size: int = Query(default=25,ge=1,le=100),
     db: Session = Depends(get_db),
     account: Cuenta = Depends(require_permission("cash_cuts:view_own")),
-) -> list[CashCutOwnHistoryItem]:
-    return get_my_cut_history(db, account=account)
+) -> CashCutOwnHistoryPageResponse:
+    return get_my_cut_history_page(db, account=account,page=page,page_size=page_size)
 
 
-@router.get("/cortes-caja", response_model=list[CashCutListItem])
+@router.get("/cortes-caja", response_model=CashCutPageResponse)
 def get_cash_cuts(
+    page: int = Query(default=1,ge=1),
+    page_size: int = Query(default=25,ge=1,le=100),
     cajero_id: int | None = Query(default=None, gt=0),
     state: EstadoCorteCajaEnum | None = Query(default=None),
     date_from: date | None = Query(default=None),
     date_to: date | None = Query(default=None),
     db: Session = Depends(get_db),
     account: Cuenta = Depends(require_permission("cash_cuts:list")),
-) -> list[CashCutListItem]:
+) -> CashCutPageResponse:
     return list_cash_cuts(
-        db,
+        db,page=page,page_size=page_size,
         account=account,
         cajero_id=cajero_id,
         state=state,
@@ -230,13 +248,16 @@ def create_cash_cut(
     db: Session = Depends(get_db),
     account: Cuenta = Depends(require_permission("cash_cuts:open")),
 ) -> CashCutDetailResponse:
-    return open_cash_cut(
+    return economic_write(db,account=account,operation="cut_open",
+        key=request.headers.get("Idempotency-Key"),payload={"body":payload.model_dump(mode="python"),"resource_id":None},
+        execute=lambda: open_cash_cut(
         db,
         payload=payload,
         opened_by=account,
         ip_address=request.client.host if request.client else None,
         user_agent=request.headers.get("user-agent"),
-    )
+        commit=False,
+    ))
 
 
 @router.get("/cortes-caja/{cut_id}", response_model=CashCutDetailResponse)
@@ -256,14 +277,17 @@ def close_cut(
     db: Session = Depends(get_db),
     account: Cuenta = Depends(require_permission("cash_cuts:close")),
 ) -> CashCutDetailResponse:
-    return close_cash_cut(
+    return economic_write(db,account=account,operation="cut_close",
+        key=request.headers.get("Idempotency-Key"),payload={"body":payload.model_dump(mode="python"),"resource_id":cut_id},
+        execute=lambda: close_cash_cut(
         db,
         cut_id=cut_id,
         payload=payload,
         closed_by=account,
         ip_address=request.client.host if request.client else None,
         user_agent=request.headers.get("user-agent"),
-    )
+        commit=False,
+    ))
 
 
 @router.get("/reportes/estado-resultados", response_model=IncomeStatementReportResponse)
@@ -298,6 +322,7 @@ def get_income_statement(
                 ["RESUMEN", "INGRESOS_TOTAL_BOB", report.ingresos_total_bob],
                 ["RESUMEN", "EGRESOS_TOTAL_BOB", report.egresos_total_bob],
                 ["RESUMEN", "RESULTADO_BOB", report.resultado_bob],
+                ["RESUMEN", "COMPARABILIDAD", report.comparison_note or "COMPARABLE"],
                 *[["INGRESOS_POR_FUENTE", item.label, item.total_bob] for item in report.ingresos_por_fuente],
                 *[["EGRESOS_POR_TIPO", item.label, item.total_bob] for item in report.egresos_por_tipo],
             ],
@@ -332,9 +357,11 @@ def get_cash_flow(
         _ensure_export_permission(account, enforcer_instance)
         return _csv_response(
             filename="flujo_efectivo.csv",
-            headers=["PERIODO", "INGRESOS_BOB", "EGRESOS_BOB", "RESULTADO_BOB", "EFECTIVO", "QR", "TRANSACCION", "TARJETA", "TICKET_O_VALE"],
+            headers=["PERIODO", "INGRESOS_BOB", "EGRESOS_BOB", "RESULTADO_BOB", "EFECTIVO", "QR", "TRANSACCION", "TARJETA", "TICKET_O_VALE", "COMPARABILIDAD"],
             rows=[
-                [
+                ["RESUMEN",report.entradas_total_bob,report.egresos_total_bob,report.flujo_neto_bob,
+                 "","","","","",report.comparison_note or "COMPARABLE"],
+                *[ [
                     item.period,
                     item.ingresos_total_bob,
                     item.egresos_total_bob,
@@ -344,8 +371,9 @@ def get_cash_flow(
                     item.transaccion,
                     item.tarjeta,
                     item.ticket_o_vale,
+                    report.comparison_note or "COMPARABLE",
                 ]
-                for item in report.serie_periodica
+                for item in report.serie_periodica]
             ],
         )
     return report
@@ -354,12 +382,14 @@ def get_cash_flow(
 @router.get("/reportes/cajeros/{user_id}", response_model=CashierReportResponse)
 def get_cashier_summary(
     user_id: int,
+    date_from: date | None = Query(default=None),
+    date_to: date | None = Query(default=None),
     format: str = Query(default="json", pattern="^(json|csv)$"),
     db: Session = Depends(get_db),
     account: Cuenta = Depends(require_permission("economy_reports:view_all")),
     enforcer_instance=Depends(get_enforcer),
 ):
-    report = get_cashier_report(db, account=account, cashier_user_id=user_id)
+    report = get_cashier_report(db, account=account, cashier_user_id=user_id,date_from=date_from,date_to=date_to)
     if format == "csv":
         _ensure_export_permission(account, enforcer_instance)
         return _csv_response(
@@ -456,3 +486,53 @@ def get_my_history(
             ],
         )
     return report
+
+
+@router.post("/anulaciones-operativas")
+def operative_cancel(payload: OperativeCancellationRequest,request: Request,
+                     db: Session=Depends(get_db),account: Cuenta=Depends(get_current_account),
+                     enforcer_instance=Depends(get_enforcer)):
+    permission={"VENTA_BOUTIQUE":"boutique_sales:cancel" if payload.target_state=="CANCELADA" else "boutique_sales:annul",
+                "PAGO_PEDIDO":"order_payments:annul","SALIDA_FLETE":"flete_outputs:annul"}[payload.origin_type]
+    if not enforcer_instance.enforce(account.rol.codigo,permission,"use"):
+        raise HTTPException(403,"No tienes permiso para anular esta operaci?n.")
+    return economic_write(db,account=account,operation="operative_cancel",key=request.headers.get("Idempotency-Key"),payload=payload,
+        execute=lambda:apply_operative_cancellation(db,payload=payload,account=account,
+            ip_address=request.client.host if request.client else None,user_agent=request.headers.get("user-agent"),commit=False))
+
+
+@router.post("/garantias/{origin_id}/movimientos")
+def guarantee_movement(origin_id:int,payload:GuaranteeMovementRequest,request:Request,
+                       db:Session=Depends(get_db),account:Cuenta=Depends(require_permission("economy_refunds:create"))):
+    return economic_write(db,account=account,operation="guarantee",key=request.headers.get("Idempotency-Key"),
+        payload={"origin_id":origin_id,"body":payload.model_dump(mode="python")},
+        execute=lambda:apply_guarantee_movement(db,origin_id=origin_id,payload=payload,account=account,
+            ip_address=request.client.host if request.client else None,user_agent=request.headers.get("user-agent"),commit=False))
+
+
+@router.get("/constancias-devolucion/{constancia_id}")
+def refund_certificate(constancia_id:int,db:Session=Depends(get_db),
+                       account:Cuenta=Depends(require_permission("economy_expenses:view"))):
+    from app.models.economy import ConstanciaDevolucion,Egreso
+    constancia=db.get(ConstanciaDevolucion,constancia_id)
+    if constancia is None:
+        raise HTTPException(404,"Constancia no encontrada.")
+    expense=db.get(Egreso,constancia.egreso_id)
+    if account.rol.codigo!="ADMIN" and expense.usuario_id!=account.usuario_id:
+        raise HTTPException(403,"Solo puedes consultar tus constancias.")
+    return {"id":constancia.id,"fecha":constancia.fecha,"snapshot":constancia.snapshot,"fiscal":False}
+
+
+@router.get("/garantias/{origin_id}")
+def guarantee_balance(origin_id:int,db:Session=Depends(get_db),
+                      account:Cuenta=Depends(require_permission("economy_refunds:create"))):
+    from app.models.flete import SalidaFlete
+    from app.services.financial_source_service import ensure_source_access
+    from app.services.income_service import _get_active_cut_for_cajero
+    from app.services.economic_ledger_service import get_guarantee_balance
+    source=db.get(SalidaFlete,origin_id)
+    if source is None:
+        raise HTTPException(404,"Salida no encontrada.")
+    cut=None if account.rol.codigo=="ADMIN" else _get_active_cut_for_cajero(db,cajero_id=account.usuario_id)
+    ensure_source_access(account,source,cut)
+    return get_guarantee_balance(db,origin_id)

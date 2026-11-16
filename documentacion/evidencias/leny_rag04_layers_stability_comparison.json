@@ -1,0 +1,59 @@
+{
+  "scope": "one_additional_attempt_per_seen_case_not_stability_certification",
+  "same_sources_models_settings": true,
+  "case_count": 2,
+  "observations_per_case": 2,
+  "cases": [
+    {
+      "case_id": "rag04-formats-05",
+      "observations": [
+        {
+          "status": "completed",
+          "route": "no_evidence",
+          "error_code": null,
+          "selected_fragment_ids": null,
+          "request_id": "54649e91-948f-4e5e-8dce-00e439be7585",
+          "latency_ms": 9313.00000000192
+        },
+        {
+          "status": "completed",
+          "route": "no_evidence",
+          "error_code": null,
+          "selected_fragment_ids": null,
+          "request_id": "597c5af8-00df-4140-9cbc-94c7cf35e102",
+          "latency_ms": 9046.999999998661
+        }
+      ],
+      "same_route": true,
+      "same_selection": true
+    },
+    {
+      "case_id": "rag04-acl-10",
+      "observations": [
+        {
+          "status": "completed",
+          "route": "rag",
+          "error_code": null,
+          "selected_fragment_ids": [
+            "stock-1"
+          ],
+          "request_id": "16bc7d34-b976-47fc-aa9b-8af0fd387ea2",
+          "latency_ms": 9843.000000000757
+        },
+        {
+          "status": "completed",
+          "route": "rag",
+          "error_code": null,
+          "selected_fragment_ids": [
+            "stock-1"
+          ],
+          "request_id": "7796b7fc-302a-438a-b189-58178e7409ab",
+          "latency_ms": 9422.0000000023
+        }
+      ],
+      "same_route": true,
+      "same_selection": true
+    }
+  ],
+  "best_attempt_selection": false
+}

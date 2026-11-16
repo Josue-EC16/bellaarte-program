@@ -1,0 +1,32 @@
+{
+  "state": "activated_reload_requested_runtime_verification_pending",
+  "pilot_id": "leny-rag-v1-piloto-20261021-r3",
+  "created_utc": "2026-10-21T15:57:44.1983192Z",
+  "owner_authorization": "explicit_activation_in_chat",
+  "env_before_sha256": "af3153226e1db483c81dc70b002d5cc8b46ec193df98624d7552195d703583cc",
+  "env_after_sha256": "aa3707f5543b26014cd36a8022448bd0362c80efa8637b1c7794b01c40d08b97",
+  "configuration_dacl_preserved": true,
+  "full_descriptor_equal": true,
+  "owner_equal": true,
+  "group_equal": true,
+  "entry_content_unchanged": true,
+  "reload_method": "existing_uvicorn_reload_watcher_entry_mtime_only",
+  "workers_before": [
+    {
+      "ProcessId": 4284,
+      "ParentProcessId": 3204,
+      "Name": "python.exe"
+    }
+  ],
+  "frontend_restarted": false,
+  "ollama_restarted": false,
+  "worker_started": false,
+  "migrations_executed": false,
+  "earlier_attempt": {
+    "full_descriptor_check_differed": true,
+    "rollback_to_exact_legacy_confirmed": true,
+    "backend_reload_attempted": false,
+    "legacy_effective_verified_in_admin_ui": true,
+    "reason": "initial_check_compared_full_security_descriptor_instead_of_DACL"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "model": "gemini-3.1-flash-lite",
+  "thinking": "medium",
+  "input_budget": 32678,
+  "output_limit": 8192,
+  "free_tier_confirmation": "owner",
+  "documents_sent": false,
+  "checks": [
+    {
+      "check": "model_access",
+      "passed": true
+    },
+    {
+      "check": "synthetic_plain_generation",
+      "passed": true
+    }
+  ],
+  "metrics": {
+    "inference_calls_total": 2,
+    "prompt_tokens_total": 7,
+    "output_tokens_total": 1,
+    "calls_without_token_counts": 1,
+    "thinking_tokens_total": 77
+  },
+  "effective_model": "gemini-3.1-flash-lite",
+  "seconds": 2.719
+}

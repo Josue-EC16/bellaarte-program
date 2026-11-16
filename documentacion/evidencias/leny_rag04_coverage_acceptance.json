@@ -1,0 +1,71 @@
+{
+  "scope": "experimental_gate_decisions_not_spec04_global_acceptance",
+  "acceptance": "not_accepted",
+  "basis": "same48_replay_and12_proposed_controls_no_post_result_tuning",
+  "criteria": {
+    "critical_specific_rejections": {
+      "passed": true,
+      "numerator": 2,
+      "denominator": 2
+    },
+    "natural_preserved": {
+      "passed": false,
+      "numerator": 4,
+      "denominator": 14
+    },
+    "previously_correct_evidence_preserved": {
+      "passed": false,
+      "numerator": 12,
+      "denominator": 38
+    },
+    "sent_hit_nonregression": {
+      "passed": false,
+      "numerator": 12,
+      "denominator": 39
+    },
+    "no_evidence_category": {
+      "passed": true,
+      "numerator": 3,
+      "denominator": 3
+    },
+    "controls_positive": {
+      "passed": false,
+      "numerator": 1,
+      "denominator": 6
+    },
+    "controls_negative_exact_classification": {
+      "passed": false,
+      "numerator": 1,
+      "denominator": 6
+    },
+    "no_negative_unsafe_acceptance": {
+      "passed": true,
+      "count": 0
+    },
+    "recorded_acl_subsets": {
+      "passed": true,
+      "count": 0
+    },
+    "performance_observed": {
+      "passed": true,
+      "p95_ms": 3.8027000045985915,
+      "samples": 40
+    },
+    "human_approved_metadata": {
+      "passed": false,
+      "reason": "all annotations remain draft"
+    },
+    "human_semantic_rubric": {
+      "passed": false,
+      "reason": "not performed"
+    },
+    "real_model_context_and_e2e": {
+      "passed": null,
+      "reason": "not invoked; offline replay cannot certify it"
+    }
+  },
+  "existing_global_thresholds_changed": false,
+  "gold_changed": false,
+  "human_review_complete": false,
+  "promotion_allowed": false
+}

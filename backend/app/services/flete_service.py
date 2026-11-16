@@ -39,7 +39,9 @@ from app.schemas.flete import (
     SalidaFleteReturnRequest,
 )
 from app.services.currency_service import get_active_exchange_rate_for_currency
-from app.services.notification_service import sync_flete_max_outputs_notification, sync_flete_return_notifications_for_output
+from app.services.financial_source_service import money, rate, lock_flete, _lock, rollback_on_error
+from app.services.economic_ledger_service import lock_active_cut, record_income
+from app.services.notification_service import sync_boutique_stock_notification, sync_flete_max_outputs_notification, sync_flete_return_notifications_for_output
 from app.services.receipt_service import annul_receipt, create_flete_output_receipt
 
 
@@ -383,6 +385,7 @@ def create_flete(
     user_agent: str | None,
 ) -> FleteDetailResponse:
     _ensure_operating_account(created_by)
+    _lock(db,ItemBoutique,payload.item_id)
     item = _get_item(db, payload.item_id)
     if not item.estado:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="El producto boutique está inactivo.")
@@ -419,6 +422,7 @@ def create_flete(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    sync_boutique_stock_notification(db, item_id=item.id)
     db.commit()
     return get_flete_detail(db, flete.id)
 
@@ -432,6 +436,7 @@ def update_flete(
     ip_address: str | None,
     user_agent: str | None,
 ) -> FleteDetailResponse:
+    lock_flete(db,flete_id)
     flete = _get_flete_entity(db, flete_id)
     if not flete.habilitado or flete.estado in {EstadoFleteEnum.PASADO_PARA_VENTA, EstadoFleteEnum.RETIRADO}:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="No puedes editar un flete cerrado.")
@@ -452,6 +457,7 @@ def update_flete(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    sync_flete_max_outputs_notification(db, flete_id=flete.id)
     db.commit()
     return get_flete_detail(db, flete.id)
 
@@ -465,7 +471,10 @@ def disable_flete(
     ip_address: str | None,
     user_agent: str | None,
 ) -> FleteDetailResponse:
+    lock_flete(db,flete_id)
     flete = _get_flete_entity(db, flete_id)
+    if not flete.habilitado or flete.estado in {EstadoFleteEnum.RETIRADO,EstadoFleteEnum.PASADO_PARA_VENTA}:
+        raise HTTPException(409,"El flete ya está cerrado; la restitución de stock se aplica una sola vez.")
     if _get_active_output(flete) is not None:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="No puedes deshabilitar un flete con una salida activa o reservada.")
     if flete.salidas_actuales > 0:
@@ -488,6 +497,7 @@ def disable_flete(
         user_agent=user_agent,
     )
     sync_flete_max_outputs_notification(db, flete_id=flete.id)
+    sync_boutique_stock_notification(db, item_id=flete.item_id)
     db.commit()
     return get_flete_detail(db, flete.id)
 
@@ -501,6 +511,7 @@ def resolve_flete_review(
     ip_address: str | None,
     user_agent: str | None,
 ) -> FleteDetailResponse:
+    lock_flete(db,flete_id)
     flete = _get_flete_entity(db, flete_id)
     if flete.estado != EstadoFleteEnum.EN_REVISION:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Solo puedes resolver fletes en revisión.")
@@ -518,6 +529,7 @@ def resolve_flete_review(
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    sync_flete_max_outputs_notification(db, flete_id=flete.id)
     db.commit()
     return get_flete_detail(db, flete.id)
 
@@ -531,6 +543,7 @@ def pass_flete_to_sale(
     ip_address: str | None,
     user_agent: str | None,
 ) -> FletePassToSaleResponse:
+    lock_flete(db,flete_id)
     flete = _get_flete_entity(db, flete_id)
     if _get_active_output(flete) is not None:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="No puedes pasar a venta un vestido con salida activa o reservada.")
@@ -593,6 +606,7 @@ def pass_flete_to_sale(
         user_agent=user_agent,
     )
     sync_flete_max_outputs_notification(db, flete_id=flete.id)
+    sync_boutique_stock_notification(db, item_id=new_item.id)
     db.commit()
     return FletePassToSaleResponse(flete=get_flete_detail(db, flete.id), new_item_id=new_item.id, new_item_code=new_code)
 
@@ -606,7 +620,10 @@ def retire_flete(
     ip_address: str | None,
     user_agent: str | None,
 ) -> FleteDetailResponse:
+    lock_flete(db,flete_id)
     flete = _get_flete_entity(db, flete_id)
+    if not flete.habilitado or flete.estado in {EstadoFleteEnum.RETIRADO,EstadoFleteEnum.PASADO_PARA_VENTA}:
+        raise HTTPException(409,"El flete ya está cerrado; la restitución de stock se aplica una sola vez.")
     if _get_active_output(flete) is not None:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="No puedes retirar un vestido con salida activa o reservada.")
     if flete.salidas_actuales == 0:
@@ -625,6 +642,7 @@ def retire_flete(
         user_agent=user_agent,
     )
     sync_flete_max_outputs_notification(db, flete_id=flete.id)
+    sync_boutique_stock_notification(db, item_id=flete.item_id)
     db.commit()
     return get_flete_detail(db, flete.id)
 
@@ -685,6 +703,7 @@ def get_flete_output_detail(db: Session, salida_id: int) -> SalidaFleteDetailRes
     return _to_output_detail(_get_output_entity(db, salida_id))
 
 
+@rollback_on_error
 def create_flete_output(
     db: Session,
     *,
@@ -692,8 +711,11 @@ def create_flete_output(
     created_by: Cuenta,
     ip_address: str | None,
     user_agent: str | None,
+    commit: bool = True,
 ) -> SalidaFleteDetailResponse:
     _ensure_operating_account(created_by)
+    cut = lock_active_cut(db, created_by)
+    lock_flete(db, payload.flete_id)
     flete = _get_flete_entity(db, payload.flete_id)
     if not flete.habilitado:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="El flete seleccionado está inactivo.")
@@ -703,14 +725,14 @@ def create_flete_output(
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="El vestido ya tiene una salida activa o reservada.")
 
     next_num = (db.execute(select(func.max(SalidaFlete.numero_salida)).where(SalidaFlete.flete_id == flete.id)).scalar_one() or 0) + 1
-    if next_num > flete.max_salidas:
+    if flete.salidas_actuales >= flete.max_salidas:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="No puedes superar el máximo de salidas permitido para este vestido.")
 
     client = _get_client(db, payload.client_id)
     currency = _get_currency(db, payload.currency_id)
 
-    subtotal = Decimal(str(payload.precio))
-    discount = Decimal(str(payload.descuento or 0))
+    subtotal = money(payload.precio)
+    discount = money(payload.descuento)
     total_bob = subtotal - discount
     if total_bob <= 0:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="El total del flete debe ser mayor a cero.")
@@ -722,13 +744,14 @@ def create_flete_output(
         exchange_rate = get_active_exchange_rate_for_currency(db, currency.id)
         if exchange_rate is None:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="La moneda seleccionada no tiene un tipo de cambio activo.")
-        exchange_rate_used = Decimal(exchange_rate.valor_bob)
-        total_currency_origin = (total_bob / exchange_rate_used).quantize(Decimal("0.01"))
+        exchange_rate_used = rate(exchange_rate.valor_bob)
+        total_currency_origin = money(total_bob / exchange_rate_used)
 
     salida = SalidaFlete(
         flete_id=flete.id,
         cliente_id=client.id,
         usuario_id=created_by.usuario_id,
+        corte_id=cut.id if cut else None,
         moneda_id=currency.id,
         numero_salida=next_num,
         fecha_salida=payload.fecha_salida,
@@ -739,7 +762,7 @@ def create_flete_output(
         metodo_pago=payload.metodo_pago,
         tipo_cambio_usado=exchange_rate_used,
         total_flete_moneda_original=total_currency_origin,
-        garantia=payload.garantia,
+        garantia=money(payload.garantia),
         garantia_devuelta=0,
         estado_salida=EstadoSalidaFleteEnum.RESERVADO,
         estado_entrega=payload.estado_entrega,
@@ -749,6 +772,9 @@ def create_flete_output(
     db.add(salida)
     db.flush()
     db.refresh(salida)
+    record_income(db, account=created_by, cut=cut, origin_type="salida_flete", source=salida,
+                  amount_bob=salida.total_flete, amount_original=salida.total_flete_moneda_original,
+                  currency_code=currency.codigo, payment_method=salida.metodo_pago)
     salida.cliente = client
     salida.moneda = currency
     salida.flete = flete
@@ -780,7 +806,8 @@ def create_flete_output(
     )
     sync_flete_return_notifications_for_output(db, output_id=salida.id)
     sync_flete_max_outputs_notification(db, flete_id=flete.id)
-    db.commit()
+    if commit:
+        db.commit()
     return get_flete_output_detail(db, salida.id)
 
 
@@ -793,6 +820,10 @@ def deliver_flete_output(
     ip_address: str | None,
     user_agent: str | None,
 ) -> SalidaFleteDetailResponse:
+    parent = db.execute(select(SalidaFlete.flete_id).where(SalidaFlete.id == salida_id)).scalar_one_or_none()
+    if parent is not None:
+        lock_flete(db, parent)
+    _lock(db, SalidaFlete, salida_id)
     salida = _get_output_entity(db, salida_id)
     if salida.estado_salida != EstadoSalidaFleteEnum.RESERVADO:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Solo puedes entregar salidas en estado RESERVADO.")
@@ -823,13 +854,17 @@ def return_flete_output(
     ip_address: str | None,
     user_agent: str | None,
 ) -> SalidaFleteDetailResponse:
+    parent = db.execute(select(SalidaFlete.flete_id).where(SalidaFlete.id == salida_id)).scalar_one_or_none()
+    if parent is not None:
+        lock_flete(db, parent)
+    _lock(db, SalidaFlete, salida_id)
     salida = _get_output_entity(db, salida_id)
     if salida.estado_salida != EstadoSalidaFleteEnum.EN_FLETE:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Solo puedes registrar devoluciones de salidas que están EN_FLETE.")
     if payload.fecha_devolucion_real < salida.fecha_salida:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="La fecha real de devolución no puede ser anterior a la fecha de salida.")
-    if payload.garantia_devuelta > float(salida.garantia):
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="La garantía devuelta no puede ser mayor a la garantía recibida.")
+    if payload.garantia_devuelta is not None and money(payload.garantia_devuelta) != money(salida.garantia_devuelta):
+        raise HTTPException(status_code=409, detail="La devolución del producto no mueve dinero. Usa el flujo de custodia de Economía.")
 
     new_state = EstadoSalidaFleteEnum(payload.estado_salida)
     salida.estado_salida = new_state
@@ -838,7 +873,6 @@ def return_flete_output(
     salida.requiere_arreglo = payload.requiere_arreglo
     salida.monto_arreglo = payload.monto_arreglo
     salida.descripcion_arreglo = payload.descripcion_arreglo
-    salida.garantia_devuelta = payload.garantia_devuelta
     salida.observaciones_devolucion = payload.observaciones_devolucion
     salida.flete.salidas_actuales += 1
 
@@ -916,8 +950,12 @@ def annul_flete_output(
     changed_by: Cuenta,
     ip_address: str | None,
     user_agent: str | None,
+    commit: bool = True,
 ) -> SalidaFleteDetailResponse:
-    raise HTTPException(
-        status_code=status.HTTP_409_CONFLICT,
-        detail="Debes registrar la DEVOLUCIÓN desde ECONOMÍA antes de anular la salida de flete.",
-    )
+    from app.schemas.economy import OperativeCancellationRequest
+    from app.services.refund_flow_service import apply_operative_cancellation
+    apply_operative_cancellation(db, payload=OperativeCancellationRequest(
+        origin_type="SALIDA_FLETE", origin_id=salida_id, target_state="ANULADA",
+        reason=payload.motivo), account=changed_by, ip_address=ip_address,
+        user_agent=user_agent, commit=commit)
+    return get_flete_output_detail(db, salida_id)

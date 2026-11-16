@@ -1,0 +1,405 @@
+{
+  "scope": "literal_synthetic_output_not_semantic_certification",
+  "artifact": "leny_rag04_layers_final_focused.json",
+  "artifact_sha256": "40bf9822730647b42832aacd27cbba3b88930adb40a72635625d8a9775d3300d",
+  "cases": [
+    {
+      "case_id": "rag04-natural-01",
+      "fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-natural-02",
+      "fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-natural-03",
+      "fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-natural-04",
+      "fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-natural-05",
+      "fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-natural-06",
+      "fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-natural-07",
+      "fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-natural-08",
+      "fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-natural-09",
+      "fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-natural-10",
+      "fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-natural-11",
+      "fragment_ids": [
+        "proc-1",
+        "work-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-natural-12",
+      "fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-natural-13",
+      "fragment_ids": [
+        "proc-3"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-natural-14",
+      "fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-literal-03",
+      "fragment_ids": [
+        "proc-4"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-literal-08",
+      "fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-synonyms-10",
+      "fragment_ids": [
+        "stock-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-synonyms-11",
+      "fragment_ids": [
+        "work-1",
+        "proc-1",
+        "proc-2"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-followup-01",
+      "fragment_ids": [
+        "proc-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-followup-02",
+      "fragment_ids": [
+        "proc-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-followup-03",
+      "fragment_ids": [
+        "proc-1",
+        "proc-1",
+        "proc-1",
+        "proc-1",
+        "proc-2",
+        "proc-2",
+        "proc-2",
+        "proc-3",
+        "proc-3",
+        "proc-3",
+        "proc-4",
+        "proc-4",
+        "proc-4"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-followup-04",
+      "fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-followup-05",
+      "fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-followup-06",
+      "fragment_ids": [
+        "proc-2",
+        "proc-2",
+        "proc-3",
+        "proc-3",
+        "proc-4",
+        "proc-4"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-multi_conflict-01",
+      "fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-multi_conflict-02",
+      "fragment_ids": [
+        "conflict-2",
+        "conflict-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-multi_conflict-03",
+      "fragment_ids": [
+        "conflict-2",
+        "conflict-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-multi_conflict-04",
+      "fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-multi_conflict-05",
+      "fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-formats-06",
+      "fragment_ids": [
+        "stock-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-acl-03",
+      "fragment_ids": [
+        "stock-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-acl-05",
+      "fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4",
+        "work-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-acl-10",
+      "fragment_ids": [
+        "stock-1"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    },
+    {
+      "case_id": "rag04-no_evidence-01",
+      "fragment_ids": [
+        "proc-1",
+        "proc-2",
+        "proc-3",
+        "proc-4"
+      ],
+      "mechanical_provenance_passed": true,
+      "failures": [],
+      "semantic_quality_certified": false
+    }
+  ],
+  "evaluated": 34,
+  "passed": 34,
+  "human_review_complete": false
+}

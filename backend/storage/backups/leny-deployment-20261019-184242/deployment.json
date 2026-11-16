@@ -1,0 +1,14 @@
+{
+  "time_utc": "2026-10-19T22:42:42.671500+00:00",
+  "database": "bellaarte_db",
+  "port": 5432,
+  "revision_before": "20261019_0017",
+  "revision_after": "20261019_0018",
+  "backup_bytes": 255636,
+  "backup_sha256": "5167dc5aec6517475a4ea2c55472b920a19357111e3a44935cf79421a1c32dcb",
+  "backup_offline_read": true,
+  "restore_rehearsed": false,
+  "state": "verified",
+  "public_structure_unchanged": true,
+  "runtime_schema_and_dml_permissions": true
+}

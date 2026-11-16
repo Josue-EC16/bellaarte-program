@@ -1,0 +1,202 @@
+{
+  "scope": "synthetic_seen_focused_review_unblinding_key",
+  "before_artifact": "leny_rag04_quality_resumed_development.json",
+  "before_sha256": "432a97466f4c87f572828bd6dd5a91c303a732befa075be6216b7fcce97dfd56",
+  "after_artifact": "leny_rag04_layers_final_focused.json",
+  "after_sha256": "40bf9822730647b42832aacd27cbba3b88930adb40a72635625d8a9775d3300d",
+  "corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "cases": {
+    "rag04-natural-01": {
+      "A": "after",
+      "B": "before"
+    },
+    "rag04-natural-02": {
+      "A": "after",
+      "B": "before"
+    },
+    "rag04-natural-03": {
+      "A": "after",
+      "B": "before"
+    },
+    "rag04-natural-04": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-natural-05": {
+      "A": "after",
+      "B": "before"
+    },
+    "rag04-natural-06": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-natural-07": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-natural-08": {
+      "A": "after",
+      "B": "before"
+    },
+    "rag04-natural-09": {
+      "A": "after",
+      "B": "before"
+    },
+    "rag04-natural-10": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-natural-11": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-natural-12": {
+      "A": "after",
+      "B": "before"
+    },
+    "rag04-natural-13": {
+      "A": "after",
+      "B": "before"
+    },
+    "rag04-natural-14": {
+      "A": "after",
+      "B": "before"
+    },
+    "rag04-literal-03": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-literal-08": {
+      "A": "after",
+      "B": "before"
+    },
+    "rag04-synonyms-07": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-synonyms-10": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-synonyms-11": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-followup-01": {
+      "A": "after",
+      "B": "before"
+    },
+    "rag04-followup-02": {
+      "A": "after",
+      "B": "before"
+    },
+    "rag04-followup-03": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-followup-04": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-followup-05": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-followup-06": {
+      "A": "after",
+      "B": "before"
+    },
+    "rag04-followup-07": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-multi_conflict-01": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-multi_conflict-02": {
+      "A": "after",
+      "B": "before"
+    },
+    "rag04-multi_conflict-03": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-multi_conflict-04": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-multi_conflict-05": {
+      "A": "after",
+      "B": "before"
+    },
+    "rag04-multi_conflict-06": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-multi_conflict-07": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-formats-05": {
+      "A": "after",
+      "B": "before"
+    },
+    "rag04-formats-06": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-acl-01": {
+      "A": "after",
+      "B": "before"
+    },
+    "rag04-acl-02": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-acl-03": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-acl-04": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-acl-05": {
+      "A": "after",
+      "B": "before"
+    },
+    "rag04-acl-06": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-acl-07": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-acl-08": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-acl-09": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-acl-10": {
+      "A": "after",
+      "B": "before"
+    },
+    "rag04-no_evidence-01": {
+      "A": "before",
+      "B": "after"
+    },
+    "rag04-no_evidence-02": {
+      "A": "after",
+      "B": "before"
+    },
+    "rag04-no_evidence-03": {
+      "A": "before",
+      "B": "after"
+    }
+  }
+}

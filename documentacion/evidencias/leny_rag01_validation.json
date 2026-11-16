@@ -1,0 +1,67 @@
+{
+  "stage": "RAG-SPEC-01",
+  "status": "implemented_isolated_validation_pending_browser_upload_and_business_deployment",
+  "business_migration_applied": false,
+  "default_enabled": false,
+  "tests": {
+    "backend_base": {
+      "passed": 430,
+      "skipped": 1,
+      "skip_reason": "native parser executed through separate launcher"
+    },
+    "postgresql_isolated": {
+      "passed": 119,
+      "host": "127.0.0.1",
+      "port": 55432,
+      "migration": "20261019_0019"
+    },
+    "native_parsers": {
+      "passed": 15
+    },
+    "frontend": {
+      "passed": 85,
+      "files": 15
+    },
+    "lint": "passed",
+    "build": "passed_with_existing_large_bundle_warning",
+    "pip_check": "passed"
+  },
+  "browser": {
+    "isolated_only": true,
+    "admin_login": true,
+    "folder_creation": true,
+    "listing_detail_docx_preview": true,
+    "trash_and_confirmed_restore": true,
+    "qwen_real_response": true,
+    "mobile_viewport_width": 390,
+    "mobile_document_scroll_width": 390,
+    "file_selection_upload": "blocked_by_extension_file_url_permission_unchanged"
+  },
+  "recovery": "real_pg_dump_pg_restore_new_test_database_and_files_passed",
+  "artifacts": {
+    "leny_rag01_biblioteca.jpg": {
+      "sha256": "9ae056e6b28f0092ac652792902a83b6ade621b056e97d50d8fa4f75a1cc855c",
+      "bytes": 73187
+    },
+    "leny_rag01_dependencies.json": {
+      "sha256": "9c9cc001b33cf32e1cf452cd8b40f3cf5910ac79a037d71e8a87b06735e49534",
+      "bytes": 283
+    },
+    "leny_rag01_http.json": {
+      "sha256": "079d6a37965efabe63e0eb384b9dd389364bbf95b1f7672890b3859e71366c9c",
+      "bytes": 621
+    },
+    "leny_rag01_latency.json": {
+      "sha256": "bbe0e210d77e62878d665ee1cfd6a0eb3109bc6570b418fc137a0daca07bc284",
+      "bytes": 465
+    },
+    "leny_rag01_movil.jpg": {
+      "sha256": "10637269c7acc845df677a24d7fd7f38cc82421dbb2458a5f968131ec88e202c",
+      "bytes": 38380
+    },
+    "leny_rag01_recovery.json": {
+      "sha256": "71c3537c4f92c1c259d07def49783b23d401a14455ed4cbc282db9a3873b0f65",
+      "bytes": 313
+    }
+  }
+}

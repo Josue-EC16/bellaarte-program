@@ -1,0 +1,61 @@
+{
+  "policy_version": "01.1-v4",
+  "automated": {
+    "backend_base_passed": 332,
+    "postgresql_isolated_passed": 93,
+    "frontend_passed": 61,
+    "lint_passed": true,
+    "build_passed": true,
+    "pip_check_passed": true
+  },
+  "evaluation": {
+    "file": "leny_011_evaluation.json",
+    "sha256": "868a615831f883f0565c13daca7de2d7ee5f33ddbf66b05ed23997f47c7bceeb",
+    "accepted_in_evaluated_corpus": true,
+    "kind": "adapted regression; diagnosed held-out cases are no longer unseen",
+    "warm_overhead_p95_ms": 1563.0,
+    "cold_latency_measured": false
+  },
+  "source_hashes_now": {
+    "leny_policy.py": "d4ffda4791bee0ed3ad8d718bf13ddfeeefaa63ee7576a38a33add2c8b0b0f14",
+    "leny_guard.py": "caee3253b3a7359e62ae5d5326a3f610b0d6d1fabc8ff7cd25cc99166ac35d5f",
+    "leny_ollama.py": "f7da1aa30245050dc9816e40823a4d6e38823c0c5dc6471725b61e0c0ee13b6d",
+    "leny_service.py": "4c1fafa3613bc794e6ff898b19ec947abab396b63f798b8b62ac8a977a9394b3"
+  },
+  "inference_policy_guard_provider_match_evaluation": true,
+  "service_cleanup_changed_after_evaluation_import": true,
+  "service_change_note": "Error/cancellation finalization and safe cleanup handling updated during inference evaluation; evaluated build_context/policy/guard/provider unchanged. Final service verified by automated tests; inference evaluation excludes service/API/persistence.",
+  "deployment": {
+    "business_database_migrated_to_0018": true,
+    "isolated_migration_rollback_passed": true,
+    "user_authorization_explicit": true,
+    "business_deployment_evidence": "leny_011_business_deployment.json",
+    "business_service_status": "LENY_READY"
+  },
+  "browser_smoke": {
+    "origin": "http://127.0.0.1:5174",
+    "api_origin": "http://127.0.0.1:8001",
+    "synthetic_individual_user": true,
+    "out_of_scope_refused": true,
+    "quota_429_countdown_disabled_send": true,
+    "real_qwen_mixed_business_only_answer": true,
+    "real_generation_cancelled_and_interrupted_history": true,
+    "subsequent_real_generation_succeeded": true,
+    "refresh_and_persistent_history_after_reload": true
+  },
+  "cleanup": {
+    "synthetic_identity_history_and_quota_removed": true,
+    "conversations_before_cleanup": 1,
+    "messages_before_cleanup": 8,
+    "leny_audit_events_before_cleanup": 33,
+    "unexpected_audit_payloads": 0,
+    "generation_locks": 0,
+    "test_listeners_remaining": [],
+    "test_postmaster_pid_present": false,
+    "usual_erp_and_ollama_listeners_preserved": [
+      8000,
+      5173,
+      11434
+    ]
+  }
+}

@@ -314,6 +314,7 @@ class PagoPedido(Base):
         Index("idx_ppd_metodo_fec", "ppd_metodo", "ppd_fec"),
     )
     id: Mapped[int] = mapped_column("ppd_id", BigInteger, Identity(always=True), primary_key=True)
+    corte_id: Mapped[int | None] = mapped_column(ForeignKey("corte_caja.cco_id", ondelete="RESTRICT"), index=True)
     pedido_id: Mapped[int] = mapped_column("ped_id", ForeignKey("pedido.ped_id", onupdate="CASCADE", ondelete="RESTRICT"), nullable=False)
     usuario_id: Mapped[int] = mapped_column("usu_id", ForeignKey("usuarios.id", onupdate="CASCADE", ondelete="RESTRICT"), nullable=False)
     moneda_id: Mapped[int] = mapped_column("mon_id", ForeignKey("moneda.mon_id", onupdate="CASCADE", ondelete="RESTRICT"), nullable=False)

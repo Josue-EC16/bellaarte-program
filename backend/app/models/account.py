@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, String
+from sqlalchemy import Boolean, CheckConstraint, DateTime, ForeignKey, Integer, String, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship, validates
 
 from app.models.base import Base, TimestampMixin
@@ -8,6 +8,8 @@ from app.models.base import Base, TimestampMixin
 
 class Cuenta(TimestampMixin, Base):
     __tablename__ = "cuentas"
+    __table_args__ = (CheckConstraint("auth_version >= 0", name="ck_cuentas_auth_version"),
+                      CheckConstraint("security_version >= 0", name="ck_cuentas_security_version"))
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     usuario_id: Mapped[int] = mapped_column(ForeignKey("usuarios.id", ondelete="RESTRICT"), unique=True, nullable=False)
@@ -17,6 +19,8 @@ class Cuenta(TimestampMixin, Base):
     must_change_password: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     last_login_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    auth_version: Mapped[int] = mapped_column(Integer, default=0, server_default=text("0"), nullable=False)
+    security_version: Mapped[int] = mapped_column(Integer, default=0, server_default=text("0"), nullable=False)
 
     usuario = relationship("Usuario", back_populates="cuenta")
     rol = relationship("Rol", back_populates="cuentas")

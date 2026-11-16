@@ -1,0 +1,13 @@
+{
+  "model": "gemini-3.8-flash",
+  "thinking": "medium",
+  "input_budget": 32678,
+  "output_limit": 8192,
+  "free_tier_confirmation": "owner",
+  "documents_sent": false,
+  "checks": [],
+  "error_code": "LENY_GEMINI_UNAVAILABLE",
+  "http_status": 503,
+  "provider_http_status": 503,
+  "seconds": 9.141
+}

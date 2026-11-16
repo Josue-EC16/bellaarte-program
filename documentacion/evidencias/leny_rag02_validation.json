@@ -1,0 +1,90 @@
+{
+  "recorded_at_utc": "2026-10-20T03:58:07.021653+00:00",
+  "state": "implemented_deployed_real_contextualization_verified",
+  "scope": "RAG-SPEC-02 only; publication and retrieval in chat remain disabled",
+  "tests": {
+    "base_full_suite": {
+      "passed": 547,
+      "skipped": 1,
+      "skip_reason": "native parser requires separate launcher"
+    },
+    "rag_file_after_additional_chunked_cancel_case": {
+      "passed": 113,
+      "additional_unique_case_after_full_suite": 1
+    },
+    "postgresql_isolated_55432": {
+      "passed": 161,
+      "cluster_stopped_after": true
+    },
+    "frontend_full_suite": {
+      "passed": 101,
+      "files": 16
+    },
+    "frontend_scoped_eslint": "passed",
+    "frontend_temporary_build": "passed; existing large bundle warning",
+    "pip_check": "passed",
+    "python_ast_files": 16,
+    "native_real_pipeline": "passed; see leny_rag02_real_check.json",
+    "usual_erp_browser": "completed; 4 fragments and 4 validated vectors; real Qwen chat afterwards"
+  },
+  "dependencies": {
+    "python_new": {
+      "pgvector": "0.5.1",
+      "pypdfium2": "5.14.0"
+    },
+    "native_pgvector": "0.8.7",
+    "native_tesseract": "5.5.3",
+    "tessdata_commit": "87416418657359cb625c412a48b6e1d6d41c29bd",
+    "existing_distribution_versions_changed": 0,
+    "frontend_new_packages": 0,
+    "model": "qwen3-embedding:0.6b",
+    "execution": "CPU; measured size_vram=0",
+    "dimension": 1024
+  },
+  "deployment": {
+    "revision": "20261019_0020",
+    "public_structure_unchanged": true,
+    "role_codes_unchanged": true,
+    "business_restore_executed": false,
+    "worker_manual_and_ready_at_final_check": true,
+    "isolated_ports_55432_and_55433_stopped_at_final_check": true
+  },
+  "selector_upload": {
+    "passed": true,
+    "source": "explicit owner confirmation; not claimed as agent selector execution"
+  },
+  "limits": [
+    "OCR can misread text and numbers",
+    "No complete OS sandbox or antivirus/CDR",
+    "External local Ollama consumers are not coordinated by ERP",
+    "Manual worker startup after reboot",
+    "No sustained-load SLA or complete RAG quality evaluation",
+    "Existing JWT revocation and database-privilege risks remain"
+  ],
+  "evidence_sha256": {
+    "leny_rag02_business_contextualization.jpg": "ee73f3e7b207ef1fd1ac2c6ca5f35c9cce7bb0bd8f39e1554ef4b8cadc38c4b8",
+    "leny_rag02_business_deployment.json": "f46c43ebf06109695324d99d087b11795c21a2ff547a957e5be742455066324b",
+    "leny_rag02_chat_regression.jpg": "58004b9abb2e868d5f11096ea9d2fa19c81a11c3c7c6a6fb83559a7e97994b5d",
+    "leny_rag02_cpu_memory.json": "e9fcdfb2911ce98fd32efdc2d1c6a782455f8989e2aa72a41afb3b1a6ee39ba9",
+    "leny_rag02_mobile.jpg": "fda137e219f5d58f2f5b7a93bb006286add6ccb65496c1a4a58213985b0402b1",
+    "leny_rag02_real_check.json": "edabe4a0648d7e04e70c79611e92bfa5ea4444be0976fdfa63900027ddcabda7"
+  },
+  "source_sha256": {
+    "backend/app/services/leny_rag_chunking.py": "02860cd76bc90608cd8dd86a9157e837995a527cab8169b4ad429c107f4e8ad5",
+    "backend/app/services/leny_rag_common.py": "bd7489fa48291c2de77cf507a2755514317eec6ffeed1436cf3cf928795d66cc",
+    "backend/app/services/leny_rag_embeddings.py": "4719d3bf6adbdd188f87b6daa1972aa4403777c8eb472bb9e2f8dcdcb395a330",
+    "backend/app/services/leny_rag_extraction.py": "aa50c998a24e83267323c2ad750d4060a7260a7a66620b67dfa5ee4113f2fa54",
+    "backend/app/services/leny_rag_service.py": "b844b0ad309452589e8f0c3b5baa5c4158c6500bbc86b6fc12b0a636370ab720",
+    "backend/app/services/leny_rag_worker.py": "1a855f0e0bbc91f5add2a3a030a414c2391b99694275efd0a55ae3cefb3655d8",
+    "backend/app/models/leny_rag.py": "863418dab623fb8398e0b0bcb16ca74707ce7f4110fe317485b77a0d9ea6ea8e",
+    "backend/app/schemas/leny_rag.py": "f878e57b65901d70a5beeb6463d892af10503e05f7e6db4ad48e06a72d1b6abd",
+    "backend/app/api/routers/leny_contextualizations.py": "12c5b80e73e78d77205cacd84ebdd6e51bf1ac695c6a915f406adf873945e351",
+    "backend/scripts/check_leny_rag.py": "436a7845a5d8bb8763336cd38faba49e342107c3c14505e35a2e26d782a574ae",
+    "backend/scripts/deploy_leny_rag.py": "ebce1c8734673d72562e812a77d4e8532735ce3209ddfe22d1d18ad9efbaec64",
+    "backend/scripts/prepare_leny_rag_runtime.py": "f93bf3c99f19c49d57f9d77a27f551e6f2c08c47ef9fe8de9bcca558db5a5d4b",
+    "backend/scripts/reconcile_leny_rag_provider.py": "a5bb2ece172466740fa08364185b74410cf3036c64611e3c8ec8adcba5434d9b",
+    "backend/scripts/run_leny_rag_worker.py": "64c12d83777404ab9bf96233d7ed07ca7fcda6df0f84a9bdbb098ade6afeb00c",
+    "backend/scripts/extract_leny_document.py": "a2228e14dd9ba72ab650792ddcba5147f2b59a7083e33bb945f180fe04c84776",
+    "backend/alembic/versions/20261019_0020_leny_contextualization.py": "aeb32d5d1196cc445d3e496d3b40096b1ae94c2c04290860b3f94da46fe99927"
+  }
+}

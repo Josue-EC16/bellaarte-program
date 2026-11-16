@@ -1,0 +1,28 @@
+{
+  "scope": "synthetic_offline_comparison",
+  "corpus_sha256": "08341e00772cf256a4125acdb283251eeb8325d3ecda1ee28f28c8b158fd7661",
+  "metric_deltas": {
+    "business_false_rejection": -0.40983606557377045,
+    "candidate_hit_at_5": 0.33333333333333337,
+    "candidate_mrr_at_5": 0.24777777777777799,
+    "candidate_precision_at_5": 0.2966666666666664,
+    "candidate_recall_at_5": 0.6916666666666667,
+    "latency_ms": 3706.1056076176483,
+    "no_evidence_abstention": 0.0,
+    "rag_activation": 0.819672131147541,
+    "selected_hit_at_5": -0.036363636363636376,
+    "selected_mrr_at_5": -0.07363636363636361,
+    "selected_precision_at_5": 0.584242424242424,
+    "selected_recall_at_5": 0.5170454545454546,
+    "sent_hit_at_5": 0.8032786885245902,
+    "sent_mrr_at_5": 0.7696721311475411,
+    "sent_precision_at_5": 0.584242424242424,
+    "sent_recall_at_5": 0.8319672131147541,
+    "route_accuracy": 0.6190476190476191,
+    "latency_sample_count": -2,
+    "latency_p95_ms": 1109.0000000112923
+  },
+  "candidate_acceptance": "not_accepted",
+  "holdout_executed": false,
+  "business_e2e_executed": false
+}

@@ -1,0 +1,153 @@
+{
+  "configuration": {
+    "leny_enabled": true,
+    "leny_llm_provider": "ollama",
+    "leny_quality_profile": "baseline",
+    "leny_spec03_evaluation_enabled": true,
+    "leny_spec03_evaluation_daily_calls": 150,
+    "leny_model": "qwen3.5:4b-q4_K_M",
+    "leny_num_ctx": 4096,
+    "leny_num_predict": 768,
+    "leny_temperature": 0.0,
+    "leny_gemini_enabled": true,
+    "leny_gemini_free_tier_confirmed": true,
+    "leny_gemini_model": "gemini-3.1-flash-lite",
+    "leny_gemini_thinking_level": "medium",
+    "leny_gemini_input_token_budget": 32678,
+    "leny_gemini_output_tokens": 8192,
+    "leny_gemini_rpm": 15,
+    "leny_gemini_tpm": 250000,
+    "leny_gemini_rpd": 500,
+    "leny_rag_top_k": 5,
+    "leny_rag_candidates": 20,
+    "leny_rag_neighbor_chunks": false,
+    "leny_rag_section_context": true,
+    "leny_rag_source_coverage": true,
+    "leny_rag_min_ram_bytes": 2147483648
+  },
+  "approved_external_versions": 3,
+  "credentials_reported": false,
+  "phases": [
+    {
+      "job": "B0-Gemini-real",
+      "http_usage": [
+        {
+          "phase": "eval_classifier",
+          "status": "completed",
+          "calls": 29,
+          "input_tokens": 38962,
+          "output_tokens": 665,
+          "thinking_tokens": 7648,
+          "calls_missing_input_usage": 0
+        },
+        {
+          "phase": "eval_classifier",
+          "status": "failed",
+          "calls": 1,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "thinking_tokens": 0,
+          "calls_missing_input_usage": 1
+        },
+        {
+          "phase": "eval_generate",
+          "status": "completed",
+          "calls": 16,
+          "input_tokens": 16028,
+          "output_tokens": 3520,
+          "thinking_tokens": 5787,
+          "calls_missing_input_usage": 0
+        },
+        {
+          "phase": "eval_generate",
+          "status": "failed",
+          "calls": 2,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "thinking_tokens": 0,
+          "calls_missing_input_usage": 2
+        }
+      ],
+      "local_tokens_available": false
+    },
+    {
+      "job": "B0-preflight",
+      "http_usage": [
+        {
+          "phase": "eval_classifier",
+          "status": "completed",
+          "calls": 3,
+          "input_tokens": 3294,
+          "output_tokens": 58,
+          "thinking_tokens": 266,
+          "calls_missing_input_usage": 0
+        },
+        {
+          "phase": "eval_generate",
+          "status": "completed",
+          "calls": 1,
+          "input_tokens": 2588,
+          "output_tokens": 264,
+          "thinking_tokens": 0,
+          "calls_missing_input_usage": 0
+        }
+      ],
+      "local_tokens_available": false
+    },
+    {
+      "job": "C1-Gemini-spec03",
+      "http_usage": [
+        {
+          "phase": "eval_classifier",
+          "status": "completed",
+          "calls": 16,
+          "input_tokens": 15818,
+          "output_tokens": 532,
+          "thinking_tokens": 4114,
+          "calls_missing_input_usage": 0
+        },
+        {
+          "phase": "eval_generate",
+          "status": "completed",
+          "calls": 12,
+          "input_tokens": 7930,
+          "output_tokens": 4118,
+          "thinking_tokens": 3836,
+          "calls_missing_input_usage": 0
+        }
+      ],
+      "local_tokens_available": false
+    },
+    {
+      "job": "C2-Gemini-spec03",
+      "http_usage": [
+        {
+          "phase": "eval_classifier",
+          "status": "completed",
+          "calls": 7,
+          "input_tokens": 2928,
+          "output_tokens": 307,
+          "thinking_tokens": 1875,
+          "calls_missing_input_usage": 0
+        },
+        {
+          "phase": "eval_generate",
+          "status": "completed",
+          "calls": 7,
+          "input_tokens": 4537,
+          "output_tokens": 2168,
+          "thinking_tokens": 1495,
+          "calls_missing_input_usage": 0
+        }
+      ],
+      "local_tokens_available": false
+    },
+    {
+      "job": "Z-Qwen-real",
+      "http_usage": [],
+      "local_tokens_available": false
+    }
+  ],
+  "revision": "20261105_0025",
+  "evaluation_http_today": 94
+}

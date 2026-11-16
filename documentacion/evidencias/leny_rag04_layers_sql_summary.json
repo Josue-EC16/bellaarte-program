@@ -1,0 +1,63 @@
+{
+  "scope": "real_sql_embeddings_without_qwen",
+  "cases": 48,
+  "target_executed": 47,
+  "qwen_calls": 0,
+  "paired_vector_hash_equal_count": 47,
+  "paired_vector_count": 47,
+  "rankings": {
+    "semantic": {
+      "metrics": {
+        "3": {
+          "hit": 0.9230769230769231,
+          "recall": 0.8141025641025641,
+          "precision": 0.547008547008547,
+          "mrr": 0.8717948717948718,
+          "denominator": 39
+        },
+        "5": {
+          "hit": 1.0,
+          "recall": 0.9871794871794872,
+          "precision": 0.4205128205128202,
+          "mrr": 0.8897435897435898,
+          "denominator": 39
+        },
+        "20": {
+          "hit": 1.0,
+          "recall": 1.0,
+          "precision": 0.21797924297924282,
+          "mrr": 0.8897435897435898,
+          "denominator": 39
+        }
+      },
+      "unauthorized_ids": []
+    },
+    "hybrid": {
+      "metrics": {
+        "3": {
+          "hit": 0.9230769230769231,
+          "recall": 0.8141025641025641,
+          "precision": 0.547008547008547,
+          "mrr": 0.8717948717948718,
+          "denominator": 39
+        },
+        "5": {
+          "hit": 1.0,
+          "recall": 0.9871794871794872,
+          "precision": 0.4205128205128202,
+          "mrr": 0.8897435897435898,
+          "denominator": 39
+        },
+        "20": {
+          "hit": 1.0,
+          "recall": 1.0,
+          "precision": 0.21797924297924282,
+          "mrr": 0.8897435897435898,
+          "denominator": 39
+        }
+      },
+      "unauthorized_ids": []
+    }
+  },
+  "ranking_order_different_case_ids": []
+}

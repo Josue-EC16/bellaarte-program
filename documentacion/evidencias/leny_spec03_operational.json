@@ -1,0 +1,7 @@
+{
+  "health_http": 200,
+  "leny_unauthenticated_http": 401,
+  "qwen_model_installed": true,
+  "gemini_probe_performed": false,
+  "new_inferences": 0
+}

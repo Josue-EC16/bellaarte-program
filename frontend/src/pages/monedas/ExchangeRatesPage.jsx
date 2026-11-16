@@ -1,6 +1,7 @@
 import { EditOutlined, PlusOutlined } from '@ant-design/icons'
-import { Alert, App as AntdApp, Button, Drawer, Form, Input, InputNumber, Row, Col, Select, Switch, Table, Tag, Typography } from 'antd'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Alert, App as AntdApp, Button, Drawer, Form, Input, InputNumber, Row, Col, Select, Space, Table, Tag, Typography } from 'antd'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useInRouterContext } from 'react-router-dom'
 
 import { apiClient } from '../../api/client'
 import { useAuth } from '../../auth/AuthProvider'
@@ -9,6 +10,11 @@ import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
 import { ReportSummaryStrip } from '../../components/reports/ReportSummaryStrip'
 import { useListingSummary } from '../../components/reports/useListingSummary'
+import { canDeactivateRate, exchangeRateActionError, exchangeRatePayload, exchangeRateText, isManualRate, isValidExchangeRate } from './exchangeRateUtils'
+import { ExchangeRateSyncStatus } from './ExchangeRateSyncStatus'
+import { ExchangeRateLinkDetail } from './ExchangeRateLinkDetail'
+import { canReadSyncRecords } from './exchangeRateSyncUtils'
+import { useExchangeRateSyncStatus } from './useExchangeRateSyncStatus'
 
 export function ExchangeRatesPage() {
   const [rates, setRates] = useState([])
@@ -19,15 +25,21 @@ export function ExchangeRatesPage() {
   const [formError, setFormError] = useState(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [editingRate, setEditingRate] = useState(null)
+  const [statusPending, setStatusPending] = useState(null)
+  const rawRateValue = useRef(null)
+  const submitting = useRef(false)
   const [filters, setFilters] = useState({ moneda_id: undefined, is_active: undefined })
   const [form] = Form.useForm()
   const { message } = AntdApp.useApp()
   const { user } = useAuth()
+  const inRouter = useInRouterContext()
+  const sync = useExchangeRateSyncStatus()
+  const previousOperationalId = useRef(undefined)
 
   const canCreate = user?.permissions?.includes('exchange_rates:create')
   const canUpdate = user?.permissions?.includes('exchange_rates:update')
   const canChangeStatus = user?.permissions?.includes('exchange_rates:update_status')
-  const { summary, loading: summaryLoading } = useListingSummary('/monedas/tipos-cambio/resumen', filters)
+  const { summary, loading: summaryLoading, reload: reloadSummary } = useListingSummary('/monedas/tipos-cambio/resumen', filters)
 
   const loadCurrencies = useCallback(async () => {
     const response = await apiClient.get('/monedas')
@@ -44,22 +56,34 @@ export function ExchangeRatesPage() {
       const response = await apiClient.get('/monedas/tipos-cambio', { params })
       setRates(response.data)
     } catch (requestError) {
-      setError(requestError.response?.data?.detail || 'No fue posible cargar los tipos de cambio.')
+      setError(exchangeRateActionError(requestError, 'No fue posible cargar los tipos de cambio.'))
     } finally {
       setLoading(false)
     }
   }, [filters])
 
   useEffect(() => {
-    Promise.all([loadCurrencies(), loadRates()]).catch(() => {
+    loadCurrencies().catch(() => {
       setError('No fue posible cargar la información inicial de tipos de cambio.')
       setLoading(false)
     })
-  }, [loadCurrencies, loadRates])
+  }, [loadCurrencies])
 
   useEffect(() => {
     loadRates()
   }, [loadRates])
+
+  const operationalId = sync.data?.operational_rate?.id
+  const hasSyncData = Boolean(sync.data)
+  useEffect(() => {
+    if (!hasSyncData) return
+    const currentId = operationalId ?? null
+    if (previousOperationalId.current !== undefined && currentId !== previousOperationalId.current) {
+      loadRates()
+      reloadSummary()
+    }
+    previousOperationalId.current = currentId
+  }, [hasSyncData, operationalId, loadRates, reloadSummary])
 
   const currencyOptions = useMemo(
     () => currencies.map((currency) => ({ label: `${currency.codigo} - ${currency.nombre}`, value: currency.id })),
@@ -70,7 +94,7 @@ export function ExchangeRatesPage() {
     setEditingRate(null)
     setFormError(null)
     form.resetFields()
-    form.setFieldsValue({ activo: true })
+    rawRateValue.current = null
     setDrawerOpen(true)
   }
 
@@ -78,56 +102,74 @@ export function ExchangeRatesPage() {
     try {
       const response = await apiClient.get(`/monedas/tipos-cambio/${record.id}`)
       const rate = response.data
+      if (!isManualRate(rate)) {
+        message.error('Las cotizaciones automáticas son de solo lectura.')
+        return
+      }
       setEditingRate(rate)
       setFormError(null)
       form.setFieldsValue({
         moneda_id: rate.moneda.id,
-        valor_bob: rate.valor_bob,
+        valor_bob: exchangeRateText(rate.valor_bob),
         observaciones: rate.observaciones,
-        activo: rate.activo,
       })
+      rawRateValue.current = null
       setDrawerOpen(true)
     } catch (requestError) {
-      message.error(requestError.response?.data?.detail || 'No fue posible cargar el tipo de cambio.')
+      message.error(exchangeRateActionError(requestError, 'No fue posible cargar el tipo de cambio.'))
     }
   }
 
   const handleSubmit = async (values) => {
+    if (submitting.current) return
+    if (!isValidExchangeRate(exchangeRateText(values.valor_bob)) ||
+      (rawRateValue.current !== null && !isValidExchangeRate(rawRateValue.current))) {
+      form.setFields([{ name: 'valor_bob', errors: ['Ingresa un valor positivo de hasta ocho enteros y cuatro decimales.'] }])
+      return
+    }
+    submitting.current = true
     setSaving(true)
     setFormError(null)
     try {
       if (editingRate) {
-        await apiClient.patch(`/monedas/tipos-cambio/${editingRate.id}`, {
-          valor_bob: values.valor_bob,
-          observaciones: values.observaciones,
-          activo: values.activo,
-        })
-        message.success('Se guardaron los cambios del tipo de cambio correctamente.')
+        const response = await apiClient.patch(`/monedas/tipos-cambio/${editingRate.id}`, exchangeRatePayload(values, { editing: true }))
+        message.success(response.data.id !== editingRate.id
+          ? 'Se registró una nueva cotización activa. La cotización anterior se conserva en el historial.'
+          : 'Se actualizaron las observaciones de la cotización.')
       } else {
-        await apiClient.post('/monedas/tipos-cambio', values)
-        message.success('Se creó el tipo de cambio correctamente.')
+        await apiClient.post('/monedas/tipos-cambio', exchangeRatePayload(values))
+        message.success('Se creó una nueva cotización activa para esta moneda.')
       }
       setDrawerOpen(false)
       setEditingRate(null)
       form.resetFields()
       await loadRates()
+      await reloadSummary()
+      await sync.reload({ force: true })
     } catch (requestError) {
       const resolved = applyFormApiError(form, requestError, {
         fallbackGlobalMessage: 'No fue posible guardar la información del tipo de cambio.',
       })
       setFormError(resolved.globalMessage)
     } finally {
+      submitting.current = false
       setSaving(false)
     }
   }
 
-  const handleStatusChange = async (record, checked) => {
+  const handleDeactivate = async (record) => {
+    if (!canDeactivateRate(record) || statusPending !== null) return
+    setStatusPending(record.id)
     try {
-      await apiClient.patch(`/monedas/tipos-cambio/${record.id}/status`, { activo: checked })
-      message.success(`Tipo de cambio ${checked ? 'activado' : 'desactivado'} correctamente.`)
+      await apiClient.patch(`/monedas/tipos-cambio/${record.id}/status`, { activo: false })
+      message.success('Tipo de cambio desactivado. Para recuperar su valor, registra una nueva cotización.')
       await loadRates()
+      await reloadSummary()
+      await sync.reload({ force: true })
     } catch (requestError) {
-      message.error(requestError.response?.data?.detail || 'No fue posible cambiar el estado del tipo de cambio.')
+      message.error(exchangeRateActionError(requestError, 'No fue posible cambiar el estado del tipo de cambio.'))
+    } finally {
+      setStatusPending(null)
     }
   }
 
@@ -135,22 +177,25 @@ export function ExchangeRatesPage() {
     { title: 'Moneda', dataIndex: 'moneda_codigo', key: 'moneda_codigo' },
     { title: 'Nombre', dataIndex: 'moneda_nombre', key: 'moneda_nombre' },
     { title: 'Valor en Bs.', dataIndex: 'valor_bob', key: 'valor_bob' },
+    { title: 'Origen', dataIndex: 'origen', key: 'origen', render: (value) => value === 'AUTOMATICO' ? 'AUTOMÁTICO' : value },
     { title: 'Registrado por', dataIndex: 'registrado_por', key: 'registrado_por' },
-    { title: 'Fecha', dataIndex: 'fecha_registro', key: 'fecha_registro', render: (value) => new Date(value).toLocaleString() },
+    { title: 'Registro', dataIndex: 'fecha_registro', key: 'fecha_registro', render: (value) => new Date(value).toLocaleString() },
     {
       title: 'Estado',
       key: 'estado',
-      render: (_, record) =>
-        canChangeStatus ? (
-          <Switch checked={record.activo} checkedChildren="Activo" unCheckedChildren="Inactivo" onChange={(checked) => handleStatusChange(record, checked)} />
-        ) : (
-          <Tag color={record.activo ? 'green' : 'default'}>{record.activo ? 'ACTIVO' : 'INACTIVO'}</Tag>
-        ),
+      render: (_, record) => <Tag color={record.activo ? 'green' : 'default'}>{record.activo ? 'ACTIVO' : 'INACTIVO'}</Tag>,
     },
     {
       title: 'Acciones',
       key: 'acciones',
-      render: (_, record) => (canUpdate ? <Button icon={<EditOutlined />} onClick={() => openEdit(record)}>Editar</Button> : <Typography.Text type="secondary">Solo lectura</Typography.Text>),
+      render: (_, record) => (
+        <Space wrap>
+          {canUpdate && isManualRate(record) ? <Button icon={<EditOutlined />} onClick={() => openEdit(record)}>Editar</Button> : null}
+          {canChangeStatus && canDeactivateRate(record)
+            ? <Button danger loading={statusPending === record.id} disabled={statusPending !== null} onClick={() => handleDeactivate(record)}>Desactivar</Button> : null}
+          {(!isManualRate(record) || (!canUpdate && !canChangeStatus)) ? <Typography.Text type="secondary">Solo lectura</Typography.Text> : null}
+        </Space>
+      ),
     },
   ]
 
@@ -165,6 +210,9 @@ export function ExchangeRatesPage() {
         </div>
         {canCreate ? <Button type="primary" icon={<PlusOutlined />} onClick={openCreate}>Nuevo tipo de cambio</Button> : null}
       </div>
+
+      <ExchangeRateSyncStatus {...sync} onReload={sync.reload} recordsLink={canReadSyncRecords(user)} />
+      {inRouter ? <ExchangeRateLinkDetail /> : null}
 
       <div className="glass-panel boutique-filter-bar">
         <Row gutter={[12, 12]}>
@@ -195,6 +243,9 @@ export function ExchangeRatesPage() {
 
       {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
       <ReportSummaryStrip summary={summary} loading={summaryLoading} />
+      <Typography.Paragraph type="secondary">
+        Una nueva cotización manual queda activa. Los registros anteriores conservan su valor y no se pueden reactivar; para recuperar un valor, crea una nueva cotización.
+      </Typography.Paragraph>
 
       <Table className="glass-panel" rowKey="id" columns={columns} dataSource={rates} loading={loading} pagination={{ pageSize: 8 }} />
 
@@ -212,6 +263,7 @@ export function ExchangeRatesPage() {
         maskClosable={false}
       >
         <FormProcessAlert message={formError} title={editingRate ? 'No fue posible actualizar el tipo de cambio.' : 'No fue posible crear el tipo de cambio.'} />
+        {editingRate ? <Alert type="info" showIcon message="Cambiar el valor creará una nueva cotización activa. Si conservas el valor, solo se actualizarán las observaciones." style={{ marginBottom: 16 }} /> : null}
         <Form {...FORM_COMMON_PROPS} form={form} onFinish={handleSubmit}>
           <Form.Item label="Moneda" name="moneda_id" rules={[{ required: true, message: 'Debe seleccionar la Moneda.' }]}>
             <Select disabled={Boolean(editingRate)} showSearch optionFilterProp="label" placeholder="Seleccionar moneda" options={currencyOptions} />
@@ -219,19 +271,18 @@ export function ExchangeRatesPage() {
           <Form.Item
             label="Valor en Bs."
             name="valor_bob"
-            rules={[{ required: true, message: 'El Valor en Bs. es obligatorio.' }]}
-            normalize={(value) => {
-              if (value === null || value === undefined || value === '') return null
-              return value.toString().replace(/[^0-9.]/g, '')
-            }}
+            rules={[{ required: true, message: 'El Valor en Bs. es obligatorio.' }, {
+              validator: (_, value) => isValidExchangeRate(exchangeRateText(value)) &&
+                (rawRateValue.current === null || isValidExchangeRate(rawRateValue.current))
+                ? Promise.resolve() : Promise.reject(new Error('Ingresa un valor positivo de hasta ocho enteros y cuatro decimales.')),
+            }]}
           >
-            <InputNumber min={0.0001} precision={4} style={{ width: '100%' }} placeholder="Ej. 6.9600" />
+            <InputNumber stringMode min="0.0001" max="99999999.9999" precision={4} changeOnBlur={false}
+              onInput={(value) => { rawRateValue.current = value }}
+              style={{ width: '100%' }} placeholder="Ej. 6.9600" />
           </Form.Item>
           <Form.Item label="Observaciones" name="observaciones" normalize={(value) => (value || '').toUpperCase()}>
             <Input.TextArea rows={3} placeholder="Ej. TIPO DE CAMBIO REFERENCIAL DEL DÍA" />
-          </Form.Item>
-          <Form.Item label="Activo" name="activo" valuePropName="checked">
-            <Switch checkedChildren="Sí" unCheckedChildren="No" />
           </Form.Item>
           <Button {...FORM_DRAWER_SUBMIT_PROPS} loading={saving}>
             {editingRate ? 'Guardar cambios' : 'Crear tipo de cambio'}

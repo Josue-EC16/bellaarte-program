@@ -1,0 +1,12 @@
+{
+  "backend_health": 200,
+  "protected_leny": 401,
+  "frontend": 200,
+  "ollama_http": 200,
+  "qwen_installed": true,
+  "global_activation": "blocked_by_automatic_review_pending_owner_decision",
+  "ordinary_corrected_global_e2e": "not_executed",
+  "env_unchanged_from_initial_snapshot": true,
+  "authenticated_watcher_closed": true,
+  "human_review_private_acl_protected": true
+}

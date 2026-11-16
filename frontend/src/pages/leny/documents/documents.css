@@ -1,0 +1,18 @@
+.leny-documents { --document-accent: #8f3d2e; max-width: 1600px; margin: 0 auto; padding-bottom: 20px; }
+.leny-doc-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 18px; margin-bottom: 20px; }
+.leny-doc-heading h2 { margin-top: 5px; margin-bottom: 8px; }
+.leny-doc-heading p { margin-bottom: 0; }
+.leny-doc-eyebrow { color: var(--document-accent); font-size: 11px; font-weight: 700; letter-spacing: .13em; }
+.leny-doc-list-card { min-height: 380px; }
+.leny-doc-filters { display: grid; grid-template-columns: minmax(170px, 1fr) 140px 150px minmax(230px, 1fr); gap: 12px; margin-bottom: 20px; }
+.leny-doc-title-button { max-width: 280px; height: auto; padding: 0; text-align: left; white-space: normal; overflow-wrap: anywhere; }
+.leny-doc-upload-entry { padding: 14px 0; border-bottom: 1px solid rgba(143, 61, 46, .14); overflow-wrap: anywhere; }
+.leny-doc-preview { border: 1px solid rgba(143, 61, 46, .15); border-radius: 14px; padding: 22px; background: #fffdfb; }
+.leny-doc-preview p { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.65; }
+.leny-doc-preview img { display: block; max-width: 100%; max-height: 65vh; object-fit: contain; margin: auto; }
+.leny-doc-preview-table { max-width: 100%; overflow-x: auto; margin: 14px 0; }
+.leny-doc-preview-table table { border-collapse: collapse; }
+.leny-doc-preview-table td { border: 1px solid #dac9bf; padding: 8px 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
+@media (max-width: 1200px) { .leny-doc-filters { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 575px) { .leny-doc-filters { grid-template-columns: 1fr; } .leny-doc-preview { padding: 14px; } .leny-doc-heading h2 { font-size: 25px; } }
+.leny-doc-index { overflow-wrap: anywhere; word-break: break-word; }

@@ -1,0 +1,61 @@
+{
+  "scope": "semantic_correction_source_inventory_before_focused_run",
+  "previous_snapshot": "leny_rag04_layers_candidate_snapshot.json",
+  "current_snapshot": "leny_rag04_semantic_candidate_snapshot.json",
+  "files": [
+    {
+      "path": "backend/app/services/leny_rag_routing.py",
+      "before_sha256": "17080bb21c03aa07e047187b6538905623c189fc0b04d545031872e68b71018c",
+      "after_sha256": "00ba6814e35231c3b79400f4cf1b066cd24c920647983993f7c405dd7925613a",
+      "change": "modified"
+    },
+    {
+      "path": "backend/app/services/leny_rag_selection.py",
+      "before_sha256": "4cfe03665c797ffd861e53b658846b5934933fcb899ba715ccfb0d76db3d0006",
+      "after_sha256": "00f8f7c742b2be396371cc4d8baaf0a1db95d68fb22826926f1a08231e36e564",
+      "change": "modified"
+    },
+    {
+      "path": "backend/scripts/leny_rag_layered_evaluation.py",
+      "before_sha256": "a3958a5dd0bb323a25a437a8138c81c4459940ba865192ba4102bfb34e0b0079",
+      "after_sha256": "e6861440abbb8b5b5b14bdf6e4dea3553e5bdc725ceb3c673f19fcb9531cab1f",
+      "change": "modified"
+    },
+    {
+      "path": "backend/scripts/run_leny_rag_quality.py",
+      "before_sha256": "b670a0841cad9c76affc8edc10b87399396bf73536e56d57134350846a261dbd",
+      "after_sha256": "99c0699c86bb3db4274494fa5d97eb0bba19f16ffa94afee0383e3c09f72e080",
+      "change": "modified"
+    },
+    {
+      "path": "backend/tests/integration/test_leny_rag_quality.py",
+      "before_sha256": "90b4b45f92876ddf34b1b4888476ab7d0d971dc282442e48b0762b93342fd438",
+      "after_sha256": "7cf8d95033d4966bd8930e4df9a51434fc1aeca0a32ac78ee2015b24e9a2b34a",
+      "change": "modified"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_grounding.py",
+      "before_sha256": "aab134fe5a13bde59a6a6454269ce53bd103f12d3d3ff03ec87838293c555e0d",
+      "after_sha256": "dadfc6eb2be35a3420e8ed79fe0185314cf34b65e93b603a91f08640611ba0a0",
+      "change": "modified"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_quality.py",
+      "before_sha256": "1ddea150efb7c750eb7f3a8068db29b69b412c4435a8ed0117b9e07b1e3231bf",
+      "after_sha256": "99cdfeed1129c68cca0cb707909bbb9020322191731250f680fa84cfaba837d1",
+      "change": "modified"
+    },
+    {
+      "path": "backend/tests/test_leny_rag_selection.py",
+      "before_sha256": "54f24b3d729b5ebefb8bfd5990d2cd9c7030fcb8fc75a7cce8e9fa43616f6f31",
+      "after_sha256": "520225eb37f26cbdbed2abc9e071997c8443d12b2f9bebea47f07a69e00821d3",
+      "change": "modified"
+    }
+  ],
+  "gold_changed": false,
+  "new_dependencies": [],
+  "new_migrations": [],
+  "new_endpoints": [],
+  "retrieval_sql_changed": false,
+  "business_env_changed": false
+}

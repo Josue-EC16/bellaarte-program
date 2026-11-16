@@ -1,3 +1,4 @@
+from app.services.economic_write_service import economic_write
 from datetime import date
 
 from fastapi import APIRouter, Depends, Query, Request, Response, status
@@ -85,14 +86,16 @@ def annul_payment(
     db: Session = Depends(get_db),
     account: Cuenta = Depends(require_permission("order_payments:annul")),
 ) -> OrderPaymentDetailResponse:
-    return annul_order_payment(
+    return economic_write(db,account=account,operation="annul_payment",key=request.headers.get("Idempotency-Key"),
+        payload={"resource_id":pago_id,"body":payload.model_dump(mode="python")},execute=lambda: annul_order_payment(
         db,
         payment_id=pago_id,
         payload=payload,
         annulled_by=account,
         ip_address=request.client.host if request.client else None,
         user_agent=request.headers.get("user-agent"),
-    )
+        commit=False,
+    ))
 
 
 @router.get("/pruebas", response_model=list[OrderTestListItem])
@@ -266,7 +269,8 @@ def post_order_payment(
     db: Session = Depends(get_db),
     account: Cuenta = Depends(require_permission("order_payments:create")),
 ) -> OrderPaymentDetailResponse:
-    return create_order_payment(db, order_id=pedido_id, payload=payload, created_by=account, ip_address=request.client.host if request.client else None, user_agent=request.headers.get("user-agent"))
+    return economic_write(db,account=account,operation="payment_create",key=request.headers.get("Idempotency-Key"),
+        payload={"body":payload.model_dump(mode="python"),"order_id":pedido_id},execute=lambda: create_order_payment(db, order_id=pedido_id, payload=payload, created_by=account, ip_address=request.client.host if request.client else None, user_agent=request.headers.get("user-agent"), commit=False))
 
 
 @router.post("/{pedido_id}/pruebas", response_model=OrderTestListItem, status_code=status.HTTP_201_CREATED)

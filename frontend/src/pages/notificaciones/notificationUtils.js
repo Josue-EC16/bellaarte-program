@@ -6,6 +6,7 @@ export const NOTIFICATION_PRIORITY_OPTIONS = [
 ]
 
 export const NOTIFICATION_MODULE_OPTIONS = [
+  { label: 'MONEDAS', value: 'MONEDAS' },
   { label: 'BOUTIQUE', value: 'BOUTIQUE' },
   { label: 'TALLER', value: 'TALLER' },
   { label: 'PEDIDOS', value: 'PEDIDOS' },
@@ -16,6 +17,10 @@ export const NOTIFICATION_MODULE_OPTIONS = [
 ]
 
 export const NOTIFICATION_TYPE_OPTIONS = [
+  'TC_SYNC_PRIMER_ERROR',
+  'TC_SYNC_AGOTADO',
+  'TC_SYNC_PROLONGADO',
+  'TC_SYNC_EXITOSO',
   'STOCK_BAJO_BOUTIQUE',
   'STOCK_BAJO_TALLER',
   'ENTREGA_PEDIDO_2_DIAS',
@@ -75,6 +80,8 @@ export function buildNotificationOriginPath(record) {
   if (record.action_path) return record.action_path
   const tableRef = record.tabla_referencia?.toLowerCase()
   const recordId = record.id_referencia
+  if (tableRef === 'tipo_cambio_registros') return recordId ? `/app/monedas/tipos-cambio/registros?record_id=${recordId}` : '/app/monedas/tipos-cambio/registros'
+  if (tableRef === 'tipo_cambio_moneda') return recordId ? `/app/monedas/tipos-cambio?rate_id=${recordId}` : '/app/monedas/tipos-cambio'
   if (tableRef === 'item_boutique') return recordId ? `/app/boutique/inventario?item_id=${recordId}` : '/app/boutique/inventario'
   if (tableRef === 'inventario_taller') return recordId ? `/app/taller/inventario?item_id=${recordId}` : '/app/taller/inventario'
   if (tableRef === 'pedido') return recordId ? `/app/pedidos?order_id=${recordId}` : '/app/pedidos'

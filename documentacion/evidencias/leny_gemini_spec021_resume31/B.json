@@ -1,0 +1,60 @@
+{
+  "step": "B",
+  "run": "leny_gemini_spec021_resume31",
+  "started_at": "2026-11-05T16:54:09.590261+00:00",
+  "python": "3.10.6",
+  "sdk": "2.33.0",
+  "model": "gemini-3.1-flash-lite",
+  "endpoint": "https://generativelanguage.googleapis.com",
+  "api_version": "v1beta",
+  "transport": "httpx",
+  "sdk_attempts": 1,
+  "application_retries": 0,
+  "timeout_seconds": 60,
+  "target": {
+    "thinking": "medium",
+    "input_budget": 32678,
+    "output_tokens": 8192
+  },
+  "diagnostic": {
+    "thinking": "omitted_model_default",
+    "output_tokens": 1024,
+    "structured": true
+  },
+  "declared_quota": {
+    "rpm": 15,
+    "tpm": 250000,
+    "rpd": 500
+  },
+  "authenticated_project_verified": false,
+  "effective_account_quota_verified": false,
+  "documents_sent": false,
+  "passed": true,
+  "operations": [
+    {
+      "operation": "diag_b",
+      "success": true,
+      "tokens": {
+        "prompt_token_count": 11,
+        "candidates_token_count": 5
+      },
+      "seconds": 4.985
+    }
+  ],
+  "http": [
+    {
+      "method": "POST",
+      "host": "generativelanguage.googleapis.com",
+      "path": "/v1beta/models/gemini-3.1-flash-lite:generateContent",
+      "http_status": 200
+    }
+  ],
+  "finish_reason": "STOP",
+  "output_characters": 12,
+  "tokens": {
+    "prompt_token_count": 11,
+    "candidates_token_count": 5
+  },
+  "seconds": 5.031,
+  "original_env_unchanged": true
+}
