@@ -17,6 +17,7 @@ from app.models.client import Cliente
 from app.models.currency import Moneda
 from app.models.economy import CorteCaja, Egreso
 from app.models.exchange_rate import TipoCambioMoneda
+from app.models.exchange_rate_record import TipoCambioRegistro
 from app.models.flete import EstadoFleteEnum, EstadoSalidaFleteEnum, FleteVestido, SalidaFlete
 from app.models.order import PagoPedido, Pedido, PedidoOtro, PedidoVestido, PruebaPedido
 from app.models.provider import Proveedor
@@ -851,26 +852,38 @@ def get_currencies_report(
     selected_series = [
         {
             "label": rate.fecha_registro.strftime("%Y-%m-%d"),
-            "value": round(_to_float(rate.valor_bob), 4),
+            "value": format(rate.valor_bob, ".4f"),
             "currency_code": rate.moneda.codigo,
         }
         for rate in rates
         if selected_currency is None or rate.moneda_id == selected_currency.id
     ]
 
+    official_query = select(TipoCambioRegistro).options(joinedload(TipoCambioRegistro.tipo_cambio)).where(
+        TipoCambioRegistro.estado.in_(("EXITOSO", "CARGA_HISTORICA")))
+    if selected_currency:
+        official_query = official_query.where(TipoCambioRegistro.moneda_id == selected_currency.id)
+    if start_date:
+        official_query = official_query.where(TipoCambioRegistro.fecha_objetivo >= start_date)
+    if end_date:
+        official_query = official_query.where(TipoCambioRegistro.fecha_objetivo <= end_date)
+    official_series = [{"label": record.fecha_objetivo.isoformat(), "value": format(record.tipo_cambio.valor_bob, ".4f"),
+        "source": record.tipo_cambio.fuente} for record in db.scalars(official_query.order_by(
+            TipoCambioRegistro.fecha_objetivo, TipoCambioRegistro.id))]
     latest_rates = []
     for currency in currencies:
         rate = db.execute(
             select(TipoCambioMoneda)
             .where(TipoCambioMoneda.moneda_id == currency.id)
-            .order_by(TipoCambioMoneda.fecha_registro.desc())
+            .order_by(TipoCambioMoneda.fecha_registro.desc(), TipoCambioMoneda.id.desc())
+            .limit(1)
         ).scalar_one_or_none()
         if rate is not None:
             latest_rates.append(
                 {
                     "currency": currency.codigo,
                     "name": currency.nombre,
-                    "value_bob": round(_to_float(rate.valor_bob), 4),
+                    "value_bob": format(rate.valor_bob, ".4f"),
                     "active": rate.activo,
                     "registered_at": rate.fecha_registro.isoformat(),
                 }
@@ -890,7 +903,7 @@ def get_currencies_report(
             {"key": "CURRENCIES_BASE", "label": "MONEDA BASE", "value": next((currency.codigo for currency in currencies if currency.es_base), "SIN BASE")},
             {"key": "RATES_PERIOD", "label": "TIPOS DE CAMBIO EN EL PERÍODO", "value": len(rates)},
         ],
-        series={"exchange_rate_series": selected_series},
+        series={"exchange_rate_series": selected_series, "official_exchange_rate_series": official_series},
         rankings={"commercial_usage": [{"label": label, "value": round(value, 2)} for label, value in sorted(usage_by_currency.items(), key=lambda item: (-item[1], item[0]))]},
         table_rows={
             "currencies_breakdown": [{"label": currency.codigo, "active": currency.habilitado, "base": currency.es_base} for currency in currencies],

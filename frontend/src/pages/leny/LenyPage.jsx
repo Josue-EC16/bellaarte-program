@@ -11,6 +11,7 @@ import { useLenyChat } from './useLenyChat'
 import './leny.css'
 
 const messageState = { generating: 'Preparando respuesta…', interrupted: 'Respuesta interrumpida', failed: 'Respuesta incompleta' }
+const providerName = (value) => value === 'gemini' ? 'Gemini — Google AI' : 'Qwen — Local'
 
 export function LenyPage() {
   const { user } = useAuth()
@@ -38,7 +39,7 @@ function LenySession() {
 
   async function submit(event) {
     event?.preventDefault()
-    if (chat.busy || chat.loading || chat.retrySeconds > 0 || !draft.trim() || draft.length > limit) return
+    if (chat.busy || chat.loading || chat.retrySeconds > 0 || !draft.trim() || draft.length > limit || !chat.providerStatus?.available) return
     const text = draft
     const view = conversationView.current
     setDraft(''); setFollowBottom(true)
@@ -73,7 +74,7 @@ function LenySession() {
         {chat.conversations.map((item) => <div key={item.id} className={`leny-history-item ${chat.conversation?.id === item.id ? 'is-selected' : ''}`}>
           <button className="leny-history-select" onClick={() => { conversationView.current += 1; chat.selectConversation(item); setDraft(''); setFollowBottom(true) }} aria-current={chat.conversation?.id === item.id ? 'true' : undefined}>
             <span>{item.title || 'Conversación'}</span>
-            <small>{new Date(item.updated_at || item.created_at).toLocaleDateString('es-BO', { day: 'numeric', month: 'short' })}</small>
+            <small>{providerName(item.llm_provider)} · {new Date(item.updated_at || item.created_at).toLocaleDateString('es-BO', { day: 'numeric', month: 'short' })}</small>
           </button>
           <Button type="text" size="small" icon={<DeleteOutlined />} aria-label={`Eliminar ${item.title || 'conversación'}`} disabled={chat.busy && chat.conversation?.id === item.id} onClick={() => remove(item)} />
         </div>)}
@@ -87,11 +88,23 @@ function LenySession() {
       <header className="leny-header">
         <div className="leny-brand"><span className="leny-monogram" aria-hidden="true">L</span><div><h1>LENY</h1><span>Asistente de BELLAARTE BOUTIQUE</span></div></div>
         <div className="leny-header-actions">
-          <Tag color={chat.status?.available ? 'success' : 'default'}>{chat.status === null ? 'Conectando' : chat.status.available ? 'Modelo local disponible' : 'Sin conexión al modelo'}</Tag>
+          <Tag color={chat.providerStatus?.available ? 'success' : 'default'}>{chat.status === null ? 'Conectando' : chat.providerStatus?.available ? chat.provider === 'gemini' ? 'Gemini disponible' : 'Modelo local disponible' : chat.provider === 'gemini' ? 'Gemini no disponible' : 'Sin conexión al modelo'}</Tag>
           <Button type="text" icon={<ReloadOutlined />} aria-label="Comprobar servicio" onClick={chat.refreshStatus} />
           {user?.permissions?.includes('leny:admin') && <Button type="text" icon={<SettingOutlined />} aria-label="Administración de LENY" onClick={openAdmin} />}
         </div>
       </header>
+
+      <div className="leny-provider-control">
+        <label htmlFor="leny-provider">Modelo de esta conversación</label>
+        <select id="leny-provider" value={chat.provider} disabled={Boolean(chat.conversation) || chat.busy || chat.loading}
+          onChange={(event) => chat.selectProvider(event.target.value)}>
+          <option value="ollama">Qwen — Local</option>
+          <option value="gemini" disabled={!chat.status?.providers?.some((item) => item.provider === 'gemini' && item.available)}>Gemini — Google AI</option>
+        </select>
+        <small>{chat.conversation ? 'Para cambiar de modelo, inicia otra conversación.' : 'El modelo queda fijo al crear la conversación.'}</small>
+        {chat.provider === 'gemini' && !chat.providerStatus?.available && <small role="status">Gemini no está disponible. Esta conversación conserva su modelo; puedes iniciar otra con Qwen.</small>}
+        {chat.conversation?.quality_profile === 'spec03' && <small role="status">Los mensajes anteriores se conservan; las nuevas respuestas usan la versión habitual.</small>}
+      </div>
 
       {chat.error && <div className="leny-alert"><FormProcessAlert title="LENY no pudo completar la solicitud." message={chat.error} style={{ marginBottom: 8 }} />
         {chat.conversation && <Button size="small" disabled={chat.busy} onClick={chat.refreshConversation}>Consultar historial</Button>}</div>}
@@ -111,9 +124,10 @@ function LenySession() {
         {chat.messages.map((item) => <article key={item.id} className={`leny-message leny-message-${item.role}`} aria-label={item.role === 'user' ? 'Tu mensaje' : 'Respuesta de LENY'}>
           <div className="leny-message-author">{item.role === 'user' ? 'TÚ' : 'LENY'}</div>
           <div className="leny-message-body">{item.role === 'assistant'
-            ? <LenyMarkdown>{item.content || (item.cancellationPending ? 'Esperando confirmación del servidor…' : item.status === 'generating' ? 'Preparando respuesta…' : 'No se recibió texto de respuesta.')}</LenyMarkdown>
+            ? <LenyMarkdown>{item.content || (item.cancellationPending ? 'Esperando confirmación del servidor…' : item.status === 'generating' ? 'Preparando y verificando la respuesta…' : 'No se recibió texto de respuesta.')}</LenyMarkdown>
             : <p>{item.content}</p>}</div>
           {item.status !== 'completed' && messageState[item.status] && <small className="leny-message-state">{item.cancellationPending ? 'Interrupción pendiente' : messageState[item.status]}</small>}
+          {item.role === 'assistant' && item.status === 'completed' && item.responseScope && <small className="leny-message-state">{{ documented: 'Respuesta con fuentes documentales', partial: 'Respuesta documental parcial', general: 'Orientación general sin fuente empresarial' }[item.responseScope]}</small>}
           {item.role === 'assistant' && <LenySources key={`${chat.conversation?.id}:${item.id}`} sources={item.sources} status={item.status} />}
         </article>)}
       </div>
@@ -128,7 +142,7 @@ function LenySession() {
           {chat.fieldError && <p id="leny-message-error" className="leny-field-error" role="alert">{chat.fieldError}</p>}
           <div className="leny-composer-bottom"><span>{draft.length}/{limit}<span className="leny-keyboard-help"> · Enter envía · Mayús + Enter nueva línea</span></span>
             {chat.busy ? <Button icon={<StopOutlined />} onClick={chat.stop}>Detener</Button>
-              : <Button htmlType="submit" type="primary" icon={<SendOutlined />} disabled={chat.loading || chat.retrySeconds > 0 || !draft.trim() || draft.length > limit || !chat.status?.available}>{chat.retrySeconds > 0 ? `Espera ${chat.retrySeconds} s` : 'Enviar'}</Button>}
+              : <Button htmlType="submit" type="primary" icon={<SendOutlined />} disabled={chat.loading || chat.retrySeconds > 0 || !draft.trim() || draft.length > limit || !chat.providerStatus?.available}>{chat.retrySeconds > 0 ? `Espera ${chat.retrySeconds} s` : 'Enviar'}</Button>}
           </div>
         </form>
         <p id="leny-composer-help" className="leny-disclaimer">LENY puede equivocarse. Verifica la información y evita compartir contraseñas o datos sensibles.</p>

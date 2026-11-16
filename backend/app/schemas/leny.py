@@ -20,12 +20,21 @@ class LenyChatRequest(BaseModel):
         return validate_input(value)
 
 
+class ConversationCreateRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    provider: Literal['ollama', 'gemini'] = 'ollama'
+    quality_profile: Literal['baseline', 'spec03'] | None = None
+
+
 class ConversationResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: UUID
     title: str
     created_at: datetime
     updated_at: datetime
+    llm_provider: Literal['ollama', 'gemini'] = 'ollama'
+    llm_model: str = 'qwen3.5:4b-q4_K_M'
+    quality_profile: Literal['baseline', 'spec03'] = 'baseline'
 
 
 class MessageResponse(BaseModel):
@@ -57,12 +66,22 @@ class ConversationDetailResponse(BaseModel):
     page_size: int
 
 
+class ProviderStatus(BaseModel):
+    provider: Literal['ollama', 'gemini']
+    model: str
+    available: bool
+    code: str
+    request_timeout_seconds: float
+
+
 class LenyStatusResponse(BaseModel):
+    quality_evaluation_enabled: bool = False
     available: bool
     code: str
     model: str
     max_message_chars: int
     request_timeout_seconds: float
+    providers: list[ProviderStatus] = Field(default_factory=list)
 
 
 class StartEvent(BaseModel):
@@ -70,6 +89,8 @@ class StartEvent(BaseModel):
     conversation_id: UUID
     request_id: UUID
     assistant_message_id: UUID
+    provider: Literal['ollama', 'gemini'] | None = None
+    model: str | None = None
 
 
 class DeltaEvent(BaseModel):
@@ -83,6 +104,9 @@ class DoneEvent(BaseModel):
     finish_reason: str
     outcome: Literal["answered", "refused", "clarification"] = "answered"
     reason_code: str | None = None
+    response_scope: Literal['documented', 'partial', 'general'] | None = None
+    provider: Literal['ollama', 'gemini'] | None = None
+    model: str | None = None
     sources: list[SourceReference] = Field(default_factory=list, max_length=5)
 
 

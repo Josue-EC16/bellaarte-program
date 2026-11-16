@@ -1,5 +1,27 @@
 # Estado actual del sistema BellaArte Boutique
 
+**Diagnóstico histórico del 17/10/2026.** Para la implementación de
+Usuarios/Roles/Sesiones del 03/11/2026 consultar
+[Usuarios, roles y sesiones](documentacion/MODULO_USUARIOS_SESIONES.md), con
+migración nueva 0022 desplegada con autorización en el ERP original. Sus reglas y pruebas
+sustituyen los hallazgos de este informe únicamente para ese alcance; los
+resultados siguientes no son mediciones nuevas.
+
+**Actualización Tipos de Cambio, 04/11/2026:** SPEC-TC-01 y migración 0023
+implementadas y desplegadas con autorización en el ERP original. Procedencia,
+registro técnico propio, inserción atómica, protección de históricos y autoría
+SISTEMA. TC-02 habilitó después la automatización USD; la carga inicial de un mes
+continúa sin ejecutarse. Se preservaron
+las filas previas de 62 tablas y la estructura de moneda con respaldo privado
+verificado. Ver [informe TC-01](documentacion/SPEC_TC_01_IMPLEMENTACION.md).
+
+**SPEC-TC-02, 04/11/2026:** tarea Windows activa con inicio fijo 04/11/2026,
+consulta 05:00 Bolivia, máximo diez llamadas diarias, reintentos y recuperación
+inactiva. Primer éxito real: 12.0600 BOB/USD, vigencia 04/11/2026; avisos solo
+ADMIN y pantalla propia de registros. Comparación posterior contra respaldo:
+ventas, pagos, fletes, comprobantes, monedas, usuarios, cuentas y roles intactos.
+Ver [informe TC-02](documentacion/SPEC_TC_02_IMPLEMENTACION.md).
+
 **Fecha de evaluación:** 17 de octubre de 2026.  
 **Proyecto analizado:** `C:\laragon\www\bellaarte-program`.  
 **Alcance:** documentación, código fuente, dependencias, modelos, migraciones, rutas, permisos, pruebas, estructura real de PostgreSQL y consultas de lectura a servicios.  

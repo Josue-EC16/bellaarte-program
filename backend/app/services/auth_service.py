@@ -5,9 +5,10 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload
 
 from app.core.audit import register_audit_event, register_audit_failure
-from app.core.security import create_access_token, create_refresh_token, hash_password, verify_password
+from app.core.security import hash_password, verify_password, pwd_context
 from app.models.account import Cuenta
-from app.services.user_service import build_user_summary
+from app.services.auth_session_service import (create_session, lock_account, lock_login_buckets,
+    revoke_account_sessions, revoke_session, validate_session)
 
 
 def get_account_by_username(db: Session, username: str) -> Cuenta | None:
@@ -16,7 +17,7 @@ def get_account_by_username(db: Session, username: str) -> Cuenta | None:
         .where(Cuenta.username == username.strip())
         .options(joinedload(Cuenta.usuario), joinedload(Cuenta.rol))
     )
-    return db.execute(stmt).scalar_one_or_none()
+    return db.execute(stmt.execution_options(populate_existing=True)).scalar_one_or_none()
 
 
 def get_account_by_id(db: Session, account_id: int) -> Cuenta | None:
@@ -25,7 +26,7 @@ def get_account_by_id(db: Session, account_id: int) -> Cuenta | None:
         .where(Cuenta.id == account_id)
         .options(joinedload(Cuenta.usuario), joinedload(Cuenta.rol))
     )
-    return db.execute(stmt).scalar_one_or_none()
+    return db.execute(stmt.execution_options(populate_existing=True)).scalar_one_or_none()
 
 
 def validate_active_account(account: Cuenta) -> None:
@@ -38,8 +39,16 @@ def validate_active_account(account: Cuenta) -> None:
 
 
 def authenticate(db: Session, username: str, password: str, *, ip_address: str | None, user_agent: str | None) -> Cuenta:
+    buckets = lock_login_buckets(db, username, ip_address)
     account = get_account_by_username(db, username)
-    if account is None or not verify_password(password, account.password_hash):
+    if account is not None:
+        lock_account(db, account)
+    valid = verify_password(password, account.password_hash) if account is not None else False
+    if account is None:
+        pwd_context.dummy_verify()
+    if not valid:
+        for bucket, _limit in buckets:
+            bucket.failures += 1
         register_audit_event(
             db,
             action="LOGIN_FAILED",
@@ -63,19 +72,14 @@ def authenticate(db: Session, username: str, password: str, *, ip_address: str |
         ip_address=ip_address,
         user_agent=user_agent,
     )
+    account._login_payload = create_session(db, account)
     db.commit()
-    db.refresh(account)
     return account
 
 
 def build_login_payload(account: Cuenta) -> dict:
-    access_token = create_access_token(subject=str(account.id), role_code=account.rol.codigo)
-    refresh_token = create_refresh_token(subject=str(account.id), role_code=account.rol.codigo)
-    return {
-        "access_token": access_token,
-        "refresh_token": refresh_token,
-        "user": build_user_summary(account),
-    }
+    # Issuance occurs inside authenticate's transaction, before releasing locks.
+    return account._login_payload
 
 
 def change_password(
@@ -87,6 +91,8 @@ def change_password(
     ip_address: str | None,
     user_agent: str | None,
 ) -> Cuenta:
+    lock_account(db, account)
+    validate_session(db, account, account._auth_payload, lock=True)
     if not verify_password(current_password, account.password_hash):
         register_audit_failure(
             db,
@@ -105,6 +111,7 @@ def change_password(
 
     account.password_hash = hash_password(new_password)
     account.must_change_password = False
+    revoke_account_sessions(db, account, "PASSWORD_CHANGED")
     register_audit_event(
         db,
         action="PASSWORD_CHANGED",
@@ -127,6 +134,9 @@ def logout(
     ip_address: str | None,
     user_agent: str | None,
 ) -> None:
+    lock_account(db, account)
+    session = validate_session(db, account, account._auth_payload, lock=True)
+    revoke_session(db, session, "LOGOUT")
     register_audit_event(
         db,
         action="LOGOUT",

@@ -10,6 +10,7 @@ import {
 } from '../../components/forms/formConfig'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
+import { cleanText, validateRequiredText } from '../users/userValidation'
 
 export function RolesPage() {
   const [roles, setRoles] = useState([])
@@ -43,14 +44,16 @@ export function RolesPage() {
     loadRoles()
   }, [])
 
-  const openEdit = (record) => {
-    setEditingRole(record)
-    setFormError(null)
-    form.setFieldsValue({
-      nombre: record.nombre,
-      descripcion: record.descripcion,
-    })
-    setDrawerOpen(true)
+  const openEdit = async (record) => {
+    try {
+      const { data: role } = await apiClient.get(`/roles/${record.id}`)
+      setEditingRole(role)
+      setFormError(null)
+      form.setFieldsValue({ nombre: role.nombre, descripcion: role.descripcion })
+      setDrawerOpen(true)
+    } catch (requestError) {
+      message.error(requestError.normalizedError?.summary || 'No fue posible cargar el rol.')
+    }
   }
 
   const handleSubmit = async (values) => {
@@ -59,8 +62,8 @@ export function RolesPage() {
     setFormError(null)
     try {
       await apiClient.patch(`/roles/${editingRole.id}`, {
-        nombre: values.nombre,
-        descripcion: values.descripcion,
+        nombre: cleanText(values.nombre).toUpperCase(),
+        descripcion: cleanText(values.descripcion).toUpperCase() || null,
       })
       message.success('Se guardaron los cambios del rol correctamente.')
       setDrawerOpen(false)
@@ -169,6 +172,9 @@ export function RolesPage() {
           form.resetFields()
         }}
         open={drawerOpen}
+        maskClosable={false}
+        closable={!saving}
+        keyboard={!saving}
         destroyOnClose
       >
         <FormProcessAlert
@@ -180,8 +186,9 @@ export function RolesPage() {
           <Form.Item
             label="Nombre"
             name="nombre"
-            rules={[{ required: true, message: 'Debe ingresar el nombre del rol.' }]}
-            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+            rules={[{ required: true, whitespace: true, message: 'Debe ingresar el nombre del rol.' },
+              { validator: validateRequiredText({ name: true, min: 2 }) }]}
+            normalize={(value) => (value || '').normalize('NFC').toUpperCase()}
           >
             <Input placeholder="Ej. ADMINISTRACIÓN GENERAL" />
           </Form.Item>

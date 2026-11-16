@@ -1,5 +1,6 @@
 param(
     [Parameter(Mandatory=$true)][ValidateSet('legacy','rag4_v1')][string]$Profile,
+    [ValidateSet('document-excerpts-v2','controlled-synthesis-v1')][string]$ResponseMode='document-excerpts-v2',
     [ValidateSet('pilot','followup','diagnostic','quality','contracts','development','budget','retrieval','focused','stability','supervised')][string]$Mode='pilot',
     [ValidateSet('fixed','adaptive')][string]$EvidenceMode='fixed',
     [ValidateSet(2048,2304,2560)][int]$Budget=2048,
@@ -15,7 +16,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-if (-not $ExclusiveWindowConfirmed) { throw 'An explicitly authorized exclusive LENY window is required. No services or data changed.' }
+if ($Mode -ne 'contracts' -and -not $ExclusiveWindowConfirmed) { throw 'An explicitly authorized exclusive LENY window is required. No services or data changed.' }
 $repositoryRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..\..')).Path
 $testRoot = [System.IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA 'BAB_VDOS\postgresql-testing'))
 $testData = Join-Path $testRoot 'data'
@@ -71,6 +72,7 @@ try {
     $env:TEST_MIGRATION_DATABASE_URL = 'postgresql+psycopg2://bab_test_migrator:'+([uri]::EscapeDataString($migrationPassword))+'@127.0.0.1:55432/bab_vdos_testing'
     $arguments = @('--profile',$Profile,'--mode',$Mode,'--evidence-mode',$EvidenceMode,'--budget',"$Budget",'--ranking',$Ranking,'--case-limit',"$CaseLimit",'--output',([System.IO.Path]::GetFullPath($Output)),'--exclusive-window-confirmed')
     $arguments += @('--temperature',$Temperature.ToString([System.Globalization.CultureInfo]::InvariantCulture))
+    $arguments += @('--response-mode',$ResponseMode)
     if ($Neighbors) { $arguments += '--neighbors' }
     if ($TokenProbe) { $arguments += '--token-probe' }
     if ($ProcedureStressBytes) { $arguments += @('--procedure-stress-bytes',"$ProcedureStressBytes") }

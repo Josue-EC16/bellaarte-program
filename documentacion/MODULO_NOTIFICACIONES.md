@@ -2,6 +2,15 @@
 
 Revisión: 18/10/2026. FastAPI, SQLAlchemy síncrono, PostgreSQL 17 y React/Ant Design.
 
+**Extensión TC-02, 04/11/2026:** eventos TC_SYNC_PRIMER_ERROR, TC_SYNC_AGOTADO,
+TC_SYNC_PROLONGADO y TC_SYNC_EXITOSO, módulo MONEDAS, exclusivos para ADMIN
+efectivo con permisos de sincronización. Dedupe incluye avisos resueltos; los
+exADMIN no conservan acceso a copias TC antiguas. Recuperación y éxito se
+combinan cuando corresponde; no se añaden correos ni auditoría funcional.
+La tarea Windows TC-02, autorizada expresamente, está activa; las afirmaciones
+históricas inferiores sobre ausencia de nuevas tareas se refieren al módulo
+de Notificaciones original. Ver [contratos y evidencia TC-02](SPEC_TC_02_IMPLEMENTACION.md).
+
 ## Propósito y despliegue
 
 Centralizar incidencias sin multiplicarlas, conservar su historial y distinguir reconocimiento, resolución y escritorio. Corrección implementada y probada en una instancia aislada. **La migración `20261018_0014` se aplicó con autorización explícita en `bellaarte_db:5432` el 18/10/2026**, después de verificar un respaldo y pausar la API. La API se reanudó y las consultas de preferencias, resumen y listado pasaron en modo de solo lectura. API y SPA deben conservar sus contratos coordinados.

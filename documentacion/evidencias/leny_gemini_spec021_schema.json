@@ -1,0 +1,16 @@
+{
+  "checks": [
+    "unknown_synthetic_models_rejected",
+    "upgrade0024",
+    "provider_columns",
+    "durable_rpm_five_including_all_phases",
+    "tpm_reservation",
+    "daily_provider_exhaustion",
+    "daily_twenty_including_failed_attempts",
+    "safe_downgrade_before_use",
+    "all_schema_and_rows_rolled_back"
+  ],
+  "google_calls": 0,
+  "production_database_used": false,
+  "committed_schema_changes": false
+}

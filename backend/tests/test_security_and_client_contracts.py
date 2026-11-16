@@ -35,7 +35,7 @@ def test_update_user_request_accepts_dual_status() -> None:
         nombres="ANA",
         apellido_paterno="LOPEZ",
         apellido_materno=None,
-        ci="12345",
+        ci="1234567",
         celular="70000000",
         correo="ana@example.com",
         zona="CENTRO",
@@ -48,9 +48,8 @@ def test_update_user_request_accepts_dual_status() -> None:
     assert payload.account_is_active is False
 
 
-def test_reset_password_request_requires_temporary_password() -> None:
-    payload = ResetPasswordRequest(temporary_password="Temporal123!")
-    assert payload.temporary_password == "Temporal123!"
+def test_reset_password_request_is_server_generated() -> None:
+    assert ResetPasswordRequest().model_dump() == {}
 
 
 def test_client_create_request_accepts_optional_code() -> None:

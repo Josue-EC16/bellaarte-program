@@ -1,0 +1,120 @@
+{
+  "verified_at_utc": "2026-11-05T03:31:32.064356+00:00",
+  "revision": "20261104_0023",
+  "deployment": {
+    "state": "deployed_task_enabled",
+    "start_date": "2026-11-04",
+    "backup_sha256": "00773d1aee7ffb34dd4737f4d4e4652ad8860b84fb2e402560cfdbc9995756bc",
+    "backup_bytes": 5107076,
+    "backup_offline_read": true,
+    "includes_private_originals": true,
+    "schema_unchanged": true,
+    "existing_rows_unchanged_before_activation": true,
+    "existing_tables": 62,
+    "migrations_executed": false,
+    "restore_executed": false,
+    "initial_history_import_executed": false,
+    "health_200": true,
+    "automation_enabled": true,
+    "task": {
+      "task": "BAB_VDOS_USD_BOB_SYNC",
+      "enabled": true,
+      "user": "PORTATILZ3U5\\MARCELO",
+      "logon": "InteractiveToken",
+      "interval_seconds": 60,
+      "multiple_instances": "IgnoreNew",
+      "run_level": "Limited",
+      "working_directory": "C:\\laragon\\www\\bellaarte-program\\backend"
+    }
+  },
+  "state": {
+    "enabled": true,
+    "start_date": "2026-11-04",
+    "local_date": "2026-11-04",
+    "status": "UPDATED",
+    "message": "ACTUALIZADO TIPO DE CAMBIO HOY (04/11/2026)",
+    "operational_rate": {
+      "id": 5,
+      "valor_bob": "12.0600",
+      "origen": "AUTOMATICO",
+      "fuente": "BCB_VIA_FACTURA_BO",
+      "fecha_registro": "2026-11-04T23:26:55.081290-04:00",
+      "fecha_oficial": "2026-11-04"
+    },
+    "last_official_date": "2026-11-04",
+    "official_today": true,
+    "attempts_used": 1,
+    "attempts_remaining": 9,
+    "next_attempt_at": "2026-11-05T05:00:00-04:00",
+    "consecutive_missing_days": 0,
+    "backlog_count": 0
+  },
+  "records": [
+    {
+      "tcs_id": 1,
+      "tcs_fecha_objetivo": "2026-11-04",
+      "tcs_num_intento": 1,
+      "tcs_estado": "EXITOSO",
+      "tcs_codigo_http": 200
+    }
+  ],
+  "notification_recipient_roles": {
+    "ADMIN": 2
+  },
+  "task_runtime": {
+    "LastTaskResult": 0,
+    "LastRunTime": "2026-11-04T23:30:49.0000000-04:00",
+    "NextRunTime": "2026-11-04T23:31:48.0000000-04:00"
+  },
+  "archive_data_comparison": {
+    "venta_boutique": {
+      "rows_before": 17,
+      "rows_after": 17,
+      "unchanged": true
+    },
+    "pago_pedido": {
+      "rows_before": 7,
+      "rows_after": 7,
+      "unchanged": true
+    },
+    "salida_flete": {
+      "rows_before": 4,
+      "rows_after": 4,
+      "unchanged": true
+    },
+    "comprobante_interno": {
+      "rows_before": 25,
+      "rows_after": 25,
+      "unchanged": true
+    },
+    "moneda": {
+      "rows_before": 3,
+      "rows_after": 3,
+      "unchanged": true
+    },
+    "usuarios": {
+      "rows_before": 6,
+      "rows_after": 6,
+      "unchanged": true
+    },
+    "cuentas": {
+      "rows_before": 6,
+      "rows_after": 6,
+      "unchanged": true
+    },
+    "roles": {
+      "rows_before": 6,
+      "rows_after": 6,
+      "unchanged": true
+    },
+    "tipo_cambio_moneda": {
+      "rows_before": 4,
+      "rows_after": 4,
+      "unchanged": true,
+      "excluded_expected_activation_change": true
+    }
+  },
+  "health_http": 200,
+  "frontend_http": 200,
+  "active_duplicate_groups": 0
+}

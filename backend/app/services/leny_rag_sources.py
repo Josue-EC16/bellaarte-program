@@ -56,7 +56,9 @@ class SourceService:
                 result.setdefault(source.message_id,[]).append(self.reference(source,available.get(source.id)))
             return result
 
-    def persist(self, actor, message_id, fragments):
+    def persist(self, actor, message_id, fragments, *, citation_ids=None):
+        if citation_ids is not None and not citation_ids <= {'S'+str(i+1) for i in range(len(fragments))}:
+            raise ValueError('Unknown citation identity')
         with self.documents.lock(),self.documents.transaction() as db:
             reader(db,actor)
             message=db.scalar(select(LenyMessage).join(LenyConversation).where(LenyMessage.id==message_id,
@@ -67,6 +69,8 @@ class SourceService:
             if allowed!={row['fragment_id'] for row in fragments}:
                 raise LenyError('LENY_RAG_SOURCE_REVOKED','La fuente dejó de estar disponible.',409)
             for ordinal,row in enumerate(fragments,1):
+                if citation_ids is not None and 'S'+str(ordinal) not in citation_ids:
+                    continue
                 db.add(Source(id=uuid4(),message_id=message_id,fragment_id=row['fragment_id'],ordinal=ordinal))
             self.documents.audit(db,actor,'LENY_RAG_EVIDENCE_SELECTED',message_id)
 

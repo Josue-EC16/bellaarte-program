@@ -1,0 +1,52 @@
+{
+  "step": "C",
+  "run": "leny_gemini_spec021_resume31",
+  "started_at": "2026-11-05T16:54:49.051813+00:00",
+  "python": "3.10.6",
+  "sdk": "2.33.0",
+  "model": "gemini-3.1-flash-lite",
+  "endpoint": "https://generativelanguage.googleapis.com",
+  "api_version": "v1beta",
+  "transport": "httpx",
+  "sdk_attempts": 1,
+  "application_retries": 1,
+  "timeout_seconds": 60,
+  "target": {
+    "thinking": "medium",
+    "input_budget": 32678,
+    "output_tokens": 8192
+  },
+  "diagnostic": {
+    "thinking": "medium",
+    "output_tokens": 8192,
+    "structured": true
+  },
+  "declared_quota": {
+    "rpm": 15,
+    "tpm": 250000,
+    "rpd": 500
+  },
+  "authenticated_project_verified": false,
+  "effective_account_quota_verified": false,
+  "documents_sent": false,
+  "passed": true,
+  "operations": [],
+  "http": [
+    {
+      "method": "POST",
+      "host": "generativelanguage.googleapis.com",
+      "path": "/v1beta/models/gemini-3.1-flash-lite:generateContent",
+      "http_status": 200
+    }
+  ],
+  "metrics": {
+    "inference_calls_total": 1,
+    "prompt_tokens_total": 12,
+    "output_tokens_total": 5,
+    "calls_without_token_counts": 0,
+    "thinking_tokens_total": 175
+  },
+  "effective_model": "gemini-3.1-flash-lite",
+  "seconds": 2.187,
+  "original_env_unchanged": true
+}

@@ -2357,3 +2357,68 @@ Los ciclos reales fueron dos inicios/cierres ordenados, no una ejecución real
 del supervisor `--reload`. No se realizaron inferencias ni pruebas semánticas
 empresariales. Los hashes del antiguo freeze piloto ya no representan estos
 archivos modificados; no cambia el perfil `rag4_v1` ni su estado de aceptación.
+
+## LENY RAG V1.1 — variante conversacional implementada (02/11/2026)
+
+Tras «APLICA EL PLAN» se implementó la variante opt-in `controlled-synthesis-v1`:
+intención, búsqueda de títulos con ACL, selección contextual, síntesis estructurada
+previa a emisión y alternativa extractiva reversible. El modo predeterminado sigue
+siendo `document-excerpts-v2`; no se cambió `.env`, bases, servicios o documentos.
+Diagnóstico, archivos, restricciones y protocolo de aceptación:
+[implementación V1.1](LENY_RAG_V11_IMPLEMENTACION.md).
+
+La verificación automatizada usa corpus sintético y proveedores simulados. No
+constituye reproducción empresarial con Qwen ni revisión humana de fidelidad.
+La integración PostgreSQL aislada, comparación real, mediciones y aceptación
+permanecen pendientes; los resultados históricos no se sobrescriben.
+
+### Activación real autorizada para revisión del propietario
+
+Posteriormente el propietario autorizó producción/Qwen real/mediciones y decidió
+hacer la prueba manual tras los bloqueos de Computer Use. Se activó
+`controlled-synthesis-v1`, con copia de configuración privada y reversión;
+recarga habitual solicitada y salud HTTP200 comprobada. Huellas de documentos,
+versiones, ACL, índices/vectores y roles iguales; revisión0021 sin migración.
+Se inició medición privada de recursos por30min. La prueba funcional real y la
+revisión de calidad siguen pendientes del propietario: no se atribuyen al agente
+inferencias ni pruebas de Chrome que no pudo ejecutar. Ver informe V1.1.
+
+### Revisión manual V1.1: no aceptada; corrección en curso
+
+El propietario informó respuestas extractivas, repetición en seguimiento y ausencia
+de respuesta MODISTA. Se confirmó salida extractiva en las cuatro respuestas
+documentales; se corrigieron doc-first, soportes compactos, fuentes al final,
+medición real de tokens y contexto de progreso con revalidación. El modo síntesis
+ya no presenta extractos como éxito tras un fallo.515 contratos/regresiones pasan.
+
+Las cinco sondas reales guardadas siguen rechazadas por el validador:0/5 aprobadas,
+sin aceptación semántica. El contexto medido cabe, pero persisten rechazos de
+afirmaciones/condiciones. No se atribuyen todos a alucinación: marcadores rígidos
+también pueden causar falsas abstenciones. Recursos y límites, resultados negativos
+y diagnóstico del DOCX de MODISTA figuran en el informe V1.1. No se modificaron
+documentos, versiones, ACL ni índices. La nueva revisión no está lista para cierre.
+
+### Ajuste autorizado de paráfrasis y prueba real (03/11/2026)
+
+Se flexibilizó la coincidencia literal de condiciones y se admitió respaldo de
+cantidades dentro del fragmento citado completo, con límite semántico documentado.
+Se corrigió la interpretación de fecha de prueba de confección, incluso PRIEMRA,
+sin exigir nombre de empresa ni modificar la entrada original de seguridad.
+525 pruebas backend aprobadas. Nueva generación real:1805/597tokens,28.969s;
+pasó el validador ajustado, pendiente de revisión humana. Las5 sondas negativas
+previas permanecen documentadas. No se certifica fidelidad por coincidencia
+mecánica; no hay cambio de modelos, índices, originales o permisos. Ver informe V1.1.
+
+### Comprobación completa desde terminal (03/11/2026)
+
+Por instrucción del propietario se ejecutó el servicio backend completo con
+Qwen real, recuperación ACL y persistencia habituales. Se corrigieron dos falsos
+rechazos: orientación completamente general sin citas cuando está permitida y
+síntesis de cifras entre páginas seleccionadas del mismo índice publicado.
+527 contratos/regresiones pasan. En la repetición, las3 preguntas terminaron
+`answered`: encargada34.453s (general advertida,0fuentes), confección48.328s
+(documental,3fuentes), primera prueba23.859s (documental,1fuente). Los intentos
+fallidos iniciales permanecen documentados. La cobertura documental de encargada
+sigue pendiente; no se convierte la orientación general en política interna.
+Conversaciones e informes privados conservados para revisión humana. No es
+aceptación global ni prueba de estabilidad; detalles en informe V1.1.

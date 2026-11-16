@@ -13,7 +13,8 @@ from sqlalchemy.orm import Session
 def test_real_jwt_and_recipient_ownership_with_explicit_supervision(pg_cluster, synthetic_recipient):
     from app.api.routers.notifications import router
     from app.core.database import get_db
-    from app.core.security import create_access_token
+    from app.services.auth_session_service import create_session
+    from app.models.account import Cuenta
     from app.deps.auth import get_enforcer
 
     security = Path(__file__).resolve().parents[2] / 'app' / 'security'
@@ -32,7 +33,11 @@ def test_real_jwt_and_recipient_ownership_with_explicit_supervision(pg_cluster, 
 
     application.dependency_overrides[get_db] = test_session
     application.dependency_overrides[get_enforcer] = lambda: enforcer
-    token = create_access_token(subject=str(synthetic_recipient.account_id), role_code=role_code)
+    with Session(pg_cluster.engine) as session:
+        actor = session.get(Cuenta, synthetic_recipient.account_id)
+        actor.must_change_password = False
+        token = create_session(session, actor)["access_token"]
+        session.commit()
     headers = {'Authorization': 'Bearer ' + token}
     foreign_user = None
     try:
@@ -59,7 +64,7 @@ def test_real_jwt_and_recipient_ownership_with_explicit_supervision(pg_cluster, 
             with pg_cluster.engine.begin() as connection:
                 connection.execute(text('UPDATE cuentas SET is_active=false WHERE id=:id'),
                                    {'id': synthetic_recipient.account_id})
-            assert client.get('/notificaciones', headers=headers).status_code == 403
+            assert client.get('/notificaciones', headers=headers).status_code == 401
     finally:
         with pg_cluster.engine.begin() as connection:
             pg_cluster.assert_identity(connection, pg_cluster.manifest)

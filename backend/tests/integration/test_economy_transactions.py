@@ -505,7 +505,7 @@ def test_real_jwt_idempotency_replay_and_permission_gate(econ):
     from fastapi.testclient import TestClient
     from app.api.routers.economia import router
     from app.core.database import get_db
-    from app.core.security import create_access_token
+    from app.services.auth_session_service import create_session
     from app.deps.auth import get_enforcer
     from app.models.economy import Egreso
     security = Path(__file__).resolve().parents[2] / "app" / "security"
@@ -517,7 +517,8 @@ def test_real_jwt_idempotency_replay_and_permission_gate(econ):
         yield econ.db
     application.dependency_overrides[get_db] = session
     application.dependency_overrides[get_enforcer] = lambda: enforcer
-    token = create_access_token(subject=str(econ.cashier.id), role_code="CAJA")
+    token = create_session(econ.db, econ.cashier)["access_token"]
+    econ.db.commit()
     headers = {"Authorization":"Bearer " + token, "Idempotency-Key":uuid4().hex}
     payload = {"tipo":"otro", "concepto":"QA API", "cantidad":1, "precio_unidad":100, "metodo_pago":"efectivo"}
     with TestClient(application) as client:
@@ -547,7 +548,7 @@ def economy_api(econ):
     from app.api.routers.economia import router
     from app.api.routers.boutique import router as boutique_router
     from app.core.database import get_db
-    from app.core.security import create_access_token
+    from app.services.auth_session_service import create_session
     from app.deps.auth import get_enforcer
     security = Path(__file__).resolve().parents[2] / "app" / "security"
     enforcer = casbin.Enforcer(str(security / "model.conf"), str(security / "policy.csv"))
@@ -559,7 +560,8 @@ def economy_api(econ):
     app.dependency_overrides[get_db] = session
     app.dependency_overrides[get_enforcer] = lambda: enforcer
     def headers(actor, key=None):
-        token = create_access_token(subject=str(actor.id), role_code=actor.rol.codigo)
+        token = create_session(econ.db, actor)["access_token"]
+        econ.db.commit()
         return {"Authorization": "Bearer " + token, "Idempotency-Key": key or uuid4().hex}
     with TestClient(app) as client:
         yield client, headers

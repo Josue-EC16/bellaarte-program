@@ -1,0 +1,4879 @@
+{
+  "head": "5a1d15a04c2f97483769c86e82dbba056adce6b8",
+  "tree_manifest_sha256": "210bbd84b709c47b059ea9be9dbb25b241bb6691d6efa690a338d0f0514859b8",
+  "human_acceptance": null,
+  "spec04_acceptance": "not_demonstrated",
+  "library_tables_changed_during_final": [],
+  "phases": [
+    {
+      "phase": "A1-effective-01",
+      "cases_n": 2,
+      "outcomes": {
+        "answered": 2
+      },
+      "scopes": {
+        "documented": 1,
+        "general": 1
+      },
+      "all_referenced_sources_http200": true,
+      "seconds_median": 48.094,
+      "seconds_range": [
+        47.235,
+        48.953
+      ],
+      "cases": [
+        {
+          "case": "encargada",
+          "seconds": 47.235,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "documented",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 5,
+          "source_access_http_statuses": [
+            200,
+            200,
+            200,
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": false,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v3",
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 1,
+              "selected": 5,
+              "evidence_bytes": 304,
+              "prompt_bytes": 2316,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 933,
+              "eval_count": 179,
+              "citations": 5,
+              "inference_calls_total": 7,
+              "prompt_tokens_total": 6585,
+              "output_tokens_total": 227,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 5.797000000020489,
+              "search": 0.0779999999795109,
+              "review": 6.657000000006519,
+              "selection": 0.0,
+              "context": 18.735000000015134,
+              "synthesis": 21.953000000008615,
+              "first_content": 46.953000000008615,
+              "render": 0.046999999991385266,
+              "total": 47.046000000002095
+            }
+          }
+        },
+        {
+          "case": "modista",
+          "seconds": 48.953,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "general",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": false,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "none",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 4,
+              "unsupported_request": 1,
+              "selected": 0,
+              "evidence_bytes": 0,
+              "prompt_eval_count": 390,
+              "prompt_eval_cached_count": 0,
+              "eval_count": 646,
+              "inference_calls_total": 5,
+              "prompt_tokens_total": 5433,
+              "output_tokens_total": 684,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 5.875,
+              "search": 0.0629999999946449,
+              "review": 7.078000000008615,
+              "selection": 0.0,
+              "context": 19.70299999997951,
+              "first_content": 32.812999999994645,
+              "generation": 23.0,
+              "load": 4.5811712,
+              "prompt_eval": 0.369455,
+              "eval": 17.999475,
+              "provider_total": 22.9556299,
+              "total": 48.90700000000652
+            }
+          }
+        }
+      ],
+      "resources": {
+        "available": true,
+        "scope": "global_machine_not_process_attributed",
+        "samples": 83,
+        "seconds": 110.391,
+        "ram_available_gib_min_max": [
+          5.16,
+          6.318
+        ],
+        "gpu_memory_mib_min_max": [
+          0,
+          3743
+        ],
+        "ollama_model_resident_vram_mib_max": 2995.0,
+        "cold_warm": "not_a_controlled_comparison; keep_alive=0"
+      }
+    },
+    {
+      "phase": "A2-effective-01",
+      "cases_n": 2,
+      "outcomes": {
+        "clarification": 1,
+        "answered": 1
+      },
+      "scopes": {
+        "not_labeled": 1,
+        "documented": 1
+      },
+      "all_referenced_sources_http200": true,
+      "seconds_median": 25.9765,
+      "seconds_range": [
+        7.094,
+        44.859
+      ],
+      "cases": [
+        {
+          "case": "titulo-resumen",
+          "seconds": 7.094,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "clarification",
+          "response_scope": null,
+          "reason_code": "contextual_ambiguous",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "ambiguous",
+            "reason": "contextual_ambiguous",
+            "verdict": "pending",
+            "outcome": "policy",
+            "counts": {
+              "topic_questions": 0,
+              "inference_calls_total": 1,
+              "prompt_tokens_total": 367,
+              "output_tokens_total": 18,
+              "calls_without_token_counts": 0
+            },
+            "durations_seconds": {
+              "routing": 6.671999999991385,
+              "total": 7.062000000005355
+            }
+          }
+        },
+        {
+          "case": "titulo-final",
+          "seconds": 44.859,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "documented",
+          "reason_code": "v11_mixed",
+          "response_nonempty": true,
+          "source_count_fragments": 1,
+          "source_access_http_statuses": [
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v3",
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_mixed",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 4,
+              "review_documents": 1,
+              "selected": 1,
+              "evidence_bytes": 834,
+              "prompt_bytes": 2129,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 948,
+              "eval_count": 103,
+              "citations": 1,
+              "inference_calls_total": 7,
+              "prompt_tokens_total": 8394,
+              "output_tokens_total": 139,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 5.01600000000326,
+              "search": 0.062000000005355105,
+              "review": 7.405999999988126,
+              "selection": 0.0,
+              "context": 19.82799999997951,
+              "synthesis": 19.437000000005355,
+              "render": 0.03200000000651926,
+              "total": 44.79700000002049
+            }
+          }
+        }
+      ],
+      "resources": {
+        "available": true,
+        "scope": "global_machine_not_process_attributed",
+        "samples": 51,
+        "seconds": 66.282,
+        "ram_available_gib_min_max": [
+          5.281,
+          6.447
+        ],
+        "gpu_memory_mib_min_max": [
+          0,
+          3743
+        ],
+        "ollama_model_resident_vram_mib_max": 2995.0,
+        "cold_warm": "not_a_controlled_comparison; keep_alive=0"
+      }
+    },
+    {
+      "phase": "A2-effective-02",
+      "cases_n": 2,
+      "outcomes": {
+        "clarification": 1,
+        "answered": 1
+      },
+      "scopes": {
+        "not_labeled": 1,
+        "documented": 1
+      },
+      "all_referenced_sources_http200": true,
+      "seconds_median": 46.6405,
+      "seconds_range": [
+        44.047,
+        49.234
+      ],
+      "cases": [
+        {
+          "case": "titulo-resumen",
+          "seconds": 49.234,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "clarification",
+          "response_scope": null,
+          "reason_code": "rag_synthesis_unverified",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v3",
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "rag_synthesis_unverified",
+            "verdict": "partial",
+            "outcome": "synthesis_incomplete",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 4,
+              "review_documents": 1,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1605,
+              "selected": 4,
+              "evidence_bytes": 4358,
+              "prompt_bytes": 6122,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_fallback": 1,
+              "synthesis_invalid_fallback": 1,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 16383,
+              "output_tokens_total": 645,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 4.51500000001397,
+              "search": 0.03200000000651926,
+              "context_probe": 7.672000000020489,
+              "review": 4.610000000015134,
+              "selection": 0.014999999984866008,
+              "context": 20.312000000005355,
+              "synthesis": 24.17200000002049,
+              "first_content": 49.23399999999674,
+              "total": 49.23399999999674
+            }
+          }
+        },
+        {
+          "case": "titulo-final",
+          "seconds": 44.047,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "documented",
+          "reason_code": "v11_mixed",
+          "response_nonempty": true,
+          "source_count_fragments": 3,
+          "source_access_http_statuses": [
+            200,
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v3",
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_mixed",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 4,
+              "review_documents": 1,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1610,
+              "selected": 4,
+              "evidence_bytes": 4358,
+              "prompt_bytes": 6154,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 2552,
+              "eval_count": 363,
+              "citations": 3,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 16426,
+              "output_tokens_total": 401,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.76500000001397,
+              "search": 0.01600000000325963,
+              "context_probe": 7.717999999993481,
+              "review": 4.5,
+              "selection": 0.0,
+              "context": 19.85899999999674,
+              "synthesis": 20.046999999991385,
+              "first_content": 43.89000000001397,
+              "render": 0.031000000017229468,
+              "total": 43.953000000008615
+            }
+          }
+        }
+      ],
+      "resources": {
+        "available": true,
+        "scope": "global_machine_not_process_attributed",
+        "samples": 93,
+        "seconds": 108.407,
+        "ram_available_gib_min_max": [
+          4.65,
+          5.808
+        ],
+        "gpu_memory_mib_min_max": [
+          0,
+          3743
+        ],
+        "ollama_model_resident_vram_mib_max": 2995.0,
+        "cold_warm": "not_a_controlled_comparison; keep_alive=0"
+      }
+    },
+    {
+      "phase": "A2-summary-correction-03",
+      "cases_n": 1,
+      "outcomes": {
+        "answered": 1
+      },
+      "scopes": {
+        "documented": 1
+      },
+      "all_referenced_sources_http200": true,
+      "seconds_median": 50.422,
+      "seconds_range": [
+        50.422,
+        50.422
+      ],
+      "cases": [
+        {
+          "case": "titulo-resumen",
+          "seconds": 50.422,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "documented",
+          "reason_code": "v11_named_document",
+          "response_nonempty": true,
+          "source_count_fragments": 4,
+          "source_access_http_statuses": [
+            200,
+            200,
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v3",
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_named_document",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 4,
+              "review_documents": 1,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1605,
+              "selected": 4,
+              "evidence_bytes": 4358,
+              "prompt_bytes": 6125,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 2547,
+              "eval_count": 658,
+              "citations": 4,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 16386,
+              "output_tokens_total": 696,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 4.796999999991385,
+              "search": 0.031000000017229468,
+              "context_probe": 7.64100000000326,
+              "review": 4.530999999988126,
+              "selection": 0.0,
+              "context": 19.89100000000326,
+              "synthesis": 25.328000000008615,
+              "first_content": 50.28100000001723,
+              "render": 0.046999999991385266,
+              "total": 50.328000000008615
+            }
+          }
+        }
+      ],
+      "resources": {
+        "available": false
+      }
+    },
+    {
+      "phase": "A3-correction-04",
+      "cases_n": 1,
+      "outcomes": {
+        "answered": 1
+      },
+      "scopes": {
+        "documented": 1
+      },
+      "all_referenced_sources_http200": true,
+      "seconds_median": 49.937,
+      "seconds_range": [
+        49.937,
+        49.937
+      ],
+      "cases": [
+        {
+          "case": "primera",
+          "seconds": 49.937,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "documented",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 2,
+          "source_access_http_statuses": [
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": false,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v3",
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 2,
+              "selected": 2,
+              "evidence_bytes": 282,
+              "prompt_bytes": 1690,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 668,
+              "eval_count": 158,
+              "citations": 2,
+              "inference_calls_total": 7,
+              "prompt_tokens_total": 6519,
+              "output_tokens_total": 197,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 5.328000000008615,
+              "search": 0.046999999991385266,
+              "review": 6.467999999993481,
+              "selection": 0.0,
+              "context": 16.578000000008615,
+              "synthesis": 20.59299999999348,
+              "first_content": 43.0,
+              "render": 0.046999999991385266,
+              "total": 43.094000000011874
+            }
+          }
+        }
+      ],
+      "resources": {
+        "available": false
+      }
+    },
+    {
+      "phase": "A3-effective-02",
+      "cases_n": 3,
+      "outcomes": {
+        "answered": 2,
+        "clarification": 1
+      },
+      "scopes": {
+        "documented": 2,
+        "not_labeled": 1
+      },
+      "all_referenced_sources_http200": true,
+      "seconds_median": 39.906,
+      "seconds_range": [
+        39.188,
+        57.485
+      ],
+      "cases": [
+        {
+          "case": "encargada",
+          "seconds": 39.188,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "documented",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 2,
+          "source_access_http_statuses": [
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": false,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 4,
+              "selected": 3,
+              "evidence_bytes": 424,
+              "prompt_bytes": 1978,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 762,
+              "eval_count": 166,
+              "citations": 2,
+              "inference_calls_total": 7,
+              "prompt_tokens_total": 7311,
+              "output_tokens_total": 208,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.5469999999913853,
+              "search": 0.046999999991385266,
+              "review": 5.437000000005355,
+              "selection": 0.0,
+              "context": 14.296999999991385,
+              "synthesis": 16.65600000001723,
+              "first_content": 34.875,
+              "render": 0.03200000000651926,
+              "total": 34.937000000005355
+            }
+          }
+        },
+        {
+          "case": "vestido",
+          "seconds": 57.485,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "documented",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 3,
+          "source_access_http_statuses": [
+            200,
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": false,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 3,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1253,
+              "selected": 3,
+              "evidence_bytes": 3217,
+              "prompt_bytes": 4785,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 1647,
+              "eval_count": 571,
+              "citations": 3,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 13939,
+              "output_tokens_total": 615,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.827999999979511,
+              "search": 0.03200000000651926,
+              "context_probe": 8.5,
+              "review": 5.7189999999827705,
+              "selection": 0.015000000013969839,
+              "context": 23.546000000002095,
+              "synthesis": 29.530999999988126,
+              "first_content": 57.280999999988126,
+              "render": 0.030999999988125637,
+              "total": 57.375
+            }
+          }
+        },
+        {
+          "case": "primera",
+          "seconds": 39.906,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "clarification",
+          "response_scope": null,
+          "reason_code": "rag_synthesis_unverified",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": false,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "rag_synthesis_unverified",
+            "verdict": "sufficient",
+            "outcome": "synthesis_incomplete",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 2,
+              "selected": 2,
+              "evidence_bytes": 282,
+              "prompt_bytes": 1690,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_fallback": 1,
+              "synthesis_invalid_fallback": 1,
+              "inference_calls_total": 7,
+              "prompt_tokens_total": 6444,
+              "output_tokens_total": 368,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 4.030999999988126,
+              "search": 0.03200000000651926,
+              "review": 5.10999999998603,
+              "selection": 0.0,
+              "context": 14.421999999991385,
+              "synthesis": 21.187999999994645,
+              "first_content": 39.875,
+              "total": 39.875
+            }
+          }
+        }
+      ],
+      "resources": {
+        "available": true,
+        "scope": "global_machine_not_process_attributed",
+        "samples": 130,
+        "seconds": 164.64,
+        "ram_available_gib_min_max": [
+          5.359,
+          6.709
+        ],
+        "gpu_memory_mib_min_max": [
+          0,
+          3743
+        ],
+        "ollama_model_resident_vram_mib_max": 2995.0,
+        "cold_warm": "not_a_controlled_comparison; keep_alive=0"
+      }
+    },
+    {
+      "phase": "A3-effective-03",
+      "cases_n": 3,
+      "outcomes": {
+        "answered": 2,
+        "clarification": 1
+      },
+      "scopes": {
+        "documented": 2,
+        "not_labeled": 1
+      },
+      "all_referenced_sources_http200": true,
+      "seconds_median": 39.687,
+      "seconds_range": [
+        35.906,
+        60.203
+      ],
+      "cases": [
+        {
+          "case": "encargada",
+          "seconds": 35.906,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "documented",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 2,
+          "source_access_http_statuses": [
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": false,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 4,
+              "selected": 3,
+              "evidence_bytes": 424,
+              "prompt_bytes": 1978,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 762,
+              "eval_count": 166,
+              "citations": 2,
+              "inference_calls_total": 7,
+              "prompt_tokens_total": 7311,
+              "output_tokens_total": 208,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 4.437999999994645,
+              "search": 0.030999999988125637,
+              "review": 5.860000000015134,
+              "selection": 0.0,
+              "context": 14.297000000020489,
+              "synthesis": 16.703000000008615,
+              "first_content": 35.75,
+              "render": 0.046000000002095476,
+              "total": 35.812000000005355
+            }
+          }
+        },
+        {
+          "case": "vestido",
+          "seconds": 60.203,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "documented",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 3,
+          "source_access_http_statuses": [
+            200,
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": false,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 3,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1253,
+              "selected": 3,
+              "evidence_bytes": 3217,
+              "prompt_bytes": 4785,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 1647,
+              "eval_count": 571,
+              "citations": 3,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 13939,
+              "output_tokens_total": 615,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.937000000005355,
+              "search": 0.03200000000651926,
+              "context_probe": 9.453000000008615,
+              "review": 5.969000000011874,
+              "selection": 0.0,
+              "context": 24.64000000001397,
+              "synthesis": 31.062000000005355,
+              "first_content": 59.969000000011874,
+              "render": 0.07899999999790452,
+              "total": 60.078000000008615
+            }
+          }
+        },
+        {
+          "case": "primera",
+          "seconds": 39.687,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "clarification",
+          "response_scope": null,
+          "reason_code": "rag_synthesis_unverified",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": false,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "rag_synthesis_unverified",
+            "verdict": "sufficient",
+            "outcome": "synthesis_incomplete",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 2,
+              "selected": 2,
+              "evidence_bytes": 282,
+              "prompt_bytes": 1690,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_fallback": 1,
+              "synthesis_invalid_fallback": 1,
+              "inference_calls_total": 7,
+              "prompt_tokens_total": 6444,
+              "output_tokens_total": 368,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 4.437000000005355,
+              "search": 0.030999999988125637,
+              "review": 5.312000000005355,
+              "selection": 0.0,
+              "context": 13.953000000008615,
+              "synthesis": 21.078999999997905,
+              "first_content": 39.67200000002049,
+              "total": 39.67200000002049
+            }
+          }
+        }
+      ],
+      "resources": {
+        "available": true,
+        "scope": "global_machine_not_process_attributed",
+        "samples": 136,
+        "seconds": 162.625,
+        "ram_available_gib_min_max": [
+          5.355,
+          6.533
+        ],
+        "gpu_memory_mib_min_max": [
+          0,
+          3743
+        ],
+        "ollama_model_resident_vram_mib_max": 2995.0,
+        "cold_warm": "not_a_controlled_comparison; keep_alive=0"
+      }
+    },
+    {
+      "phase": "A3-original-01",
+      "cases_n": 6,
+      "outcomes": {
+        "answered": 5,
+        "clarification": 1
+      },
+      "scopes": {
+        "not_labeled": 2,
+        "documented": 3,
+        "general": 1
+      },
+      "all_referenced_sources_http200": true,
+      "seconds_median": 51.453,
+      "seconds_range": [
+        35.703,
+        58.375
+      ],
+      "cases": [
+        {
+          "case": "encargada",
+          "seconds": 35.703,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": null,
+          "reason_code": "v11_advice",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": null,
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {}
+        },
+        {
+          "case": "vestido",
+          "seconds": 58.375,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "documented",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 3,
+          "source_access_http_statuses": [
+            200,
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": false,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 3,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1253,
+              "selected": 3,
+              "evidence_bytes": 3217,
+              "prompt_bytes": 4785,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 1647,
+              "eval_count": 571,
+              "citations": 3,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 13939,
+              "output_tokens_total": 615,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.6719999999913853,
+              "search": 0.046999999991385266,
+              "context_probe": 8.64100000000326,
+              "review": 5.875,
+              "selection": 0.0,
+              "context": 23.75,
+              "synthesis": 30.39000000001397,
+              "first_content": 58.15600000001723,
+              "render": 0.062000000005355105,
+              "total": 58.25
+            }
+          }
+        },
+        {
+          "case": "despues-1",
+          "seconds": 54.718,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "documented",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 3,
+          "source_access_http_statuses": [
+            200,
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": false,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 1,
+              "candidates": 4,
+              "review_documents": 1,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1676,
+              "selected": 4,
+              "evidence_bytes": 4358,
+              "prompt_bytes": 6455,
+              "documented_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 2413,
+              "eval_count": 366,
+              "citations": 3,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 16177,
+              "output_tokens_total": 413,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 4.25,
+              "search": 0.03200000000651926,
+              "context_probe": 9.078000000008615,
+              "review": 6.7189999999827705,
+              "selection": 0.0,
+              "context": 24.905999999988126,
+              "synthesis": 25.046000000002095,
+              "first_content": 54.5,
+              "render": 0.0629999999946449,
+              "total": 54.594000000011874
+            }
+          }
+        },
+        {
+          "case": "despues-2",
+          "seconds": 55.5,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "documented",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 3,
+          "source_access_http_statuses": [
+            200,
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": false,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 1,
+              "candidates": 4,
+              "review_documents": 1,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1676,
+              "selected": 4,
+              "evidence_bytes": 4358,
+              "prompt_bytes": 6455,
+              "documented_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 2335,
+              "eval_count": 357,
+              "citations": 3,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 15943,
+              "output_tokens_total": 404,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 4.092999999993481,
+              "search": 0.01600000000325963,
+              "context_probe": 8.90600000001723,
+              "review": 5.39100000000326,
+              "selection": 0.0,
+              "context": 24.40600000001723,
+              "synthesis": 26.48499999998603,
+              "first_content": 55.25,
+              "render": 0.046999999991385266,
+              "total": 55.375
+            }
+          }
+        },
+        {
+          "case": "primera",
+          "seconds": 39.547,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "clarification",
+          "response_scope": null,
+          "reason_code": "rag_synthesis_unverified",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": false,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "rag_synthesis_unverified",
+            "verdict": "sufficient",
+            "outcome": "synthesis_incomplete",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 2,
+              "selected": 2,
+              "evidence_bytes": 282,
+              "prompt_bytes": 1690,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_fallback": 1,
+              "synthesis_invalid_fallback": 1,
+              "inference_calls_total": 7,
+              "prompt_tokens_total": 6444,
+              "output_tokens_total": 368,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 4.219000000011874,
+              "search": 0.046999999991385266,
+              "review": 5.203000000008615,
+              "selection": 0.0,
+              "context": 14.203000000008615,
+              "synthesis": 20.796999999991385,
+              "first_content": 39.53100000001723,
+              "total": 39.53100000001723
+            }
+          }
+        },
+        {
+          "case": "manual",
+          "seconds": 48.188,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "general",
+          "reason_code": "v11_drafting",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": false,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_drafting",
+            "verdict": "none",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 4,
+              "selected": 0,
+              "evidence_bytes": 0,
+              "prompt_eval_count": 392,
+              "prompt_eval_cached_count": 0,
+              "eval_count": 659,
+              "inference_calls_total": 7,
+              "prompt_tokens_total": 7092,
+              "output_tokens_total": 729,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "routing": 8.71799999999348,
+              "embedding_and_release": 3.3910000000032596,
+              "search": 0.031000000017229468,
+              "review": 5.484000000025844,
+              "selection": 0.0,
+              "context": 14.625,
+              "first_content": 32.094000000011874,
+              "generation": 21.23499999998603,
+              "load": 3.1057264,
+              "prompt_eval": 0.314058,
+              "eval": 17.771256,
+              "provider_total": 21.196199,
+              "total": 48.171999999991385
+            }
+          }
+        }
+      ],
+      "resources": {
+        "available": true,
+        "scope": "global_machine_not_process_attributed",
+        "samples": 298,
+        "seconds": 357.359,
+        "ram_available_gib_min_max": [
+          5.175,
+          6.626
+        ],
+        "gpu_memory_mib_min_max": [
+          0,
+          3743
+        ],
+        "ollama_model_resident_vram_mib_max": 2995.0,
+        "cold_warm": "not_a_controlled_comparison; keep_alive=0"
+      }
+    },
+    {
+      "phase": "A4-effective-01",
+      "cases_n": 3,
+      "outcomes": {
+        "answered": 2,
+        "clarification": 1
+      },
+      "scopes": {
+        "documented": 2,
+        "not_labeled": 1
+      },
+      "all_referenced_sources_http200": true,
+      "seconds_median": 45.406,
+      "seconds_range": [
+        31.532,
+        47.563
+      ],
+      "cases": [
+        {
+          "case": "vestido",
+          "seconds": 47.563,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "documented",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 3,
+          "source_access_http_statuses": [
+            200,
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": false,
+            "leny_rag_followup_context": true
+          },
+          "synthesis_protocol": "linked-support-v3",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 2,
+            "omitted_conflict_blocks": 0,
+            "exact_quantity_blocks": 0,
+            "exact_condition_blocks": 1,
+            "cited_fragments": 3
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 3,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1253,
+              "selected": 3,
+              "evidence_bytes": 3217,
+              "prompt_bytes": 4785,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 1947,
+              "eval_count": 630,
+              "citations": 3,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 14839,
+              "output_tokens_total": 674,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.562000000005355,
+              "search": 0.03200000000651926,
+              "context_probe": 7.187000000005355,
+              "review": 4.60999999998603,
+              "selection": 0.0,
+              "context": 19.639999999984866,
+              "synthesis": 23.860000000015134,
+              "first_content": 47.421999999991385,
+              "render": 0.030999999988125637,
+              "total": 47.48399999999674
+            }
+          }
+        },
+        {
+          "case": "despues-1",
+          "seconds": 31.532,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "clarification",
+          "response_scope": null,
+          "reason_code": "rag_synthesis_unverified",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": false,
+            "leny_rag_followup_context": true
+          },
+          "synthesis_protocol": "linked-support-v3",
+          "validation": {
+            "accepted": false,
+            "reason": "support_unverified"
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "rag_synthesis_unverified",
+            "verdict": "partial",
+            "outcome": "synthesis_incomplete",
+            "counts": {
+              "topic_questions": 1,
+              "candidates": 4,
+              "review_documents": 1,
+              "selected": 1,
+              "evidence_bytes": 834,
+              "prompt_bytes": 2932,
+              "documented_excerpt": 1,
+              "synthesis_failure_support_unverified": 1,
+              "synthesis_fallback": 1,
+              "synthesis_invalid_fallback": 1,
+              "inference_calls_total": 7,
+              "prompt_tokens_total": 10041,
+              "output_tokens_total": 210,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 4.312999999994645,
+              "search": 0.015000000013969839,
+              "review": 4.546999999991385,
+              "selection": 0.0,
+              "context": 12.23499999998603,
+              "synthesis": 14.780999999988126,
+              "first_content": 31.5,
+              "total": 31.5
+            }
+          }
+        },
+        {
+          "case": "despues-2",
+          "seconds": 45.406,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "documented",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 2,
+          "source_access_http_statuses": [
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": false,
+            "leny_rag_followup_context": true
+          },
+          "synthesis_protocol": "linked-support-v3",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 0,
+            "omitted_conflict_blocks": 0,
+            "exact_quantity_blocks": 0,
+            "exact_condition_blocks": 0,
+            "cited_fragments": 2
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 1,
+              "candidates": 4,
+              "review_documents": 1,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1676,
+              "selected": 4,
+              "evidence_bytes": 4358,
+              "prompt_bytes": 6455,
+              "documented_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 2572,
+              "eval_count": 478,
+              "citations": 2,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 16654,
+              "output_tokens_total": 525,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.5780000000086147,
+              "search": 0.030999999988125637,
+              "context_probe": 7.467999999993481,
+              "review": 4.469000000011874,
+              "selection": 0.01600000000325963,
+              "context": 19.703000000008615,
+              "synthesis": 21.75,
+              "first_content": 45.26600000000326,
+              "render": 0.046999999991385266,
+              "total": 45.328000000008615
+            }
+          }
+        }
+      ],
+      "resources": {
+        "available": true,
+        "scope": "global_machine_not_process_attributed",
+        "samples": 129,
+        "seconds": 152.625,
+        "ram_available_gib_min_max": [
+          4.988,
+          6.196
+        ],
+        "gpu_memory_mib_min_max": [
+          0,
+          3743
+        ],
+        "ollama_model_resident_vram_mib_max": 2995.0,
+        "cold_warm": "not_a_controlled_comparison; keep_alive=0"
+      }
+    },
+    {
+      "phase": "A4-effective-02",
+      "cases_n": 3,
+      "outcomes": {
+        "answered": 3
+      },
+      "scopes": {
+        "partial": 3
+      },
+      "all_referenced_sources_http200": true,
+      "seconds_median": 46.812,
+      "seconds_range": [
+        44.141,
+        51.297
+      ],
+      "cases": [
+        {
+          "case": "vestido",
+          "seconds": 51.297,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "partial",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 3,
+          "source_access_http_statuses": [
+            200,
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": false,
+            "leny_rag_followup_context": true
+          },
+          "synthesis_protocol": "linked-support-v4",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 1,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 1,
+            "exact_quantity_blocks": 0,
+            "exact_condition_blocks": 1,
+            "cited_fragments": 3
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 3,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1253,
+              "selected": 3,
+              "evidence_bytes": 3217,
+              "prompt_bytes": 4785,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 1947,
+              "eval_count": 630,
+              "citations": 3,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 14818,
+              "output_tokens_total": 674,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.2660000000032596,
+              "search": 0.030999999988125637,
+              "context_probe": 6.98399999999674,
+              "review": 4.842999999993481,
+              "selection": 0.01600000000325963,
+              "context": 19.687000000005355,
+              "synthesis": 27.796999999991385,
+              "first_content": 51.10899999999674,
+              "render": 0.0470000000204891,
+              "total": 51.187999999994645
+            }
+          }
+        },
+        {
+          "case": "despues-1",
+          "seconds": 46.812,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "partial",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 2,
+          "source_access_http_statuses": [
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": false,
+            "leny_rag_followup_context": true
+          },
+          "synthesis_protocol": "linked-support-v4",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 1,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 0,
+            "exact_quantity_blocks": 0,
+            "exact_condition_blocks": 0,
+            "cited_fragments": 2
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 1,
+              "candidates": 4,
+              "review_documents": 1,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1676,
+              "selected": 4,
+              "evidence_bytes": 4358,
+              "prompt_bytes": 6455,
+              "documented_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 2850,
+              "eval_count": 437,
+              "citations": 2,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 17467,
+              "output_tokens_total": 484,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.7030000000086147,
+              "search": 0.030999999988125637,
+              "context_probe": 7.687999999994645,
+              "review": 4.75,
+              "selection": 0.0,
+              "context": 21.421999999991385,
+              "synthesis": 21.15600000001723,
+              "first_content": 46.60899999999674,
+              "render": 0.031000000017229468,
+              "total": 46.76500000001397
+            }
+          }
+        },
+        {
+          "case": "despues-2",
+          "seconds": 44.141,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "partial",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 2,
+          "source_access_http_statuses": [
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": false,
+            "leny_rag_source_coverage": false,
+            "leny_rag_followup_context": true
+          },
+          "synthesis_protocol": "linked-support-v4",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 0,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 1,
+            "exact_quantity_blocks": 0,
+            "exact_condition_blocks": 0,
+            "cited_fragments": 2
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 1,
+              "candidates": 4,
+              "review_documents": 1,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1676,
+              "selected": 4,
+              "evidence_bytes": 4358,
+              "prompt_bytes": 6455,
+              "documented_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 2868,
+              "eval_count": 444,
+              "citations": 2,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 17521,
+              "output_tokens_total": 491,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.7030000000086147,
+              "search": 0.01600000000325963,
+              "context_probe": 7.4539999999979045,
+              "review": 4.48499999998603,
+              "selection": 0.0,
+              "context": 19.546999999991385,
+              "synthesis": 20.562999999994645,
+              "first_content": 44.03100000001723,
+              "render": 0.046000000002095476,
+              "total": 44.094000000011874
+            }
+          }
+        }
+      ],
+      "resources": {
+        "available": true,
+        "scope": "global_machine_not_process_attributed",
+        "samples": 227,
+        "seconds": 305.25,
+        "ram_available_gib_min_max": [
+          3.076,
+          6.142
+        ],
+        "gpu_memory_mib_min_max": [
+          0,
+          3743
+        ],
+        "ollama_model_resident_vram_mib_max": 2995.0,
+        "cold_warm": "not_a_controlled_comparison; keep_alive=0"
+      }
+    },
+    {
+      "phase": "B0-original-01",
+      "cases_n": 6,
+      "outcomes": {
+        "answered": 3,
+        "clarification": 3
+      },
+      "scopes": {
+        "not_labeled": 6
+      },
+      "all_referenced_sources_http200": true,
+      "seconds_median": 47.695499999999996,
+      "seconds_range": [
+        24.703,
+        58.766
+      ],
+      "cases": [
+        {
+          "case": "encargada",
+          "seconds": 40.359,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": null,
+          "reason_code": "v11_advice",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": null,
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {}
+        },
+        {
+          "case": "vestido",
+          "seconds": 58.766,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": null,
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 3,
+          "source_access_http_statuses": [
+            200,
+            200,
+            200
+          ],
+          "effective_config": null,
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {}
+        },
+        {
+          "case": "despues-1",
+          "seconds": 51.796,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "clarification",
+          "response_scope": null,
+          "reason_code": "rag_synthesis_unverified",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": null,
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {}
+        },
+        {
+          "case": "despues-2",
+          "seconds": 51.141,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "clarification",
+          "response_scope": null,
+          "reason_code": "rag_synthesis_unverified",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": null,
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {}
+        },
+        {
+          "case": "primera",
+          "seconds": 24.703,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": null,
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 1,
+          "source_access_http_statuses": [
+            200
+          ],
+          "effective_config": null,
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {}
+        },
+        {
+          "case": "manual",
+          "seconds": 44.25,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "clarification",
+          "response_scope": null,
+          "reason_code": "rag_synthesis_unverified",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": null,
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {}
+        }
+      ],
+      "resources": {
+        "available": false
+      }
+    },
+    {
+      "phase": "FINAL-effective-01",
+      "cases_n": 18,
+      "outcomes": {
+        "error": 1,
+        "answered": 13,
+        "clarification": 3,
+        "refused": 1
+      },
+      "scopes": {
+        "not_labeled": 5,
+        "partial": 3,
+        "documented": 4,
+        "general": 6
+      },
+      "all_referenced_sources_http200": true,
+      "seconds_median": 30.6955,
+      "seconds_range": [
+        0.079,
+        52.516
+      ],
+      "cases": [
+        {
+          "case": "encargada",
+          "seconds": 15.218,
+          "http_status": 200,
+          "termination": "error",
+          "outcome": null,
+          "response_scope": null,
+          "reason_code": null,
+          "response_nonempty": false,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "leny_rag_review_invalid",
+            "verdict": "pending",
+            "outcome": "failed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "inference_calls_total": 4,
+              "prompt_tokens_total": 3765,
+              "output_tokens_total": 46,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.48499999998603,
+              "search": 0.046000000002095476,
+              "review": 4.26600000000326,
+              "selection": 0.0,
+              "total": 15.21799999999348
+            }
+          }
+        },
+        {
+          "case": "vestido",
+          "seconds": 43.766,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "partial",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 2,
+          "source_access_http_statuses": [
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v4",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 1,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 0,
+            "exact_quantity_blocks": 0,
+            "exact_condition_blocks": 1,
+            "cited_fragments": 2
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 3,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1253,
+              "selected": 3,
+              "evidence_bytes": 3217,
+              "prompt_bytes": 4785,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 1957,
+              "eval_count": 482,
+              "citations": 2,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 14848,
+              "output_tokens_total": 526,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.452999999979511,
+              "search": 0.03200000000651926,
+              "context_probe": 6.875,
+              "review": 4.60899999999674,
+              "selection": 0.0,
+              "context": 19.35899999999674,
+              "synthesis": 20.578000000008615,
+              "first_content": 43.640999999974156,
+              "render": 0.046999999991385266,
+              "total": 43.71899999998277
+            }
+          }
+        },
+        {
+          "case": "despues-1",
+          "seconds": 48.344,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "partial",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 2,
+          "source_access_http_statuses": [
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v4",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 1,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 0,
+            "exact_quantity_blocks": 0,
+            "exact_condition_blocks": 0,
+            "cited_fragments": 2
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 1,
+              "candidates": 4,
+              "review_documents": 1,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1676,
+              "selected": 4,
+              "evidence_bytes": 4358,
+              "prompt_bytes": 6455,
+              "documented_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 2857,
+              "eval_count": 439,
+              "citations": 2,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 17488,
+              "output_tokens_total": 486,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 4.342999999993481,
+              "search": 0.01600000000325963,
+              "context_probe": 8.078000000008615,
+              "review": 5.296999999991385,
+              "selection": 0.0,
+              "context": 22.375,
+              "synthesis": 21.296999999991385,
+              "first_content": 48.23399999999674,
+              "render": 0.046999999991385266,
+              "total": 48.296999999991385
+            }
+          }
+        },
+        {
+          "case": "despues-2",
+          "seconds": 44.922,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "documented",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 2,
+          "source_access_http_statuses": [
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v4",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 0,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 0,
+            "exact_quantity_blocks": 1,
+            "exact_condition_blocks": 0,
+            "cited_fragments": 2
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 1,
+              "candidates": 4,
+              "review_documents": 1,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1676,
+              "selected": 4,
+              "evidence_bytes": 4358,
+              "prompt_bytes": 6455,
+              "documented_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 2867,
+              "eval_count": 427,
+              "citations": 2,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 17518,
+              "output_tokens_total": 474,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.7030000000086147,
+              "search": 0.030999999988125637,
+              "context_probe": 7.437999999994645,
+              "review": 4.562999999994645,
+              "selection": 0.015000000013969839,
+              "context": 19.687999999994645,
+              "synthesis": 21.219000000011874,
+              "first_content": 44.828000000008615,
+              "render": 0.030999999988125637,
+              "total": 44.875
+            }
+          }
+        },
+        {
+          "case": "primera",
+          "seconds": 20.61,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "documented",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 1,
+          "source_access_http_statuses": [
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v4",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 0,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 0,
+            "exact_quantity_blocks": 0,
+            "exact_condition_blocks": 0,
+            "cited_fragments": 1
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 2,
+              "selected": 1,
+              "evidence_bytes": 191,
+              "prompt_bytes": 1439,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 568,
+              "eval_count": 98,
+              "citations": 1,
+              "inference_calls_total": 5,
+              "prompt_tokens_total": 5062,
+              "output_tokens_total": 132,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.140999999974156,
+              "search": 0.015000000013969839,
+              "review": 4.187999999994645,
+              "selection": 0.01600000000325963,
+              "context": 11.703999999997905,
+              "synthesis": 5.48399999999674,
+              "render": 0.01600000000325963,
+              "total": 20.562000000005355
+            }
+          }
+        },
+        {
+          "case": "manual",
+          "seconds": 39.75,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "general",
+          "reason_code": "v11_drafting",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_drafting",
+            "verdict": "none",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 4,
+              "selected": 0,
+              "evidence_bytes": 0,
+              "prompt_eval_count": 392,
+              "prompt_eval_cached_count": 0,
+              "eval_count": 659,
+              "inference_calls_total": 7,
+              "prompt_tokens_total": 7071,
+              "output_tokens_total": 729,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "routing": 7.782000000006519,
+              "embedding_and_release": 3.7820000000065193,
+              "search": 0.015000000013969839,
+              "review": 4.452999999979511,
+              "selection": 0.0,
+              "context": 12.452999999979511,
+              "first_content": 28.562999999994645,
+              "generation": 15.547000000020489,
+              "load": 3.053391,
+              "prompt_eval": 0.241562,
+              "eval": 12.231264,
+              "provider_total": 15.5273751,
+              "total": 39.75
+            }
+          }
+        },
+        {
+          "case": "ejemplo-manual",
+          "seconds": 52.516,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "documented",
+          "reason_code": "v11_drafting",
+          "response_nonempty": true,
+          "source_count_fragments": 2,
+          "source_access_http_statuses": [
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v4",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 0,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 0,
+            "exact_quantity_blocks": 0,
+            "exact_condition_blocks": 0,
+            "cited_fragments": 2
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_drafting",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 4,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1034,
+              "selected": 2,
+              "evidence_bytes": 2750,
+              "prompt_bytes": 4168,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 1592,
+              "eval_count": 452,
+              "citations": 2,
+              "inference_calls_total": 11,
+              "prompt_tokens_total": 13485,
+              "output_tokens_total": 529,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "routing": 7.562000000005355,
+              "embedding_and_release": 3.827999999979511,
+              "search": 0.03200000000651926,
+              "context_probe": 7.094000000011874,
+              "review": 4.639999999984866,
+              "selection": 0.0,
+              "context": 20.062000000005355,
+              "synthesis": 20.75,
+              "first_content": 52.40700000000652,
+              "render": 0.046999999991385266,
+              "total": 52.469000000011874
+            }
+          }
+        },
+        {
+          "case": "titulo",
+          "seconds": 49.375,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "partial",
+          "reason_code": "v11_named_document",
+          "response_nonempty": true,
+          "source_count_fragments": 3,
+          "source_access_http_statuses": [
+            200,
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v4",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 1,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 0,
+            "exact_quantity_blocks": 0,
+            "exact_condition_blocks": 0,
+            "cited_fragments": 3
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_named_document",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 4,
+              "review_documents": 1,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1608,
+              "selected": 4,
+              "evidence_bytes": 4358,
+              "prompt_bytes": 6140,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 2560,
+              "eval_count": 688,
+              "citations": 3,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 16419,
+              "output_tokens_total": 735,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.7820000000065193,
+              "search": 0.014999999984866008,
+              "context_probe": 7.3439999999827705,
+              "review": 4.719000000011874,
+              "selection": 0.0,
+              "context": 19.687999999994645,
+              "synthesis": 25.578000000008615,
+              "first_content": 49.25,
+              "render": 0.0470000000204891,
+              "total": 49.296999999991385
+            }
+          }
+        },
+        {
+          "case": "can-can",
+          "seconds": 35.735,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "clarification",
+          "response_scope": null,
+          "reason_code": "rag_synthesis_unverified",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v4",
+          "validation": {
+            "accepted": false,
+            "reason": "support_unverified"
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "rag_synthesis_unverified",
+            "verdict": "sufficient",
+            "outcome": "synthesis_incomplete",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 3,
+              "selected": 1,
+              "evidence_bytes": 834,
+              "prompt_bytes": 2098,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_failure_support_unverified": 1,
+              "synthesis_fallback": 1,
+              "synthesis_invalid_fallback": 1,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 10890,
+              "output_tokens_total": 230,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "routing": 7.344000000011874,
+              "embedding_and_release": 2.9219999999913853,
+              "search": 0.031000000017229468,
+              "review": 4.26600000000326,
+              "selection": 0.0,
+              "context": 11.921999999991385,
+              "synthesis": 13.35899999999674,
+              "first_content": 35.703000000008615,
+              "total": 35.703000000008615
+            }
+          }
+        },
+        {
+          "case": "modista",
+          "seconds": 31.0,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "general",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "none",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 4,
+              "unsupported_request": 1,
+              "selected": 0,
+              "evidence_bytes": 0,
+              "prompt_eval_count": 390,
+              "prompt_eval_cached_count": 0,
+              "eval_count": 646,
+              "inference_calls_total": 5,
+              "prompt_tokens_total": 5412,
+              "output_tokens_total": 684,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.5,
+              "search": 0.03200000000651926,
+              "review": 4.532000000006519,
+              "selection": 0.0,
+              "context": 11.875,
+              "first_content": 20.125,
+              "generation": 15.46799999999348,
+              "load": 3.150875,
+              "prompt_eval": 0.242059,
+              "eval": 12.046669,
+              "provider_total": 15.443227,
+              "total": 31.0
+            }
+          }
+        },
+        {
+          "case": "asesoria",
+          "seconds": 4.438,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "clarification",
+          "response_scope": null,
+          "reason_code": "contextual_ambiguous",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "ambiguous",
+            "reason": "contextual_ambiguous",
+            "verdict": "pending",
+            "outcome": "policy",
+            "counts": {
+              "topic_questions": 0,
+              "inference_calls_total": 1,
+              "prompt_tokens_total": 366,
+              "output_tokens_total": 18,
+              "calls_without_token_counts": 0
+            },
+            "durations_seconds": {
+              "routing": 4.296999999991385,
+              "total": 4.421999999991385
+            }
+          }
+        },
+        {
+          "case": "inventario",
+          "seconds": 20.25,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "documented",
+          "reason_code": "v11_advice",
+          "response_nonempty": true,
+          "source_count_fragments": 1,
+          "source_access_http_statuses": [
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v4",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 0,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 0,
+            "exact_quantity_blocks": 1,
+            "exact_condition_blocks": 0,
+            "cited_fragments": 1
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_advice",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 4,
+              "selected": 1,
+              "evidence_bytes": 134,
+              "prompt_bytes": 1409,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 562,
+              "eval_count": 77,
+              "citations": 1,
+              "inference_calls_total": 5,
+              "prompt_tokens_total": 5653,
+              "output_tokens_total": 111,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.562999999994645,
+              "search": 0.031000000017229468,
+              "review": 4.562999999994645,
+              "selection": 0.0,
+              "context": 11.437999999994645,
+              "synthesis": 4.922000000020489,
+              "render": 0.014999999984866008,
+              "total": 20.203000000008615
+            }
+          }
+        },
+        {
+          "case": "especialidad",
+          "seconds": 28.687,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "general",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "none",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 3,
+              "selected": 0,
+              "evidence_bytes": 0,
+              "prompt_eval_count": 394,
+              "prompt_eval_cached_count": 0,
+              "eval_count": 461,
+              "inference_calls_total": 5,
+              "prompt_tokens_total": 7414,
+              "output_tokens_total": 494,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.6410000000032596,
+              "search": 0.014999999984866008,
+              "review": 4.485000000015134,
+              "selection": 0.0,
+              "context": 12.985000000015134,
+              "first_content": 21.17200000002049,
+              "generation": 11.796999999991385,
+              "load": 2.9931225,
+              "prompt_eval": 0.24018,
+              "eval": 8.538847,
+              "provider_total": 11.7756174,
+              "total": 28.67200000002049
+            }
+          }
+        },
+        {
+          "case": "fuente-extensa",
+          "seconds": 50.875,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "clarification",
+          "response_scope": null,
+          "reason_code": "rag_synthesis_unverified",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v4",
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "rag_synthesis_unverified",
+            "verdict": "sufficient",
+            "outcome": "synthesis_incomplete",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 4,
+              "review_documents": 1,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1606,
+              "selected": 4,
+              "evidence_bytes": 4358,
+              "prompt_bytes": 6134,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_failure_truncated": 1,
+              "synthesis_fallback": 1,
+              "synthesis_invalid_fallback": 1,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 16403,
+              "output_tokens_total": 806,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.687000000005355,
+              "search": 0.01600000000325963,
+              "context_probe": 7.64000000001397,
+              "review": 4.35999999998603,
+              "selection": 0.0,
+              "context": 19.65600000001723,
+              "synthesis": 27.390999999974156,
+              "first_content": 50.85899999999674,
+              "total": 50.85899999999674
+            }
+          }
+        },
+        {
+          "case": "unidades",
+          "seconds": 24.203,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "general",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "none",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 3,
+              "selected": 0,
+              "evidence_bytes": 0,
+              "prompt_eval_count": 400,
+              "prompt_eval_cached_count": 0,
+              "eval_count": 259,
+              "inference_calls_total": 5,
+              "prompt_tokens_total": 7594,
+              "output_tokens_total": 292,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.5940000000118744,
+              "search": 0.01600000000325963,
+              "review": 4.514999999984866,
+              "selection": 0.0,
+              "context": 12.389999999984866,
+              "first_content": 20.40600000001723,
+              "generation": 8.062999999994645,
+              "load": 3.0141783,
+              "prompt_eval": 0.231441,
+              "eval": 4.798911,
+              "provider_total": 8.0475888,
+              "total": 24.187000000005355
+            }
+          }
+        },
+        {
+          "case": "operacion",
+          "seconds": 30.391,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "general",
+          "reason_code": "v11_advice",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_advice",
+            "verdict": "none",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 4,
+              "selected": 0,
+              "evidence_bytes": 0,
+              "prompt_eval_count": 393,
+              "prompt_eval_cached_count": 0,
+              "eval_count": 651,
+              "inference_calls_total": 5,
+              "prompt_tokens_total": 5604,
+              "output_tokens_total": 684,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.2809999999881256,
+              "search": 0.01600000000325963,
+              "review": 4.421999999991385,
+              "selection": 0.0,
+              "context": 11.73399999999674,
+              "first_content": 19.296000000002095,
+              "generation": 15.125,
+              "load": 2.8341504,
+              "prompt_eval": 0.239025,
+              "eval": 12.019251,
+              "provider_total": 15.0971913,
+              "total": 30.375
+            }
+          }
+        },
+        {
+          "case": "inyeccion",
+          "seconds": 0.079,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "refused",
+          "response_scope": null,
+          "reason_code": "suspected_instruction_override",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "manipulation",
+            "reason": "suspected_instruction_override",
+            "verdict": "pending",
+            "outcome": "policy",
+            "counts": {
+              "topic_questions": 0,
+              "inference_calls_total": 0,
+              "prompt_tokens_total": 0,
+              "output_tokens_total": 0,
+              "calls_without_token_counts": 0
+            },
+            "durations_seconds": {
+              "total": 0.0629999999946449
+            }
+          }
+        },
+        {
+          "case": "parafrasis-no-ajuste",
+          "seconds": 16.641,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "general",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "none",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 0,
+              "selected": 0,
+              "evidence_bytes": 0,
+              "prompt_eval_count": 397,
+              "prompt_eval_cached_count": 0,
+              "eval_count": 599,
+              "inference_calls_total": 2,
+              "prompt_tokens_total": 397,
+              "output_tokens_total": 599,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 2.875,
+              "search": 0.0,
+              "review": 0.0,
+              "selection": 0.0,
+              "context": 0.0,
+              "first_content": 6.671999999991385,
+              "generation": 13.64100000000326,
+              "load": 2.4586403,
+              "prompt_eval": 0.22893,
+              "eval": 10.936852,
+              "provider_total": 13.6279133,
+              "total": 16.625
+            }
+          }
+        }
+      ],
+      "resources": {
+        "available": true,
+        "scope": "global_machine_not_process_attributed",
+        "samples": 641,
+        "seconds": 779.891,
+        "ram_available_gib_min_max": [
+          3.173,
+          5.994
+        ],
+        "gpu_memory_mib_min_max": [
+          0,
+          3743
+        ],
+        "ollama_model_resident_vram_mib_max": 2995.0,
+        "cold_warm": "not_a_controlled_comparison; keep_alive=0"
+      }
+    },
+    {
+      "phase": "FINAL-effective-02",
+      "cases_n": 18,
+      "outcomes": {
+        "answered": 10,
+        "clarification": 6,
+        "refused": 2
+      },
+      "scopes": {
+        "partial": 5,
+        "not_labeled": 8,
+        "general": 4,
+        "documented": 1
+      },
+      "all_referenced_sources_http200": true,
+      "seconds_median": 25.7345,
+      "seconds_range": [
+        0.078,
+        48.484
+      ],
+      "cases": [
+        {
+          "case": "encargada",
+          "seconds": 32.062,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "partial",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 4,
+          "source_access_http_statuses": [
+            200,
+            200,
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v5",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 0,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 1,
+            "exact_quantity_blocks": 0,
+            "exact_condition_blocks": 0,
+            "cited_fragments": 4
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "partial",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 1,
+              "selected": 5,
+              "evidence_bytes": 304,
+              "prompt_bytes": 2313,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 964,
+              "eval_count": 179,
+              "citations": 4,
+              "inference_calls_total": 7,
+              "prompt_tokens_total": 6795,
+              "output_tokens_total": 224,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 4.6710000000020955,
+              "search": 0.046999999991385266,
+              "review": 4.217999999993481,
+              "selection": 0.0,
+              "context": 12.703000000008615,
+              "synthesis": 14.26600000000326,
+              "first_content": 31.89000000001397,
+              "render": 0.046999999991385266,
+              "total": 31.98399999999674
+            }
+          }
+        },
+        {
+          "case": "vestido",
+          "seconds": 40.359,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "clarification",
+          "response_scope": null,
+          "reason_code": "rag_synthesis_unverified",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v5",
+          "validation": {
+            "accepted": false,
+            "reason": "support_unverified"
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "rag_synthesis_unverified",
+            "verdict": "partial",
+            "outcome": "synthesis_incomplete",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 3,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1253,
+              "selected": 3,
+              "evidence_bytes": 3217,
+              "prompt_bytes": 4782,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_failure_support_unverified": 1,
+              "synthesis_fallback": 1,
+              "synthesis_invalid_fallback": 1,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 14998,
+              "output_tokens_total": 316,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.51500000001397,
+              "search": 0.030999999988125637,
+              "context_probe": 7.14000000001397,
+              "review": 4.73499999998603,
+              "selection": 0.0,
+              "context": 19.719000000011874,
+              "synthesis": 16.937000000005355,
+              "first_content": 40.34299999999348,
+              "total": 40.34299999999348
+            }
+          }
+        },
+        {
+          "case": "despues-1",
+          "seconds": 3.171,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "clarification",
+          "response_scope": null,
+          "reason_code": "rag_evidence_insufficient",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "rag_evidence_insufficient",
+            "verdict": "none",
+            "outcome": "no_evidence",
+            "counts": {
+              "topic_questions": 1,
+              "candidates": 0,
+              "selected": 0,
+              "evidence_bytes": 0,
+              "inference_calls_total": 1,
+              "prompt_tokens_total": 0,
+              "output_tokens_total": 0,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.01500000001397,
+              "search": 0.0159999999741558,
+              "review": 0.0,
+              "selection": 0.0,
+              "context": 0.0,
+              "first_content": 3.1710000000020955,
+              "total": 3.1710000000020955
+            }
+          }
+        },
+        {
+          "case": "despues-2",
+          "seconds": 3.375,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "clarification",
+          "response_scope": null,
+          "reason_code": "rag_evidence_insufficient",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "rag_evidence_insufficient",
+            "verdict": "none",
+            "outcome": "no_evidence",
+            "counts": {
+              "topic_questions": 1,
+              "candidates": 0,
+              "selected": 0,
+              "evidence_bytes": 0,
+              "inference_calls_total": 1,
+              "prompt_tokens_total": 0,
+              "output_tokens_total": 0,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.2030000000086147,
+              "search": 0.01600000000325963,
+              "review": 0.0,
+              "selection": 0.0,
+              "context": 0.0,
+              "first_content": 3.360000000015134,
+              "total": 3.360000000015134
+            }
+          }
+        },
+        {
+          "case": "primera",
+          "seconds": 28.328,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "partial",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 1,
+          "source_access_http_statuses": [
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v5",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 0,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 1,
+            "exact_quantity_blocks": 0,
+            "exact_condition_blocks": 0,
+            "cited_fragments": 1
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 2,
+              "selected": 1,
+              "evidence_bytes": 191,
+              "prompt_bytes": 1439,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 609,
+              "eval_count": 167,
+              "citations": 1,
+              "inference_calls_total": 7,
+              "prompt_tokens_total": 6321,
+              "output_tokens_total": 203,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 2.9679999999934807,
+              "search": 0.01600000000325963,
+              "review": 4.187999999994645,
+              "selection": 0.0,
+              "context": 11.51600000000326,
+              "synthesis": 13.530999999988126,
+              "first_content": 28.26500000001397,
+              "render": 0.031000000017229468,
+              "total": 28.312000000005355
+            }
+          }
+        },
+        {
+          "case": "manual",
+          "seconds": 35.531,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "clarification",
+          "response_scope": null,
+          "reason_code": "general_synthesis_unverified",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "general-structured-v1",
+          "validation": {
+            "accepted": false,
+            "reason": "structure"
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "general_synthesis_unverified",
+            "verdict": "none",
+            "outcome": "no_evidence",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 4,
+              "selected": 0,
+              "evidence_bytes": 0,
+              "synthesis_failure_structure": 1,
+              "inference_calls_total": 7,
+              "prompt_tokens_total": 6855,
+              "output_tokens_total": 551,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "routing": 7.687000000005355,
+              "embedding_and_release": 3.8910000000032596,
+              "search": 0.030999999988125637,
+              "review": 4.39000000001397,
+              "selection": 0.0,
+              "context": 11.78100000001723,
+              "first_content": 35.51500000001397,
+              "total": 35.51500000001397
+            }
+          }
+        },
+        {
+          "case": "ejemplo-manual",
+          "seconds": 48.484,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "partial",
+          "reason_code": "v11_drafting",
+          "response_nonempty": true,
+          "source_count_fragments": 1,
+          "source_access_http_statuses": [
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v5",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 0,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 1,
+            "exact_quantity_blocks": 0,
+            "exact_condition_blocks": 0,
+            "cited_fragments": 1
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_drafting",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 4,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1034,
+              "selected": 2,
+              "evidence_bytes": 2750,
+              "prompt_bytes": 4168,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 1633,
+              "eval_count": 271,
+              "citations": 1,
+              "inference_calls_total": 11,
+              "prompt_tokens_total": 13608,
+              "output_tokens_total": 348,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "routing": 7.76600000000326,
+              "embedding_and_release": 3.75,
+              "search": 0.030999999988125637,
+              "context_probe": 7.125,
+              "review": 4.657000000006519,
+              "selection": 0.0,
+              "context": 19.64100000000326,
+              "synthesis": 17.015999999974156,
+              "first_content": 48.389999999984866,
+              "render": 0.030999999988125637,
+              "total": 48.437000000005355
+            }
+          }
+        },
+        {
+          "case": "titulo",
+          "seconds": 42.718,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "clarification",
+          "response_scope": null,
+          "reason_code": "rag_synthesis_unverified",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v5",
+          "validation": {
+            "accepted": false,
+            "reason": "support_unverified"
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "rag_synthesis_unverified",
+            "verdict": "sufficient",
+            "outcome": "synthesis_incomplete",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 4,
+              "review_documents": 1,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1608,
+              "selected": 4,
+              "evidence_bytes": 4358,
+              "prompt_bytes": 6140,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_failure_support_unverified": 1,
+              "synthesis_fallback": 1,
+              "synthesis_invalid_fallback": 1,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 16575,
+              "output_tokens_total": 451,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.264999999984866,
+              "search": 0.01600000000325963,
+              "context_probe": 7.35999999998603,
+              "review": 4.4539999999979045,
+              "selection": 0.015000000013969839,
+              "context": 19.39100000000326,
+              "synthesis": 19.890999999974156,
+              "first_content": 42.703000000008615,
+              "total": 42.703000000008615
+            }
+          }
+        },
+        {
+          "case": "can-can",
+          "seconds": 40.875,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "partial",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 1,
+          "source_access_http_statuses": [
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v5",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 1,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 0,
+            "exact_quantity_blocks": 0,
+            "exact_condition_blocks": 0,
+            "cited_fragments": 1
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "partial",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 3,
+              "selected": 2,
+              "evidence_bytes": 1608,
+              "prompt_bytes": 3031,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 1453,
+              "eval_count": 292,
+              "citations": 1,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 12453,
+              "output_tokens_total": 364,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "routing": 7.562000000005355,
+              "embedding_and_release": 3.812999999994645,
+              "search": 0.030999999988125637,
+              "review": 4.687999999994645,
+              "selection": 0.014999999984866008,
+              "context": 12.35899999999674,
+              "synthesis": 16.828000000008615,
+              "first_content": 40.75,
+              "render": 0.0470000000204891,
+              "total": 40.844000000011874
+            }
+          }
+        },
+        {
+          "case": "modista",
+          "seconds": 23.031,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "general",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "general-structured-v1",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 0,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 0,
+            "exact_quantity_blocks": 0,
+            "exact_condition_blocks": 0,
+            "cited_fragments": 0
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "none",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 4,
+              "unsupported_request": 1,
+              "selected": 0,
+              "evidence_bytes": 0,
+              "inference_calls_total": 5,
+              "prompt_tokens_total": 5196,
+              "output_tokens_total": 245,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.75,
+              "search": 0.030999999988125637,
+              "review": 4.407000000006519,
+              "selection": 0.0,
+              "context": 12.062000000005355,
+              "first_content": 23.01500000001397,
+              "render": 0.015000000013969839,
+              "total": 23.030999999988126
+            }
+          }
+        },
+        {
+          "case": "asesoria",
+          "seconds": 21.735,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "general",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "general-structured-v1",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 0,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 0,
+            "exact_quantity_blocks": 0,
+            "exact_condition_blocks": 0,
+            "cited_fragments": 0
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "none",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 7,
+              "review_documents": 1,
+              "unsupported_request": 1,
+              "selected": 0,
+              "evidence_bytes": 0,
+              "inference_calls_total": 5,
+              "prompt_tokens_total": 3318,
+              "output_tokens_total": 227,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.4690000000118744,
+              "search": 0.030999999988125637,
+              "review": 4.312999999994645,
+              "selection": 0.0,
+              "context": 11.40700000000652,
+              "first_content": 21.687000000005355,
+              "render": 0.0,
+              "total": 21.719000000011874
+            }
+          }
+        },
+        {
+          "case": "inventario",
+          "seconds": 27.484,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "documented",
+          "reason_code": "v11_advice",
+          "response_nonempty": true,
+          "source_count_fragments": 1,
+          "source_access_http_statuses": [
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v5",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 0,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 0,
+            "exact_quantity_blocks": 1,
+            "exact_condition_blocks": 0,
+            "cited_fragments": 1
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_advice",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 4,
+              "selected": 1,
+              "evidence_bytes": 134,
+              "prompt_bytes": 1409,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 603,
+              "eval_count": 135,
+              "citations": 1,
+              "inference_calls_total": 7,
+              "prompt_tokens_total": 6900,
+              "output_tokens_total": 171,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.5310000000172295,
+              "search": 0.0159999999741558,
+              "review": 4.14100000000326,
+              "selection": 0.0,
+              "context": 11.219000000011874,
+              "synthesis": 12.453000000008615,
+              "first_content": 27.40600000001723,
+              "render": 0.030999999988125637,
+              "total": 27.469000000011874
+            }
+          }
+        },
+        {
+          "case": "especialidad",
+          "seconds": 23.985,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "general",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "general-structured-v1",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 0,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 0,
+            "exact_quantity_blocks": 0,
+            "exact_condition_blocks": 0,
+            "cited_fragments": 0
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "none",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 3,
+              "selected": 0,
+              "evidence_bytes": 0,
+              "inference_calls_total": 5,
+              "prompt_tokens_total": 7213,
+              "output_tokens_total": 264,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.375,
+              "search": 0.030999999988125637,
+              "review": 4.657000000006519,
+              "selection": 0.0,
+              "context": 12.812000000005355,
+              "first_content": 23.953000000008615,
+              "render": 0.01600000000325963,
+              "total": 23.969000000011874
+            }
+          }
+        },
+        {
+          "case": "fuente-extensa",
+          "seconds": 40.828,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "partial",
+          "reason_code": "v11_named_document",
+          "response_nonempty": true,
+          "source_count_fragments": 2,
+          "source_access_http_statuses": [
+            200,
+            200
+          ],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "linked-support-v5",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 1,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 0,
+            "exact_quantity_blocks": 0,
+            "exact_condition_blocks": 0,
+            "cited_fragments": 2
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_named_document",
+            "verdict": "sufficient",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 4,
+              "review_documents": 1,
+              "probe_count": 2,
+              "probe_prompt_tokens": 1606,
+              "selected": 4,
+              "evidence_bytes": 4358,
+              "prompt_bytes": 6134,
+              "documented_excerpt": 1,
+              "grounded_excerpt": 1,
+              "synthesis_validated": 1,
+              "prompt_eval_count": 2599,
+              "eval_count": 296,
+              "citations": 2,
+              "inference_calls_total": 9,
+              "prompt_tokens_total": 16559,
+              "output_tokens_total": 334,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.1559999999881256,
+              "search": 0.01600000000325963,
+              "context_probe": 7.2039999999979045,
+              "review": 4.203000000008615,
+              "selection": 0.0,
+              "context": 18.75,
+              "synthesis": 18.59299999999348,
+              "first_content": 40.70299999997951,
+              "render": 0.030999999988125637,
+              "total": 40.764999999984866
+            }
+          }
+        },
+        {
+          "case": "unidades",
+          "seconds": 22.344,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "general",
+          "reason_code": "v11_documentary",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "general-structured-v1",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 0,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 0,
+            "exact_quantity_blocks": 0,
+            "exact_condition_blocks": 0,
+            "cited_fragments": 0
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_documentary",
+            "verdict": "none",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 3,
+              "selected": 0,
+              "evidence_bytes": 0,
+              "inference_calls_total": 5,
+              "prompt_tokens_total": 7408,
+              "output_tokens_total": 229,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 2.9219999999913853,
+              "search": 0.03200000000651926,
+              "review": 4.48499999998603,
+              "selection": 0.0,
+              "context": 12.405999999988126,
+              "first_content": 22.328000000008615,
+              "render": 0.015000000013969839,
+              "total": 22.34399999998277
+            }
+          }
+        },
+        {
+          "case": "operacion",
+          "seconds": 0.078,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "refused",
+          "response_scope": null,
+          "reason_code": "v11_capability_unavailable",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "unavailable",
+            "reason": "v11_capability_unavailable",
+            "verdict": "pending",
+            "outcome": "policy",
+            "counts": {
+              "topic_questions": 0,
+              "inference_calls_total": 0,
+              "prompt_tokens_total": 0,
+              "output_tokens_total": 0,
+              "calls_without_token_counts": 0
+            },
+            "durations_seconds": {
+              "total": 0.0779999999795109
+            }
+          }
+        },
+        {
+          "case": "inyeccion",
+          "seconds": 0.11,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "refused",
+          "response_scope": null,
+          "reason_code": "suspected_instruction_override",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "manipulation",
+            "reason": "suspected_instruction_override",
+            "verdict": "pending",
+            "outcome": "policy",
+            "counts": {
+              "topic_questions": 0,
+              "inference_calls_total": 0,
+              "prompt_tokens_total": 0,
+              "output_tokens_total": 0,
+              "calls_without_token_counts": 0
+            },
+            "durations_seconds": {
+              "total": 0.09400000001187436
+            }
+          }
+        },
+        {
+          "case": "parafrasis-no-ajuste",
+          "seconds": 14.187,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "clarification",
+          "response_scope": null,
+          "reason_code": "general_synthesis_unverified",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "general-structured-v1",
+          "validation": {
+            "accepted": false,
+            "reason": "scope"
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "general_synthesis_unverified",
+            "verdict": "none",
+            "outcome": "no_evidence",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 0,
+              "selected": 0,
+              "evidence_bytes": 0,
+              "synthesis_failure_scope": 1,
+              "inference_calls_total": 2,
+              "prompt_tokens_total": 181,
+              "output_tokens_total": 414,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 3.3440000000118744,
+              "search": 0.014999999984866008,
+              "review": 0.0,
+              "selection": 0.0,
+              "context": 0.0,
+              "first_content": 14.187000000005355,
+              "total": 14.187000000005355
+            }
+          }
+        }
+      ],
+      "resources": {
+        "available": true,
+        "scope": "global_machine_not_process_attributed",
+        "samples": 540,
+        "seconds": 672.969,
+        "ram_available_gib_min_max": [
+          4.563,
+          6.364
+        ],
+        "gpu_memory_mib_min_max": [
+          0,
+          3743
+        ],
+        "ollama_model_resident_vram_mib_max": 2995.0,
+        "cold_warm": "not_a_controlled_comparison; keep_alive=0"
+      }
+    },
+    {
+      "phase": "GENERAL-correction-03",
+      "cases_n": 3,
+      "outcomes": {
+        "clarification": 2,
+        "refused": 1
+      },
+      "scopes": {
+        "not_labeled": 3
+      },
+      "all_referenced_sources_http200": true,
+      "seconds_median": 24.625,
+      "seconds_range": [
+        0.094,
+        34.985
+      ],
+      "cases": [
+        {
+          "case": "manual",
+          "seconds": 34.985,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "clarification",
+          "response_scope": null,
+          "reason_code": "general_synthesis_unverified",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "general-structured-v1",
+          "validation": {
+            "accepted": false,
+            "reason": "scope"
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "general_synthesis_unverified",
+            "verdict": "none",
+            "outcome": "no_evidence",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 4,
+              "selected": 0,
+              "evidence_bytes": 0,
+              "synthesis_failure_scope": 1,
+              "inference_calls_total": 7,
+              "prompt_tokens_total": 6876,
+              "output_tokens_total": 525,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "routing": 7.407000000006519,
+              "embedding_and_release": 3.672000000020489,
+              "search": 0.046999999991385266,
+              "review": 4.594000000011874,
+              "selection": 0.0,
+              "context": 12.14100000000326,
+              "first_content": 34.96899999998277,
+              "total": 34.96899999998277
+            }
+          }
+        },
+        {
+          "case": "unidades",
+          "seconds": 24.625,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "clarification",
+          "response_scope": null,
+          "reason_code": "general_synthesis_unverified",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "general-structured-v1",
+          "validation": {
+            "accepted": false,
+            "reason": "scope"
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "general_synthesis_unverified",
+            "verdict": "none",
+            "outcome": "no_evidence",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 3,
+              "selected": 0,
+              "evidence_bytes": 0,
+              "synthesis_failure_scope": 1,
+              "inference_calls_total": 5,
+              "prompt_tokens_total": 7429,
+              "output_tokens_total": 362,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "embedding_and_release": 2.8280000000086147,
+              "search": 0.031000000017229468,
+              "review": 4.76500000001397,
+              "selection": 0.0,
+              "context": 12.375,
+              "first_content": 24.609000000025844,
+              "total": 24.609000000025844
+            }
+          }
+        },
+        {
+          "case": "operacion",
+          "seconds": 0.094,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "refused",
+          "response_scope": null,
+          "reason_code": "v11_capability_unavailable",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": null,
+          "validation": null,
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "unavailable",
+            "reason": "v11_capability_unavailable",
+            "verdict": "pending",
+            "outcome": "policy",
+            "counts": {
+              "topic_questions": 0,
+              "inference_calls_total": 0,
+              "prompt_tokens_total": 0,
+              "output_tokens_total": 0,
+              "calls_without_token_counts": 0
+            },
+            "durations_seconds": {
+              "total": 0.0779999999795109
+            }
+          }
+        }
+      ],
+      "resources": {
+        "available": true,
+        "scope": "global_machine_not_process_attributed",
+        "samples": 71,
+        "seconds": 86.343,
+        "ram_available_gib_min_max": [
+          5.073,
+          6.326
+        ],
+        "gpu_memory_mib_min_max": [
+          0,
+          3743
+        ],
+        "ollama_model_resident_vram_mib_max": 2995.0,
+        "cold_warm": "not_a_controlled_comparison; keep_alive=0"
+      }
+    },
+    {
+      "phase": "GENERAL-template-04",
+      "cases_n": 1,
+      "outcomes": {
+        "answered": 1
+      },
+      "scopes": {
+        "general": 1
+      },
+      "all_referenced_sources_http200": true,
+      "seconds_median": 36.203,
+      "seconds_range": [
+        36.203,
+        36.203
+      ],
+      "cases": [
+        {
+          "case": "manual",
+          "seconds": 36.203,
+          "http_status": 200,
+          "termination": "done",
+          "outcome": "answered",
+          "response_scope": "general",
+          "reason_code": "v11_drafting",
+          "response_nonempty": true,
+          "source_count_fragments": 0,
+          "source_access_http_statuses": [],
+          "effective_config": {
+            "leny_model": "qwen3.5:4b-q4_K_M",
+            "leny_num_ctx": 4096,
+            "leny_num_predict": 768,
+            "leny_temperature": 0.0,
+            "leny_keep_alive": "0",
+            "leny_rag_model": "qwen3-embedding:0.6b",
+            "leny_rag_dimension": 1024,
+            "leny_rag_cpu_threads": 4,
+            "leny_rag_profile": "rag4_v1",
+            "leny_rag_response_mode": "controlled-synthesis-v1",
+            "leny_rag_ranking": "hybrid",
+            "leny_rag_neighbor_chunks": false,
+            "leny_rag_candidates": 20,
+            "leny_rag_top_k": 5,
+            "leny_rag_linked_support": true,
+            "leny_rag_section_context": true,
+            "leny_rag_source_coverage": true,
+            "leny_rag_followup_context": false
+          },
+          "synthesis_protocol": "general-structured-v1",
+          "validation": {
+            "accepted": true,
+            "omitted_quantity_blocks": 0,
+            "omitted_conflict_blocks": 0,
+            "omitted_condition_blocks": 0,
+            "exact_quantity_blocks": 0,
+            "exact_condition_blocks": 0,
+            "cited_fragments": 0
+          },
+          "diagnostics": {
+            "profile": "rag4_v1",
+            "route": "documentary",
+            "reason": "v11_drafting",
+            "verdict": "none",
+            "outcome": "completed",
+            "counts": {
+              "topic_questions": 0,
+              "candidates": 10,
+              "review_documents": 4,
+              "selected": 0,
+              "evidence_bytes": 0,
+              "inference_calls_total": 7,
+              "prompt_tokens_total": 6876,
+              "output_tokens_total": 525,
+              "calls_without_token_counts": 1
+            },
+            "durations_seconds": {
+              "routing": 8.5,
+              "embedding_and_release": 4.0460000000020955,
+              "search": 0.03200000000651926,
+              "review": 4.375,
+              "selection": 0.0,
+              "context": 11.937000000005355,
+              "first_content": 36.155999999988126,
+              "render": 0.0,
+              "total": 36.187000000005355
+            }
+          }
+        }
+      ],
+      "resources": {
+        "available": true,
+        "scope": "global_machine_not_process_attributed",
+        "samples": 33,
+        "seconds": 38.156,
+        "ram_available_gib_min_max": [
+          5.22,
+          6.336
+        ],
+        "gpu_memory_mib_min_max": [
+          0,
+          3743
+        ],
+        "ollama_model_resident_vram_mib_max": 2995.0,
+        "cold_warm": "not_a_controlled_comparison; keep_alive=0"
+      }
+    }
+  ],
+  "limits": [
+    "no semantic judge",
+    "no p95 with N<30 per condition",
+    "tokens with missing provider counts are lower bounds",
+    "global resources are not process allocation",
+    "complete reserved SPEC04 set not executed",
+    "A4 experiment excluded due repetition"
+  ]
+}

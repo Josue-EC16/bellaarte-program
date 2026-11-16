@@ -14,10 +14,10 @@ from sqlalchemy.exc import SQLAlchemyError
 from app.core.audit import current_audit_event_id
 from app.core.config import settings
 from app.core.database import SessionLocal, get_db
-from app.deps.auth import require_permission
+from app.deps.auth import require_permission, get_current_account, get_enforcer
 from app.models.account import Cuenta
 from app.schemas.leny import (ConversationDetailResponse, ConversationListResponse, ConversationResponse,
-                              LenyChatRequest, LenyStatusResponse)
+                              ConversationCreateRequest, LenyChatRequest, LenyStatusResponse)
 from app.services.leny_coordination import PostgresCoordinator
 from app.services.leny_ollama import LenyError
 from app.services.leny_service import LenyService
@@ -138,8 +138,23 @@ def config(actor: LenyActor = Depends(get_leny_admin), service: LenyService = De
 
 
 @router.post("/conversations", response_model=ConversationResponse, status_code=201)
-def create_conversation(actor: LenyActor = Depends(get_leny_actor), service: LenyService = Depends(get_leny_service)):
-    return service.store.create(actor)
+def create_conversation(request: Request, payload: ConversationCreateRequest | None = None,
+                        actor: LenyActor = Depends(get_leny_actor), service: LenyService = Depends(get_leny_service),
+                        account: Cuenta = Depends(get_current_account), db: Session = Depends(get_db),
+                        enforcer_instance=Depends(get_enforcer)):
+    provider = payload.provider if payload else 'ollama'
+    if payload is not None and payload.quality_profile=='spec03':
+        raise LenyError('LENY_PROFILE_RETIRED','El perfil provisional fue retirado. Inicia una conversación habitual.',409)
+    options = {}
+    if provider == 'gemini':
+        if not service.config.leny_gemini_enabled:
+            raise LenyError('LENY_GEMINI_DISABLED', 'Gemini no está habilitado.', 503)
+        if not service.config.gemini_api_key or not service.config.gemini_api_key.get_secret_value().strip():
+            raise LenyError('LENY_GEMINI_KEY_MISSING', 'Gemini requiere configuración del servidor.', 503)
+        if not getattr(service.config, 'leny_gemini_free_tier_confirmed', False):
+            raise LenyError('LENY_GEMINI_TIER_UNCONFIRMED', 'Gemini requiere confirmar el nivel gratuito.', 503)
+        return service.store.create(actor, provider='gemini', model=service.config.leny_gemini_model, **options)
+    return service.store.create(actor, provider='ollama', model=service.config.leny_model, **options)
 
 
 @router.get("/conversations", response_model=ConversationListResponse)

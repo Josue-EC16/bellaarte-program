@@ -1,4 +1,5 @@
 from fastapi import HTTPException, status
+from functools import wraps
 from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session, joinedload
 
@@ -6,6 +7,8 @@ from app.core.audit import register_audit_event
 from app.models.account import Cuenta
 from app.models.currency import Moneda
 from app.models.exchange_rate import TipoCambioMoneda
+from app.models.exchange_rate_record import TipoCambioRegistro
+from app.services.exchange_rate_history_service import insert_rate, lock_currency, validate_rate
 from app.schemas.currency import (
     MonedaCreateRequest,
     MonedaResponse,
@@ -15,6 +18,28 @@ from app.schemas.currency import (
     TipoCambioListItem,
     TipoCambioUpdateRequest,
 )
+
+
+def _atomic_write(operation):
+    @wraps(operation)
+    def coordinated(db, *args, **kwargs):
+        try:
+            return operation(db, *args, **kwargs)
+        except Exception:
+            db.rollback()
+            raise
+    return coordinated
+
+
+def _ensure_exchange_admin(account: Cuenta) -> None:
+    if (account.rol.codigo != "ADMIN" or not account.is_active or not account.usuario.activo
+            or not account.rol.activo or account.must_change_password):
+        raise HTTPException(status_code=403, detail="Solo ADMIN puede gestionar tipos de cambio manuales.")
+
+
+def _ensure_manual(rate: TipoCambioMoneda) -> None:
+    if rate.origen != "MANUAL":
+        raise HTTPException(status_code=409, detail="Las cotizaciones AUTOMATICO no admiten modificación ni activación manual.")
 
 
 def _to_currency_response(currency: Moneda) -> MonedaResponse:
@@ -35,10 +60,11 @@ def _to_exchange_rate_list_item(rate: TipoCambioMoneda) -> TipoCambioListItem:
         moneda_id=rate.moneda.id,
         moneda_codigo=rate.moneda.codigo,
         moneda_nombre=rate.moneda.nombre,
-        valor_bob=float(rate.valor_bob),
+        valor_bob=rate.valor_bob,
         activo=rate.activo,
-        registrado_por=rate.usuario.nombre_completo,
+        registrado_por=rate.usuario.nombre_completo if rate.usuario is not None else "SISTEMA",
         fecha_registro=rate.fecha_registro,
+        origen=rate.origen, fuente=rate.fuente, fecha_consulta=rate.fecha_consulta,
     )
 
 
@@ -46,11 +72,12 @@ def _to_exchange_rate_detail(rate: TipoCambioMoneda) -> TipoCambioDetailResponse
     return TipoCambioDetailResponse(
         id=rate.id,
         moneda=_to_currency_response(rate.moneda),
-        valor_bob=float(rate.valor_bob),
+        valor_bob=rate.valor_bob,
         observaciones=rate.observaciones,
         activo=rate.activo,
-        registrado_por=rate.usuario.nombre_completo,
+        registrado_por=rate.usuario.nombre_completo if rate.usuario is not None else "SISTEMA",
         fecha_registro=rate.fecha_registro,
+        origen=rate.origen, fuente=rate.fuente, fecha_consulta=rate.fecha_consulta,
     )
 
 
@@ -92,6 +119,7 @@ def _get_exchange_rate_entity(db: Session, rate_id: int) -> TipoCambioMoneda:
         select(TipoCambioMoneda)
         .options(joinedload(TipoCambioMoneda.moneda), joinedload(TipoCambioMoneda.usuario))
         .where(TipoCambioMoneda.id == rate_id)
+        .execution_options(populate_existing=True)
     ).scalar_one_or_none()
     if rate is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Tipo de cambio no encontrado.")
@@ -144,6 +172,8 @@ def create_currency(
     ip_address: str | None,
     user_agent: str | None,
 ) -> MonedaResponse:
+    if payload.es_base and payload.codigo.strip().upper() != "BOB":
+        raise HTTPException(status_code=409, detail="BOB debe conservarse como moneda base del sistema.")
     _ensure_unique_currency_code(db, payload.codigo)
     currency = Moneda(
         codigo=payload.codigo,
@@ -169,6 +199,7 @@ def create_currency(
     return get_currency(db, currency.id)
 
 
+@_atomic_write
 def update_currency(
     db: Session,
     *,
@@ -179,6 +210,18 @@ def update_currency(
     user_agent: str | None,
 ) -> MonedaResponse:
     currency = _get_currency_entity(db, currency_id)
+    db.execute(select(Moneda.id).where(Moneda.id == currency_id).with_for_update())
+    db.refresh(currency)
+    if currency.codigo == "BOB" and (payload.codigo.strip().upper() != "BOB" or not payload.es_base):
+        raise HTTPException(status_code=409, detail="BOB debe conservar su código y condición de moneda base.")
+    if payload.es_base and payload.codigo.strip().upper() != "BOB":
+        raise HTTPException(status_code=409, detail="BOB debe conservarse como moneda base del sistema.")
+    if (payload.codigo.strip().upper() != currency.codigo or payload.es_base != currency.es_base):
+        automatic = db.scalar(select(TipoCambioMoneda.id).where(
+            TipoCambioMoneda.moneda_id == currency_id, TipoCambioMoneda.origen == "AUTOMATICO").limit(1))
+        attempt = db.scalar(select(TipoCambioRegistro.id).where(TipoCambioRegistro.moneda_id == currency_id).limit(1))
+        if automatic is not None or attempt is not None:
+            raise HTTPException(status_code=409, detail="No puedes cambiar la identidad de una moneda con historial automático.")
     _ensure_unique_currency_code(db, payload.codigo, exclude_id=currency.id)
     _ensure_base_constraints(db, target=currency, es_base=payload.es_base, habilitado=payload.habilitado)
     _sync_base_currency(db, current_id=currency.id, make_base=payload.es_base)
@@ -201,6 +244,7 @@ def update_currency(
     return get_currency(db, currency.id)
 
 
+@_atomic_write
 def set_currency_status(
     db: Session,
     *,
@@ -211,6 +255,8 @@ def set_currency_status(
     user_agent: str | None,
 ) -> MonedaResponse:
     currency = _get_currency_entity(db, currency_id)
+    db.execute(select(Moneda.id).where(Moneda.id == currency_id).with_for_update())
+    db.refresh(currency)
     if currency.es_base and not enabled:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="No puedes deshabilitar la moneda base.")
     currency.habilitado = enabled
@@ -228,14 +274,6 @@ def set_currency_status(
     return get_currency(db, currency.id)
 
 
-def _deactivate_existing_active_rates(db: Session, currency_id: int, *, exclude_id: int | None = None) -> None:
-    stmt = select(TipoCambioMoneda).where(TipoCambioMoneda.moneda_id == currency_id, TipoCambioMoneda.activo.is_(True))
-    if exclude_id is not None:
-        stmt = stmt.where(TipoCambioMoneda.id != exclude_id)
-    for rate in db.execute(stmt).scalars().all():
-        rate.activo = False
-
-
 def list_exchange_rates(
     db: Session,
     *,
@@ -245,7 +283,7 @@ def list_exchange_rates(
     stmt = (
         select(TipoCambioMoneda)
         .options(joinedload(TipoCambioMoneda.moneda), joinedload(TipoCambioMoneda.usuario))
-        .order_by(TipoCambioMoneda.fecha_registro.desc())
+        .order_by(TipoCambioMoneda.fecha_registro.desc(), TipoCambioMoneda.id.desc())
     )
     if moneda_id is not None:
         stmt = stmt.where(TipoCambioMoneda.moneda_id == moneda_id)
@@ -258,6 +296,7 @@ def get_exchange_rate(db: Session, rate_id: int) -> TipoCambioDetailResponse:
     return _to_exchange_rate_detail(_get_exchange_rate_entity(db, rate_id))
 
 
+@_atomic_write
 def create_exchange_rate(
     db: Session,
     *,
@@ -266,36 +305,19 @@ def create_exchange_rate(
     ip_address: str | None,
     user_agent: str | None,
 ) -> TipoCambioDetailResponse:
-    currency = _get_currency_entity(db, payload.moneda_id)
-    if not currency.habilitado:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="No puedes operar con monedas deshabilitadas.")
-    if currency.es_base and float(payload.valor_bob) != 1:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="La moneda base debe registrar valor 1.")
-    if payload.activo:
-        _deactivate_existing_active_rates(db, currency.id)
-    rate = TipoCambioMoneda(
-        moneda_id=currency.id,
+    _ensure_exchange_admin(created_by)
+    rate = insert_rate(db,
+        moneda_id=payload.moneda_id,
         usuario_id=created_by.usuario_id,
         valor_bob=payload.valor_bob,
         observaciones=payload.observaciones,
-        activo=payload.activo,
-    )
-    db.add(rate)
-    db.flush()
-    register_audit_event(
-        db,
-        action="EXCHANGE_RATE_CREATED",
-        description=f"Se creó el tipo de cambio para '{currency.codigo}'.",
-        account=created_by,
-        user=created_by.usuario,
-        reference=str(rate.id),
-        ip_address=ip_address,
-        user_agent=user_agent,
+        operativo=True,
     )
     db.commit()
     return get_exchange_rate(db, rate.id)
 
 
+@_atomic_write
 def update_exchange_rate(
     db: Session,
     *,
@@ -305,30 +327,27 @@ def update_exchange_rate(
     ip_address: str | None,
     user_agent: str | None,
 ) -> TipoCambioDetailResponse:
+    _ensure_exchange_admin(updated_by)
     rate = _get_exchange_rate_entity(db, rate_id)
-    if rate.moneda.es_base and float(payload.valor_bob) != 1:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="La moneda base debe registrar valor 1.")
-    if payload.activo and not rate.moneda.habilitado:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="No puedes activar tipos de cambio para monedas deshabilitadas.")
-    if payload.activo:
-        _deactivate_existing_active_rates(db, rate.moneda_id, exclude_id=rate.id)
-    rate.valor_bob = payload.valor_bob
-    rate.observaciones = payload.observaciones
-    rate.activo = payload.activo
-    register_audit_event(
-        db,
-        action="EXCHANGE_RATE_UPDATED",
-        description=f"Se actualizó el tipo de cambio de '{rate.moneda.codigo}'.",
-        account=updated_by,
-        user=updated_by.usuario,
-        reference=str(rate.id),
-        ip_address=ip_address,
-        user_agent=user_agent,
-    )
+    lock_currency(db, rate.moneda_id)
+    rate = _get_exchange_rate_entity(db, rate_id)
+    _ensure_manual(rate)
+    value_changed = payload.valor_bob is not None and validate_rate(payload.valor_bob) != rate.valor_bob
+    if value_changed:
+        if payload.activo is False:
+            raise HTTPException(status_code=422, detail="Una nueva cotización operativa debe quedar activa.")
+        rate = insert_rate(db, moneda_id=rate.moneda_id, valor_bob=payload.valor_bob,
+            usuario_id=updated_by.usuario_id, observaciones=payload.observaciones, operativo=True)
+    else:
+        if payload.activo is not None and payload.activo != rate.activo:
+            raise HTTPException(status_code=409, detail="Utiliza la acción de estado; una tasa antigua no puede reactivarse.")
+        if "observaciones" in payload.model_fields_set:
+            rate.observaciones = payload.observaciones
     db.commit()
     return get_exchange_rate(db, rate.id)
 
 
+@_atomic_write
 def set_exchange_rate_status(
     db: Session,
     *,
@@ -338,24 +357,16 @@ def set_exchange_rate_status(
     ip_address: str | None,
     user_agent: str | None,
 ) -> TipoCambioDetailResponse:
+    _ensure_exchange_admin(changed_by)
     rate = _get_exchange_rate_entity(db, rate_id)
+    lock_currency(db, rate.moneda_id)
+    rate = _get_exchange_rate_entity(db, rate_id)
+    _ensure_manual(rate)
     if rate.moneda.es_base and not active:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="No puedes desactivar el tipo de cambio de la moneda base.")
-    if active:
-        if not rate.moneda.habilitado:
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="No puedes activar tipos de cambio para monedas deshabilitadas.")
-        _deactivate_existing_active_rates(db, rate.moneda_id, exclude_id=rate.id)
+    if active and not rate.activo:
+        raise HTTPException(status_code=409, detail="No puedes reactivar una cotización histórica. Registra una nueva tasa manual con ese valor.")
     rate.activo = active
-    register_audit_event(
-        db,
-        action="EXCHANGE_RATE_STATUS_CHANGED",
-        description=f"Se actualizó el estado del tipo de cambio de '{rate.moneda.codigo}' a {'ACTIVO' if active else 'INACTIVO'}.",
-        account=changed_by,
-        user=changed_by.usuario,
-        reference=str(rate.id),
-        ip_address=ip_address,
-        user_agent=user_agent,
-    )
     db.commit()
     return get_exchange_rate(db, rate.id)
 

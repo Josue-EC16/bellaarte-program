@@ -18,6 +18,8 @@ from app.schemas.currency import (
     TipoCambioUpdateRequest,
 )
 from app.schemas.reporting import AnalyticsReportResponse, ListingSummaryResponse, ReportPeriod
+from app.schemas.exchange_rate_sync import ExchangeRateSyncStateResponse, ExchangeRateSyncPageResponse, ExchangeRateSyncRecordResponse
+from app.services.exchange_rate_sync_query import sync_state, sync_records, sync_record
 from app.services.module_report_service import (
     get_currencies_report,
     get_currencies_summary,
@@ -110,6 +112,29 @@ def get_currencies_reports_panel(
     _account: Cuenta = Depends(require_permission("currency_reports:view")),
 ) -> AnalyticsReportResponse:
     return get_currencies_report(db, period=period, date_from=date_from, date_to=date_to, currency_id=currency_id)
+
+
+@router.get("/tipos-cambio/sincronizacion/estado", response_model=ExchangeRateSyncStateResponse)
+def get_sync_state(db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("exchange_rates:list"))):
+    from app.core.config import settings
+    return sync_state(db, config=settings)
+
+
+@router.get("/tipos-cambio/sincronizacion/registros", response_model=ExchangeRateSyncPageResponse)
+def get_sync_records(page: int = Query(1, ge=1), page_size: int = Query(25, ge=1, le=100),
+    date_from: date | None = None, date_to: date | None = None,
+    execution_from: date | None = None, execution_to: date | None = None,
+    estado: str | None = Query(None, max_length=32), proveedor: str | None = Query(None, max_length=64),
+    db: Session = Depends(get_db), _account: Cuenta = Depends(require_permission("exchange_rates_sync:list"))):
+    return sync_records(db, page=page, page_size=page_size, date_from=date_from, date_to=date_to,
+        execution_from=execution_from, execution_to=execution_to, estado=estado, proveedor=proveedor)
+
+
+@router.get("/tipos-cambio/sincronizacion/registros/{record_id}", response_model=ExchangeRateSyncRecordResponse)
+def get_sync_record(record_id: int, db: Session = Depends(get_db),
+    _account: Cuenta = Depends(require_permission("exchange_rates_sync:view"))):
+    return sync_record(db, record_id)
 
 
 @router.get("/tipos-cambio/{rate_id}", response_model=TipoCambioDetailResponse)

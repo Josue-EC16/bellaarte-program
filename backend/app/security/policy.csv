@@ -69,6 +69,8 @@ p, ADMIN, exchange_rates:list, use
 p, ADMIN, exchange_rates:update, use
 p, ADMIN, exchange_rates:update_status, use
 p, ADMIN, exchange_rates:view, use
+p, ADMIN, exchange_rates_sync:list, use
+p, ADMIN, exchange_rates_sync:view, use
 p, ADMIN, flete_outputs:annul, use
 p, ADMIN, flete_outputs:create, use
 p, ADMIN, flete_outputs:deliver, use

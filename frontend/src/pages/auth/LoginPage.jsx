@@ -21,7 +21,8 @@ export function LoginPage() {
         : location.state?.from?.pathname || '/app'
       navigate(nextPath, { replace: true })
     } catch (requestError) {
-      message.error(requestError.response?.data?.detail || 'No fue posible iniciar sesión. Credenciales inválidas.')
+      const detail = requestError.response?.data?.detail
+      message.error(typeof detail === 'string' ? detail : requestError.normalizedError?.summary || 'No fue posible iniciar sesión. Credenciales inválidas.')
     }
   }
 
@@ -55,7 +56,9 @@ export function LoginPage() {
                 label="Usuario"
                 name="username"
                 extra="Usa el nombre de usuario que te asignó administración."
-                rules={[{ required: true, message: 'Debe ingresar tu nombre de usuario.' }]}
+                rules={[{ required: true, whitespace: true, message: 'Debe ingresar tu nombre de usuario.' },
+                  { validator: (_, value) => !value || (!/[\p{Cc}\p{Cf}]/u.test(value) && value.trim())
+                    ? Promise.resolve() : Promise.reject(new Error('El usuario no puede contener solo espacios ni caracteres invisibles.')) }]}
               >
                 <Input
                   prefix={<UserOutlined />}
@@ -68,7 +71,9 @@ export function LoginPage() {
                 label="Contraseña"
                 name="password"
                 extra="Respeta mayúsculas, minúsculas y caracteres especiales."
-                rules={[{ required: true, message: 'Debe ingresar tu contraseña.' }]}
+                rules={[{ required: true, message: 'Debe ingresar tu contraseña.' },
+                  { validator: (_, value) => !value || (!/[\p{Cc}]/u.test(value) && new TextEncoder().encode(value).length <= 72)
+                    ? Promise.resolve() : Promise.reject(new Error('La contraseña no puede contener caracteres de control ni superar 72 bytes UTF-8.')) }]}
               >
                 <Input.Password
                   prefix={<LockOutlined />}

@@ -42,7 +42,7 @@ def validated_configuration():
     return manifest, urls
 
 
-def run_child(rebuild_rag_chat=False) -> int:
+def run_child(rebuild_rag_chat=False, tests=None) -> int:
     manifest, urls = validated_configuration()
     import psycopg2
     from psycopg2.extensions import parse_dsn
@@ -148,15 +148,28 @@ def run_child(rebuild_rag_chat=False) -> int:
     return int(pytest.main([
         '-c', str(BACKEND.parent / 'pytest.ini'), '--confcutdir', str(BACKEND / 'tests'),
         '--basetemp', str(Path.cwd() / 'pytest-tmp'), '-q', '-p', 'no:cacheprovider',
-        str(BACKEND / 'tests/integration'),
+        *integration_targets(tests),
     ], plugins=[Guard()]))
+
+
+def integration_targets(tests):
+    root = (BACKEND / 'tests/integration').resolve()
+    selected = []
+    for name in tests or []:
+        target = (root / name).resolve()
+        if not target.is_relative_to(root) or not target.is_file() or target.suffix != '.py':
+            raise ValueError('Integration selection must name a Python file inside tests/integration.')
+        selected.append(str(target))
+    return selected or [str(root)]
 
 
 def main() -> int:
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--rebuild-rag-chat',action='store_true',help='Explicit isolated-only reapplication of the unpublished0021 migration; guards reject publications/sources/uncertain inference.')
+    parser.add_argument('--tests', nargs='+', help='Files relative to tests/integration; all connection guards still apply.')
     arguments=parser.parse_args()
     try:
+        integration_targets(arguments.tests)
         _manifest, urls = validated_configuration()
     except (ValueError, KeyError, OSError):
         print('Integration configuration rejected. A dedicated authorized test cluster and explicit manifest/credentials are required.', file=sys.stderr)
@@ -169,8 +182,8 @@ def main() -> int:
         environment['DATABASE_URL'] = urls['TEST_DATABASE_URL']
         environment['TEST_PG_MANIFEST'] = str(Path(os.environ['TEST_PG_MANIFEST']).resolve())
         environment['ENVIRONMENT'] = 'test'
-        bootstrap = "import runpy,sys; m=runpy.run_path(sys.argv[1]); raise SystemExit(m['run_child'](sys.argv[2]=='true'))"
-        completed = subprocess.run([sys.executable, '-B', '-c', bootstrap, str(Path(__file__).resolve()),str(arguments.rebuild_rag_chat).lower()], cwd=temporary, env=environment, check=False)
+        bootstrap = "import runpy,sys; m=runpy.run_path(sys.argv[1]); raise SystemExit(m['run_child'](sys.argv[2]=='true',sys.argv[3:]))"
+        completed = subprocess.run([sys.executable, '-B', '-c', bootstrap, str(Path(__file__).resolve()),str(arguments.rebuild_rag_chat).lower(), *(arguments.tests or [])], cwd=temporary, env=environment, check=False)
         return completed.returncode
 
 

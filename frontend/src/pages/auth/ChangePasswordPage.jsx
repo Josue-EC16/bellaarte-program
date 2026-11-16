@@ -24,8 +24,8 @@ export function ChangePasswordPage() {
         current_password: values.current_password,
         new_password: values.new_password,
       })
-      message.success('Contrasena actualizada correctamente.')
-      navigate('/app', { replace: true })
+      message.success('Contraseña actualizada. Inicia sesión con tu nueva clave.')
+      navigate('/login', { replace: true })
     } catch (requestError) {
       const resolved = applyFormApiError(form, requestError, {
         messageFieldMap: [
@@ -70,6 +70,14 @@ export function ChangePasswordPage() {
               pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/,
               message:
                 'Debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.',
+            },
+            {
+              validator: (_, value) => !value || new TextEncoder().encode(value).length <= 72
+                ? Promise.resolve() : Promise.reject(new Error('La contraseña no puede superar 72 bytes en UTF-8.')),
+            },
+            {
+              validator: (_, value) => !value || !/[\p{Cc}]/u.test(value)
+                ? Promise.resolve() : Promise.reject(new Error('La contraseña no puede contener caracteres de control.')),
             },
           ]}
         >

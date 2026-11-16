@@ -1,4 +1,5 @@
 from app.models.account import Cuenta
+from app.models.auth_session import AuthSession, LoginBucket
 from app.models.audit_log import AuditoriaSistema
 from app.models.backup import BackupBd
 from app.models.base import Base
@@ -11,6 +12,7 @@ from app.models.client import Cliente
 from app.models.currency import Moneda
 from app.models.economy import ConstanciaDevolucion, CorteCaja, Egreso, MovimientoEconomico, SolicitudEconomica
 from app.models.exchange_rate import TipoCambioMoneda
+from app.models.exchange_rate_record import TipoCambioRegistro
 from app.models.flete import FleteVestido, SalidaFlete
 from app.models.leny import LenyConversation, LenyMessage
 from app.models.leny_documents import LenyDocument, LenyDocumentFolder, LenyDocumentOperation, LenyDocumentReadRole, LenyDocumentVersion, LenyFolderReadRole
@@ -25,6 +27,8 @@ from app.models.user import Usuario
 from app.models.workshop import EntradaInventarioTaller, InventarioTaller, SalidaMaterialTaller, TipoInventarioTaller
 
 __all__ = [
+    "AuthSession",
+    "LoginBucket",
     "AuditoriaSistema",
     "BackupBd",
     "Base",
@@ -79,6 +83,7 @@ __all__ = [
     "SalidaFlete",
     "SalidaMaterialTaller",
     "TipoCambioMoneda",
+    "TipoCambioRegistro",
     "TipoComprobante",
     "TipoInventarioTaller",
     "TipoItemBoutique",

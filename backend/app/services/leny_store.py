@@ -81,13 +81,35 @@ class LenyStore:
             raise LenyError("LENY_NOT_FOUND", "La conversación no existe.", 404)
         return conversation
 
-    def create(self, actor: LenyActor) -> dict:
+    def create(self, actor: LenyActor, *, provider='ollama', model=None, quality_profile='baseline') -> dict:
+        if quality_profile not in {'baseline', 'spec03'}:
+            raise LenyError('LENY_QUALITY_PROFILE_INVALID', 'El perfil de LENY no está permitido.', 422)
+        if provider not in {'ollama', 'gemini'}:
+            raise LenyError('LENY_PROVIDER_INVALID', 'El proveedor de LENY no está permitido.', 422)
+        if model is None:
+            if provider != 'ollama':
+                raise LenyError('LENY_MODEL_INVALID', 'La conversación requiere un modelo configurado.', 422)
+            model = 'qwen3.5:4b-q4_K_M'
+        if not isinstance(model, str) or not model.strip() or len(model)>120:
+            raise LenyError('LENY_MODEL_INVALID', 'El modelo de la conversación no es válido.', 422)
         with self.transaction() as db:
-            item = LenyConversation(id=uuid4(), user_id=actor.user_id, account_id=actor.account_id, title="Nueva conversación")
+            item = LenyConversation(id=uuid4(), user_id=actor.user_id, account_id=actor.account_id,
+                                   title="Nueva conversación", llm_provider=provider, llm_model=model,
+                                   quality_profile=quality_profile)
             db.add(item)
             db.flush()
             self.audit(db, actor, "LENY_CONVERSATION_CREATED", item.id)
             return ConversationResponse.model_validate(item).model_dump(mode="json")
+
+    def provider_for(self, actor: LenyActor, conversation_id: UUID) -> tuple[str, str]:
+        with self.transaction() as db:
+            conversation = self.own(db, actor, conversation_id)
+            return conversation.llm_provider, conversation.llm_model
+
+    def quality_profile_for(self, actor: LenyActor, conversation_id: UUID) -> str:
+        with self.transaction() as db:
+            conversation = self.own(db, actor, conversation_id)
+            return conversation.quality_profile
 
     def list(self, actor: LenyActor, page: int, page_size: int) -> dict:
         with self.transaction() as db:
@@ -140,6 +162,57 @@ class LenyStore:
                 actor = LenyActor(conversation.account_id, conversation.user_id, str(uuid4()))
                 self.audit(db, actor, "LENY_GENERATION_ABANDONED", conversation.id)
             return len(abandoned)
+
+    def followup_progress(self, actor: LenyActor, conversation_id: UUID, policy_version: str, *, topic_question=None, binding=False) -> str | dict | None:
+        """Previous wording is progress context only, never new documentary proof.
+
+        Every old source must still be eligible before returning any old text.
+        Fresh evidence is retrieved independently by the current turn.
+        """
+        from app.models.leny_rag_chat import LenyRagMessageSource as Source
+        from app.services.leny_rag_retrieval import ELIGIBLE, parameters, reader
+        with self.transaction() as db:
+            self.own(db, actor, conversation_id)
+            reader(db, actor)
+            message = db.scalar(select(LenyMessage).where(LenyMessage.conversation_id == conversation_id,
+                LenyMessage.role == 'assistant', LenyMessage.status == 'completed',
+                LenyMessage.category == 'business', LenyMessage.policy_version == policy_version,
+                LenyMessage.context_eligible.is_(False)).order_by(LenyMessage.sequence.desc()).limit(1))
+            if message is None:
+                return None
+            if topic_question:
+                from app.services.leny_rag_routing import is_followup
+                topic_rows = db.scalars(select(LenyMessage).where(LenyMessage.conversation_id == conversation_id,
+                    LenyMessage.role == 'user', LenyMessage.sequence < message.sequence)
+                    .order_by(LenyMessage.sequence.desc()).limit(40)).all()
+                anchor = next((row for row in topic_rows if not is_followup(row.content)), None)
+                if anchor is None or anchor.content[:400] != topic_question:
+                    return None
+            ids = set(db.scalars(select(Source.fragment_id).where(Source.message_id == message.id)))
+            if not ids:
+                return None
+            allowed = set(db.scalars(text(ELIGIBLE + 'SELECT f.id FROM eligible e JOIN leny.rag_fragmentos f ON f.indexation_id=e.indexation_id WHERE f.id=ANY(CAST(:ids AS uuid[]))'),
+                parameters(self.sources.config, actor) | {'ids': [str(value) for value in ids]}))
+            # Preserve the beginning containing the explanation, rather than
+            # just the footer/citations of a long answer. This is conversation
+            # context only, never proof of a completed business operation.
+            if ids != allowed:
+                return None
+            content = message.content.split('**Fuentes:**')[0].split('**Alcance:**')[0].strip()[:1200]
+            return {'content': content, 'fragment_ids': sorted(str(value) for value in ids)} if binding else content
+
+    def revalidate_progress(self, actor, conversation_id, fragment_ids):
+        """Revalidate the frozen provenance of old wording before external send."""
+        from app.services.leny_rag_retrieval import ELIGIBLE, parameters, reader
+        with self.transaction() as db:
+            self.own(db, actor, conversation_id)
+            reader(db, actor)
+            allowed = set(str(value) for value in db.scalars(text(ELIGIBLE +
+                'SELECT f.id FROM eligible e JOIN leny.rag_fragmentos f ON f.indexation_id=e.indexation_id '
+                'WHERE f.id=ANY(CAST(:ids AS uuid[]))'),
+                parameters(self.sources.config, actor) | {'ids': list(fragment_ids)}))
+            if set(fragment_ids) != allowed:
+                raise LenyError('LENY_RAG_ACCESS_REVOKED', 'La fuente del seguimiento ya no está disponible.', 403)
 
     def topic_history(self, actor: LenyActor, conversation_id: UUID, policy_version: str) -> list[dict]:
         """Owner-scoped topic hints only. Never reuse documentary assistant text.

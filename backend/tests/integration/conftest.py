@@ -92,7 +92,7 @@ def pg_cluster():
             engines[variable] = engine
             with engine.connect() as connection:
                 assert_identity(connection, manifest, migrator=variable == "TEST_MIGRATION_DATABASE_URL")
-                if connection.execute(text("SELECT version_num FROM alembic_version")).scalar_one() != "20261020_0021":
+                if connection.execute(text("SELECT version_num FROM alembic_version")).scalar_one() != "20261104_0023":
                     raise pytest.UsageError("Integration requires the reviewed Alembic head, never create_all.")
         yield SimpleNamespace(engine=engines["TEST_DATABASE_URL"], migration_engine=engines["TEST_MIGRATION_DATABASE_URL"],
                               manifest=manifest, assert_identity=assert_identity)
@@ -164,6 +164,7 @@ def synthetic_recipient(pg_cluster):
             # Audit events reference this fixture-owned synthetic person. Clean
             # only that identity, exclusively inside the isolated test cluster.
             connection.execute(text("DELETE FROM auditoria_sistema WHERE usu_id=:id"), {"id": user_id})
+            connection.execute(text("DELETE FROM sesion_cuenta WHERE cuenta_id=:id"), {"id": account_id})
             connection.execute(text("DELETE FROM cuentas WHERE id=:id"), {"id": account_id})
             connection.execute(text("DELETE FROM usuarios WHERE id=:id"), {"id": user_id})
             connection.execute(text("DELETE FROM roles WHERE id=:id"), {"id": role_id})

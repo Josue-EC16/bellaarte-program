@@ -26,12 +26,16 @@ import { PermissionRoute } from '../../routes/RouteGuards'
 
 const conversation = { id: 'conversation-1', title: 'Conversación privada', created_at: '2026-10-19T12:00:00Z' }
 let persisted
+let statusData
+let activeConversation
 beforeEach(() => {
   vi.clearAllMocks(); mocks.permissions = ['leny:chat']; mocks.userId = 71; persisted = []
+  activeConversation = conversation
+  statusData = { available: true, max_message_chars: 2000, request_timeout_seconds: 120 }
   mocks.get.mockImplementation(async (path) => {
-    if (path === '/leny/status') return { data: { available: true, max_message_chars: 2000, request_timeout_seconds: 120 } }
-    if (path === '/leny/conversations') return { data: { items: persisted.length ? [conversation] : [], total: persisted.length ? 1 : 0 } }
-    if (path.endsWith('/conversation-1')) return { data: { conversation, items: persisted, total: persisted.length } }
+    if (path === '/leny/status') return { data: statusData }
+    if (path === '/leny/conversations') return { data: { items: persisted.length ? [activeConversation] : [], total: persisted.length ? 1 : 0 } }
+    if (path.endsWith('/conversation-1')) return { data: { conversation: activeConversation, items: persisted, total: persisted.length } }
     throw new Error('Unexpected endpoint')
   })
   mocks.post.mockResolvedValue({ data: conversation })
@@ -45,6 +49,124 @@ beforeEach(() => {
 afterEach(cleanup)
 
 describe('LENY integrated page', () => {
+  function enableGemini() {
+    statusData = { ...statusData, providers: [
+      { provider: 'ollama', available: true, model: 'qwen-local', request_timeout_seconds: 120 },
+      { provider: 'gemini', available: true, model: 'gemini-3.8-flash', request_timeout_seconds: 300 },
+    ] }
+  }
+  it('defaults to Qwen and disables Gemini when the server does not advertise availability', async () => {
+    render(<LenyPage />)
+    await screen.findByText('Modelo local disponible')
+    const selector = screen.getByLabelText('Modelo de esta conversación')
+    expect(selector.value).toBe('ollama')
+    expect(selector.querySelector('option[value="gemini"]').disabled).toBe(true)
+  })
+  it('keeps the evaluation selector hidden without the existing admin permission', async () => {
+    enableGemini(); statusData.quality_evaluation_enabled = true
+    render(<LenyPage />)
+    await screen.findByText('Modelo local disponible')
+    fireEvent.change(screen.getByLabelText('Modelo de esta conversación'), { target: { value: 'gemini' } })
+    expect(screen.queryByLabelText('Perfil de revisión')).toBeNull()
+  })
+  it('creates only the provider even for administrators with a stale evaluation flag', async () => {
+    enableGemini(); statusData.quality_evaluation_enabled = true; mocks.permissions.push('leny:admin')
+    activeConversation = { ...conversation, llm_provider: 'gemini', quality_profile: 'baseline' }
+    mocks.post.mockResolvedValue({ data: activeConversation })
+    render(<LenyPage />)
+    await screen.findByText('Modelo local disponible')
+    expect(screen.queryByLabelText('Perfil de revisión')).toBeNull()
+    fireEvent.change(screen.getByLabelText('Modelo de esta conversación'), { target: { value: 'gemini' } })
+    expect(screen.queryByLabelText('Perfil de revisión')).toBeNull()
+    fireEvent.change(screen.getByLabelText('Mensaje para LENY'), { target: { value: 'Explica el procedimiento del taller' } })
+    fireEvent.click(screen.getByText('Enviar'))
+    await screen.findByText('Hola, soy LENY.')
+    expect(mocks.post.mock.calls[0][1]).toEqual({ provider: 'gemini' })
+    expect(screen.getByLabelText('Modelo de esta conversación').disabled).toBe(true)
+    expect(screen.queryByText(/provisional|Candidata en revisión/)).toBeNull()
+    expect(mocks.send.mock.calls[0][0]).not.toHaveProperty('quality_profile')
+    fireEvent.click(screen.getByText('Nueva conversación'))
+    fireEvent.change(screen.getByLabelText('Modelo de esta conversación'), { target: { value: 'gemini' } })
+    expect(screen.queryByLabelText('Perfil de revisión')).toBeNull()
+  })
+  it('preserves historical spec03 messages and provider while explaining habitual continuation', async () => {
+    enableGemini()
+    activeConversation = { ...conversation, llm_provider: 'gemini', quality_profile: 'spec03' }
+    persisted = [{ id: 'old-answer', role: 'assistant', content: 'Respuesta histórica conservada.', status: 'completed' }]
+    render(<LenyPage />)
+    fireEvent.click(await screen.findByText('Conversación privada'))
+    await screen.findByText('Respuesta histórica conservada.')
+    expect(screen.getByLabelText('Modelo de esta conversación').value).toBe('gemini')
+    expect(screen.getByLabelText('Modelo de esta conversación').disabled).toBe(true)
+    expect(screen.getByText('Los mensajes anteriores se conservan; las nuevas respuestas usan la versión habitual.')).toBeTruthy()
+    expect(screen.queryByText('Evaluación SPEC-03')).toBeNull()
+    expect(screen.queryByLabelText('Perfil de revisión')).toBeNull()
+    fireEvent.change(screen.getByLabelText('Mensaje para LENY'), { target: { value: 'Continúa la conversación' } })
+    fireEvent.click(screen.getByText('Enviar'))
+    await waitFor(() => expect(mocks.send).toHaveBeenCalledOnce())
+    expect(mocks.post).not.toHaveBeenCalled()
+    expect(mocks.send.mock.calls[0][0]).not.toHaveProperty('quality_profile')
+  })
+  it('creates Gemini once, keeps it fixed and uses its timeout without a per-message provider', async () => {
+    enableGemini()
+    activeConversation = { ...conversation, llm_provider: 'gemini', llm_model: 'gemini-3.8-flash' }
+    mocks.post.mockResolvedValue({ data: activeConversation })
+    render(<LenyPage />)
+    await screen.findByText('Modelo local disponible')
+    fireEvent.change(screen.getByLabelText('Modelo de esta conversación'), { target: { value: 'gemini' } })
+    await screen.findByText('Gemini disponible')
+    fireEvent.change(screen.getByLabelText('Mensaje para LENY'), { target: { value: 'Explica cómo organizar el taller' } })
+    fireEvent.click(screen.getByText('Enviar'))
+    await screen.findByText('Hola, soy LENY.')
+    await waitFor(() => expect(screen.getByLabelText('Modelo de esta conversación').disabled).toBe(true))
+    expect(mocks.post.mock.calls[0][1]).toEqual({ provider: 'gemini' })
+    expect(mocks.send.mock.calls[0][0]).not.toHaveProperty('provider')
+    expect(mocks.send.mock.calls[0][1].timeoutSeconds).toBe(300)
+    expect(screen.getByLabelText('Modelo de esta conversación').value).toBe('gemini')
+    fireEvent.click(screen.getByText('Nueva conversación'))
+    expect(screen.getByLabelText('Modelo de esta conversación').value).toBe('ollama')
+    expect(screen.getByLabelText('Modelo de esta conversación').disabled).toBe(false)
+  })
+  it('restores Gemini from history and never falls back when it becomes unavailable', async () => {
+    enableGemini()
+    statusData.providers[1].available = false
+    activeConversation = { ...conversation, llm_provider: 'gemini', llm_model: 'gemini-3.8-flash' }
+    persisted = [{ id: 'old-answer', role: 'assistant', content: 'Respuesta anterior.', status: 'completed' }]
+    render(<LenyPage />)
+    fireEvent.click(await screen.findByText('Conversación privada'))
+    await screen.findByText('Respuesta anterior.')
+    expect(screen.getByLabelText('Modelo de esta conversación').value).toBe('gemini')
+    expect(screen.getByLabelText('Modelo de esta conversación').disabled).toBe(true)
+    await screen.findByText('Gemini no disponible')
+    fireEvent.change(screen.getByLabelText('Mensaje para LENY'), { target: { value: 'Otra consulta' } })
+    expect(screen.getByText('Enviar').disabled).toBe(true)
+    fireEvent.keyDown(screen.getByLabelText('Mensaje para LENY'), { key: 'Enter' })
+    expect(mocks.send).not.toHaveBeenCalled()
+  })
+  it('does not carry a Gemini project quota cooldown into a new Qwen conversation', async () => {
+    enableGemini()
+    activeConversation = { ...conversation, llm_provider: 'gemini', llm_model: 'gemini-3.8-flash' }
+    mocks.post.mockResolvedValue({ data: activeConversation })
+    mocks.send.mockRejectedValue({ response: { status: 429, headers: { 'retry-after': '60' }, data: { detail: { code: 'LENY_GEMINI_QUOTA' } } } })
+    render(<LenyPage />)
+    await screen.findByText('Modelo local disponible')
+    fireEvent.change(screen.getByLabelText('Modelo de esta conversación'), { target: { value: 'gemini' } })
+    fireEvent.change(screen.getByLabelText('Mensaje para LENY'), { target: { value: 'Organiza un manual' } })
+    fireEvent.click(screen.getByText('Enviar'))
+    await screen.findByText(/Gemini alcanzó su límite/)
+    expect(screen.getByText('Espera 60 s').disabled).toBe(true)
+    fireEvent.click(screen.getByText('Nueva conversación'))
+    fireEvent.change(screen.getByLabelText('Mensaje para LENY'), { target: { value: 'Organiza el taller' } })
+    expect(screen.getByLabelText('Modelo de esta conversación').value).toBe('ollama')
+    expect(screen.getByText('Enviar').disabled).toBe(false)
+  })
+  it('preserves documentary, general and example labels from persisted Markdown without active document links', () => {
+    render(<LenyMarkdown>{'**Según la documentación**\n\nRevisa las medidas. [S1]\n\n**Orientación general**\n\nPuedes preparar un esquema.\n\n**Ejemplo adaptable**\n\n[Nombre del manual](https://example.invalid)'}</LenyMarkdown>)
+    expect(screen.getByText('Según la documentación')).toBeTruthy()
+    expect(screen.getByText('Orientación general')).toBeTruthy()
+    expect(screen.getByText('Ejemplo adaptable')).toBeTruthy()
+    expect(screen.queryByRole('link')).toBeNull()
+  })
   it('renders local-service status, sends through the streaming transport and reconciles persisted messages', async () => {
     render(<LenyPage />)
     await screen.findByText('Modelo local disponible')
@@ -230,6 +352,28 @@ describe('LENY integrated page', () => {
     await screen.findByText(/No tengo acceso a datos privados del ERP/)
     await screen.findByText('Enviar')
     expect(screen.queryByRole('alert')).toBeNull()
+    expect(screen.queryByText('Respuesta incompleta')).toBeNull()
+  })
+  it.each([
+    ['documented', 'Respuesta con fuentes documentales'],
+    ['partial', 'Respuesta documental parcial'],
+    ['general', 'Orientación general sin fuente empresarial'],
+  ])('shows the completed response scope %s without treating it as a process failure', async (scope, label) => {
+    mocks.send.mockImplementation(async (payload, { onEvent }) => {
+      const text = scope === 'general'
+        ? '**Orientación general — sin respaldo documental empresarial**\n\nExplicación disponible para revisar.'
+        : (scope === 'partial' ? 'La evidencia disponible es parcial; esta respuesta se limita a los puntos documentados.\n\n' : '') + '**Según la documentación**\n\nExplicación disponible para revisar.' + (scope === 'partial' ? '\n\n**Alcance:** Solo parte de la consulta.' : '')
+      const sources = scope === 'general' ? [] : [{ source_id: 'source-1', citation_id: 'S1', available: true, label: 'Manual sintético', version: 1, locator: {}, warnings: [] }]
+      persisted = [{ id: 'scope-answer', role: 'assistant', content: text, status: 'completed', request_id: payload.request_id, sources }]
+      onEvent({ type: 'start' })
+      onEvent({ type: 'delta', text })
+      onEvent({ type: 'done', status: 'completed', outcome: 'answered', response_scope: scope, sources })
+    })
+    render(<LenyPage />)
+    await screen.findByText('Modelo local disponible')
+    fireEvent.change(screen.getByLabelText('Mensaje para LENY'), { target: { value: 'Ayúdame a preparar un manual' } })
+    fireEvent.click(screen.getByText('Enviar'))
+    expect(await screen.findByText(label)).toBeTruthy()
     expect(screen.queryByText('Respuesta incompleta')).toBeNull()
   })
   it.each(['failed', 'interrupted', 'admitted'])('removes phantom rows for a ledger-only %s duplicate and requires a new request', async (status) => {

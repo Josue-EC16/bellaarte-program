@@ -1,0 +1,323 @@
+{
+  "captured_at": "2026-11-05T15:57:47.617539+00:00",
+  "revision": "20261105_0024",
+  "head": "5a1d15a04c2f97483769c86e82dbba056adce6b8",
+  "original_env_unchanged": true,
+  "health_http_status": 200,
+  "unauthenticated_leny_http_status": 401,
+  "inference_state": "idle",
+  "operational_provider": "ollama",
+  "gemini_operationally_enabled": false,
+  "activation_note": "Gemini remains disabled after real generation failures; not accepted",
+  "configuration": {
+    "leny_llm_provider": "ollama",
+    "leny_gemini_enabled": false,
+    "leny_gemini_model": "gemini-3.8-flash",
+    "leny_gemini_thinking_level": "medium",
+    "leny_gemini_input_token_budget": 32678,
+    "leny_gemini_output_tokens": 8192,
+    "leny_gemini_rpm": 5,
+    "leny_gemini_tpm": 250000,
+    "leny_gemini_rpd": 500,
+    "leny_model": "qwen3.5:4b-q4_K_M",
+    "leny_num_ctx": 4096,
+    "leny_num_predict": 768,
+    "leny_temperature": 0.0,
+    "leny_keep_alive": "0",
+    "leny_rag_profile": "rag4_v1",
+    "leny_rag_ranking": "hybrid",
+    "leny_rag_response_mode": "controlled-synthesis-v1",
+    "leny_rag_neighbor_chunks": false
+  },
+  "gemini_key_present": true,
+  "baseline_relative_files": {
+    "backend/app/services/leny_gemini.py": {
+      "before": "1f89efc06ef8d96f712d85d263b593b1289715e3de7b6d35fb80f357650059a7",
+      "after": "bc5dad12faeef9b80ece183e425dcc3c2c28b0a9d9d438aeddb71ce4efb236bc"
+    },
+    "backend/app/services/leny_inference_state.py": {
+      "before": "e897ecbf15db7b33176f0f2cfa73a3d23048bd7405b00ef0b7c48640d00c87fc",
+      "after": "c899bddd57ba3c5fef26108e477ef91ebf6a0d7c38afcad54a81ff29bc2a1a5b"
+    },
+    "backend/app/services/leny_rag_diagnostics.py": {
+      "before": "d80abfaa0c4e36146ddff0c9cb3137c2b7ea671452e36a78245d004247bdd695",
+      "after": "fd046bf5c54ceaee757c2306580cda5a9488943580b79eb8e1c716f6a6a56236"
+    },
+    "backend/app/services/leny_rag_retrieval.py": {
+      "before": "5876c0bb2e782fe1e855e35e80d05eb2d7d4dd01e393754b400b36cbbcb83b8a",
+      "after": "4e9c55c9cf49ac803e4340d03ff16446e5737cdd8ba50ff1387fb030ed74fdf6"
+    },
+    "backend/app/services/leny_rag_synthesis.py": {
+      "before": "1efb6935735c705e8d813765cbfcde0639e62ad320778ce8754745a58d36353a",
+      "after": "3a557feab3f37c4804a842232f47b864d962902247c627e33dcdae45c703f3c4"
+    },
+    "backend/app/services/leny_service.py": {
+      "before": "ba2b43b91093b3f9e890edc260a5a8104868f904c4ccb427ca4e692544f09733",
+      "after": "34c12e550e52a24e166679c6e6e544d050ce33c071df377d8ae516c999f28571"
+    },
+    "backend/app/services/leny_store.py": {
+      "before": "31a459e84abc5b4de2288cee6f723702789f209ab8ba483e25b45229a6d4ad81",
+      "after": "66aa5bbb1d8066a33d7f94189e172a45e3d9ab165d36b22c6dd5869267f5e32f"
+    },
+    "backend/app/core/config.py": {
+      "before": "927638251dc49b1609008d838abfdf856cf0614d7be105c379431dabf1e71d2f",
+      "after": "5e34eb32a97e208084b15fa30e45fd90ec43d6b6558eba023fb724002d42083c"
+    },
+    "backend/app/models/leny.py": {
+      "before": "d3fa8bba2769093e2c12aea800f290c03a9ced647725faf01e18905a947b7fd0",
+      "after": "0e47ef0009cc3b197d1b2e469ee87fcd9fdebb657587dbe1ded20d69f6aa4828"
+    },
+    "backend/app/schemas/leny.py": {
+      "before": "e0a97db5cd889788957c937079a0312ff977c24069679bf4702610c4ff50f59c",
+      "after": "78541432067c26d032fa3de39a332d84e6d2902732cc804abb9ecd63ad7b78d4"
+    },
+    "backend/app/api/routers/leny.py": {
+      "before": "5fc43c0502169ae31bf1a8f9f62aec8de4054c4041b5f711cb40f784e1760de1",
+      "after": "ced9c27fd1e59b69e9d86238ac74d7c473b6da15d57d54ac9b5fb3abeccb92e2"
+    },
+    "backend/.env.example": {
+      "before": "762cddce81cfbf66515ca6aee62953ad0cfb83361f7c3051870694ac6253f294",
+      "after": "70862f7581762326d6a2b8ff97e1db2a86c10e91ddfbb54b3af18612d09d5ce6"
+    },
+    "frontend/src/pages/leny/leny.css": {
+      "before": "67f63a39c8a56400c920a6a82f74ceb8e589baca048c684916f67942767ca4bc",
+      "after": "0da29147ca32808949ba5430ac6b48f88aea0ebcad91ba48a0fa67ebcc0fe921"
+    },
+    "frontend/src/pages/leny/LenyPage.jsx": {
+      "before": "a1077bd69380306cccfd0c3298877f8da4f6f7a5edce6974d8c30a5c28b0f34e",
+      "after": "eee778fda34329a532b929649dd24e5257decf45d15ac7ae3293ec3b16717739"
+    },
+    "frontend/src/pages/leny/LenyPage.test.jsx": {
+      "before": "7ac47cf69a54a12ae6d9ce5933b543d36fa8a522906dffc144d991503fd2f529",
+      "after": "44c8793b4842f03aca0ab091ae6317745562b549e5fedf40a0c13f00dbac661e"
+    },
+    "frontend/src/pages/leny/lenyTransport.js": {
+      "before": "e9d3127400ff0deaad99f5bd39a52bb31881b6df27767c42dbb1336184f6075d",
+      "after": "45ca96fe90e99b53f51da1ff1c7473d8ccc1d248a7b4398f01b04b4b8da32793"
+    },
+    "frontend/src/pages/leny/lenyTransport.test.js": {
+      "before": "abe8369b6055d88a556b90cc2ba144974ef8bf671fbed98d423e3b8046aa9347",
+      "after": "3387ab32adcbfd566606c6849d08390072e58147f8f021168edfbbfc75cdbce2"
+    },
+    "frontend/src/pages/leny/useLenyChat.js": {
+      "before": "89f2db47c12f2d83d64c6665ec055e7cd2689c229c6cabbc169f2e46874ddcf4",
+      "after": "402037ddfe0363b524e22aa58761c341889d10ddc292f71a6b1e408fd51e652a"
+    }
+  },
+  "source_reverse_patch_check": true,
+  "google_ledger": [
+    {
+      "phase": "generate",
+      "status": "failed",
+      "error_code": "LENY_GEMINI_UNAVAILABLE",
+      "attempts": 9,
+      "calls_with_input_tokens": 0,
+      "calls_with_output_tokens": 0
+    },
+    {
+      "phase": "model",
+      "status": "completed",
+      "error_code": null,
+      "attempts": 1,
+      "calls_with_input_tokens": 0,
+      "calls_with_output_tokens": 0
+    }
+  ],
+  "authenticated_api_cases": [
+    {
+      "job": "spec02-gemini-real",
+      "case": "general",
+      "http_status": 200,
+      "termination": "error",
+      "seconds": 66.281,
+      "outcome": null,
+      "scope": null,
+      "provider": null,
+      "source_count": 0,
+      "source_http_status": [],
+      "error_codes": [
+        "LENY_GEMINI_UNAVAILABLE"
+      ]
+    },
+    {
+      "job": "spec02-gemini-real",
+      "case": "sensible",
+      "http_status": 422,
+      "termination": "http_error",
+      "seconds": 0.031,
+      "outcome": null,
+      "scope": null,
+      "provider": null,
+      "source_count": 0,
+      "source_http_status": [],
+      "error_codes": []
+    },
+    {
+      "job": "spec02-gemini-real",
+      "case": "sin-herramientas",
+      "http_status": 200,
+      "termination": "done",
+      "seconds": 0.141,
+      "outcome": "refused",
+      "scope": null,
+      "provider": "gemini",
+      "source_count": 0,
+      "source_http_status": [],
+      "error_codes": []
+    },
+    {
+      "job": "spec02-gemini-real",
+      "case": "documental",
+      "http_status": 200,
+      "termination": "error",
+      "seconds": 36.125,
+      "outcome": null,
+      "scope": null,
+      "provider": null,
+      "source_count": 0,
+      "source_http_status": [],
+      "error_codes": [
+        "LENY_GEMINI_UNAVAILABLE"
+      ]
+    },
+    {
+      "job": "spec02-qwen-documental",
+      "case": "vestido",
+      "http_status": 200,
+      "termination": "done",
+      "seconds": 74.61,
+      "outcome": "answered",
+      "scope": "partial",
+      "provider": "ollama",
+      "source_count": 3,
+      "source_http_status": [
+        200,
+        200,
+        200
+      ],
+      "error_codes": []
+    },
+    {
+      "job": "spec02-qwen-real",
+      "case": "manual",
+      "http_status": 200,
+      "termination": "done",
+      "seconds": 20.532,
+      "outcome": "clarification",
+      "scope": null,
+      "provider": "ollama",
+      "source_count": 0,
+      "source_http_status": [],
+      "error_codes": []
+    },
+    {
+      "job": "spec02-qwen-real",
+      "case": "titulo",
+      "http_status": 503,
+      "termination": "http_error",
+      "seconds": 0.078,
+      "outcome": null,
+      "scope": null,
+      "provider": null,
+      "source_count": 0,
+      "source_http_status": [],
+      "error_codes": []
+    },
+    {
+      "job": "spec02-qwen-real",
+      "case": "seguimiento",
+      "http_status": 503,
+      "termination": "http_error",
+      "seconds": 0.11,
+      "outcome": null,
+      "scope": null,
+      "provider": null,
+      "source_count": 0,
+      "source_http_status": [],
+      "error_codes": []
+    },
+    {
+      "job": "spec02-qwen-real",
+      "case": "despues",
+      "http_status": 503,
+      "termination": "http_error",
+      "seconds": 0.109,
+      "outcome": null,
+      "scope": null,
+      "provider": null,
+      "source_count": 0,
+      "source_http_status": [],
+      "error_codes": []
+    }
+  ],
+  "human_acceptance": null,
+  "source_snapshot": {
+    "backend/app/services/leny_capabilities.py": "a8ceb1de48f8f5180904eb10f8daecb476ef38e349bf04e0b778fd8a9c828666",
+    "backend/app/services/leny_coordination.py": "b171770ebd63b568aa58b5c2279b2bc5bca8bc24abe771cdcc9a9127139958b5",
+    "backend/app/services/leny_document_backup.py": "d9e1c6017f88bcbb56332f43425308b2f5ed48dded95e89a59dedf0e21dba841",
+    "backend/app/services/leny_document_maintenance.py": "5641fdc19b799973ed1a1cf1ddbfb82fcb14fb6e67c1243fd3a0ee635aecec82",
+    "backend/app/services/leny_document_service.py": "4d4a92270425f73f7f2bed4c576f980584e86f363d1c0370a94188fe69a5b248",
+    "backend/app/services/leny_document_storage.py": "223508eb4132df2eaad9278ea03091a745051a051c2f5b38d0c95af92b96fe58",
+    "backend/app/services/leny_document_validation.py": "f308f43588151c2a7486fb084c812edc1243625954dcc3775fac1b7f790f0397",
+    "backend/app/services/leny_gemini.py": "bc5dad12faeef9b80ece183e425dcc3c2c28b0a9d9d438aeddb71ce4efb236bc",
+    "backend/app/services/leny_gemini_safety.py": "252e58e0ccb6aef8ec054c311715416b4a3335fad41b2bcb2d0974a5755d83c4",
+    "backend/app/services/leny_gemini_usage.py": "2eb3e7912c3fd8d41ac2d7d5857f18af70ead37733353b16a6946b58706aa3a4",
+    "backend/app/services/leny_guard.py": "646aedcf45d6b84c50a170ce1ea19c0b8af517e1bfd6bdab0dbaccfb2db58749",
+    "backend/app/services/leny_inference_state.py": "c899bddd57ba3c5fef26108e477ef91ebf6a0d7c38afcad54a81ff29bc2a1a5b",
+    "backend/app/services/leny_llm_budget.py": "d02882a60636f669a6d35be92dbf48d80f59ab6168801bb883b1519d438b7c6e",
+    "backend/app/services/leny_llm_contracts.py": "717efdc35afe8dd2392d5a118162a7d68119b7158f1cfe96b984c16f2e84f5cc",
+    "backend/app/services/leny_llm_providers.py": "bd05fe5550969da0ac6fec65ed87a4327848649fc2d14bbd88219ef0db2fd388",
+    "backend/app/services/leny_ollama.py": "7caccf638339b233465db2af488dfa3412e7cdc67b94d8f38b72cd9c76e49aab",
+    "backend/app/services/leny_policy.py": "c2fb1eda757aa9d35c1902c026cd0769b759dd65ffa0a844043471f44b6a0fbd",
+    "backend/app/services/leny_rag_chunking.py": "02860cd76bc90608cd8dd86a9157e837995a527cab8169b4ad429c107f4e8ad5",
+    "backend/app/services/leny_rag_common.py": "38d482f680ad2f97e52351134f3f1031bb70d5725120122bb236cd97f3b2ec60",
+    "backend/app/services/leny_rag_coverage.py": "cdc1267906f4f6ab0f4d864daa57103df152ceff8772e2949adde9f05f295825",
+    "backend/app/services/leny_rag_diagnostics.py": "fd046bf5c54ceaee757c2306580cda5a9488943580b79eb8e1c716f6a6a56236",
+    "backend/app/services/leny_rag_embeddings.py": "00f9b633c68afc0ecbde6df74fa8aa6c6b941c3068c78b26456ed4e0b7b38db1",
+    "backend/app/services/leny_rag_evaluation.py": "867cd31c19ead08dd20cb427247293dd895d4997959568b86cfe43f7d2f66326",
+    "backend/app/services/leny_rag_extraction.py": "aa50c998a24e83267323c2ad750d4060a7260a7a66620b67dfa5ee4113f2fa54",
+    "backend/app/services/leny_rag_followup.py": "0709ae9e659c244aae6b0741227ca70236f2ae5af28a2a6590bb8cfba52643c9",
+    "backend/app/services/leny_rag_grounding.py": "17ebc582ac8cbc005bc3da4f2ff9bb9245d75c06fb7e192c65ea0bd5acdfe55b",
+    "backend/app/services/leny_rag_publication.py": "13137d3aca1ab3ea8e77810bcc5b21b734bb2aacd652a80efa188473842e5717",
+    "backend/app/services/leny_rag_retrieval.py": "4e9c55c9cf49ac803e4340d03ff16446e5737cdd8ba50ff1387fb030ed74fdf6",
+    "backend/app/services/leny_rag_routing.py": "00ba6814e35231c3b79400f4cf1b066cd24c920647983993f7c405dd7925613a",
+    "backend/app/services/leny_rag_selection.py": "6aa0fc3d7d312da9df862e0a3ccf31c9c342c946db78862aa809a246dfaab6ba",
+    "backend/app/services/leny_rag_service.py": "01c320001d8fdb679c2636c3bb404d11b6a812fa9a1e0f4244d874a52f9f2dd1",
+    "backend/app/services/leny_rag_sources.py": "620ed3f510bdbd1387741e93d8f5edfedd95ada2094dd24ebee3b768f9bdb9a1",
+    "backend/app/services/leny_rag_synthesis.py": "3a557feab3f37c4804a842232f47b864d962902247c627e33dcdae45c703f3c4",
+    "backend/app/services/leny_rag_worker.py": "b19f6c1b326c8ab88e3520ae46ddab123ec86a3ad25b733526bb9bdd28fe06a7",
+    "backend/app/services/leny_rate_limit.py": "7c4a0c01c3219f7243d27e27b404e095974b76c0c8b0ee8a4af5d4521d96f4ef",
+    "backend/app/services/leny_review_capture.py": "93411935703e45638b2ccfb7d7f887ae3525a34c2cedb259f9e9626b54135cb6",
+    "backend/app/services/leny_runtime.py": "a24e3b12c0aaca71aba18acf89a97c511f2c62527ec250aa79b8b83292a891c8",
+    "backend/app/services/leny_runtime_process.py": "44e8e2b88ee138a081c9daf9f40a3c79913fad378e002ed6229641e5b1105b92",
+    "backend/app/services/leny_service.py": "34c12e550e52a24e166679c6e6e544d050ce33c071df377d8ae516c999f28571",
+    "backend/app/services/leny_store.py": "66aa5bbb1d8066a33d7f94189e172a45e3d9ab165d36b22c6dd5869267f5e32f",
+    "backend/app/core/config.py": "5e34eb32a97e208084b15fa30e45fd90ec43d6b6558eba023fb724002d42083c",
+    "backend/app/models/leny.py": "0e47ef0009cc3b197d1b2e469ee87fcd9fdebb657587dbe1ded20d69f6aa4828",
+    "backend/app/schemas/leny.py": "78541432067c26d032fa3de39a332d84e6d2902732cc804abb9ecd63ad7b78d4",
+    "backend/app/api/routers/leny.py": "ced9c27fd1e59b69e9d86238ac74d7c473b6da15d57d54ac9b5fb3abeccb92e2",
+    "backend/alembic/versions/20261105_0024_leny_conversation_providers.py": "de0e4a914dd1361f77c29d1881975d5f678acce9d2a6ecbbee92d4671c45c4a1",
+    "frontend/src/pages/leny/leny.css": "0da29147ca32808949ba5430ac6b48f88aea0ebcad91ba48a0fa67ebcc0fe921",
+    "frontend/src/pages/leny/lenyAxios.test.js": "221caf17ecdd7f6c04f3b1ab2dd1dc51cda5884ee917641110560ade1b7353d9",
+    "frontend/src/pages/leny/LenyMarkdown.jsx": "a5fbc5a4794975f7148bab31853325f3ac0399743318bef7ef6d6d72416e7f7f",
+    "frontend/src/pages/leny/LenyPage.jsx": "eee778fda34329a532b929649dd24e5257decf45d15ac7ae3293ec3b16717739",
+    "frontend/src/pages/leny/LenyPage.test.jsx": "44c8793b4842f03aca0ab091ae6317745562b549e5fedf40a0c13f00dbac661e",
+    "frontend/src/pages/leny/LenySources.jsx": "dbc782c57a1f4849d39ed4a79f6ed442d4faad6cd60f1520bbcf82e1827a9a73",
+    "frontend/src/pages/leny/LenySources.test.jsx": "215ea7b379d5f6cda3f310aee9e15a5f4ecda116b8a4a4c05b34e27afee8c80b",
+    "frontend/src/pages/leny/lenySourceUtils.js": "f737c8473be420785fbb0939490cdcd197ecb8ca506ba2c976f261537a573d98",
+    "frontend/src/pages/leny/lenyTransport.js": "45ca96fe90e99b53f51da1ff1c7473d8ccc1d248a7b4398f01b04b4b8da32793",
+    "frontend/src/pages/leny/lenyTransport.test.js": "3387ab32adcbfd566606c6849d08390072e58147f8f021168edfbbfc75cdbce2",
+    "frontend/src/pages/leny/useLenyChat.js": "402037ddfe0363b524e22aa58761c341889d10ddc292f71a6b1e408fd51e652a",
+    "backend/tests/test_leny_gemini_persistence.py": "7dbb63388412b003b8d88fa068a92278a9af20c5af2604d7f610ac0b2f98a1fc",
+    "backend/tests/test_leny_gemini_preparation.py": "485d4caced6cdfebc1b7299ba8e6be9e8190ca3feeb10f3ca18cf7fee058c20b",
+    "backend/tests/test_leny_gemini_provider.py": "f037c0ce3817f8fab374459f9b9936ad29e9dd39db675aeaf02b7f0c83df14aa",
+    "backend/scripts/deploy_leny_gemini_spec02.py": "bfa0cfee58991b72e9ffe62418225ecdc0170f7fca10a7e03016f0b00b8b4443",
+    "backend/scripts/probe_leny_gemini_spec02.py": "ffce718fb3c7f3e84a48afdd6943a28a59fdabe7232c49b4055f9a1c4d808d2a",
+    "backend/scripts/reconcile_leny_gemini_review.py": "5862dccab6ba817d7583c0ae000a3f440a32a77cd18ed402d04c7018e0c02045",
+    "backend/scripts/run_leny_gemini_authenticated_review.py": "adce74db5e262e2db5176610d4f56051b647905cdfa30831fc5bac5e3ce27659",
+    "backend/scripts/snapshot_leny_gemini_spec02.py": "28c003bd2210db8c8feda06c647f593bc75e0582c28a764bc897347e663054fc",
+    "backend/scripts/test_leny_gemini_schema.ps1": "dacf484f1dcff0c850e9fdf94d29a01c73edc30d0b49cd64687484b2784c78c9",
+    "backend/scripts/test_leny_gemini_schema.py": "48a1ef45f5cbef701903fc9627ad5445d5bb075d505a24dec07acab603de36ff",
+    "backend/scripts/restart_leny_review_backend.py": "8f965ec8be1817526da32dc9f9d050d64ee8172ba5d433d33ab1d901e2dbe7c9"
+  }
+}

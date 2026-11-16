@@ -17,6 +17,7 @@ from sqlalchemy.orm import Session, joinedload
 from app.core.audit import register_audit_event
 from app.core.notification_catalog import recipient_roles, utc_now
 from app.core.security import verify_password
+from app.core.user_validation import generate_temporary_password
 from app.models.account import Cuenta
 from app.models.boutique_enums import PrioridadNotificacionEnum
 from app.models.notification import EnvioNotificacionCorreo, Notificacion
@@ -34,15 +35,33 @@ SAFE_EMAIL_CATEGORIES = frozenset({
 })
 
 
+def _verified_temporary_credential(account: Cuenta) -> str | None:
+    """Recover only a deterministic credential that still matches its hash.
+
+    CI-only credentials are a compatibility path for pending historical emails,
+    never a rule for new accounts or resets. Identity edits cannot reset a hash.
+    """
+    candidates = []
+    try:
+        candidates.append(generate_temporary_password(account.usuario))
+    except (ValueError, TypeError, AttributeError):
+        pass
+    candidates.append(account.usuario.ci.upper())
+    for candidate in candidates:
+        try:
+            if verify_password(candidate, account.password_hash):
+                return candidate
+        except (ValueError, TypeError):
+            continue
+    return None
+
+
 def email_retry_eligibility(account: Cuenta) -> tuple[bool, str | None]:
     if not account.is_active or not account.usuario.activo or not account.rol.activo:
         return False, "CUENTA_NO_ELEGIBLE"
     if not account.must_change_password or account.last_login_at is not None:
         return False, "RESET_EXPLICITO_REQUERIDO"
-    try:
-        matches = verify_password(account.usuario.ci.upper(), account.password_hash)
-    except (ValueError, TypeError):
-        matches = False
+    matches = _verified_temporary_credential(account) is not None
     return (True, None) if matches else (False, "RESET_EXPLICITO_REQUERIDO")
 
 
@@ -146,7 +165,7 @@ def attempt_credential_email(db: Session, *, user_id: int, manual: bool = False,
             eligible, category = False, "DESTINO_CAMBIADO"
         if eligible:
             success, category = send_welcome_email(recipient_email=destination, full_name=account.usuario.nombre_completo,
-                username=account.username, initial_password=account.usuario.ci.upper())
+                username=account.username, initial_password=_verified_temporary_credential(account))
         else:
             success = False
         now = utc_now()

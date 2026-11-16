@@ -17,6 +17,7 @@ from app.schemas.notification import (
     NotificationQueryFilters, NotificationRecipientSummary, NotificationReportBucket,
     NotificationReportSummary, NotificationSummaryResponse,
 )
+from app.services.exchange_rate_notification_service import exchange_rate_notification_visibility
 
 
 def notification_query():
@@ -54,7 +55,7 @@ def to_detail_response(entity: Notificacion) -> NotificationDetailResponse:
 
 
 def get_notification_detail(db: Session, *, notification_id: int, account: Cuenta, supervision: bool = False) -> NotificationDetailResponse:
-    stmt = notification_query().where(Notificacion.id == notification_id)
+    stmt = notification_query().where(Notificacion.id == notification_id, exchange_rate_notification_visibility(account))
     if not supervision:
         stmt = stmt.where(Notificacion.usuario_id == account.usuario_id)
     entity = db.execute(stmt).scalar_one_or_none()
@@ -68,6 +69,7 @@ def filtered_notification_query(
     search: str | None = None, supervision: bool = False,
 ):
     stmt = select(Notificacion).join(Notificacion.usuario).outerjoin(Usuario.cuenta).outerjoin(Cuenta.rol)
+    stmt = stmt.where(exchange_rate_notification_visibility(account))
     if not supervision:
         stmt = stmt.where(Notificacion.usuario_id == account.usuario_id)
     else:
@@ -114,7 +116,8 @@ def list_notifications(db: Session, *, account: Cuenta, filters: NotificationQue
 
 
 def get_notification_summary(db: Session, *, account: Cuenta, limit: int = 8) -> NotificationSummaryResponse:
-    own_open = (Notificacion.usuario_id == account.usuario_id, Notificacion.resuelta.is_(False))
+    own_open = (Notificacion.usuario_id == account.usuario_id, Notificacion.resuelta.is_(False),
+                exchange_rate_notification_visibility(account))
     counts = db.execute(select(
         func.count().filter(Notificacion.leida.is_(False)),
         func.count(),
@@ -135,6 +138,7 @@ def mark_notification_read(db: Session, *, notification_id: int, account: Cuenta
     # Only a simple row is locked: joined outer relationships cannot be FOR UPDATE targets.
     entity = db.execute(select(Notificacion).where(
         Notificacion.id == notification_id, Notificacion.usuario_id == account.usuario_id,
+        exchange_rate_notification_visibility(account),
     ).with_for_update().execution_options(populate_existing=True)).scalar_one_or_none()
     if entity is None:
         raise HTTPException(status_code=404, detail="Notificación no encontrada.")
@@ -151,10 +155,12 @@ def mark_all_notifications_read(db: Session, *, account: Cuenta) -> dict[str, in
     # must remain unread, even though the user requested 'read all'.
     snapshot = select(Notificacion.id.label("notification_id"), Notificacion.revision.label("observed_revision")).where(
         Notificacion.usuario_id == account.usuario_id, Notificacion.leida.is_(False), Notificacion.resuelta.is_(False),
+        exchange_rate_notification_visibility(account),
     ).cte("pending_snapshot").prefix_with("MATERIALIZED")
     result = db.execute(update(Notificacion).where(
         Notificacion.id == snapshot.c.notification_id, Notificacion.usuario_id == account.usuario_id,
         Notificacion.revision == snapshot.c.observed_revision, Notificacion.leida.is_(False),
+        exchange_rate_notification_visibility(account),
     ).values(leida=True, fecha_leida=utc_now()).execution_options(synchronize_session=False))
     updated = result.rowcount
     db.commit()
@@ -163,7 +169,8 @@ def mark_all_notifications_read(db: Session, *, account: Cuenta) -> dict[str, in
 
 def resolve_notification(db: Session, *, notification_id: int, reason: str, resolved_by: Cuenta,
                          ip_address: str | None, user_agent: str | None) -> NotificationDetailResponse:
-    entity = db.execute(select(Notificacion).where(Notificacion.id == notification_id).with_for_update()).scalar_one_or_none()
+    entity = db.execute(select(Notificacion).where(Notificacion.id == notification_id,
+                        exchange_rate_notification_visibility(resolved_by)).with_for_update()).scalar_one_or_none()
     if entity is None:
         raise HTTPException(status_code=404, detail="Notificación no encontrada.")
     if not can_resolve_manually(entity.tipo):

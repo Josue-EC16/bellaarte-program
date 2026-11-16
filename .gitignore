@@ -67,3 +67,6 @@ backend/storage/leny/
 *.tmp
 *.swp
 *.swo
+
+# SonarQube
+sonar-project.properties

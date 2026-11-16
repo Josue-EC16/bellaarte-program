@@ -52,6 +52,8 @@ ADMIN_PERMISSIONS = (
     "exchange_rates:create",
     "exchange_rates:update",
     "exchange_rates:update_status",
+    "exchange_rates_sync:list",
+    "exchange_rates_sync:view",
     "boutique_sales:list",
     "boutique_sales:view",
     "boutique_sales:create",

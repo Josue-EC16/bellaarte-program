@@ -1,4 +1,4 @@
-param([switch]$Provision, [switch]$RunTests, [string]$PythonExecutable, [switch]$Rag,[switch]$RebuildRagChat)
+param([switch]$Provision, [switch]$RunTests, [string]$PythonExecutable, [switch]$Rag,[switch]$RebuildRagChat, [string[]]$Tests)
 
 $ErrorActionPreference = 'Stop'
 $repositoryRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..\..')).Path
@@ -133,6 +133,7 @@ GRANT SELECT ON testing_control.instance TO bab_test_runner, bab_test_migrator;
         $env:TEST_MIGRATION_DATABASE_URL = "postgresql+psycopg2://bab_test_migrator:$migrationPassword@127.0.0.1:55432/bab_vdos_testing"
         $testArguments=@()
         if($RebuildRagChat){$testArguments+='--rebuild-rag-chat'}
+        if($Tests){$testArguments+='--tests';$testArguments+=$Tests}
         & $python -B (Join-Path $PSScriptRoot 'run_notification_integration.py') @testArguments
         $testExit = $LASTEXITCODE
     }

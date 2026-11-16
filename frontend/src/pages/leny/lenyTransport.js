@@ -5,7 +5,17 @@ import { validLenySources } from './lenySourceUtils'
 const MAX_LINE_BYTES = 65536
 const MAX_OUTPUT_BYTES = 65536
 
+function geminiErrorMessage(code) {
+  if (!code?.startsWith('LENY_GEMINI_')) return null
+  if (/QUOTA|RATE_LIMIT/.test(code)) return 'Gemini alcanzó su límite de uso. Espera antes de enviar otra solicitud; esta conversación mantiene Gemini.'
+  if (/TIMEOUT/.test(code)) return 'Gemini superó el tiempo de espera. Consulta el historial antes de enviar otra solicitud.'
+  if (/SENSITIVE|OUTBOUND|TRANSMISSION/.test(code)) return 'La información de esta consulta no puede enviarse a Gemini. Puedes iniciar otra conversación con Qwen.'
+  return 'Gemini no pudo completar la solicitud. Esta conversación mantiene su modelo; puedes iniciar otra con Qwen.'
+}
+
 export function lenyStreamErrorMessage(event) {
+  const gemini = geminiErrorMessage(event?.code)
+  if (gemini) return gemini
   if (['LENY_RAG_CONTEXT_LIMIT', 'LENY_CONTEXT_LIMIT'].includes(event?.code)) return 'Las fuentes no caben íntegramente en el contexto disponible. Precisa la sección que necesitas; esto no significa que falte documentación.'
   if (event?.code === 'LENY_RAG_REVIEW_INVALID') return 'No se pudo verificar la pertinencia de las fuentes. La consulta documental no se completó.'
   if (event?.code === 'LENY_RAG_CITATION_MISSING') return 'La respuesta no incluyó referencias verificables y no pudo completarse.'
@@ -28,9 +38,11 @@ async function cancelReader(reader) {
 export function lenyErrorMessage(error) {
   if (error?.code === 'ERR_CANCELED' || error?.name === 'AbortError') return 'La respuesta se interrumpió.'
   const status = error?.response?.status
+  const detail = error?.response?.data?.detail
+  const gemini = geminiErrorMessage(detail?.code)
+  if (gemini) return gemini
   if (status === 401) return 'Tu sesión terminó. Vuelve a iniciar sesión para utilizar LENY.'
   if (status === 403) return 'Tu cuenta no tiene autorización para esta operación de LENY.'
-  const detail = error?.response?.data?.detail
   if (status === 503) return detail?.code === 'LENY_STORAGE_UNAVAILABLE'
     ? 'El historial de LENY no está disponible. Solicita al administrador que revise el servicio.'
     : 'El servicio local de LENY no está disponible. Comprueba su estado e intenta más tarde.'

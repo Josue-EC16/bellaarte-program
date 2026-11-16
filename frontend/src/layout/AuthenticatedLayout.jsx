@@ -415,6 +415,13 @@ export function AuthenticatedLayout() {
                 label: <Link to="/app/monedas/reportes">Reportes</Link>,
               }
             : null,
+          user?.role_code === 'ADMIN' && user?.permissions?.includes('exchange_rates_sync:list')
+            ? {
+                key: '/app/monedas/tipos-cambio/registros',
+                icon: <DatabaseOutlined />,
+                label: <Link to="/app/monedas/tipos-cambio/registros">Registros de sincronización</Link>,
+              }
+            : null,
         ].filter(Boolean),
       })
     }
@@ -706,6 +713,7 @@ function pageTitle(pathname) {
   if (pathname === '/app/taller/reportes') return 'Reportes de Taller'
   if (pathname === '/app/monedas') return 'Tipos de Monedas'
   if (pathname === '/app/monedas/tipos-cambio') return 'Tipos de Cambio'
+  if (pathname === '/app/monedas/tipos-cambio/registros') return 'Registros de sincronización'
   if (pathname === '/app/monedas/reportes') return 'Reportes de Monedas'
   if (pathname === '/app/cambiar-clave') return 'Cambiar contraseña'
   return 'Panel principal'

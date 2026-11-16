@@ -2,6 +2,22 @@
 
 Backend del sistema `bellaarte-program`, construido con FastAPI, SQLAlchemy, Alembic, JWT y Casbin.
 
+TC-02 USD/BOB (04/11/2026) desplegada sobre revisión 0023, sin migración adicional.
+La tarea Windows independiente usa `scripts/run_exchange_rate_sync.py`; sus
+GET de estado/registros nunca llaman al proveedor. La automatización empresarial
+está activa con fecha inicial estable; no ejecutar el comando contra producción
+como si fuera una prueba. Para inspección usar `--inspect`. Ver
+[operación y despliegue TC-02](../documentacion/SPEC_TC_02_IMPLEMENTACION.md).
+
+## Usuarios y sesiones — revisión 03/11/2026
+
+Implementación desplegada con autorización y migración nueva `20261103_0022`: sesiones durables,
+rotación/revocación, cambios de rol sin salir, protección de ADMIN y validación
+de colaboradores. Requiere despliegue coordinado y nuevo login de todas las
+cuentas; no ejecutar el código contra un esquema anterior. Aplicada el 03/11/2026
+a `bellaarte_db:5432` con respaldo privado, conservación de filas y backend reiniciado. Contratos y pruebas:
+[Usuarios, roles y sesiones](../documentacion/MODULO_USUARIOS_SESIONES.md).
+
 La version actual ya consolida:
 
 - seguridad interna con login, refresh, roles, cuentas y auditoria

@@ -10,12 +10,18 @@ from app.models.base import Base, TimestampMixin
 
 class LenyConversation(TimestampMixin, Base):
     __tablename__ = "conversaciones"
-    __table_args__ = (Index("ix_leny_conversation_owner_updated", "user_id", "updated_at"), {"schema": "leny"})
+    __table_args__ = (Index("ix_leny_conversation_owner_updated", "user_id", "updated_at"),
+        CheckConstraint("llm_provider IN ('ollama','gemini')", name="ck_leny_conversation_provider"),
+        CheckConstraint("quality_profile IN ('baseline','spec03')", name="ck_leny_conversation_quality_profile"),
+        {"schema": "leny"})
 
     id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
     user_id: Mapped[int] = mapped_column(ForeignKey("usuarios.id", ondelete="RESTRICT"), nullable=False)
     account_id: Mapped[int] = mapped_column(ForeignKey("cuentas.id", ondelete="RESTRICT"), nullable=False)
     title: Mapped[str] = mapped_column(String(120), default="Nueva conversación", nullable=False)
+    llm_provider: Mapped[str] = mapped_column(String(16), default="ollama", server_default="ollama", nullable=False)
+    llm_model: Mapped[str] = mapped_column(String(120), default="qwen3.5:4b-q4_K_M", server_default="qwen3.5:4b-q4_K_M", nullable=False)
+    quality_profile: Mapped[str] = mapped_column(String(16), default="baseline", server_default="baseline", nullable=False)
 
 
 class LenyMessage(TimestampMixin, Base):

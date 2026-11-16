@@ -5,6 +5,9 @@ from zoneinfo import ZoneInfo
 
 
 ADMIN_ROLE_CODE = "ADMIN"
+EXCHANGE_RATE_NOTIFICATION_TYPES = frozenset({
+    "TC_SYNC_PRIMER_ERROR", "TC_SYNC_AGOTADO", "TC_SYNC_PROLONGADO", "TC_SYNC_EXITOSO",
+})
 STOCK_NOTIFICATION_TYPES = frozenset({"STOCK_BAJO_BOUTIQUE", "STOCK_BAJO_TALLER"})
 DELIVERY_NOTIFICATION_TYPES = frozenset({"ENTREGA_PEDIDO_2_DIAS", "ENTREGA_PEDIDO_1_DIA", "ENTREGA_PEDIDO_HOY"})
 TEST_NOTIFICATION_TYPES = frozenset({"PRUEBA_PEDIDO_2_DIAS", "PRUEBA_PEDIDO_1_DIA", "PRUEBA_PEDIDO_HOY"})
@@ -16,9 +19,10 @@ MANUAL_NOTIFICATION_TYPES = MATERIAL_NOTIFICATION_TYPES | {"SISTEMA"}
 NOTIFICATION_TYPES = (
     STOCK_NOTIFICATION_TYPES | DELIVERY_NOTIFICATION_TYPES | TEST_NOTIFICATION_TYPES
     | MATERIAL_NOTIFICATION_TYPES | FLETE_RETURN_NOTIFICATION_TYPES
-    | {"FLETE_MAX_SALIDAS", "ERROR_ENVIO_CORREO", "SISTEMA"}
+    | {"FLETE_MAX_SALIDAS", "ERROR_ENVIO_CORREO", "SISTEMA"} | EXCHANGE_RATE_NOTIFICATION_TYPES
 )
 RECIPIENT_ROLES = {
+    **{kind: frozenset({"ADMIN"}) for kind in EXCHANGE_RATE_NOTIFICATION_TYPES},
     "STOCK_BAJO_BOUTIQUE": frozenset({"ADMIN", "INV_BOUTIQUE"}),
     "STOCK_BAJO_TALLER": frozenset({"ADMIN", "INV_TALLER"}),
     "FLETE_MAX_SALIDAS": frozenset({"ADMIN", "INV_BOUTIQUE"}),
@@ -58,6 +62,8 @@ def build_notification_action_path(table_ref: str | None, record_id_ref: int | N
         "SALIDA_FLETE": ("/app/fletes/salidas", "output_id"),
         "FLETE_VESTIDO": ("/app/fletes", "flete_id"),
         "USUARIOS": ("/app/seguridad/usuarios", "user_id"),
+        "TIPO_CAMBIO_REGISTROS": ("/app/monedas/tipos-cambio/registros", "record_id"),
+        "TIPO_CAMBIO_MONEDA": ("/app/monedas/tipos-cambio", "rate_id"),
     }
     target = paths.get(normalize_upper(table_ref))
     if target is None:

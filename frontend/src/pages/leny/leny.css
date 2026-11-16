@@ -48,6 +48,11 @@
 .leny-source-title { font-weight: 600; }
 .leny-source-location { color: var(--leny-muted); }
 .leny-source-detail { overflow-wrap: anywhere; }
+.leny-provider-control { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 10px 26px; border-bottom: 1px solid #e8dcd1; }
+.leny-provider-control label { color: var(--leny-ink); font-size: 12px; font-weight: 600; }
+.leny-provider-control select { max-width: 100%; min-height: 34px; padding: 6px 10px; border: 1px solid #d8c5b5; border-radius: 8px; background: #fff; color: var(--leny-ink); font: inherit; font-size: 12px; }
+.leny-provider-control select:focus-visible { outline: 2px solid var(--leny-primary); outline-offset: 2px; }
+.leny-provider-control small { color: var(--leny-muted); font-size: 11px; line-height: 1.5; }
 .leny-source-detail h3 { font-size: 14px; margin-top: 24px; }
 .leny-source-text { white-space: pre-wrap; line-height: 1.8; padding: 16px; background: #fbf6ef; border: 1px solid #e8dcd1; border-radius: 10px; }
 .leny-loading { display: flex; gap: 10px; justify-content: center; font-size: 12px; padding: 16px; color: var(--leny-muted); }

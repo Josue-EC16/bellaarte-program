@@ -1,12 +1,25 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { apiClient } from '../../api/client'
 import { resolveFormApiError } from '../../components/forms/formErrorUtils'
 import { lenyErrorMessage, lenyRetrySeconds, lenyStreamErrorMessage, sendLenyMessage } from './lenyTransport'
+
+// Presentation of server-rendered scope, not a semantic quality score. Use
+// freshly fetched source availability so revocation never keeps an old badge.
+function persistedResponseScope(item) {
+  if (item.role !== 'assistant' || item.status !== 'completed') return undefined
+  const content = item.content || ''
+  if (content.startsWith('**Orientación general — sin respaldo documental empresarial**')) return 'general'
+  if ((content.startsWith('**Según la documentación**') || content.startsWith('La evidencia disponible es parcial;')) && item.sources?.some((source) => source.available)) {
+    return content.includes('**Alcance:**') || content.includes('No he podido verificar') ? 'partial' : 'documented'
+  }
+  return undefined
+}
 
 export function useLenyChat() {
   const [status, setStatus] = useState(null)
   const [conversations, setConversations] = useState([])
   const [conversation, setConversation] = useState(null)
+  const [draftProvider, setDraftProvider] = useState('ollama')
   const [messages, setMessages] = useState([])
   const [totalConversations, setTotalConversations] = useState(0)
   const [totalMessages, setTotalMessages] = useState(0)
@@ -18,12 +31,17 @@ export function useLenyChat() {
   const [fieldError, setFieldError] = useState('')
   const [retryAt, setRetryAt] = useState(0)
   const [retrySeconds, setRetrySeconds] = useState(0)
+  const [retryProvider, setRetryProvider] = useState(null)
   const mounted = useRef(true)
   const generation = useRef(null)
   const selection = useRef(0)
   const historySelection = useRef(0)
   const activeConversation = useRef(null)
   const interruptedRequests = useRef(new Set())
+  const provider = conversation?.llm_provider || (conversation ? 'ollama' : draftProvider)
+  const providerStatus = useMemo(() => status?.providers?.find((item) => item.provider === provider)
+    || (provider === 'ollama' ? status : { available: false, code: 'LENY_GEMINI_DISABLED', request_timeout_seconds: 300 }), [status, provider])
+  const applicableRetrySeconds = !retryProvider || retryProvider === provider ? retrySeconds : 0
 
   useEffect(() => {
     if (!retryAt) return
@@ -62,7 +80,8 @@ export function useLenyChat() {
     try {
       const { data } = await apiClient.get(`/leny/conversations/${id}`, { params: { page, page_size: 50 }, timeout })
       if (mounted.current && current === selection.current && activeConversation.current === id) {
-        const items = data.items.map((item) => {
+        const items = data.items.map((record) => {
+          const item = { ...record, responseScope: persistedResponseScope(record) }
           if (item.role !== 'assistant' || !interruptedRequests.current.has(item.request_id)) return item
           if (item.status !== 'generating') { interruptedRequests.current.delete(item.request_id); return item }
           return { ...item, cancellationPending: true }
@@ -98,11 +117,12 @@ export function useLenyChat() {
   const newConversation = useCallback(() => {
     stop(); selection.current += 1
     activeConversation.current = null
+    setDraftProvider('ollama')
     setConversation(null); setMessages([]); setTotalMessages(0); setMessagePage(1); setError(''); setFieldError(''); setLoading(false)
   }, [stop])
 
   const send = useCallback(async (text) => {
-    if (generation.current || retryAt > Date.now() || !text.trim()) return false
+    if (generation.current || (retryAt > Date.now() && (!retryProvider || retryProvider === provider)) || !text.trim() || !providerStatus?.available) return false
     const controller = new AbortController()
     generation.current = controller
     setBusy(true); setError(''); setFieldError('')
@@ -112,7 +132,8 @@ export function useLenyChat() {
     const stillHere = () => mounted.current && activeConversation.current === target
     try {
       if (!target) {
-        const { data } = await apiClient.post('/leny/conversations', {}, { signal: controller.signal })
+        const options = provider === 'ollama' ? {} : { provider }
+        const { data } = await apiClient.post('/leny/conversations', options, { signal: controller.signal })
         if (controller.signal.aborted || !mounted.current) return false
         target = data.id
         activeConversation.current = target
@@ -125,7 +146,7 @@ export function useLenyChat() {
         { id: assistantId, role: 'assistant', content: '', status: 'generating', request_id: requestId },
       ])
       await sendLenyMessage({ conversation_id: target, request_id: requestId, message: text.trim() }, {
-        signal: controller.signal, timeoutSeconds: status?.request_timeout_seconds || 120,
+        signal: controller.signal, timeoutSeconds: providerStatus?.request_timeout_seconds || (provider === 'gemini' ? 300 : 120),
         onEvent: (event) => {
           if (!stillHere()) return
           if (event.type === 'delta') setMessages((previous) => previous.map((item) => item.id === assistantId
@@ -133,6 +154,7 @@ export function useLenyChat() {
           if (event.type === 'done' || event.type === 'error') {
             setMessages((previous) => previous.map((item) => item.id === assistantId
               ? { ...item, status: event.type === 'error' ? 'failed' : event.status, outcome: event.outcome, reason_code: event.reason_code,
+                responseScope: event.type === 'done' ? event.response_scope : undefined,
                 sources: event.type === 'done' && event.status === 'completed' ? event.sources || [] : [] } : item))
           }
           if (event.type === 'error') setError(lenyStreamErrorMessage(event))
@@ -145,7 +167,10 @@ export function useLenyChat() {
         const duplicate = failure?.response?.data?.detail?.code === 'LENY_REQUEST_DUPLICATE'
         duplicateStatus = duplicate ? failure.response.data.detail.status : null
         const wait = lenyRetrySeconds(failure)
-        if (wait) { setRetryAt(Date.now() + wait * 1000); setRetrySeconds(wait) }
+        if (wait) {
+          setRetryProvider(failure?.response?.data?.detail?.code?.startsWith('LENY_GEMINI_') ? 'gemini' : null)
+          setRetryAt(Date.now() + wait * 1000); setRetrySeconds(wait)
+        }
         const validation = failure?.response?.status === 422 ? resolveFormApiError(failure) : null
         const messageIssue = validation?.fieldErrors.find((item) => item.name.join('.') === 'message')
         setFieldError(messageIssue?.errors.join(' ') || '')
@@ -184,7 +209,7 @@ export function useLenyChat() {
       generation.current = null
       if (mounted.current) setBusy(false)
     }
-  }, [loadHistory, loadMessages, refreshStatus, status, retryAt])
+  }, [loadHistory, loadMessages, refreshStatus, provider, providerStatus, retryAt, retryProvider])
 
   const deleteConversation = useCallback(async (item) => {
     try {
@@ -194,7 +219,13 @@ export function useLenyChat() {
     } catch (failure) { if (mounted.current) setError(lenyErrorMessage(failure)) }
   }, [loadHistory, newConversation])
 
-  return { status, conversations, conversation, messages, busy, loading, error, fieldError, retrySeconds,
+  return { status, provider, providerStatus, conversations, conversation, messages, busy, loading, error, fieldError, retrySeconds: applicableRetrySeconds,
+    selectProvider: (value) => {
+      if (!conversation && !generation.current && ['ollama', 'gemini'].includes(value)
+          && (value === 'ollama' || status?.providers?.some((item) => item.provider === value && item.available))) {
+        setDraftProvider(value)
+      }
+    },
     clearFieldError: () => setFieldError(''),
     totalConversations, totalMessages, historyPage, refreshStatus, loadHistory,
     selectConversation, newConversation, send, stop, deleteConversation,

@@ -1,5 +1,6 @@
 """LENY contracts, local transport and resource cleanup without external services."""
 import asyncio
+from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
 from types import SimpleNamespace
@@ -19,6 +20,7 @@ from app.core.database import get_db
 from app.core.permissions import build_policy_lines
 from app.core.security import create_access_token
 from app.deps import auth
+from app.models.auth_session import AuthSession
 from app.schemas.leny import LenyChatRequest
 from app.services.leny_coordination import PostgresLease
 from app.services.leny_ollama import LenyError, OllamaProvider
@@ -295,9 +297,12 @@ def api(monkeypatch):
             enforcer.add_policy(*values[1:])
         else:
             enforcer.add_grouping_policy(*values[1:])
-    actor = SimpleNamespace(id=7, usuario_id=9, must_change_password=False, is_active=True,
+    actor = SimpleNamespace(id=7, usuario_id=9, auth_version=0, security_version=0, must_change_password=False, is_active=True,
                             usuario=SimpleNamespace(id=9, activo=True), rol=SimpleNamespace(codigo="ADMIN", activo=True))
     db = Mock()
+    session = AuthSession(id=uuid4(), cuenta_id=actor.id, auth_version=0,
+        refresh_hash="0" * 64, expires_at=datetime.now(timezone.utc) + timedelta(hours=1))
+    db.execute.return_value.scalar_one_or_none.return_value = session
     service = Mock()
     service.status = AsyncMock(return_value={"available": True, "code": "LENY_READY", "model": "local",
                                              "max_message_chars": 2000, "request_timeout_seconds": 120})
@@ -308,7 +313,7 @@ def api(monkeypatch):
     app.dependency_overrides[router.get_leny_service] = lambda: service
     monkeypatch.setattr(auth, "get_account_by_id", lambda _db, _id: actor)
     monkeypatch.setattr(auth, "register_audit_failure", Mock())
-    token = create_access_token(subject="7", role_code="ADMIN")
+    token = create_access_token(subject="7", role_code="ADMIN", session_id=str(session.id), auth_version=0)
     with TestClient(app) as client:
         yield SimpleNamespace(client=client, actor=actor, db=db, service=service, headers={"Authorization": "Bearer " + token})
 
@@ -339,7 +344,9 @@ def test_role_and_individual_user_are_not_taken_from_browser(api):
 
 def test_account_or_person_disabled_cannot_use_leny(api):
     api.actor.usuario.activo = False
-    assert api.client.get("/leny/status", headers=api.headers).status_code == 403
+    response = api.client.get("/leny/status", headers=api.headers)
+    assert response.status_code == 401
+    assert response.json()["detail"]["code"] == "ACCOUNT_DISABLED"
 
 
 def test_body_limit_and_invalid_chat_never_invoke_service(api):

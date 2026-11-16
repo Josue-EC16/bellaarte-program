@@ -23,7 +23,7 @@ function installXHR(responder) {
       const status = responder(seen.length)
       if (!status) return
       this.status = status; this.statusText = status === 200 ? 'OK' : 'Error'
-      this.responseText = status === 200 ? '{"id":"stored"}' : '{"detail":{"code":"SESSION_EXPIRED"}}'
+      this.responseText = status === 200 ? '{"id":"stored"}' : '{"detail":{"code":"ACCESS_TOKEN_EXPIRED"}}'
       queueMicrotask(() => this.onloadend?.())
     }
   }

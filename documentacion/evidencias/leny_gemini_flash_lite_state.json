@@ -1,0 +1,13 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "rpm": 5,
+  "tpm": 250000,
+  "rpd": 20,
+  "thinking": "medium",
+  "input_budget": 32678,
+  "output_tokens": 8192,
+  "enabled": false,
+  "default_provider": "ollama",
+  "env_only_model_change_verified": true,
+  "health": 200
+}

@@ -8,13 +8,16 @@ Las referencias principales del estado actual son:
 
 - `backend/README.md`
 - `frontend/README.md`
-- `documentacion/MODULO_SEGURIDAD_V1.md`
-- `documentacion/MODULO_SEGURIDAD_V2.md`
+- `documentacion/MODULO_SEGURIDAD_ROLES.md` (histórico)
+- `documentacion/MODULO_SEGURIDAD_LOGIN.md` (histórico)
+- `documentacion/MODULO_USUARIOS_SESIONES.md` (revisión 03/11/2026, migración 0022 desplegada con autorización en el ERP original)
 - `documentacion/MODULO_CLIENTE_V1.md`
 - `documentacion/MODULO_BOUTIQUE_V1.md`
 - `documentacion/MODULO_PROVEEDOR.md`
 - `documentacion/MODULO_MONEDA.md`
 - `documentacion/MODULO_TIPO_CAMBIO_MONEDA.md`
+- `documentacion/SPEC_TC_01_IMPLEMENTACION.md` (04/11/2026: persistencia, integridad y contratos de tipos de cambio)
+- `documentacion/SPEC_TC_02_IMPLEMENTACION.md` (04/11/2026: sincronización USD, calendario, permisos, registros, avisos ADMIN y tarea Windows activa)
 - `documentacion/MODULO_VENTAS_BOUTIQUE.md`
 - `documentacion/MODULO_TALLER.md`
 - `documentacion/MODULO_FLETES.md`
@@ -22,6 +25,11 @@ Las referencias principales del estado actual son:
 ## Regla madre del proyecto
 
 Cada módulo nuevo debe crecer como dominio claro, con backend, frontend, permisos, migración, auditoría y documentación.
+
+Excepción aprobada SPEC-TC-01: los tipos de cambio futuros no usan la auditoría
+general. Su registro técnico propio es `tipo_cambio_registros`; se conserva la
+auditoría anterior y la del catálogo moneda. Ver el informe TC-01 para contratos
+Decimal, edición mediante nueva fila y límites de automatización.
 
 ## Contrato de crecimiento backend
 

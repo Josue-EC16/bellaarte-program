@@ -1,0 +1,41 @@
+{
+  "at": "2026-11-15T02:50:12.253351+00:00",
+  "status": "activated_health_confirmed",
+  "owner_authorized_before_manual_second_verification": true,
+  "configuration": {
+    "continuity": true,
+    "experimental_evaluation_opt_in": false,
+    "qwen_default": true,
+    "gemini_enabled": true
+  },
+  "changed_environment_variables": [
+    "LENY_CONTINUITY_ENABLED",
+    "LENY_SPEC03_EVALUATION_ENABLED"
+  ],
+  "config_sha256_before": "9fccb8fda9ec2613a2fedd0a82391889303d2e575eb90b60fa6c021d9276e74e",
+  "config_sha256_after": "e0e26543387d637ece91e309d78ee454e84bd3f993b1869e15058ecf284df71d",
+  "backend_pid": 25816,
+  "automatic_reload": false,
+  "controlled_restart_health": 200,
+  "migrations_applied": false,
+  "corpus_acl_publication_changed": false,
+  "human_semantic_acceptance": null,
+  "browser_check": "blocked_browser_host_unavailable_and_native_url_could_not_be_verified",
+  "first_activation_backend_pid": 10976,
+  "final_health": {
+    "at": "2026-11-15T02:59:23.159624+00:00",
+    "backend_health": 200,
+    "protected_leny": 401,
+    "frontend": 200,
+    "ollama_http": 200,
+    "qwen_installed": true,
+    "global_activation": "active_owner_authorized",
+    "ordinary_corrected_global_e2e": "executed_D_F_G",
+    "continuity_enabled": true,
+    "experimental_opt_in": false,
+    "gemini_enabled": true,
+    "qwen_default": true,
+    "human_semantic_acceptance": null
+  },
+  "local_general_drafting_correction": "loaded_and_verified_G"
+}

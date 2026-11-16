@@ -1011,3 +1011,17 @@ PostgreSQL aislados, el cierre de descendientes y un Ollama propio temporal sin
 cargar modelos. Dos ciclos reales y ordenados de Uvicorn confirmaron inicio y
 cierre del worker conservando el Ollama preexistente. Estos ciclos no ejercitaron
 el supervisor `--reload` real; el mecanismo de exclusión se probó por separado.
+
+### Variante LENY RAG V1.1 (02/11/2026)
+
+Implementada como opción desactivada por defecto, con intención separada de
+seguridad, títulos autorizados, síntesis JSON validada antes de emitir y fuentes
+citadas con identidad estable. Conserva el modo extractivo y los límites actuales.
+No habilita consultas transaccionales, BI, ML o AutoML. Consulta el
+[informe V1.1](LENY_RAG_V11_IMPLEMENTACION.md) para diagnóstico, cambios y
+validación pendiente. No se activó en el ERP habitual ni se certifica su calidad.
+
+Actualización posterior: activada con autorización del propietario para su prueba
+manual en producción. Configuración previa respaldada en privado, salud200 y
+huellas documentales/roles conservadas; medición de recursos iniciada por30min.
+La aceptación semántica sigue pendiente. Véase la sección de activación del informe V1.1.

@@ -1,0 +1,39 @@
+{
+  "phase": "gemini_preparation_only",
+  "sdk": "google-genai==2.33.0",
+  "python": "3.10.6",
+  "packages_before": 61,
+  "packages_after": 71,
+  "existing_packages_changed": [],
+  "files_sha256": {
+    "backend/app/core/config.py": "927638251dc49b1609008d838abfdf856cf0614d7be105c379431dabf1e71d2f",
+    "backend/app/services/leny_ollama.py": "7caccf638339b233465db2af488dfa3412e7cdc67b94d8f38b72cd9c76e49aab",
+    "backend/app/services/leny_service.py": "ba2b43b91093b3f9e890edc260a5a8104868f904c4ccb427ca4e692544f09733",
+    "backend/.env.example": "762cddce81cfbf66515ca6aee62953ad0cfb83361f7c3051870694ac6253f294",
+    "backend/requirements.txt": "28498664a7cf1942dfd9fe6e4bb4c4696d5287b149c98def100e3dab666b705c",
+    "backend/app/services/leny_llm_contracts.py": "717efdc35afe8dd2392d5a118162a7d68119b7158f1cfe96b984c16f2e84f5cc",
+    "backend/app/services/leny_llm_providers.py": "bd05fe5550969da0ac6fec65ed87a4327848649fc2d14bbd88219ef0db2fd388",
+    "backend/app/services/leny_gemini.py": "1f89efc06ef8d96f712d85d263b593b1289715e3de7b6d35fb80f357650059a7",
+    "backend/tests/test_leny_gemini_preparation.py": "8843db054d1db21e3b952c822c8efa85ff453b6c3a371a2265bdaa7df80ac030"
+  },
+  "new_files": [
+    "backend/app/services/leny_llm_contracts.py",
+    "backend/app/services/leny_llm_providers.py",
+    "backend/app/services/leny_gemini.py",
+    "backend/tests/test_leny_gemini_preparation.py"
+  ],
+  "requirements_original_prefix_preserved": true,
+  "key_configured": false,
+  "gemini_client_implemented": false,
+  "google_api_calls_performed": false,
+  "production_restarted": false,
+  "database_migrations": false,
+  "private_backup_name": "20261105-034026",
+  "baseline_files_sha256": {
+    "backend/app/core/config.py": "251ae43a914a5bf461e9f43352e3679590f3c928d8b501972f3d089550874794",
+    "backend/app/services/leny_ollama.py": "afd0fa0578af571884e4b20ff63cd60257b09c6680d0f424027bef732356dd08",
+    "backend/app/services/leny_service.py": "afe1fe19d1b749aca2bafdc346a0e6f89d3cfa7d7643ff7c403fbdcb60339071",
+    "backend/.env.example": "7c2b4e191f661fc2e8fb91777c908e5a8ae82410089dbf65e1cf8faa6eca9323",
+    "backend/requirements.txt": "cc10e95caa433b93706370d26253871e3cd6e665400914a4b8e6f03669de1bf6"
+  }
+}

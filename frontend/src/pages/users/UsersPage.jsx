@@ -20,6 +20,7 @@ import {
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { apiClient } from '../../api/client'
+import { getSessionGeneration } from '../../api/tokenStore'
 import { useAuth } from '../../auth/AuthProvider'
 import {
   FORM_COMMON_PROPS,
@@ -27,6 +28,12 @@ import {
 } from '../../components/forms/formConfig'
 import { applyFormApiError } from '../../components/forms/formErrorUtils'
 import { FormProcessAlert } from '../../components/forms/FormProcessAlert'
+import { collaboratorPayload, validCollaboratorCi, validateRequiredText } from './userValidation'
+
+function actionError(error, fallback) {
+  const detail = error.response?.data?.detail
+  return typeof detail === 'string' ? detail : error.normalizedError?.summary || fallback
+}
 
 export function UsersPage() {
   const [users, setUsers] = useState([])
@@ -34,13 +41,14 @@ export function UsersPage() {
   const [loading, setLoading] = useState(true)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [statusPending, setStatusPending] = useState(null)
   const [error, setError] = useState(null)
   const [formError, setFormError] = useState(null)
   const [editingUser, setEditingUser] = useState(null)
   const [viewingUser, setViewingUser] = useState(null)
   const [form] = Form.useForm()
   const { message, modal } = AntdApp.useApp()
-  const { user } = useAuth()
+  const { user, clearSession } = useAuth()
 
   const canCreate = user?.permissions?.includes('users:create')
   const canUpdate = user?.permissions?.includes('users:update')
@@ -73,6 +81,7 @@ export function UsersPage() {
       roles.map((role) => ({
         label: role.nombre,
         value: role.codigo,
+        disabled: !role.activo,
       })),
     [roles],
   )
@@ -82,10 +91,10 @@ export function UsersPage() {
     setFormError(null)
     try {
       if (editingUser) {
-        await apiClient.patch(`/users/${editingUser.id}`, values)
+        await apiClient.patch(`/users/${editingUser.id}`, collaboratorPayload(values))
         message.success('Se guardaron los cambios del usuario correctamente.')
       } else {
-        await apiClient.post('/users', values)
+        await apiClient.post('/users', collaboratorPayload(values))
         message.success('Se creó el usuario correctamente.')
       }
       form.resetFields()
@@ -152,28 +161,37 @@ export function UsersPage() {
   }
 
   const handleToggleStatus = async (record, nextStatus) => {
+    if (record.id === user?.id || statusPending !== null) return
+    setStatusPending(record.id)
     try {
       await apiClient.patch(`/users/${record.id}/status`, { is_active: nextStatus })
       message.success(`Cuenta ${nextStatus ? 'activada' : 'desactivada'} correctamente.`)
       await loadData()
     } catch (requestError) {
-      message.error(requestError.response?.data?.detail || 'No fue posible actualizar el estado.')
+      message.error(actionError(requestError, 'No fue posible actualizar el estado.'))
+    } finally {
+      setStatusPending(null)
     }
   }
 
   const confirmResetPassword = (record) => {
+    const generation = getSessionGeneration()
     modal.confirm({
       title: `¿Estás seguro que quieres restablecer la contraseña del usuario ${record.full_name} (${record.ci})?`,
-      content: 'La contraseña volverá a ser la predeterminada (El número de CI).',
+      content: 'La clave temporal será la inicial del nombre + la inicial del apellido paterno + el CI, en mayúsculas. Se cerrarán todas las sesiones de esta cuenta y deberá cambiar la clave al ingresar.',
       okText: 'Sí',
       cancelText: 'No',
       onOk: async () => {
+        if (generation !== getSessionGeneration()) return
         try {
-          await apiClient.post(`/users/${record.id}/reset-password`, {})
+          await apiClient.post(`/users/${record.id}/reset-password`, {}, { _sessionControl: record.id === user?.id })
+          if (generation !== getSessionGeneration()) return
           message.success('Contraseña temporal restablecida correctamente.')
-          await loadData()
+          if (record.id === user?.id) clearSession()
+          else await loadData()
         } catch (requestError) {
-          message.error(requestError.response?.data?.detail || 'No fue posible resetear la contrasena.')
+          if (generation !== getSessionGeneration()) return
+          message.error(actionError(requestError, 'No fue posible resetear la contraseña.'))
         }
       },
     })
@@ -211,6 +229,9 @@ export function UsersPage() {
         canStatus ? (
           <Switch
             checked={record.account_is_active}
+            disabled={record.id === user?.id || statusPending !== null}
+            loading={statusPending === record.id}
+            aria-label={`Estado de la cuenta ${record.username}${record.id === user?.id ? ' (tu cuenta)' : ''}`}
             checkedChildren="Activa"
             unCheckedChildren="Inactiva"
             onChange={(nextValue) => handleToggleStatus(record, nextValue)}
@@ -295,6 +316,9 @@ export function UsersPage() {
           form.resetFields()
         }}
         open={drawerOpen}
+        maskClosable={false}
+        closable={!saving}
+        keyboard={!saving}
         destroyOnClose
       >
         <FormProcessAlert
@@ -306,9 +330,10 @@ export function UsersPage() {
           <Form.Item
             label="Nombres"
             name="nombres"
-            rules={[{ required: true, message: 'Debe ingresar los nombres del usuario.' }]}
+            rules={[{ required: true, whitespace: true, message: 'Debe ingresar los nombres del usuario.' },
+              { validator: validateRequiredText({ name: true, min: 2 }) }]}
             extra="Escribe el nombre o los nombres tal como deben quedar registrados."
-            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+            normalize={(value) => (value || '').normalize('NFC').toUpperCase()}
           >
             <Input placeholder="Ej. MARÍA JOSÉ" />
           </Form.Item>
@@ -316,8 +341,9 @@ export function UsersPage() {
           <Form.Item
             label="Apellido paterno"
             name="apellido_paterno"
-            rules={[{ required: true, message: 'Debe ingresar el apellido paterno del usuario.' }]}
-            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+            rules={[{ required: true, whitespace: true, message: 'Debe ingresar el apellido paterno del usuario.' },
+              { validator: validateRequiredText({ name: true, min: 2 }) }]}
+            normalize={(value) => (value || '').normalize('NFC').toUpperCase()}
           >
             <Input placeholder="Ej. PÉREZ" />
           </Form.Item>
@@ -326,7 +352,9 @@ export function UsersPage() {
             label="Apellido materno"
             name="apellido_materno"
             extra="Opcional. Complétalo solo si aplica."
-            normalize={(value) => (value || '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '').toUpperCase()}
+            normalize={(value) => (value || '').normalize('NFC').toUpperCase()}
+            rules={[{ validator: (_, value) => !value?.trim()
+              ? Promise.resolve() : validateRequiredText({ name: true, min: 1 })(_, value) }]}
           >
             <Input placeholder="Ej. GARCÍA" />
           </Form.Item>
@@ -338,12 +366,12 @@ export function UsersPage() {
                 name="ci"
                 rules={[
                   { required: true, message: 'La Cédula de Identidad es obligatoria.' },
-                  { min: 6, message: 'La Cédula de Identidad debe tener al menos 6 caracteres.' },
+                  { validator: (_, value) => validCollaboratorCi(value) ? Promise.resolve()
+                    : Promise.reject(new Error('La Cédula de Identidad debe tener entre 7 y 30 dígitos, sin letras ni espacios.')) },
                 ]}
-                extra="Usa solo números y letras válidas del documento."
-                normalize={(value) => (value || '').replace(/[^0-9A-Z]/g, '').toUpperCase()}
+                extra="Usa solo números. Se conservan los ceros iniciales."
               >
-                <Input placeholder="Ej. 1234567" />
+                <Input placeholder="Ej. 1234567" inputMode="numeric" maxLength={30} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -357,7 +385,7 @@ export function UsersPage() {
                 extra="Ingresa un número activo para contacto operativo."
                 normalize={(value) => (value || '').replace(/[^0-9]/g, '')}
               >
-                <Input placeholder="Ej. 70000000" />
+                <Input placeholder="Ej. 70000000" inputMode="numeric" maxLength={30} />
               </Form.Item>
             </Col>
           </Row>
@@ -374,7 +402,7 @@ export function UsersPage() {
               },
             ]}
             extra="Por política interna solo se aceptan correos con dominio @gmail.com."
-            normalize={(value) => (value || '').replace(/\s/g, '').toLowerCase()}
+            normalize={(value) => (value || '').toLowerCase()}
           >
             <Input placeholder="usuario@gmail.com" />
           </Form.Item>
@@ -382,7 +410,8 @@ export function UsersPage() {
           <Form.Item
             label="Zona"
             name="zona"
-            rules={[{ required: true, message: 'Debe ingresar la zona del usuario.' }]}
+            rules={[{ required: true, whitespace: true, message: 'Debe ingresar la zona del usuario.' },
+              { validator: validateRequiredText({ min: 2 }) }]}
             extra="Describe la zona principal donde reside el usuario."
             normalize={(value) => (value || '').toUpperCase()}
           >
@@ -402,9 +431,9 @@ export function UsersPage() {
             label="Rol"
             name="role_code"
             rules={[{ required: true, message: 'Debe seleccionar el rol del usuario.' }]}
-            extra="El rol define los permisos que tendrá el usuario dentro del sistema."
+            extra={editingUser?.id === user?.id ? 'Otro ADMIN debe cambiar tu rol.' : 'El rol actualiza los permisos de las sesiones abiertas.'}
           >
-            <Select options={roleOptions} placeholder="Selecciona el rol operativo" />
+            <Select options={roleOptions} placeholder="Selecciona el rol operativo" disabled={editingUser?.id === user?.id} />
           </Form.Item>
 
           {editingUser ? (
@@ -416,7 +445,7 @@ export function UsersPage() {
                   valuePropName="checked"
                   extra="Controla si la ficha personal del usuario permanece habilitada."
                 >
-                  <Switch />
+                  <Switch disabled={editingUser?.id === user?.id} />
                 </Form.Item>
               </Col>
               <Col span={12}>
@@ -426,7 +455,7 @@ export function UsersPage() {
                   valuePropName="checked"
                   extra="Controla si puede iniciar sesión con su cuenta."
                 >
-                  <Switch />
+                  <Switch disabled={editingUser?.id === user?.id} />
                 </Form.Item>
               </Col>
             </Row>

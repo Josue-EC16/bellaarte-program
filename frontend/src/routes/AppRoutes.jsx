@@ -26,6 +26,7 @@ import { FletesPage } from '../pages/fletes/FletesPage'
 import { CurrenciesPage } from '../pages/monedas/CurrenciesPage'
 import { CurrencyReportsPage, CurrencyReportsPrintPage } from '../pages/monedas/CurrencyReportsPage'
 import { ExchangeRatesPage } from '../pages/monedas/ExchangeRatesPage'
+import { ExchangeRateSyncRecordsPage } from '../pages/monedas/ExchangeRateSyncRecordsPage'
 import { NotificationsPage } from '../pages/notificaciones/NotificationsPage'
 import { OrderPaymentsPage } from '../pages/pedidos/OrderPaymentsPage'
 import { OrderReportsPage } from '../pages/pedidos/OrderReportsPage'
@@ -164,6 +165,9 @@ export function AppRoutes() {
           </Route>
           <Route element={<PermissionRoute permission="exchange_rates:list" />}>
             <Route path="monedas/tipos-cambio" element={<ExchangeRatesPage />} />
+          </Route>
+          <Route element={<PermissionRoute permission="exchange_rates_sync:list" />}>
+            <Route path="monedas/tipos-cambio/registros" element={<ExchangeRateSyncRecordsPage />} />
           </Route>
           <Route element={<PermissionRoute permission="currency_reports:view" />}>
             <Route path="monedas/reportes" element={<CurrencyReportsPage />} />

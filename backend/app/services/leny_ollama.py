@@ -5,26 +5,18 @@ import asyncio
 import json
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import Protocol
 
 import httpx
 import anyio
 
 from app.core.config import Settings
-
-
-class LenyError(Exception):
-    def __init__(self, code: str, message: str, status: int = 503):
-        super().__init__(message)
-        self.code, self.message, self.status = code, message, status
-
-
-class ChatProvider(Protocol):
-    async def available(self) -> None: ...
-    def stream(self, messages: list[dict[str, str]]) -> AsyncIterator[str]: ...
+from app.services.leny_llm_contracts import ChatProvider, LenyError, Capability, ProviderCapabilities
 
 
 class OllamaProvider:
+    capabilities = ProviderCapabilities(Capability.SUPPORTED, Capability.SUPPORTED,
+        Capability.SUPPORTED, Capability.SUPPORTED, Capability.UNSUPPORTED, Capability.SUPPORTED)
+
     def __init__(self, config: Settings, transport: httpx.AsyncBaseTransport | None = None):
         self.config = config
         self.transport = transport
@@ -88,7 +80,14 @@ class OllamaProvider:
                 return "{}"
             raise
 
-    async def measure_prompt(self, messages) -> int:
+    async def structured(self, messages, schema) -> str:
+        """Bounded complete generation; caller validates before emitting content."""
+        chunks = []
+        async for chunk in self._stream(messages, structured=schema):
+            chunks.append(chunk)
+        return ''.join(chunks)
+
+    async def measure_prompt(self, messages, schema=None) -> int:
         """Discard a one-token prefill probe; never return generated content.
 
         Experimental candidate only, cold requests to rule out cached-only
@@ -103,7 +102,7 @@ class OllamaProvider:
             response.raise_for_status()
             if any(row.get('name') == self.config.leny_model for row in response.json().get('models', [])):
                 raise LenyError('LENY_RAG_PROBE_UNAVAILABLE', 'La medición necesita que el modelo finalice su uso anterior.', 503)
-        async for _discarded in self._stream(messages, measurement=True):
+        async for _discarded in self._stream(messages, measurement=True, structured=schema):
             pass
         value = self.metrics.get('prompt_eval_count')
         cached = self.metrics.get('prompt_eval_cached_count', 0)
@@ -111,7 +110,7 @@ class OllamaProvider:
             raise LenyError('LENY_RAG_PROBE_UNAVAILABLE', 'Ollama no confirmó una medición de contexto utilizable.', 502)
         return value
 
-    async def _stream(self, messages, classification=None, measurement=False) -> AsyncIterator[str]:
+    async def _stream(self, messages, classification=None, measurement=False, structured=None) -> AsyncIterator[str]:
         config = self.config
         self.response_complete = False
         self.inference_started = False
@@ -129,6 +128,9 @@ class OllamaProvider:
         if classification:
             payload["format"] = classification
             payload["options"].update(num_predict=96, temperature=0)
+        if structured:
+            payload['format'] = structured
+            payload['options']['temperature'] = 0
         if measurement:
             payload['options'].update(num_predict=1, temperature=0)
         started = asyncio.get_running_loop().time()

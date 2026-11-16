@@ -77,6 +77,7 @@ function CurrencyReportsView({ printMode }) {
   const usageRows = report?.table_rows?.commercial_usage || []
   const methodsRows = report?.table_rows?.methods_by_currency || []
   const rateSeries = report?.series?.exchange_rate_series || []
+  const officialRateSeries = report?.series?.official_exchange_rate_series || []
 
   const content = (
     <>
@@ -114,7 +115,7 @@ function CurrencyReportsView({ printMode }) {
 
       <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
         <Col xs={24} xl={14}>
-          <ReportChartCard title="EVOLUCIÓN DEL TIPO DE CAMBIO" description="Serie según la moneda seleccionada" empty={!rateSeries.length}>
+          <ReportChartCard title="EVOLUCIÓN DEL TIPO DE CAMBIO" description="Serie por fecha de registro en el ERP; no representa vigencia oficial verificada" empty={!rateSeries.length}>
             <div style={{ width: '100%', minWidth: 0, height: 320 }}>
               <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={320}>
                 <LineChart data={rateSeries}>
@@ -146,8 +147,28 @@ function CurrencyReportsView({ printMode }) {
       </Row>
 
       <Row gutter={[16, 16]}>
+        <Col span={24}>
+          <ReportChartCard title="USD / BOB · VIGENCIA OFICIAL VERIFICADA" description="Cada fecha oficial conserva su cotización, aunque el valor se repita. Fuentes: consulta BCB vía factura.bo o carga inicial verificada." empty={!officialRateSeries.length}>
+            <div style={{ width: '100%', minWidth: 0, height: 280 }}>
+              <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={280}>
+                <LineChart data={officialRateSeries}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#eadbd2" />
+                  <XAxis dataKey="label" stroke="#7c6a61" />
+                  <YAxis stroke="#7c6a61" />
+                  <Tooltip formatter={(value) => String(value)} />
+                  <Line type="stepAfter" dataKey="value" name="USD / BOB oficial" stroke="#4f6d63" strokeWidth={3} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+            <Table size="small" rowKey={(row) => `${row.label}-${row.source}`} dataSource={officialRateSeries} pagination={{ pageSize: 7 }} columns={[
+              { title: 'FECHA OFICIAL', dataIndex: 'label' },
+              { title: 'VALOR BOB', dataIndex: 'value' },
+              { title: 'PROCEDENCIA', dataIndex: 'source' },
+            ]} />
+          </ReportChartCard>
+        </Col>
         <Col xs={24} xl={12}>
-          <Card className="glass-panel report-chart-card" styles={{ body: { padding: 20 } }} title="ÚLTIMAS COTIZACIONES">
+          <Card className="glass-panel report-chart-card" styles={{ body: { padding: 20 } }} title="ÚLTIMOS REGISTROS DE COTIZACIÓN">
             <Table
               rowKey="currency"
               size="small"
@@ -192,20 +213,28 @@ function CurrencyReportsView({ printMode }) {
         </Row>
       </ReportPrintSection>
 
-      <ReportPrintSection title="USO Y EVOLUCIÓN" subtitle="USO COMERCIAL Y SERIE DEL TIPO DE CAMBIO">
+      <ReportPrintSection title="USO Y EVOLUCIÓN" subtitle="USO COMERCIAL Y SERIE POR FECHA DE REGISTRO EN ERP">
         <ReportPrintStatList items={usageRows.map((item, index) => ({ ...item, color: index % 2 === 0 ? '#4f6d63' : '#8f3d2e' }))} valueFormatter={formatBs} />
         <div style={{ marginTop: 16 }}>
           <ReportPrintTable
             rows={rateSeries}
             columns={[
-              { title: 'PERÍODO', dataIndex: 'label' },
+              { title: 'REGISTRO EN ERP', dataIndex: 'label' },
               { title: 'VALOR', dataIndex: 'value', render: (value) => Number(value || 0).toFixed(4) },
             ]}
           />
         </div>
       </ReportPrintSection>
 
-      <ReportPrintSection title="COTIZACIONES Y MÉTODOS" subtitle="REFERENCIAS VIGENTES Y COBRO POR MONEDA">
+      <ReportPrintSection title="USD / BOB OFICIAL" subtitle="SERIE POR FECHA OFICIAL VERIFICADA; SEPARADA DE REGISTROS MANUALES">
+        <ReportPrintTable rows={officialRateSeries} columns={[
+          { title: 'FECHA OFICIAL', dataIndex: 'label' },
+          { title: 'VALOR BOB', dataIndex: 'value' },
+          { title: 'PROCEDENCIA', dataIndex: 'source' },
+        ]} />
+      </ReportPrintSection>
+
+      <ReportPrintSection title="COTIZACIONES Y MÉTODOS" subtitle="ÚLTIMOS REGISTROS EN ERP Y COBRO POR MONEDA; EL ESTADO INDICA SI ESTÁN ACTIVOS">
         <ReportPrintTable
           rows={latestRates}
           columns={[

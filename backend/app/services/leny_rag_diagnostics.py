@@ -7,12 +7,17 @@ import re
 from time import monotonic
 
 _CODE = re.compile(r'^[a-z][a-z0-9_]{0,63}$')
-COUNTS = {'candidates', 'selected', 'evidence_bytes', 'prompt_bytes', 'prompt_eval_count',
+COUNTS = {'inference_calls_total', 'prompt_tokens_total', 'output_tokens_total', 'calls_without_token_counts', 'candidates', 'selected', 'evidence_bytes', 'prompt_bytes', 'prompt_eval_count',
           'eval_count', 'prompt_eval_cached_count', 'citations', 'topic_questions',
           'probe_count', 'probe_prompt_tokens', 'documented_excerpt', 'grounded_excerpt', 'unsupported_request', 'review_documents',
-          'coverage_checked', 'coverage_accepted'}
+          'coverage_checked', 'coverage_accepted', 'synthesis_validated', 'synthesis_fallback',
+          'synthesis_context_fallback', 'synthesis_invalid_fallback'}
+COUNTS.update('synthesis_failure_'+kind for kind in ('budget','json','truncated','reference','support_unverified','scope','structure'))
+COUNTS.add('thinking_tokens_total')
+COUNTS.update({'context_pairs','context_references','context_partial'})
+COUNTS.update('synthesis_'+part+'_token_upper_estimate' for part in ('instructions','history','question','evidence','schema'))
 DURATIONS = {'routing', 'embedding_and_release', 'search', 'context', 'review', 'selection', 'generation',
-             'first_content', 'total', 'load', 'prompt_eval', 'eval', 'provider_total', 'context_probe', 'render', 'coverage'}
+             'first_content', 'total', 'load', 'prompt_eval', 'eval', 'provider_total', 'context_probe', 'render', 'coverage', 'synthesis','validation'}
 
 
 @dataclass

@@ -1,5 +1,6 @@
 """RAG contracts and local transport policy without a database or native tools."""
 import asyncio
+from datetime import datetime, timedelta, timezone
 import hashlib
 import json
 from uuid import uuid4
@@ -291,16 +292,25 @@ def rag_api(monkeypatch):
     from app.core.database import get_db
     from app.core.security import create_access_token
     from app.deps import auth
+    from app.models.auth_session import AuthSession
 
     monkeypatch.setattr(document_api.settings, 'leny_documents_enabled', True)
     model = Path(__file__).resolve().parents[1] / 'app/security/model.conf'
     enforcer = casbin.Enforcer(str(model))
     enforcer.add_policy('ADMIN', 'leny:admin', 'use')
-    account = SimpleNamespace(id=12, usuario_id=34, username='synthetic-admin', is_active=True,
+    account = SimpleNamespace(id=12, usuario_id=34, auth_version=0, security_version=0, username='synthetic-admin', is_active=True,
                               rol=SimpleNamespace(codigo='ADMIN', activo=True), must_change_password=False,
                               usuario=SimpleNamespace(id=34, activo=True))
     db = Mock()
-    db.execute.return_value.scalar_one_or_none.return_value = account
+    session = AuthSession(id=uuid4(), cuenta_id=account.id, auth_version=0,
+        refresh_hash='0' * 64, expires_at=datetime.now(timezone.utc) + timedelta(hours=1))
+    def execute(statement, *_args, **_kwargs):
+        descriptions = getattr(statement, 'column_descriptions', [])
+        entity = descriptions[0].get('entity') if descriptions else None
+        result = Mock()
+        result.scalar_one_or_none.return_value = session if entity is AuthSession else account
+        return result
+    db.execute.side_effect = execute
     doc_id, version_id, job_id = uuid4(), uuid4(), uuid4()
     job = dict(id=job_id, document_id=doc_id, version_id=version_id,
                source_document_id=doc_id, source_version_id=version_id,
@@ -322,7 +332,8 @@ def rag_api(monkeypatch):
     app.dependency_overrides[get_db] = lambda: db
     app.dependency_overrides[auth.get_enforcer] = lambda: enforcer
     app.dependency_overrides[api.get_rag_service] = lambda: service
-    headers = {'Authorization': 'Bearer ' + create_access_token(subject=str(account.id), role_code='ADMIN')}
+    headers = {'Authorization': 'Bearer ' + create_access_token(subject=str(account.id), role_code='ADMIN',
+                                                              session_id=str(session.id), auth_version=0)}
     routes = [
         ('POST', f'/leny/documents/{doc_id}/versions/{version_id}/contextualizations'),
         ('GET', f'/leny/documents/{doc_id}/versions/{version_id}/contextualizations'),
@@ -381,7 +392,10 @@ def test_rag_routes_require_enabled_individual_account(rag_api, restriction):
         rag_api.account.usuario = None
         rag_api.app.dependency_overrides[auth.get_current_account] = lambda: rag_api.account
     result = rag_api.client.get('/leny/admin/rag/status', headers=rag_api.headers)
-    assert result.status_code == 403
+    expected = 401 if restriction in {'account_disabled', 'user_disabled', 'role_disabled'} else 403
+    assert result.status_code == expected
+    if expected == 401:
+        assert result.json()['detail']['code'] == 'ACCOUNT_DISABLED'
     assert not rag_api.service.mock_calls
 
 

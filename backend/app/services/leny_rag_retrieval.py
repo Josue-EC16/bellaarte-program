@@ -1,7 +1,11 @@
 """Exact, SQL-authorized retrieval. Model output never becomes executable SQL."""
 from __future__ import annotations
 
+from app.services.leny_llm_budget import input_budget
+
 import json
+import re
+import unicodedata
 from pathlib import Path
 from threading import Lock
 
@@ -67,10 +71,24 @@ WITH actor AS MATERIALIZED (
 
 
 def parameters(config, actor):
-    return dict(account=actor.account_id, user=actor.user_id, model=config.leny_rag_model,
+    result = dict(account=actor.account_id, user=actor.user_id, model=config.leny_rag_model,
                 digest=config.leny_rag_model_digest, pipeline=PIPELINE_VERSION,
                 chunking=CHUNKING_VERSION, ocr=OCR_VERSION,
                 query_policy=json.dumps(QUERY_POLICY))
+    if getattr(config,'leny_llm_provider','ollama')=='gemini':
+        from app.services.leny_external_scope import approved_versions
+        result['external_grants']=json.dumps([dict(zip(('document_id','version_id','indexation_id','sha256'),row))
+                                               for row in sorted(approved_versions(config))])
+    return result
+
+
+def eligible_for(config):
+    if getattr(config,'leny_llm_provider','ollama')!='gemini':return ELIGIBLE
+    # Publication/ACL remain mandatory. External approval further narrows the
+    # relation before title discovery, ranking, neighbors or model selection.
+    return ELIGIBLE.replace("WHERE d.state='active'", "WHERE d.state='active' AND EXISTS(SELECT 1 FROM "
+        "jsonb_to_recordset(CAST(:external_grants AS jsonb)) AS g(document_id uuid,version_id uuid,indexation_id uuid,sha256 text) "
+        "WHERE g.document_id=d.id AND g.version_id=v.id AND g.indexation_id=i.id AND g.sha256=v.sha256)")
 
 
 RAG_SYSTEM_PROMPT = """Eres LENY, agente empresarial de BELLAARTE BOUTIQUE. Responde en español, profesional y breve.
@@ -145,7 +163,7 @@ RESPONSE_INSTRUCTIONS = {
 
 def _legacy_pack_context(config, question, candidates):
     """Complete fragments only; conservative byte budget includes all framing."""
-    budget = config.leny_num_ctx-config.leny_num_predict-256
+    budget = input_budget(config)
     system = {'role':'system','content':RAG_SYSTEM_PROMPT}
     selected, blocks, used_text = [], [], 0
     seen = set()
@@ -200,7 +218,7 @@ def pack_context(config, question, candidates, *, verdict='pending', for_probe=F
         raise ValueError('Unsupported response mode.')
     if type(source_limit) is not int or not 1 <= source_limit <= 20:
         raise ValueError('Invalid bounded review pool.')
-    budget = config.leny_num_ctx - config.leny_num_predict - 256
+    budget = input_budget(config)
     system = {'role': 'system', 'content': RAG4_SYSTEM_PROMPT+RESPONSE_INSTRUCTIONS[response_mode]}
     adaptive = getattr(config, 'leny_rag_evidence_mode', 'fixed') == 'adaptive'
     if for_probe and (not adaptive or not getattr(config, 'leny_rag_adaptive_token_probe', False)):
@@ -246,13 +264,101 @@ def pack_context(config, question, candidates, *, verdict='pending', for_probe=F
 
 
 _CANDIDATE_COLUMNS = """
- e.document_id,e.revision,e.version_id,e.version,e.indexation_id,e.title,e.coverage,e.chunk_count document_fragment_count,
+ e.document_id,e.revision,e.version_id,e.version,e.indexation_id,e.sha256,e.title,e.coverage,e.chunk_count document_fragment_count,
  f.id fragment_id,f.ordinal,f.text,f.locator,f.source_type,
  b.embedding OPERATOR(leny.<=>) CAST(:vector AS leny.vector(1024)) distance
 """
 
 
-def _interleave_neighbors(rows, neighbors, limit):
+def explicit_document_title(question):
+    """Extract only explicit title references; ordinary 'según el manual' is not a title.
+
+    Titles are untrusted search data, never permissions. Followup envelopes use
+    the current question, not old assistant answers or source text.
+    """
+    if not question:
+        return None
+    try:
+        envelope = json.loads(question)
+        if isinstance(envelope, dict):
+            question = envelope.get('question', '')
+    except (ValueError, TypeError):
+        pass
+    if not isinstance(question, str):
+        return None
+    quoted = re.search(r'\b(?:documento|manual|gu[ií]a|archivo)\s+[«"“]([^»"”]{3,180})[»"”]', question, re.I)
+    if quoted:
+        return quoted.group(1).strip()
+    # An unquoted explicit 'Documento TITLE, ...' is common in this chat.
+    named = re.search(r'\bdocumento\s+([^,;\n]{3,180})(?=[,;\n]|$)', question, re.I)
+    if named:
+        value = named.group(1).strip(' :¿?!.')
+        if len(value.split()) >= 2 and not re.match(r'(?:publicado|interno|que|para|sobre)\b', value, re.I):
+            return value
+    return None
+
+
+def explicit_source_summary(question):
+    if not explicit_document_title(question):
+        return False
+    try:
+        envelope = json.loads(question)
+        if isinstance(envelope, dict):
+            question = envelope.get('question', '')
+    except (TypeError, ValueError):
+        pass
+    return bool(re.search(r'\b(?:resume|resumen|resumir|sintetiza)\b', question, re.I)
+                and not re.search(r'\b(?:responsabilidades|funciones|encargada|modista|primera prueba|fuste|can-can)\b', question, re.I))
+
+
+def role_summary_headers(question):
+    if not isinstance(question, str):
+        return None
+    try:
+        envelope = json.loads(question)
+        if isinstance(envelope, dict):
+            question = envelope.get('question', '')
+    except (TypeError, ValueError):
+        pass
+    if not re.search(r'\b(?:resume|resumen|resumir|responsabilidades|funciones|qu[eé] hace)\b', question, re.I):
+        return None
+    plain = _title_key(question)
+    roles = {
+        'encargada': ('encargada de boutique', 'encargada de la boutique'),
+        'modista': ('modista',),
+        'asesora': ('asesora de moda', 'asesor de moda', 'asesor a de moda'),
+        'asesor': ('asesora de moda', 'asesor de moda', 'asesor a de moda'),
+    }
+    for actor, names in roles.items():
+        if re.search(r'\b'+actor+r'\b', plain):
+            return [prefix+name for name in names
+                    for prefix in ('', 'funciones de ', 'funciones de la ', 'responsabilidades de ', 'responsabilidades de la ')]
+    return None
+
+
+def _title_key(value):
+    plain = ''.join(c for c in unicodedata.normalize('NFKD', value.casefold()) if not unicodedata.combining(c))
+    return re.sub(r'[^a-z0-9]+', ' ', plain).strip()
+
+
+def _same_section(seed, neighbor):
+    """Do not expand across a known structural boundary; unknown stays unknown.
+
+    This is a continuity hint, not a semantic approval. The evidence selector
+    still reviews every neighbor. Existing indexes are never rewritten.
+    """
+    left, right = seed.get('locator') or {}, neighbor.get('locator') or {}
+    for key in ('section', 'heading', 'heading_path'):
+        if left.get(key) and right.get(key) and left[key] != right[key]:
+            return False
+    style = str(right.get('style', '')).casefold()
+    if re.search(r'heading|t[ií]tulo|encabezado', style):
+        # A preceding heading may describe the seed; a following one starts a new section.
+        return neighbor.get('ordinal', 0) < seed.get('ordinal', 0)
+    return True
+
+
+def _interleave_neighbors(rows, neighbors, limit, *, contextual=False):
     """A nearby complete step follows its semantic anchor before lower hits."""
     by_seed = {}
     for row in neighbors:
@@ -262,6 +368,8 @@ def _interleave_neighbors(rows, neighbors, limit):
     result, seen = [], set()
     for row in rows:
         for item in (row, *by_seed.get(row['fragment_id'], ())):
+            if contextual and item is not row and not _same_section(row, item):
+                continue
             if item['fragment_id'] in seen:
                 continue
             seen.add(item['fragment_id'])
@@ -269,6 +377,109 @@ def _interleave_neighbors(rows, neighbors, limit):
             if len(result) >= limit:
                 return result
     return result
+
+
+def numbered_page_continuation(seed, neighbor):
+    """A procedure heading plus consecutive numbered points across PDF pages.
+
+    Adjacency alone is insufficient. This conservative relation adds the whole
+    separately identified fragment, never new text or an implied business role.
+    """
+    if (seed.get('source_type') != neighbor.get('source_type') or seed.get('source_type') != 'PDF_TEXT'
+            or seed.get('indexation_id') is None or seed['indexation_id'] != neighbor.get('indexation_id')
+            or neighbor.get('ordinal') != seed.get('ordinal', -99)+1):
+        return False
+    if not re.search(r'\bPROCEDIMIENTO\s+\d+\b', seed['text'], re.I):
+        return False
+    numbers = [int(value) for value in re.findall(r'(?m)^[ \t]*([1-9]\d*)[.)][ \t]+', seed['text'])]
+    first = re.match(r'\s*([1-9]\d*)[.)][ \t]+', neighbor['text'])
+    return bool(numbers and numbers == list(range(1, numbers[-1]+1)) and first
+                and int(first.group(1)) == numbers[-1]+1)
+
+
+def section_packets(rows, neighbors, limit=20):
+
+    """Experimental read-time context; every added fragment consumes one slot.
+
+
+
+    Only matching explicit section identity or an immediately preceding styled
+
+    DOCX heading proves a boundary. Unknown adjacency is never enough.
+
+    SQL callers must authorize every row before calling this pure constructor.
+
+    """
+
+    by_seed = {}
+
+    for candidate in neighbors:
+
+        by_seed.setdefault(candidate['seed_id'], []).append(candidate)
+
+    result, seen = [], set()
+
+    for seed in rows:
+
+        packet = [dict(seed)]
+
+        for neighbor in by_seed.get(seed['fragment_id'], []):
+
+            if neighbor.get('indexation_id') != seed.get('indexation_id'):
+
+                continue
+
+            left, right = seed.get('locator') or {}, neighbor.get('locator') or {}
+
+            if numbered_page_continuation(seed, neighbor):
+                packet[0]['context_fragment_id'] = neighbor['fragment_id']
+                packet[0]['context_relation'] = 'numbered_page_continuation'
+                extra = {k: v for k, v in neighbor.items() if k != 'seed_id'}
+                extra['context_fragment_id'] = seed['fragment_id']
+                extra['context_relation'] = 'numbered_page_continuation'
+                packet.append(extra)
+                continue
+
+            shared = any(left.get(k) and left.get(k) == right.get(k) for k in ('section','heading_path'))
+
+            preceding_heading = (seed.get('source_type') == neighbor.get('source_type') == 'DOCX_PARAGRAPH'
+
+                and type(left.get('block')) is int and right.get('block') == left['block']-1
+
+                and neighbor.get('ordinal') == seed.get('ordinal', -99)-1
+
+                and bool(re.fullmatch(r'(?:Heading|Título|Titulo|Encabezado)\s*[1-6]', str(right.get('style','')), re.I)))
+
+            if not _same_section(seed, neighbor) or not (shared or preceding_heading):
+
+                continue
+
+            extra = {k:v for k,v in neighbor.items() if k != 'seed_id'}
+
+            if preceding_heading:
+
+                packet[0]['locator'] = dict(left, heading=neighbor['text'].strip())
+
+                packet[0]['context_fragment_id'] = neighbor['fragment_id']
+
+            packet.append(extra)
+
+        additions = [r for r in packet if r['fragment_id'] not in seen]
+
+        if len(result)+len(additions)>min(limit,20):
+
+            # Preserve the seed unchanged if its entire context packet cannot fit.
+
+            additions = [seed] if seed['fragment_id'] not in seen and len(result)<min(limit,20) else []
+
+        result.extend(additions)
+
+        seen.update(r['fragment_id'] for r in additions)
+
+    return result
+
+
+
 
 
 class RetrievalService:
@@ -290,13 +501,57 @@ class RetrievalService:
             db.execute(text("SELECT set_config('statement_timeout',:timeout,true)"), {'timeout':str(int(self.config.leny_rag_search_timeout_seconds*1000))})
             candidate = getattr(self.config, 'leny_rag_profile', 'legacy') == 'rag4_v1'
             hybrid = candidate and getattr(self.config, 'leny_rag_ranking', 'semantic') == 'hybrid' and bool(question)
-            eligible = ELIGIBLE
+            eligible = eligible_for(self.config)
+            contextual = getattr(self.config, 'leny_rag_response_mode', '') == 'controlled-synthesis-v1'
+            title = explicit_document_title(question) if contextual else None
+            role_anchor = None
+            role_headers = (role_summary_headers(question) if contextual and document_ids is None and not title
+                            and getattr(self.config, 'leny_rag_section_context', False) else None)
+            if role_headers:
+                normalized_heading = "trim(regexp_replace(translate(lower(f.text),'áéíóúüñ','aeiouun'),'[^a-z0-9]+',' ','g'))"
+                anchors = list(db.execute(text(eligible +
+                    "SELECT e.document_id,f.id fragment_id,f.ordinal,f.text FROM eligible e "
+                    "JOIN leny.rag_fragmentos f ON f.indexation_id=e.indexation_id "
+                    "WHERE f.source_type='DOCX_PARAGRAPH' AND " + normalized_heading +
+                    "=ANY(CAST(:role_headers AS text[])) AND EXISTS(SELECT 1 FROM leny.rag_fragmentos b "
+                    "WHERE b.indexation_id=f.indexation_id AND b.ordinal>f.ordinal AND b.text~'^\\s*[-•]') "
+                    "ORDER BY e.document_id,f.ordinal LIMIT 3"),
+                    parameters(self.config, actor) | {'role_headers': role_headers}).mappings())
+                if len(anchors) == 1:
+                    role_anchor = dict(anchors[0])
+                    eligible = eligible.replace("WHERE d.state='active'", "WHERE d.id=:role_document AND d.state='active'")
             if document_ids is not None:
                 # Backend-owned followup metadata narrows current SQL ACLs;
                 # it never revives an old publication or grants permission.
                 eligible = eligible.replace("WHERE d.state='active'", "WHERE d.id=ANY(CAST(:topic_documents AS uuid[])) AND d.state='active'")
+            title_args = parameters(self.config, actor)
+            if document_ids is not None:
+                title_args['topic_documents'] = [str(value) for value in document_ids]
+            if title:
+                # No unaccent extension, trigram index or global enumeration.
+                # Exact and bounded partial matching both operate *after* ACL.
+                key = _title_key(title)
+                if not key:
+                    return []
+                title_expr = "trim(regexp_replace(translate(lower(title),'áéíóúüñ','aeiouun'),'[^a-z0-9]+',' ','g'))"
+                matches = list(db.execute(text(eligible + 'SELECT document_id, ' + title_expr +
+                    ' = :title_key AS exact FROM eligible WHERE ' + title_expr +
+                    ' = :title_key OR strpos(' + title_expr + ', :title_key)>0 ORDER BY exact DESC,document_id LIMIT 3'),
+                    title_args | {'title_key': key}).mappings())
+                exact = [row for row in matches if row['exact']]
+                matches = exact or matches
+                if not matches:
+                    return []
+                if len(matches) != 1:
+                    raise LenyError('LENY_RAG_TITLE_AMBIGUOUS',
+                                    'Precisa el título documental que deseas consultar.', 409)
+                # Narrow every subsequent ranking and neighbor query, preserving
+                # all eligibility predicates and any prior conversation scope.
+                eligible = eligible.replace("WHERE d.state='active'", "WHERE d.id=ANY(CAST(:title_documents AS uuid[])) AND d.state='active'") if document_ids is None else eligible.replace(
+                    "WHERE d.id=ANY", "WHERE d.id=ANY(CAST(:title_documents AS uuid[])) AND d.id=ANY", 1)
+                title_args['title_documents'] = [str(matches[0]['document_id'])]
             query = eligible+"""
- SELECT e.document_id,e.revision,e.version_id,e.version,e.indexation_id,e.title,e.coverage,
+ SELECT e.document_id,e.revision,e.version_id,e.version,e.indexation_id,e.sha256,e.title,e.coverage,
         f.id fragment_id,f.text,f.locator,f.source_type,
         b.embedding OPERATOR(leny.<=>) CAST(:vector AS leny.vector(1024)) distance
  FROM eligible e JOIN leny.rag_fragmentos f ON f.indexation_id=e.indexation_id
@@ -337,13 +592,45 @@ class RetrievalService:
  JOIN leny.rag_embeddings b ON b.fragment_id=f.id AND b.indexation_id=e.indexation_id
  ORDER BY fused.score DESC,distance,f.id LIMIT :limit
  """
+            if title and getattr(self.config, 'leny_rag_source_coverage', False) and explicit_source_summary(question):
+                # Five individually counted representatives, including final content.
+                # All rows still originate in the same SQL-authorized publication.
+                query = eligible + ", numbered AS (SELECT f.id,row_number() OVER (ORDER BY f.ordinal) rn," + \
+                    "count(*) OVER () total FROM eligible e JOIN leny.rag_fragmentos f ON f.indexation_id=e.indexation_id) " + \
+                    'SELECT ' + _CANDIDATE_COLUMNS + " FROM numbered n JOIN leny.rag_fragmentos f ON f.id=n.id " + \
+                    "JOIN eligible e ON e.indexation_id=f.indexation_id JOIN leny.rag_embeddings b ON b.fragment_id=f.id " + \
+                    "AND b.indexation_id=e.indexation_id WHERE n.rn IN (1,n.total,1+(n.total-1)/4,1+(n.total-1)/2,1+3*(n.total-1)/4) " + \
+                    "OR n.total<=5 ORDER BY f.ordinal LIMIT 5"
+            if role_anchor:
+                # The actor comes from a source heading, not a filename. Stop at
+                # the next explicit actor heading and retrieve its function list.
+                heading_sql = "trim(regexp_replace(translate(lower(h.text),'áéíóúüñ','aeiouun'),'[^a-z0-9]+',' ','g'))"
+                query = eligible+' SELECT '+_CANDIDATE_COLUMNS+" FROM eligible e JOIN leny.rag_fragmentos f ON f.indexation_id=e.indexation_id " + \
+                    "JOIN leny.rag_embeddings b ON b.fragment_id=f.id AND b.indexation_id=e.indexation_id " + \
+                    "WHERE f.ordinal>=:role_ordinal AND (f.id=:role_fragment OR f.text~'^\\s*[-•]') " + \
+                    "AND NOT EXISTS(SELECT 1 FROM leny.rag_fragmentos h WHERE h.indexation_id=f.indexation_id " + \
+                    "AND h.ordinal>:role_ordinal AND h.ordinal<=f.ordinal AND ("+heading_sql+"=ANY(CAST(:all_role_headers AS text[])) " + \
+                    "OR coalesce(h.locator->>'style','')~*'^(Heading|Título|Titulo|Encabezado)[[:space:]]*[1-6]$')) " + \
+                    "ORDER BY f.ordinal LIMIT 20"
             args = parameters(self.config,actor) | {'vector':json.dumps(vector), 'limit':min(self.config.leny_rag_candidates,20)}
+            if role_anchor:
+                args.update(role_document=str(role_anchor['document_id']), role_ordinal=role_anchor['ordinal'],
+                    role_fragment=str(role_anchor['fragment_id']),
+                    all_role_headers=list(set(value for role_name in ('encargada','modista','asesora')
+                        for value in role_summary_headers('funciones '+role_name))))
+            if title:
+                args['title_documents'] = title_args['title_documents']
             if document_ids is not None:
                 args['topic_documents'] = [str(value) for value in document_ids]
             if hybrid:
                 args['question'] = question
             rows = [dict(r) for r in db.execute(text(query),args).mappings()]
-            if candidate and rows and getattr(self.config, 'leny_rag_neighbor_chunks', False):
+            if role_anchor:
+                for row in rows:
+                    if row['fragment_id'] != role_anchor['fragment_id']:
+                        row['locator'] = dict(row.get('locator') or {}, heading=role_anchor['text'])
+                        row['context_fragment_id'] = role_anchor['fragment_id']
+            if candidate and rows and (getattr(self.config, 'leny_rag_neighbor_chunks', False) or getattr(self.config, 'leny_rag_section_context', False)):
                 neighbor_query = eligible + """, seeds AS (
  SELECT f.id,f.indexation_id,f.ordinal FROM eligible e
  JOIN leny.rag_fragmentos f ON f.indexation_id=e.indexation_id
@@ -358,7 +645,9 @@ class RetrievalService:
  """
                 neighbors = [dict(r) for r in db.execute(text(neighbor_query),
                     args | {'seeds': [str(row['fragment_id']) for row in rows]}).mappings()]
-                rows = _interleave_neighbors(rows, neighbors, min(self.config.leny_rag_candidates, 20))
+                rows = (section_packets(rows, neighbors, self.config.leny_rag_candidates)
+                        if getattr(self.config, 'leny_rag_section_context', False) else
+                        _interleave_neighbors(rows, neighbors, min(self.config.leny_rag_candidates, 20), contextual=contextual))
         if candidate:
             return rows
         # Soft diversity: first source per document, then remaining ranked rows.
@@ -374,6 +663,6 @@ class RetrievalService:
             reader(db,actor)
             db.execute(text("SELECT set_config('statement_timeout',:timeout,true)"), {'timeout':str(int(self.config.leny_rag_search_timeout_seconds*1000))})
             ids = [str(row['fragment_id']) for row in fragments]
-            rows = db.execute(text(ELIGIBLE+"SELECT f.id FROM eligible e JOIN leny.rag_fragmentos f ON f.indexation_id=e.indexation_id WHERE f.id=ANY(CAST(:ids AS uuid[]))"),parameters(self.config,actor)|{'ids':ids}).scalars().all()
+            rows = db.execute(text(eligible_for(self.config)+"SELECT f.id FROM eligible e JOIN leny.rag_fragmentos f ON f.indexation_id=e.indexation_id WHERE f.id=ANY(CAST(:ids AS uuid[]))"),parameters(self.config,actor)|{'ids':ids}).scalars().all()
             if set(rows) != {row['fragment_id'] for row in fragments}:
                 raise LenyError('LENY_RAG_SOURCE_REVOKED','La fuente dejó de estar disponible. La respuesta se interrumpió.',409)

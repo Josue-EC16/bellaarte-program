@@ -1,5 +1,14 @@
 # README – BASE DE DATOS V4
 
+**Actualización 04/11/2026 — SPEC-TC-01:** revisión 0023 aplicada con autorización
+en el ERP original. El esquema actual añade tres columnas de procedencia a
+`tipo_cambio_moneda`, admite autor NULL solo para AUTOMATICO y agrega
+`tipo_cambio_registros` con diez columnas. Conserva la estructura de `moneda`,
+valores y estados previos. Los tipos de cambio futuros tienen registro técnico
+propio, excluido de auditoría general; se conserva toda auditoría anterior.
+Los detalles V4 inferiores son referencia histórica cuando difieran del
+[contrato TC-01 vigente](SPEC_TC_01_IMPLEMENTACION.md).
+
 ## BELLAARTE BOUTIQUE
 
 **Motor de base de datos:** PostgreSQL 17  
@@ -762,7 +771,7 @@ Sirve para alertar sobre stock agotado, pruebas programadas, entregas próximas,
 ## 6\. Relaciones clave del modelo
 
 - `ROL` 1 : N `CUENTA`.
-- `USUARIO` 1 : N `CUENTA`.
+- `USUARIO` 1 : 0..1 `CUENTA` (FK `cuentas.usuario_id` única; como máximo una cuenta por colaborador).
 - `USUARIO` 1 : N operaciones registradas: ventas, pagos, fletes, entradas, egresos, auditorías y notificaciones.
 - `CLIENTE` 1 : N `PEDIDO`.
 - `CLIENTE` 1 : N `VENTA\_BOUTIQUE`.

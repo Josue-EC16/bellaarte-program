@@ -1,0 +1,81 @@
+{
+  "step": "A",
+  "run": "leny_gemini_spec021_20261105_confirm",
+  "started_at": "2026-11-05T16:16:59.452044+00:00",
+  "python": "3.10.6",
+  "sdk": "2.33.0",
+  "model": "gemini-3.8-flash",
+  "endpoint": "https://generativelanguage.googleapis.com",
+  "api_version": "v1beta",
+  "transport": "httpx",
+  "sdk_attempts": 1,
+  "application_retries": 0,
+  "timeout_seconds": 60,
+  "target": {
+    "thinking": "medium",
+    "input_budget": 32678,
+    "output_tokens": 8192
+  },
+  "diagnostic": {
+    "thinking": "omitted_model_default",
+    "output_tokens": 1024,
+    "structured": false
+  },
+  "declared_quota": {
+    "rpm": 5,
+    "tpm": 250000,
+    "rpd": 20
+  },
+  "authenticated_project_verified": false,
+  "effective_account_quota_verified": false,
+  "documents_sent": false,
+  "passed": false,
+  "operations": [
+    {
+      "operation": "diag_model",
+      "success": true,
+      "tokens": {},
+      "seconds": 1.297
+    },
+    {
+      "operation": "diag_a",
+      "success": false,
+      "http_status": 503,
+      "exception_type": "ServerError",
+      "provider_status": "UNAVAILABLE",
+      "overload_wording": true,
+      "deadline_wording": false,
+      "seconds": 18.469
+    }
+  ],
+  "http": [
+    {
+      "method": "GET",
+      "host": "generativelanguage.googleapis.com",
+      "path": "/v1beta/models/gemini-3.8-flash",
+      "http_status": 200
+    },
+    {
+      "method": "POST",
+      "host": "generativelanguage.googleapis.com",
+      "path": "/v1beta/models/gemini-3.8-flash:generateContent",
+      "http_status": 503
+    }
+  ],
+  "model_metadata": {
+    "name": "models/gemini-3.8-flash",
+    "version": "3.0",
+    "input_token_limit": 1048576,
+    "output_token_limit": 65536,
+    "supported_actions": [
+      "generateContent",
+      "countTokens",
+      "createCachedContent",
+      "batchGenerateContent"
+    ]
+  },
+  "exception_type": "ServerError",
+  "error_code": 503,
+  "seconds": 19.859,
+  "original_env_unchanged": true
+}

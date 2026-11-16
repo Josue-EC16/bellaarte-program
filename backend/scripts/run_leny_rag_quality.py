@@ -279,7 +279,7 @@ def run_contracts(output):
             if violations:
                 session.exitstatus = pytest.ExitCode.TESTS_FAILED
     selected = ['test_leny_rag_quality.py','test_leny_rag_chat.py','test_leny_rag_service.py',
-                'test_leny_document_service.py','test_leny_rate_limit.py','test_leny_persistence.py']
+                'test_leny_document_service.py','test_leny_rate_limit.py','test_leny_persistence.py','test_leny_original_features.py']
     result = int(pytest.main(['-c', str(BACKEND.parent/'pytest.ini'), '--confcutdir', str(BACKEND/'tests'),
         '--basetemp', str(Path.cwd()/'pytest-tmp'), '-q', '-p', 'no:cacheprovider',
         '-k', 'not migration and not downgrade and not rolling_document_insert',
@@ -300,6 +300,7 @@ def configuration(settings, args):
         leny_rag_min_resident_ram_bytes=1024**3, leny_rag_cpu_threads=4,
         leny_rag_batch_size=2, leny_rag_top_k=5, leny_rag_candidates=20,
         leny_rag_profile=args.profile, leny_rag_evidence_mode=args.evidence_mode,
+        leny_rag_response_mode=getattr(args, 'response_mode', 'document-excerpts-v2'),
         leny_rag_max_context_bytes=args.budget, leny_rag_ranking=args.ranking,
         leny_rag_adaptive_token_probe=args.token_probe,
         leny_rag_neighbor_chunks=args.neighbors, leny_documents_root=str(Path.cwd()/'private-library'),
@@ -644,9 +645,9 @@ def run_child(arguments):
                 rrf_score=float(r['rrf_score']) if 'rrf_score' in r else None) for i, r in enumerate(result, 1)]
             return result
     class TracedSources(SourceService):
-        def persist(self, actor, message_id, fragments):
+        def persist(self, actor, message_id, fragments, **options):
             traces['selected_fragment_ids'] = [owned['fragment_ids'].get(str(row['fragment_id']), 'UNKNOWN') for row in fragments]
-            return super().persist(actor, message_id, fragments)
+            return super().persist(actor, message_id, fragments, **options)
     class TracedProvider(OllamaProvider):
         async def classify(self, messages, schema):
             result = await super().classify(messages, schema)
@@ -672,6 +673,17 @@ def run_child(arguments):
         async def stream(self, messages):
             async for chunk in trace_generation(self, super().stream(messages), traces):
                 yield chunk
+        async def structured(self, messages, schema):
+            traces['generator_invoked'] = True
+            traces['sent_fragment_ids'] = None
+            mapping = {item['text']: item['id'] for doc in corpus['documents'] for item in doc['fragments']}
+            sent = [mapping.get(row['text'], 'UNKNOWN') for row in json.loads(messages[-1]['content'])['sources']]
+            try:
+                return await super().structured(messages, schema)
+            finally:
+                if self.response_complete:
+                    traces['sent_fragment_ids'] = sent
+                    traces['sent_evidence_basis'] = 'structured_provider_completion_received'
     class Diagnostics(logging.Handler):
         def emit(self, record):
             if hasattr(record, 'leny_rag'):
@@ -704,10 +716,10 @@ def run_child(arguments):
         extraction_formats_evaluated=False, settings=configured, runner_mode=args.mode,
         original_representation='generated synthetic originals with fixture source types; extraction not evaluated by this runner',
         created_at_utc=datetime.now(timezone.utc).isoformat())
-    from app.services.leny_rag_routing import policy_version
+    from app.services.leny_service import effective_policy
     from app.services.leny_rag_grounding import GROUNDING_VERSION
-    observations['component_versions'] = {'policy': policy_version(settings),
-        'documentary_output': GROUNDING_VERSION if args.profile == 'rag4_v1' else 'legacy_generation',
+    observations['component_versions'] = {'policy': effective_policy(service),
+        'documentary_output': settings.leny_rag_response_mode if args.profile == 'rag4_v1' else 'legacy_generation',
         'retrieval': 'sql-acl-current-publication', 'ranking': settings.leny_rag_ranking}
     if args.profile == 'rag4_v1':
         from app.services.leny_rag_selection import SELECTION_VERSION
@@ -812,16 +824,21 @@ def run_child(arguments):
                             ram_available_before_bytes=ram_before, ram_available_after_bytes=available_ram(),
                             human_review=None, **traces)
                         final.setdefault('sent_fragment_ids', [])  # No generation invocation.
-                        if diagnostic.get('counts', {}).get('documented_excerpt') == 1:
+                        if diagnostic.get('counts', {}).get('synthesis_validated') == 1:
+                            final['response_origin'] = 'controlled_synthesis'
+                            final['generator_invoked'] = True
+                            final['generator_fragment_ids'] = traces.get('sent_fragment_ids')
+                            final['render_fragment_ids'] = []
+                        elif diagnostic.get('counts', {}).get('documented_excerpt') == 1:
                             # These selected rows were a subset of the confirmed
                             # relevance prompt received by Qwen. The final text
                             # is a backend quote, not invented model generation.
                             final['sent_fragment_ids'] = traces.get('selected_fragment_ids', [])
                             final['sent_evidence_basis'] = 'confirmed_relevance_prompt_for_documented_excerpt'
                             final['response_origin'] = 'backend_documented_excerpt'
-                            final['generator_fragment_ids'] = []
+                            final['generator_fragment_ids'] = traces.get('sent_fragment_ids') if traces.get('generator_invoked') else []
                             final['render_fragment_ids'] = traces.get('selected_fragment_ids', [])
-                            final['generator_invoked'] = False
+                            final['generator_invoked'] = bool(traces.get('generator_invoked', False))
                             if diagnostic.get('counts', {}).get('grounded_excerpt') == 1:
                                 final['response_origin'] = 'backend_grounded_excerpts'
                         else:
@@ -882,6 +899,7 @@ def run_child(arguments):
 def parser():
     result = argparse.ArgumentParser(description=__doc__)
     result.add_argument('--profile', choices=('legacy', 'rag4_v1'), required=True)
+    result.add_argument('--response-mode', choices=('document-excerpts-v2', 'controlled-synthesis-v1'), default='document-excerpts-v2')
     result.add_argument('--mode', choices=('pilot', 'followup', 'diagnostic', 'quality', 'contracts', 'development', 'budget', 'retrieval', 'focused', 'stability', 'supervised'), default='pilot')
     result.add_argument('--evidence-mode', choices=('fixed', 'adaptive'), default='fixed')
     result.add_argument('--budget', type=int, choices=(2048, 2304, 2560), default=2048)
@@ -902,13 +920,15 @@ def parser():
 
 def main():
     args = parser().parse_args()
+    if args.response_mode == 'controlled-synthesis-v1' and args.profile != 'rag4_v1':
+        parser().error('controlled-synthesis-v1 requires --profile rag4_v1.')
     if args.mode == 'budget':
         if args.profile != 'rag4_v1':
             parser().error('--mode budget requires the candidate profile.')
         args.procedure_stress_bytes = args.procedure_stress_bytes or 900
     if args.token_probe and (args.profile != 'rag4_v1' or args.evidence_mode != 'adaptive'):
         parser().error('--token-probe requires --profile rag4_v1 --evidence-mode adaptive.')
-    if not args.exclusive_window_confirmed:
+    if args.mode != 'contracts' and not args.exclusive_window_confirmed:
         print('An explicitly authorized exclusive LENY window is required; nothing executed.', file=sys.stderr)
         return 2
     from run_notification_integration import validated_configuration

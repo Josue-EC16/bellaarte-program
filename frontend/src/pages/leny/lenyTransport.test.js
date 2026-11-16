@@ -12,6 +12,13 @@ function stream(text, size = 1) {
 }
 
 describe('LENY NDJSON streaming boundaries and cancellation', () => {
+  it.each(['LENY_GEMINI_QUOTA', 'LENY_GEMINI_TIMEOUT', 'LENY_GEMINI_OUTBOUND_BLOCKED', 'LENY_GEMINI_UNAVAILABLE'])('reports %s safely and never presents a local fallback', (code) => {
+    const streamed = lenyStreamErrorMessage({ code, message: 'PRIVATE_KEY_AND_DOCUMENT' })
+    const response = lenyErrorMessage({ response: { status: 503, data: { detail: { code, message: 'PRIVATE_KEY_AND_DOCUMENT' } } } })
+    expect(streamed).toContain('Gemini')
+    expect(response).toContain('Gemini')
+    expect(streamed + response).not.toContain('PRIVATE_KEY_AND_DOCUMENT')
+  })
   it('explains output protection and local availability without echoing server details', () => {
     expect(lenyStreamErrorMessage({ code: 'LENY_RAG_CONTEXT_LIMIT', message: 'private detail' })).toContain('no significa que falte documentación')
     expect(lenyStreamErrorMessage({ code: 'LENY_RAG_REVIEW_INVALID', message: 'private detail' })).toContain('pertinencia')

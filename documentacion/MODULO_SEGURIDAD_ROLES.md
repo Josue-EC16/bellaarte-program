@@ -2,6 +2,11 @@
 
 Documento operativo de la primera implementacion real del sistema.
 
+**Histórico:** consultar [Usuarios, roles y sesiones](MODULO_USUARIOS_SESIONES.md)
+para la revisión del 03/11/2026: protecciones de ADMIN, sesiones revocables,
+permisos actualizados sin salir, contratos y migración nueva 0022. Las rutas
+actuales de UI son `/app/seguridad/usuarios` y `/app/seguridad/roles`.
+
 ## Objetivo del modulo
 
 Construir la base estable para todos los modulos futuros del sistema:

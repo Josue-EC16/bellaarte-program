@@ -99,12 +99,17 @@ def seed_named_admin_account(
     admin_role = db.execute(select(Rol).where(Rol.codigo == "ADMIN")).scalar_one()
     existing_account = db.execute(select(Cuenta).where(Cuenta.username == username)).scalar_one_or_none()
     if existing_account is not None:
+        # Explicit recovery/bootstrap must not leave previously issued tokens
+        # usable after replacing credentials. Never run seeds as session setup.
+        from app.services.auth_session_service import lock_account, revoke_account_sessions
+        lock_account(db, existing_account)
         existing_account.rol_id = admin_role.id
         existing_account.password_hash = hash_password(password)
         existing_account.must_change_password = True
         existing_account.is_active = True
         if existing_account.usuario is not None:
             existing_account.usuario.activo = True
+        revoke_account_sessions(db, existing_account, "ADMIN_RECOVERY")
         db.commit()
         return
 

@@ -10,6 +10,7 @@ from app.models.boutique_enums import PrioridadNotificacionEnum
 from app.models.notification import Notificacion, PreferenciaNotificacion
 from app.schemas.notification import NotificationDesktopClaimResponse, NotificationPreferencesResponse
 from app.services.notification_query_service import to_detail_response
+from app.services.exchange_rate_notification_service import exchange_rate_notification_visibility
 
 
 def get_notification_preferences(db: Session, *, account: Cuenta) -> NotificationPreferencesResponse:
@@ -46,6 +47,7 @@ def claim_desktop_notifications(db: Session, *, account: Cuenta) -> Notification
     cutoff = max(preference.escritorio_habilitado_desde, utc_now() - timedelta(minutes=15))
     rows = db.execute(select(Notificacion).where(
         Notificacion.usuario_id == account.usuario_id,
+        exchange_rate_notification_visibility(account),
         Notificacion.resuelta.is_(False), Notificacion.leida.is_(False),
         Notificacion.revision_fecha >= cutoff,
         Notificacion.escritorio_revision_reclamada < Notificacion.revision,

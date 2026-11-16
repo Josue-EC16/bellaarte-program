@@ -1,0 +1,96 @@
+{
+  "scope": "offline_fixed_generation_validator_only",
+  "cases": [
+    {
+      "case": "vestido",
+      "before": {
+        "accepted": false,
+        "reason": "structure"
+      },
+      "generated_again": false,
+      "after": "accepted",
+      "scope": "partial"
+    },
+    {
+      "case": "encargada",
+      "before": {
+        "accepted": false,
+        "reason": "support_unverified"
+      },
+      "generated_again": false,
+      "after": "accepted",
+      "scope": "partial"
+    },
+    {
+      "case": "errata",
+      "before": {
+        "accepted": false,
+        "reason": "structure"
+      },
+      "generated_again": false,
+      "after": "accepted",
+      "scope": "documented"
+    },
+    {
+      "case": "titulo",
+      "before": {
+        "accepted": false,
+        "reason": "structure"
+      },
+      "generated_again": false,
+      "after": "accepted",
+      "scope": "documented"
+    },
+    {
+      "case": "cancan",
+      "before": {
+        "accepted": true,
+        "response_scope": "general"
+      },
+      "generated_again": false,
+      "after": "accepted",
+      "scope": "general"
+    },
+    {
+      "case": "inventario",
+      "before": {
+        "accepted": true,
+        "response_scope": "general"
+      },
+      "generated_again": false,
+      "after": "accepted",
+      "scope": "general"
+    },
+    {
+      "case": "manual",
+      "before": {
+        "accepted": true,
+        "response_scope": "general"
+      },
+      "generated_again": false,
+      "after": "accepted",
+      "scope": "general"
+    },
+    {
+      "case": "ejemplo",
+      "before": {
+        "accepted": true,
+        "response_scope": "general"
+      },
+      "generated_again": false,
+      "after": "accepted",
+      "scope": "general"
+    },
+    {
+      "case": "puesto",
+      "before": {
+        "accepted": false,
+        "reason": "structure"
+      },
+      "generated_again": false,
+      "after": "accepted",
+      "scope": "general"
+    }
+  ],
+  "semantic_acceptance": null
+}

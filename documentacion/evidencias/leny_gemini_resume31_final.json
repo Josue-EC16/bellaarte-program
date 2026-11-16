@@ -1,0 +1,664 @@
+{
+  "captured_at": "2026-11-05T17:16:34.311160+00:00",
+  "cases": [
+    {
+      "job": "resume31-D-binding",
+      "case": "general",
+      "seconds": 11.281,
+      "http_status": 200,
+      "terminal": "done",
+      "outcome": "answered",
+      "reason": "v11_documentary",
+      "scope": "documented",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_count": 2,
+      "source_access": [
+        200,
+        200
+      ],
+      "response_characters": 686,
+      "errors": [],
+      "persisted_provider": "gemini",
+      "persisted_model": "gemini-3.1-flash-lite",
+      "user_message_preserved": true,
+      "assistant_status": "completed",
+      "persisted_answer_matches_ndjson": true,
+      "google_calls": 2,
+      "tokens_reported": {
+        "input_tokens": 4191,
+        "output_tokens": 274,
+        "thinking_tokens": 528
+      },
+      "calls_without_complete_token_counts": 0,
+      "same_conversation_as_previous": false
+    },
+    {
+      "job": "resume31-D-binding",
+      "case": "followup",
+      "seconds": 9.75,
+      "http_status": 200,
+      "terminal": "error",
+      "outcome": null,
+      "reason": null,
+      "scope": null,
+      "provider": null,
+      "model": null,
+      "source_count": 0,
+      "source_access": [],
+      "response_characters": 0,
+      "errors": [
+        "LENY_RAG_REVIEW_INVALID"
+      ],
+      "persisted_provider": "gemini",
+      "persisted_model": "gemini-3.1-flash-lite",
+      "user_message_preserved": true,
+      "assistant_status": "failed",
+      "persisted_answer_matches_ndjson": true,
+      "google_calls": 3,
+      "tokens_reported": {
+        "input_tokens": 3080,
+        "output_tokens": 59,
+        "thinking_tokens": 583
+      },
+      "calls_without_complete_token_counts": 0,
+      "same_conversation_as_previous": true
+    },
+    {
+      "job": "resume31-D-conversation",
+      "case": "general",
+      "seconds": 11.937,
+      "http_status": 200,
+      "terminal": "done",
+      "outcome": "answered",
+      "reason": "v11_documentary",
+      "scope": "documented",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_count": 2,
+      "source_access": [
+        200,
+        200
+      ],
+      "response_characters": 658,
+      "errors": [],
+      "persisted_provider": "gemini",
+      "persisted_model": "gemini-3.1-flash-lite",
+      "user_message_preserved": true,
+      "assistant_status": "completed",
+      "persisted_answer_matches_ndjson": true,
+      "google_calls": 2,
+      "tokens_reported": {
+        "input_tokens": 4191,
+        "output_tokens": 293,
+        "thinking_tokens": 867
+      },
+      "calls_without_complete_token_counts": 0,
+      "same_conversation_as_previous": false
+    },
+    {
+      "job": "resume31-D-conversation",
+      "case": "followup",
+      "seconds": 9.891,
+      "http_status": 200,
+      "terminal": "error",
+      "outcome": null,
+      "reason": null,
+      "scope": null,
+      "provider": null,
+      "model": null,
+      "source_count": 0,
+      "source_access": [],
+      "response_characters": 0,
+      "errors": [
+        "LENY_RAG_REVIEW_INVALID"
+      ],
+      "persisted_provider": "gemini",
+      "persisted_model": "gemini-3.1-flash-lite",
+      "user_message_preserved": true,
+      "assistant_status": "failed",
+      "persisted_answer_matches_ndjson": true,
+      "google_calls": 3,
+      "tokens_reported": {
+        "input_tokens": 3080,
+        "output_tokens": 63,
+        "thinking_tokens": 608
+      },
+      "calls_without_complete_token_counts": 0,
+      "same_conversation_as_previous": true
+    },
+    {
+      "job": "resume31-D-diagnostic",
+      "case": "general",
+      "seconds": 10.047,
+      "http_status": 200,
+      "terminal": "done",
+      "outcome": "answered",
+      "reason": "v11_documentary",
+      "scope": "documented",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_count": 2,
+      "source_access": [
+        200,
+        200
+      ],
+      "response_characters": 493,
+      "errors": [],
+      "persisted_provider": "gemini",
+      "persisted_model": "gemini-3.1-flash-lite",
+      "user_message_preserved": true,
+      "assistant_status": "completed",
+      "persisted_answer_matches_ndjson": true,
+      "google_calls": 2,
+      "tokens_reported": {
+        "input_tokens": 4191,
+        "output_tokens": 258,
+        "thinking_tokens": 524
+      },
+      "calls_without_complete_token_counts": 0,
+      "same_conversation_as_previous": false
+    },
+    {
+      "job": "resume31-D-diagnostic",
+      "case": "followup",
+      "seconds": 15.656,
+      "http_status": 200,
+      "terminal": "done",
+      "outcome": "clarification",
+      "reason": "rag_synthesis_unverified",
+      "scope": null,
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_count": 0,
+      "source_access": [],
+      "response_characters": 210,
+      "errors": [],
+      "persisted_provider": "gemini",
+      "persisted_model": "gemini-3.1-flash-lite",
+      "user_message_preserved": true,
+      "assistant_status": "completed",
+      "persisted_answer_matches_ndjson": true,
+      "google_calls": 4,
+      "tokens_reported": {
+        "input_tokens": 4346,
+        "output_tokens": 260,
+        "thinking_tokens": 1530
+      },
+      "calls_without_complete_token_counts": 0,
+      "same_conversation_as_previous": true
+    },
+    {
+      "job": "resume31-D-native-final",
+      "case": "general",
+      "seconds": 8.937,
+      "http_status": 200,
+      "terminal": "done",
+      "outcome": "answered",
+      "reason": "v11_documentary",
+      "scope": "documented",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_count": 2,
+      "source_access": [
+        200,
+        200
+      ],
+      "response_characters": 396,
+      "errors": [],
+      "persisted_provider": "gemini",
+      "persisted_model": "gemini-3.1-flash-lite",
+      "user_message_preserved": true,
+      "assistant_status": "completed",
+      "persisted_answer_matches_ndjson": true,
+      "google_calls": 2,
+      "tokens_reported": {
+        "input_tokens": 4191,
+        "output_tokens": 225,
+        "thinking_tokens": 0
+      },
+      "calls_without_complete_token_counts": 0,
+      "same_conversation_as_previous": false
+    },
+    {
+      "job": "resume31-D-native-final",
+      "case": "followup",
+      "seconds": 14.047,
+      "http_status": 200,
+      "terminal": "done",
+      "outcome": "answered",
+      "reason": "v11_advice",
+      "scope": "documented",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_count": 2,
+      "source_access": [
+        200,
+        200
+      ],
+      "response_characters": 496,
+      "errors": [],
+      "persisted_provider": "gemini",
+      "persisted_model": "gemini-3.1-flash-lite",
+      "user_message_preserved": true,
+      "assistant_status": "completed",
+      "persisted_answer_matches_ndjson": true,
+      "google_calls": 4,
+      "tokens_reported": {
+        "input_tokens": 4346,
+        "output_tokens": 299,
+        "thinking_tokens": 1539
+      },
+      "calls_without_complete_token_counts": 0,
+      "same_conversation_as_previous": true
+    },
+    {
+      "job": "resume31-E-rag",
+      "case": "title",
+      "seconds": 7.5,
+      "http_status": 200,
+      "terminal": "done",
+      "outcome": "answered",
+      "reason": "v11_named_document",
+      "scope": "documented",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_count": 2,
+      "source_access": [
+        200,
+        200
+      ],
+      "response_characters": 677,
+      "errors": [],
+      "persisted_provider": "gemini",
+      "persisted_model": "gemini-3.1-flash-lite",
+      "user_message_preserved": true,
+      "assistant_status": "completed",
+      "persisted_answer_matches_ndjson": true,
+      "google_calls": 2,
+      "tokens_reported": {
+        "input_tokens": 4423,
+        "output_tokens": 304,
+        "thinking_tokens": 0
+      },
+      "calls_without_complete_token_counts": 0,
+      "same_conversation_as_previous": false
+    },
+    {
+      "job": "resume31-E-rag",
+      "case": "procedure",
+      "seconds": 11.156,
+      "http_status": 200,
+      "terminal": "done",
+      "outcome": "answered",
+      "reason": "v11_documentary",
+      "scope": "partial",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_count": 2,
+      "source_access": [
+        200,
+        200
+      ],
+      "response_characters": 610,
+      "errors": [],
+      "persisted_provider": "gemini",
+      "persisted_model": "gemini-3.1-flash-lite",
+      "user_message_preserved": true,
+      "assistant_status": "completed",
+      "persisted_answer_matches_ndjson": true,
+      "google_calls": 4,
+      "tokens_reported": {
+        "input_tokens": 4638,
+        "output_tokens": 341,
+        "thinking_tokens": 518
+      },
+      "calls_without_complete_token_counts": 0,
+      "same_conversation_as_previous": false
+    },
+    {
+      "job": "resume31-E-rag",
+      "case": "followup",
+      "seconds": 9.422,
+      "http_status": 200,
+      "terminal": "done",
+      "outcome": "answered",
+      "reason": "v11_documentary",
+      "scope": "partial",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_count": 1,
+      "source_access": [
+        200
+      ],
+      "response_characters": 634,
+      "errors": [],
+      "persisted_provider": "gemini",
+      "persisted_model": "gemini-3.1-flash-lite",
+      "user_message_preserved": true,
+      "assistant_status": "completed",
+      "persisted_answer_matches_ndjson": true,
+      "google_calls": 2,
+      "tokens_reported": {
+        "input_tokens": 3583,
+        "output_tokens": 251,
+        "thinking_tokens": 340
+      },
+      "calls_without_complete_token_counts": 0,
+      "same_conversation_as_previous": true
+    },
+    {
+      "job": "resume31-E-rag",
+      "case": "responsibilities",
+      "seconds": 9.234,
+      "http_status": 200,
+      "terminal": "done",
+      "outcome": "answered",
+      "reason": "v11_documentary",
+      "scope": "partial",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_count": 4,
+      "source_access": [
+        200,
+        200,
+        200,
+        200
+      ],
+      "response_characters": 455,
+      "errors": [],
+      "persisted_provider": "gemini",
+      "persisted_model": "gemini-3.1-flash-lite",
+      "user_message_preserved": true,
+      "assistant_status": "completed",
+      "persisted_answer_matches_ndjson": true,
+      "google_calls": 2,
+      "tokens_reported": {
+        "input_tokens": 2312,
+        "output_tokens": 205,
+        "thinking_tokens": 774
+      },
+      "calls_without_complete_token_counts": 0,
+      "same_conversation_as_previous": false
+    },
+    {
+      "job": "resume31-E-rag",
+      "case": "missing-specialty",
+      "seconds": 9.922,
+      "http_status": 200,
+      "terminal": "done",
+      "outcome": "answered",
+      "reason": "v11_documentary",
+      "scope": "general",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_count": 0,
+      "source_access": [],
+      "response_characters": 1166,
+      "errors": [],
+      "persisted_provider": "gemini",
+      "persisted_model": "gemini-3.1-flash-lite",
+      "user_message_preserved": true,
+      "assistant_status": "completed",
+      "persisted_answer_matches_ndjson": true,
+      "google_calls": 2,
+      "tokens_reported": {
+        "input_tokens": 2468,
+        "output_tokens": 313,
+        "thinking_tokens": 557
+      },
+      "calls_without_complete_token_counts": 0,
+      "same_conversation_as_previous": false
+    },
+    {
+      "job": "resume31-E-rag",
+      "case": "advice",
+      "seconds": 8.75,
+      "http_status": 200,
+      "terminal": "done",
+      "outcome": "answered",
+      "reason": "v11_drafting",
+      "scope": "documented",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_count": 1,
+      "source_access": [
+        200
+      ],
+      "response_characters": 591,
+      "errors": [],
+      "persisted_provider": "gemini",
+      "persisted_model": "gemini-3.1-flash-lite",
+      "user_message_preserved": true,
+      "assistant_status": "completed",
+      "persisted_answer_matches_ndjson": true,
+      "google_calls": 2,
+      "tokens_reported": {
+        "input_tokens": 3438,
+        "output_tokens": 240,
+        "thinking_tokens": 0
+      },
+      "calls_without_complete_token_counts": 0,
+      "same_conversation_as_previous": false
+    },
+    {
+      "job": "resume31-E-rag",
+      "case": "sensitive",
+      "seconds": 0.016,
+      "http_status": 422,
+      "terminal": "http_error",
+      "outcome": null,
+      "reason": null,
+      "scope": null,
+      "provider": null,
+      "model": null,
+      "source_count": 0,
+      "source_access": [],
+      "response_characters": 0,
+      "errors": [],
+      "persisted_provider": "gemini",
+      "persisted_model": "gemini-3.1-flash-lite",
+      "google_calls": 0,
+      "tokens_reported": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "thinking_tokens": 0
+      },
+      "calls_without_complete_token_counts": 0,
+      "same_conversation_as_previous": false
+    },
+    {
+      "job": "resume31-E-rag",
+      "case": "unavailable",
+      "seconds": 0.094,
+      "http_status": 200,
+      "terminal": "done",
+      "outcome": "refused",
+      "reason": "v11_capability_unavailable",
+      "scope": null,
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_count": 0,
+      "source_access": [],
+      "response_characters": 195,
+      "errors": [],
+      "persisted_provider": "gemini",
+      "persisted_model": "gemini-3.1-flash-lite",
+      "user_message_preserved": true,
+      "assistant_status": "completed",
+      "persisted_answer_matches_ndjson": true,
+      "google_calls": 0,
+      "tokens_reported": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "thinking_tokens": 0
+      },
+      "calls_without_complete_token_counts": 0,
+      "same_conversation_as_previous": false
+    },
+    {
+      "job": "resume31-G-qwen",
+      "case": "qwen-documental",
+      "seconds": 54.062,
+      "http_status": 200,
+      "terminal": "done",
+      "outcome": "answered",
+      "reason": "v11_documentary",
+      "scope": "partial",
+      "provider": "ollama",
+      "model": "qwen3.5:4b-q4_K_M",
+      "source_count": 3,
+      "source_access": [
+        200,
+        200,
+        200
+      ],
+      "response_characters": 579,
+      "errors": [],
+      "persisted_provider": "ollama",
+      "persisted_model": "qwen3.5:4b-q4_K_M",
+      "user_message_preserved": true,
+      "assistant_status": "completed",
+      "persisted_answer_matches_ndjson": true,
+      "google_calls": 0,
+      "tokens_reported": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "thinking_tokens": 0
+      },
+      "calls_without_complete_token_counts": 0,
+      "same_conversation_as_previous": false
+    },
+    {
+      "job": "resume31-H-operational",
+      "case": "documental-post-activation",
+      "seconds": 11.516,
+      "http_status": 200,
+      "terminal": "done",
+      "outcome": "answered",
+      "reason": "v11_named_document",
+      "scope": "documented",
+      "provider": "gemini",
+      "model": "gemini-3.1-flash-lite",
+      "source_count": 2,
+      "source_access": [
+        200,
+        200
+      ],
+      "response_characters": 668,
+      "errors": [],
+      "persisted_provider": "gemini",
+      "persisted_model": "gemini-3.1-flash-lite",
+      "user_message_preserved": true,
+      "assistant_status": "completed",
+      "persisted_answer_matches_ndjson": true,
+      "google_calls": 2,
+      "tokens_reported": {
+        "input_tokens": 4423,
+        "output_tokens": 312,
+        "thinking_tokens": 388
+      },
+      "calls_without_complete_token_counts": 0,
+      "same_conversation_as_previous": false
+    }
+  ],
+  "human_review": null,
+  "configuration": {
+    "leny_gemini_model": "gemini-3.1-flash-lite",
+    "leny_gemini_enabled": true,
+    "leny_gemini_free_tier_confirmed": true,
+    "leny_llm_provider": "ollama",
+    "leny_gemini_rpm": 15,
+    "leny_gemini_tpm": 250000,
+    "leny_gemini_rpd": 500,
+    "leny_gemini_thinking_level": "medium",
+    "leny_gemini_input_token_budget": 32678,
+    "leny_gemini_output_tokens": 8192,
+    "leny_model": "qwen3.5:4b-q4_K_M",
+    "leny_num_ctx": 4096,
+    "leny_num_predict": 768,
+    "leny_temperature": 0.0,
+    "leny_rag_profile": "rag4_v1",
+    "leny_rag_response_mode": "controlled-synthesis-v1"
+  },
+  "transport_checks": [
+    {
+      "check": "configured_provider_status",
+      "passed": true
+    },
+    {
+      "check": "created_provider",
+      "passed": true
+    },
+    {
+      "check": "message_provider_override_rejected",
+      "passed": true
+    },
+    {
+      "check": "cancelled_turn_terminal",
+      "passed": true,
+      "status": "interrupted",
+      "seconds": 4.172,
+      "event_types": [
+        "start"
+      ]
+    },
+    {
+      "check": "provider_persisted_after_disconnect",
+      "passed": true
+    },
+    {
+      "check": "history_title",
+      "passed": true,
+      "source_count": 2
+    },
+    {
+      "check": "history_procedure",
+      "passed": true,
+      "source_count": 2
+    },
+    {
+      "check": "history_followup",
+      "passed": true,
+      "source_count": 1
+    },
+    {
+      "check": "history_responsibilities",
+      "passed": true,
+      "source_count": 4
+    },
+    {
+      "check": "history_missing-specialty",
+      "passed": true,
+      "source_count": 0
+    },
+    {
+      "check": "history_advice",
+      "passed": true,
+      "source_count": 1
+    },
+    {
+      "check": "qwen_default_creation_retained",
+      "passed": true
+    }
+  ],
+  "database_revision": "20261105_0024",
+  "inference_state": "idle",
+  "technical_consumption_preserved": 61,
+  "health_http_status": 200,
+  "unauthenticated_leny_http_status": 401,
+  "source_sha256": {
+    "backend/app/core/config.py": "3f70f7ebd73f9d72e424043eec64720901fa978704c74907d195a3a700a203da",
+    "backend/.env.example": "fccb531ca7383a7bcc8e7d8a6485eed060e2f622ab1d533f9e76503645a708aa",
+    "backend/scripts/diagnose_leny_gemini_spec021.py": "cc43cf8d6916d3f508cd7d4c077fe4502e311f709b3dbc8f1c8595f10546f164",
+    "backend/scripts/test_leny_gemini_schema.py": "db042f76f8bf2873776c6adba51e5a85a850a4bcf33a5b8c0f66f9250799e071",
+    "backend/scripts/test_leny_gemini_schema.ps1": "be5eb785985590f6079eca66c1f26e67a008dd88fe41460dd5a5323e8a18c1ad",
+    "backend/tests/test_leny_gemini_provider.py": "a066e5718d3755bb9912bf5180fe946fb2da60f307eaacfa643768406c1ccfbb",
+    "backend/tests/test_leny_gemini_diagnostics.py": "b1ec254a1649dab8499ab66c25a060aaf8b13ac42e46c4eec7a25f6c291531ea",
+    "backend/scripts/run_leny_gemini_authenticated_review.py": "7efb1a3cecf1f8ce8d413e52e20dd8a855fcb556f1c149b7320f268ce92d3a9f",
+    "backend/app/services/leny_service.py": "c7e8325ea7228e02464980aebc6914c342ba405044646ccb15909186ecac67c0",
+    "backend/app/services/leny_gemini.py": "3fe5d82c807a8bd192f51e609bd161f851045fd3c0aff61345e904109eb946c9",
+    "backend/app/services/leny_rag_synthesis.py": "afb44d61abf1dfd8ced53fd053ec0740743eb8451b36e63bdec2f209d0d39f76",
+    "backend/scripts/verify_leny_gemini_resume31.py": "b718c31fd7c51b79acc7b6de22fcccef0ff7699cf0c5d76a6eea95c10d154189"
+  }
+}

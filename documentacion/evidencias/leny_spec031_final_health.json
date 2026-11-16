@@ -1,0 +1,24 @@
+{
+  "at": "2026-11-15T02:59:23.159624+00:00",
+  "backend_health": 200,
+  "protected_leny": 401,
+  "frontend": 200,
+  "ollama_http": 200,
+  "qwen_installed": true,
+  "global_activation": "active_owner_authorized",
+  "ordinary_corrected_global_e2e": "executed_D_F_G",
+  "continuity_enabled": true,
+  "experimental_opt_in": false,
+  "gemini_enabled": true,
+  "qwen_default": true,
+  "human_semantic_acceptance": null,
+  "authenticated_watcher_closed": true,
+  "private_review_slots": {
+    "development": 20,
+    "reserved_blank": 8
+  },
+  "post_activation_history_matches": {
+    "passed": 13,
+    "checked": 13
+  }
+}

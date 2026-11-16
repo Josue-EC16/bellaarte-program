@@ -2,6 +2,18 @@
 
 Frontend SPA del sistema `bellaarte-program`, construido con React, Vite, Ant Design y React Router.
 
+TC-02 (04/11/2026): estado USD en Tipos de Cambio y pantalla ADMIN
+`/app/monedas/tipos-cambio/registros`, paginada en servidor, con filtros/detalle y
+enlaces de avisos. Polling solo visible/foco, nunca sincroniza desde el navegador.
+Valores Decimal como cadenas y serie oficial separada por fecha objetivo. Ver
+[contratos y pruebas TC-02](../documentacion/SPEC_TC_02_IMPLEMENTACION.md).
+
+Revisión de Usuarios/Sesiones del 03/11/2026: validación de colaboradores,
+protección de la cuenta propia, cambios de rol sin salir y cierre ante reset o
+desactivación. Desplegada con migración 0022 en la base original el 03/11/2026;
+recargar la SPA e iniciar sesión de nuevo. La migración no cambia contraseñas.
+Ver [Usuarios, roles y sesiones](../documentacion/MODULO_USUARIOS_SESIONES.md).
+
 La versión actual ya integra:
 
 - login interno con refresh de sesión

@@ -1,7 +1,8 @@
 from functools import lru_cache
+from datetime import date
 from typing import Literal
 
-from pydantic import Field, computed_field, field_validator
+from pydantic import Field, SecretStr, computed_field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -11,6 +12,7 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         case_sensitive=False,
         extra="ignore",
+        hide_input_in_errors=True,
     )
 
     environment: str = "development"
@@ -25,9 +27,27 @@ class Settings(BaseSettings):
 
     jwt_secret_key: str = "bellaarte-dev-access-secret"
     jwt_refresh_secret_key: str = "bellaarte-dev-refresh-secret"
-    access_token_minutes: int = 30
-    refresh_token_days: int = 7
-    jwt_algorithm: str = "HS256"
+    access_token_minutes: int = Field(default=30, ge=1, le=60)
+    refresh_token_days: int = Field(default=7, ge=1, le=30)
+    jwt_algorithm: Literal["HS256"] = "HS256"
+    jwt_issuer: str = "bellaarte-api"
+    jwt_audience: str = "bellaarte-erp"
+    auth_event_recheck_seconds: float = Field(default=5, ge=1, le=15)
+    auth_login_window_seconds: int = Field(default=900, ge=60, le=3600)
+    auth_login_pair_limit: int = Field(default=5, ge=1, le=20)
+    auth_login_ip_limit: int = Field(default=50, ge=5, le=200)
+
+    @model_validator(mode="after")
+    def validate_production_security(self):
+        if self.is_production:
+            secrets = (self.jwt_secret_key, self.jwt_refresh_secret_key)
+            if any(len(value.encode("utf-8")) < 32 or "bellaarte-dev-" in value for value in secrets):
+                raise ValueError("Producción requiere secretos JWT propios de al menos 32 bytes.")
+            if secrets[0] == secrets[1]:
+                raise ValueError("Los secretos JWT de acceso y renovación deben ser distintos.")
+            if not self.frontend_url.startswith("https://"):
+                raise ValueError("Producción requiere FRONTEND_URL con HTTPS.")
+        return self
 
     bootstrap_admin_username: str = "admin"
     bootstrap_admin_password: str = "Admin12345!"
@@ -60,7 +80,44 @@ class Settings(BaseSettings):
     backup_timezone: str = "America/La_Paz"
     backup_filename_prefix: str = "bellaarte_backup"
 
+    exchange_rate_sync_enabled: bool = False
+    exchange_rate_sync_start_date: date | None = None
+    exchange_rate_sync_http_timeout_seconds: float = Field(default=30, ge=1, le=30)
+    exchange_rate_sync_reconcile_seconds: int = Field(default=120, ge=120, le=600)
+
+    @field_validator("exchange_rate_sync_start_date", mode="before")
+    @classmethod
+    def empty_exchange_rate_start_date(cls, value):
+        return None if value == "" else value
+
+    @model_validator(mode="after")
+    def validate_exchange_rate_sync(self):
+        if self.exchange_rate_sync_enabled and self.exchange_rate_sync_start_date is None:
+            raise ValueError("La sincronización USD requiere fecha inicial estable y explícita.")
+        return self
+
     leny_enabled: bool = True
+    leny_quality_profile: Literal['baseline','spec03'] = 'baseline'
+    leny_turn_quality_profile: Literal['baseline','spec03'] = 'baseline'
+    leny_spec03_evaluation_enabled: bool = False
+    # SPEC-03.1 rollout switch, not a user-selectable conversation profile.
+    leny_continuity_enabled: bool = False
+    leny_spec03_evaluation_daily_calls: int = Field(default=150, ge=1, le=150)
+    leny_gemini_corpus_manifest: str | None = None
+    leny_llm_provider: Literal['ollama', 'gemini'] = 'ollama'
+    leny_gemini_enabled: bool = False
+    leny_gemini_model: str = Field(default='gemini-3.1-flash-lite', min_length=1, pattern=r'^\S+$')
+    gemini_api_key: SecretStr | None = Field(default=None, exclude=True, repr=False)
+    leny_gemini_timeout_seconds: float = Field(default=60, gt=0, allow_inf_nan=False)
+    leny_gemini_total_timeout_seconds: float = Field(default=300, ge=60, le=600)
+    leny_gemini_input_token_budget: int = Field(default=32678, ge=1024, le=32678)
+    leny_gemini_output_tokens: int = Field(default=8192, ge=256, le=8192)
+    leny_gemini_thinking_level: Literal['low', 'medium', 'high'] = 'medium'
+    leny_gemini_free_tier_confirmed: bool = False
+    leny_gemini_rpm: int = Field(default=15, ge=1, le=15)
+    leny_gemini_tpm: int = Field(default=250000, ge=1, le=250000)
+    # Owner supplied the 3.1 Flash-Lite project quotas on 05/11/2026.
+    leny_gemini_rpd: int = Field(default=500, ge=1, le=500)
     # FastAPI owns only children it starts; existing Ollama/manual workers are borrowed.
     leny_runtime_autostart: bool = True
     leny_ollama_executable: str | None = None
@@ -121,6 +178,11 @@ class Settings(BaseSettings):
     leny_rag_candidates: int = Field(default=20, ge=5, le=20)
     # Candidate is opt-in until the isolated and real-document acceptance gates pass.
     leny_rag_profile: Literal['legacy', 'rag4_v1'] = 'legacy'
+    leny_rag_response_mode: Literal['document-excerpts-v2', 'controlled-synthesis-v1'] = 'document-excerpts-v2'
+    leny_rag_linked_support: bool = False
+    leny_rag_section_context: bool = False
+    leny_rag_source_coverage: bool = False
+    leny_rag_followup_context: bool = False
     leny_rag_evidence_mode: Literal['fixed', 'adaptive'] = 'fixed'
     leny_rag_adaptive_token_probe: bool = False
     leny_rag_ranking: Literal['semantic', 'hybrid'] = 'semantic'
